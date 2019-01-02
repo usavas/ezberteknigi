@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
                 repository.insert(new ReadingText("BBC", "news", 7, newsContent, wordCount));
 
                 Log.d("MainAct", "news inserted");
+                Toast.makeText(MainActivity.this, "row saved", Toast.LENGTH_SHORT).show();
+
 
 
             }
