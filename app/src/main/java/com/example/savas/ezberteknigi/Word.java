@@ -4,8 +4,11 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.RequiresPermission;
 
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -16,7 +19,6 @@ import static android.arch.persistence.room.ForeignKey.NO_ACTION;
                 entity = ReadingText.class,
                 parentColumns = "id",
                 childColumns = "reading_text_id",
-                onDelete = NO_ACTION,
                 onUpdate = CASCADE))
 public class Word {
 
@@ -26,10 +28,15 @@ public class Word {
     private String translation;
     @ColumnInfo(name = "reading_text_id")
     private int readingTextId;
+
+    //TODO: either make this another class or add logic to store multiple sentences
     @ColumnInfo(name = "example_sentence")
     private String exampleSentence;
+
     @ColumnInfo(name = "date_saved")
+    @TypeConverters({TimeStampConverter.class})
     private Date dateSaved;
+
     @ColumnInfo(name = "word_state")
     private int wordState;
     @ColumnInfo(name = "revision_period_count")
@@ -43,22 +50,12 @@ public class Word {
     @ColumnInfo(name = "details_seen_count")
     private int detailsSeenCount;
 
-    public Word(String word,
-                String translation,
-                int readingTextId,
-                String exampleSentence,
-                Date dateSaved,
-                int wordState,
-                int revisionPeriodCount,
-                int errorCount,
-                int correctCount,
-                int screeningCount,
-                int detailsSeenCount) {
+    public Word(String word, String translation, int readingTextId, String exampleSentence, Date dateSaved, int wordState, int revisionPeriodCount, int errorCount, int correctCount, int screeningCount, int detailsSeenCount) {
         this.word = word;
         this.translation = translation;
         this.readingTextId = readingTextId;
         this.exampleSentence = exampleSentence;
-        this.dateSaved = dateSaved;
+        this.dateSaved =  dateSaved;
         this.wordState = wordState;
         this.revisionPeriodCount = revisionPeriodCount;
         this.errorCount = errorCount;

@@ -14,13 +14,16 @@ public class ReadingText {
     private String documentType;
     @ColumnInfo(name = "difficulty_rate")
     private int difficultyRate;
+    @ColumnInfo(name = "content")
+    private String content;
     @ColumnInfo(name = "word_count")
     private int wordCount;
 
-    public ReadingText(String source, String documentType, int difficultyRate, int wordCount) {
+    public ReadingText(String source, String documentType, int difficultyRate, String content, int wordCount) {
         this.source = source;
         this.documentType = documentType;
         this.difficultyRate = difficultyRate;
+        this.content = content;
         this.wordCount = wordCount;
     }
 
@@ -38,6 +41,10 @@ public class ReadingText {
 
     public int getDifficultyRate() {
         return difficultyRate;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public int getWordCount() {
@@ -58,6 +65,10 @@ public class ReadingText {
 
     public void setDifficultyRate(int difficultyRate) {
         this.difficultyRate = difficultyRate;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public void setWordCount(int wordCount) {

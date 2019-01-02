@@ -1,13 +1,34 @@
 package com.example.savas.ezberteknigi;
 
+import android.app.Application;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EzberTeknigiRepository repository = new EzberTeknigiRepository(getApplication());
+                String newsContent = "this is the content of a BBC news page, 109";
+                int wordCount = newsContent.length();
+                repository.insert(new ReadingText("BBC", "news", 7, newsContent, wordCount));
+
+                Log.d("MainAct", "news inserted");
+
+
+            }
+        });
     }
 }
