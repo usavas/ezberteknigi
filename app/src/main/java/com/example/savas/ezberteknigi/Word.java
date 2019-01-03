@@ -14,16 +14,17 @@ import java.util.Date;
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 import static android.arch.persistence.room.ForeignKey.NO_ACTION;
 
-@Entity(tableName = "word_table",
-        foreignKeys = @ForeignKey(
-                entity = ReadingText.class,
-                parentColumns = "id",
-                childColumns = "reading_text_id",
-                onUpdate = CASCADE))
+@Entity(tableName = "word_table"
+//        ,foreignKeys = @ForeignKey(
+//                entity = ReadingText.class,
+//                parentColumns = "wordId",
+//                childColumns = "reading_text_id",
+//                onUpdate = CASCADE)
+)
 public class Word {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int wordId;
     private String word;
     private String translation;
     @ColumnInfo(name = "reading_text_id")
@@ -64,8 +65,8 @@ public class Word {
         this.detailsSeenCount = detailsSeenCount;
     }
 
-    public int getId() {
-        return id;
+    public int getWordId() {
+        return wordId;
     }
 
     public String getWord() {
@@ -108,17 +109,13 @@ public class Word {
         return screeningCount;
     }
 
-    public int getDetailsSeenCount() {
-        return detailsSeenCount;
+    public int getDetailsSeenCount() { return detailsSeenCount;}
+
+    public void setWordId(int id) {
+        this.wordId = id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
-    }
+    public void setWord(String word) {this.word = word;}
 
     public void setTranslation(String translation) {
         this.translation = translation;

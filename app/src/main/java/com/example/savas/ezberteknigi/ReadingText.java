@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class ReadingText {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int readingTextId;
     private String source;
     @ColumnInfo(name = "document_type")
     private String documentType;
@@ -27,8 +27,8 @@ public class ReadingText {
         this.wordCount = wordCount;
     }
 
-    public int getId() {
-        return id;
+    public int getReadingTextId() {
+        return readingTextId;
     }
 
     public String getSource() {
@@ -51,8 +51,8 @@ public class ReadingText {
         return wordCount;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setReadingTextId(int id) {
+        this.readingTextId = id;
     }
 
     public void setSource(String source) {
