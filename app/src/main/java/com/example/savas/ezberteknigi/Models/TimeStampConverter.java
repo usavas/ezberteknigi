@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi;
+package com.example.savas.ezberteknigi.Models;
 
 import android.arch.persistence.room.TypeConverter;
 import java.text.DateFormat;

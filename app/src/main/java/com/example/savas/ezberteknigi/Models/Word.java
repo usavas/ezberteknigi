@@ -1,18 +1,11 @@
-package com.example.savas.ezberteknigi;
+package com.example.savas.ezberteknigi.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
-import android.support.annotation.RequiresPermission;
 
-import java.time.OffsetDateTime;
 import java.util.Date;
-
-import static android.arch.persistence.room.ForeignKey.CASCADE;
-import static android.arch.persistence.room.ForeignKey.NO_ACTION;
 
 @Entity(tableName = "word_table"
 //        ,foreignKeys = @ForeignKey(
@@ -24,6 +17,7 @@ import static android.arch.persistence.room.ForeignKey.NO_ACTION;
 public class Word {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "word_id")
     private int wordId;
     private String word;
     private String translation;

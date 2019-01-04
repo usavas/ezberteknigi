@@ -8,6 +8,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.example.savas.ezberteknigi.DAO.ReadingTextDao;
+import com.example.savas.ezberteknigi.DAO.WordDao;
+import com.example.savas.ezberteknigi.Models.ReadingText;
+import com.example.savas.ezberteknigi.Models.Word;
+
 @Database(entities = {ReadingText.class, Word.class}, version = 1)
 public abstract class EzberTeknigiDatabase extends RoomDatabase {
 
@@ -21,6 +26,7 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     EzberTeknigiDatabase.class,
                     "ezber_teknigi_database")
+                    .addCallback(roomCallback)
                     .fallbackToDestructiveMigration()
                     .build();
         }

@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi;
+package com.example.savas.ezberteknigi.DAO;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -6,6 +6,8 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+
+import com.example.savas.ezberteknigi.Models.ReadingText;
 
 import java.util.List;
 
@@ -24,7 +26,6 @@ public interface ReadingTextDao extends BaseDao {
     @Query("SELECT * FROM reading_text_table ORDER BY difficulty_rate DESC")
     LiveData<List<ReadingText>> getAllReadingTexts();
 
-
-
-
+    @Query("DELETE FROM reading_text_table")
+    void deleteAllReadingTexts();
 }
