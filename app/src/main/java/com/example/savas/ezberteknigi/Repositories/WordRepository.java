@@ -2,14 +2,10 @@ package com.example.savas.ezberteknigi.Repositories;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Update;
 import android.os.AsyncTask;
 
-import com.example.savas.ezberteknigi.DAO.ReadingTextDao;
 import com.example.savas.ezberteknigi.DAO.WordDao;
-import com.example.savas.ezberteknigi.EzberTeknigiDatabase;
-import com.example.savas.ezberteknigi.Models.ReadingText;
+import com.example.savas.ezberteknigi.Models.EzberTeknigiDatabase;
 import com.example.savas.ezberteknigi.Models.Word;
 
 import java.util.List;
@@ -24,15 +20,19 @@ public class WordRepository {
         allWords = wordDao.getAllWords();
     }
 
-    public void Insert(Word word){
+    public LiveData<List<Word>> getAllWords(){
+        return allWords;
+    }
+
+    public void insert(Word word){
         new InsertWordAsyncTask(wordDao).execute(word);
     }
 
-    public void Update(Word word){
+    public void update(Word word){
         new UpdateWordAsyncTask(wordDao).execute(word);
     }
 
-    public void Delete(Word word){
+    public void delete(Word word){
         new DeleteWordAsyncTask(wordDao).execute(word);
     }
 

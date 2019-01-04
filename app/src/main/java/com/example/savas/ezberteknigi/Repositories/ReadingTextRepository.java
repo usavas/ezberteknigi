@@ -2,12 +2,10 @@ package com.example.savas.ezberteknigi.Repositories;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Update;
 import android.os.AsyncTask;
-import android.support.annotation.RequiresPermission;
 
 import com.example.savas.ezberteknigi.DAO.ReadingTextDao;
-import com.example.savas.ezberteknigi.EzberTeknigiDatabase;
+import com.example.savas.ezberteknigi.Models.EzberTeknigiDatabase;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import java.util.List;
 

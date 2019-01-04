@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi;
+package com.example.savas.ezberteknigi.Models;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
@@ -10,8 +10,6 @@ import android.support.annotation.NonNull;
 
 import com.example.savas.ezberteknigi.DAO.ReadingTextDao;
 import com.example.savas.ezberteknigi.DAO.WordDao;
-import com.example.savas.ezberteknigi.Models.ReadingText;
-import com.example.savas.ezberteknigi.Models.Word;
 
 @Database(entities = {ReadingText.class, Word.class}, version = 2)
 public abstract class EzberTeknigiDatabase extends RoomDatabase {

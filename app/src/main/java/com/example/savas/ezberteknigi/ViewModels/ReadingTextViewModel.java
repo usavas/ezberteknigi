@@ -1,11 +1,9 @@
 package com.example.savas.ezberteknigi.ViewModels;
 
 import android.app.Application;
-import android.app.ListActivity;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresPermission;
 
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
