@@ -13,7 +13,7 @@ import com.example.savas.ezberteknigi.DAO.WordDao;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 
-@Database(entities = {ReadingText.class, Word.class}, version = 1)
+@Database(entities = {ReadingText.class, Word.class}, version = 2)
 public abstract class EzberTeknigiDatabase extends RoomDatabase {
 
     private static EzberTeknigiDatabase instance;

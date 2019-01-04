@@ -37,7 +37,7 @@ public class ReadingTextRepository {
         new DeleteAllReadingTextsAsyncTask(readingTextDao).execute();
     }
 
-    public LiveData<List<ReadingText>> getAllNotes() {
+    public LiveData<List<ReadingText>> getAllReadingTexts() {
         return allReadingTexts;
     }
 
