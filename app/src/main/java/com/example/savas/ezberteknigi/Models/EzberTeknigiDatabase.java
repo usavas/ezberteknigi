@@ -11,7 +11,7 @@ import android.support.annotation.NonNull;
 import com.example.savas.ezberteknigi.DAO.ReadingTextDao;
 import com.example.savas.ezberteknigi.DAO.WordDao;
 
-@Database(entities = {ReadingText.class, Word.class}, version = 2)
+@Database(entities = {ReadingText.class, Word.class}, version = 3)
 public abstract class EzberTeknigiDatabase extends RoomDatabase {
 
     private static EzberTeknigiDatabase instance;
@@ -24,8 +24,8 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     EzberTeknigiDatabase.class,
                     "ezber_teknigi_database")
-                    .addCallback(roomCallback)
                     .fallbackToDestructiveMigration()
+                    .addCallback(roomCallback)
                     .build();
         }
         return instance;
@@ -48,9 +48,9 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            readingTextDao.insert(new ReadingText("BBC", "news", 7, "this is the news content. reading text may be as long as it would", 109));
-            readingTextDao.insert(new ReadingText("Guardian", "news", 6, "this is the news content. reading text may be as long as it would", 99));
-            readingTextDao.insert(new ReadingText("Tom Sawyer", "story", 3, "this is the story content. reading text may be as long as it would", 300));
+            readingTextDao.insert(new ReadingText("BBC", "header",  "news", 7, "this is the news content. reading text may be as long as it would", 109));
+            readingTextDao.insert(new ReadingText("Guardian", "header1", "news", 6, "this is the news content. reading text may be as long as it would", 99));
+            readingTextDao.insert(new ReadingText("Tom Sawyer", "header2", "story", 3, "this is the story content. reading text may be as long as it would", 300));
             return null;
         }
     }

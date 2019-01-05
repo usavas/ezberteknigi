@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="moduleBackColor">navy</color>
-    <color name="moduleColor">white</color>
+    <color name="moduleBackColor">#0000FF</color>
+    <color name="moduleColor">#FFFFFF</color>
 </resources>

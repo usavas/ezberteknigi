@@ -10,6 +10,9 @@ public class ReadingText {
     @PrimaryKey(autoGenerate = true)
     private int readingTextId;
     private String source;
+
+    @ColumnInfo(name = "header")
+    private String header;
     @ColumnInfo(name = "document_type")
     private String documentType;
     @ColumnInfo(name = "difficulty_rate")
@@ -19,8 +22,9 @@ public class ReadingText {
     @ColumnInfo(name = "word_count")
     private int wordCount;
 
-    public ReadingText(String source, String documentType, int difficultyRate, String content, int wordCount) {
+    public ReadingText(String source, String header, String documentType, int difficultyRate, String content, int wordCount) {
         this.source = source;
+        this.header = header;
         this.documentType = documentType;
         this.difficultyRate = difficultyRate;
         this.content = content;
@@ -37,6 +41,10 @@ public class ReadingText {
 
     public String getDocumentType() {
         return documentType;
+    }
+
+    public String getHeader() {
+        return header;
     }
 
     public int getDifficultyRate() {
@@ -61,6 +69,10 @@ public class ReadingText {
 
     public void setDocumentType(String documentType) {
         this.documentType = documentType;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
     }
 
     public void setDifficultyRate(int difficultyRate) {

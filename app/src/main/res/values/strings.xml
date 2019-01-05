@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">EzberTeknigi</string>
+    <string name="readingTexts">Reading Texts</string>
+    <string name="words">Words</string>
 </resources>
