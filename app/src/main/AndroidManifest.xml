@@ -17,8 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.ReadingTextsActivity" />
-        <activity android:name=".Activities.WordActivity" />
-        <activity android:name=".Activities.ReadingTextDetailActivity"></activity>
+        <activity android:name=".Activities.WordsActivity" />
+        <activity android:name=".Activities.ReadingTextDetailActivity" />
+        <activity android:name=".Activities.AddWordActivity"></activity>
     </application>
 
 </manifest>

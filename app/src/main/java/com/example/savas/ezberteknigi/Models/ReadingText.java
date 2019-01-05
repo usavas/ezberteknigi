@@ -8,6 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class ReadingText {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "reading_text_id")
     private int readingTextId;
     private String source;
 

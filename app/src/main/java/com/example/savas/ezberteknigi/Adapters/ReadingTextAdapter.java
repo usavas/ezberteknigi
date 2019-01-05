@@ -1,16 +1,14 @@
-package com.example.savas.ezberteknigi;
+package com.example.savas.ezberteknigi.Adapters;
 
-import android.service.autofill.TextValueSanitizer;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresPermission;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.example.savas.ezberteknigi.Models.ReadingText;
+import com.example.savas.ezberteknigi.R;
 
 import java.util.ArrayList;
 import java.util.List;
