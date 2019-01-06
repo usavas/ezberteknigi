@@ -3,12 +3,12 @@ package com.example.savas.ezberteknigi.Repositories;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import java.util.List;
 
 import com.example.savas.ezberteknigi.DAO.WordDao;
 import com.example.savas.ezberteknigi.Models.EzberTeknigiDatabase;
 import com.example.savas.ezberteknigi.Models.Word;
 
-import java.util.List;
 
 public class WordRepository {
     private WordDao wordDao;

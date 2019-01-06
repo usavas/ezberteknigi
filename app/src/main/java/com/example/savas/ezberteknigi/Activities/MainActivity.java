@@ -14,27 +14,22 @@ import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnReadingTexts;
-    private Button btnWords;
-
-    private Button btnAddSampleReading;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button btnReadingTexts;
         btnReadingTexts = findViewById(R.id.button_reading_texts);
         btnReadingTexts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Intent intent = new Intent(v.getContext(), ReadingTextsActivity.class);
                 startActivity(intent);
             }
         });
 
+        Button btnWords;
         btnWords = findViewById(R.id.button_words);
         btnWords.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,16 +39,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Button btnAddSampleReading;
         btnAddSampleReading = findViewById(R.id.button_add_sample_reading_text);
         btnAddSampleReading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddSampleNews();
+
             }
         });
     }
 
-    private void AddSampleNews() {
+    private void addSampleNews() {
         ReadingTextRepository repository = new ReadingTextRepository(getApplication());
         String newsContent = "this is the content of a BBC news pagethis is the content of a BBC news pagethis is the content of a BBC news pagethis is the content of a BBC news page";
         int wordCount = newsContent.length();
@@ -62,4 +58,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainAct", "news inserted");
         Toast.makeText(MainActivity.this, "row saved", Toast.LENGTH_SHORT).show();
     }
+
+
 }

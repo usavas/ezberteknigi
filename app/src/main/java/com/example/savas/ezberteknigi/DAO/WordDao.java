@@ -24,9 +24,12 @@ public interface WordDao extends BaseDao {
     @Delete
     void delete(Word word);
 
+    @Query("DELETE FROM word_table")
+    void deleteAllWords();
+
     @Query("SELECT * FROM word_table")
     LiveData<List<Word>> getAllWords();
 
     @Query("SELECT word_id, word, translation, reading_text_id, example_sentence, date_saved, word_state FROM word_table")
-    LiveData<List<WordMinimal>> getAllWordsMinimal();
+    List<WordMinimal> getAllWordsMinimal();
 }
