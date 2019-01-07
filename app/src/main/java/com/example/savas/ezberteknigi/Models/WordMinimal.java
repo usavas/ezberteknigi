@@ -7,8 +7,8 @@ import java.util.Date;
 
 public class WordMinimal {
 
-    @ColumnInfo(name = "word_id")
-    private int id;
+//    @ColumnInfo(name = "word_id")
+//    private int id;
     private String word;
     private String translation;
     @ColumnInfo(name = "reading_text_id")
@@ -30,9 +30,9 @@ public class WordMinimal {
         this.wordState = wordState;
     }
 
-    public int getId() {
-        return id;
-    }
+//    public int getId() {
+//        return id;
+//    }
 
     public String getWord() {
         return word;
@@ -58,9 +58,9 @@ public class WordMinimal {
         return wordState;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
     public void setWord(String word) {
         this.word = word;
