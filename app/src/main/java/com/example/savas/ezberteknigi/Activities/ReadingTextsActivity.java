@@ -34,14 +34,8 @@ public class ReadingTextsActivity extends AppCompatActivity {
         readingTextViewModel.getAllReadingTexts().observe(this, new Observer<List<ReadingText>>() {
             @Override
             public void onChanged(@Nullable List<ReadingText> readingTexts) {
-                //TODO: update recycler view
                 readingTextAdapter.setReadingTexts(readingTexts);
             }
         });
-
-
     }
-
-
-
 }
