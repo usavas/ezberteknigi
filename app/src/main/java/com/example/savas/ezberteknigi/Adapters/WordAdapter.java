@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 
@@ -16,6 +15,15 @@ import java.util.List;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     private List<Word> words = new ArrayList<>();
+
+    class WordHolder extends RecyclerView.ViewHolder{
+        private TextView word;
+
+        public WordHolder(@NonNull View itemView) {
+            super(itemView);
+            word = itemView.findViewById(R.id.tvItemWord);
+        }
+    }
 
     @NonNull
     @Override
@@ -41,13 +49,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         notifyDataSetChanged();
     }
 
-    class WordHolder extends RecyclerView.ViewHolder{
-        private TextView word;
 
-        public WordHolder(@NonNull View itemView) {
-            super(itemView);
-            word = itemView.findViewById(R.id.tvItemWord);
-        }
-    }
 
 }

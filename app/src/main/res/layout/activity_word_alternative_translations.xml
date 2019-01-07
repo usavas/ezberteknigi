@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.WordAlternativeTranslationsActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_translations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/alternative_translation_item"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/button_accept_translations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="KABUL ET VE GERİ DÖN"
+        android:textSize="24sp"/>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -19,7 +19,8 @@
         <activity android:name=".Activities.ReadingTextsActivity" />
         <activity android:name=".Activities.WordsActivity" />
         <activity android:name=".Activities.ReadingTextDetailActivity" />
-        <activity android:name=".Activities.AddWordActivity"></activity>
+        <activity android:name=".Activities.AddWordActivity" />
+        <activity android:name=".Activities.WordAlternativeTranslationsActivity"></activity>
     </application>
 
 </manifest>
