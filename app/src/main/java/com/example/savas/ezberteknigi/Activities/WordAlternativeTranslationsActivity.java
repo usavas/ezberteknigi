@@ -3,6 +3,7 @@ package com.example.savas.ezberteknigi.Activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,7 +32,7 @@ import java.util.List;
 public class WordAlternativeTranslationsActivity extends AppCompatActivity {
 
     public static final String EXTRA_TRANSLATION_RESULT = "com.example.savas.ezberteknigi.EXTRA_TRANSLATION_RESULT";
-    private List<String> resultOfTranslations = new ArrayList<>();
+    private List<String> arrResultOfTranslation = new ArrayList<>();
 
     final WordTranslationAdapter translationAdapter = new WordTranslationAdapter();
 
@@ -55,15 +56,36 @@ public class WordAlternativeTranslationsActivity extends AppCompatActivity {
         btnAcceptTranslationsAndReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String resultOfTranslations = "";
+                for (int i = 0; i < arrResultOfTranslation.size(); i++){
+                    resultOfTranslations += arrResultOfTranslation.get(i) + ", ";
+                }
+
                 Intent intent = new Intent();
-                intent.putExtra(EXTRA_TRANSLATION_RESULT, resultOfTranslations);
+                intent.putExtra(EXTRA_TRANSLATION_RESULT, removeLastChar(resultOfTranslations.trim()));
                 setResult(RESULT_OK, intent);
                 finish();
             }
         });
+
+        translationAdapter.setOnItemClickListener(new WordTranslationAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String translation) {
+                //TODO: add/remove items to and fro the arrResultOfTranslation
+                if (arrResultOfTranslation.contains(translation)){
+                    arrResultOfTranslation.remove(translation);
+                }
+                else {
+                    arrResultOfTranslation.add(translation);
+                }
+            }
+        });
     }
 
-    //TODO: add/remove items onitemcheck to and fro the resultOfTranslations
+    @NonNull
+    private static String removeLastChar(String str) {
+        return str.substring(0, str.length() - 1);
+    }
 
     private class JsonTask extends AsyncTask<String, String, JSONObject> {
 

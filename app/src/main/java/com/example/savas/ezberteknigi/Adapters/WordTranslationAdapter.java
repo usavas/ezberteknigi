@@ -14,6 +14,7 @@ import java.util.List;
 
 public class WordTranslationAdapter extends RecyclerView.Adapter<WordTranslationAdapter.TranslationHolder> {
     private List<String> translations = new ArrayList<>();
+    private OnItemClickListener listener;
 
     class TranslationHolder extends RecyclerView.ViewHolder{
         private TextView tvTranslation;
@@ -21,6 +22,16 @@ public class WordTranslationAdapter extends RecyclerView.Adapter<WordTranslation
         public TranslationHolder(@NonNull View itemView) {
             super(itemView);
             tvTranslation = itemView.findViewById(R.id.tvItemTranslation);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION){
+                        listener.onItemClick(translations.get(position));
+                    }
+                }
+            });
         }
     }
 
@@ -46,5 +57,13 @@ public class WordTranslationAdapter extends RecyclerView.Adapter<WordTranslation
     public void setTranslations(List<String> translations){
         this.translations = translations;
         notifyDataSetChanged();
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(String translation);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 }
