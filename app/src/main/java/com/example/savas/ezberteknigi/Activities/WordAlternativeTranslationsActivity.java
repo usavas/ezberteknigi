@@ -71,7 +71,6 @@ public class WordAlternativeTranslationsActivity extends AppCompatActivity {
         translationAdapter.setOnItemClickListener(new WordTranslationAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String translation) {
-                //TODO: add/remove items to and fro the arrResultOfTranslation
                 if (arrResultOfTranslation.contains(translation)){
                     arrResultOfTranslation.remove(translation);
                 }
