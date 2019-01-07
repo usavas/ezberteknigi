@@ -13,12 +13,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.savas.ezberteknigi.Adapters.ReadingTextAdapter;
 import com.example.savas.ezberteknigi.Adapters.WordAdapter;
-import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
 import java.util.Date;
