@@ -39,14 +39,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final Button btnAddSampleReading;
-        btnAddSampleReading = findViewById(R.id.button_add_sample_reading_text);
-        btnAddSampleReading.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        final Button btnAddSampleReading;
+//        btnAddSampleReading = findViewById(R.id.button_add_sample_reading_text);
+//        btnAddSampleReading.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
     private void addSampleNews() {
