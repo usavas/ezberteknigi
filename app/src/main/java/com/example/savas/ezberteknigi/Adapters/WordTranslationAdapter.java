@@ -16,6 +16,25 @@ public class WordTranslationAdapter extends RecyclerView.Adapter<WordTranslation
     private List<String> translations = new ArrayList<>();
     private OnItemClickListener listener;
 
+    @NonNull
+    @Override
+    public WordTranslationAdapter.TranslationHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View itemView = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.word_item, viewGroup, false);
+        return new WordTranslationAdapter.TranslationHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull TranslationHolder translationHolder, int i) {
+        String currentWord = translations.get(i);
+        translationHolder.tvTranslation.setText(currentWord);
+    }
+
+    @Override
+    public int getItemCount() {
+        return translations.size();
+    }
+
     class TranslationHolder extends RecyclerView.ViewHolder{
         private TextView tvTranslation;
 
@@ -35,24 +54,7 @@ public class WordTranslationAdapter extends RecyclerView.Adapter<WordTranslation
         }
     }
 
-    @NonNull
-    @Override
-    public WordTranslationAdapter.TranslationHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.word_item, viewGroup, false);
-        return new WordTranslationAdapter.TranslationHolder(itemView);
-    }
 
-    @Override
-    public void onBindViewHolder(@NonNull TranslationHolder translationHolder, int i) {
-        String currentWord = translations.get(i);
-        translationHolder.tvTranslation.setText(currentWord);
-    }
-
-    @Override
-    public int getItemCount() {
-        return translations.size();
-    }
 
     public void setTranslations(List<String> translations){
         this.translations = translations;
