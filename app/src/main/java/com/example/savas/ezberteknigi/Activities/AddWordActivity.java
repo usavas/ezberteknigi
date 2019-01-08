@@ -2,6 +2,7 @@ package com.example.savas.ezberteknigi.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,7 +27,7 @@ public class AddWordActivity extends AppCompatActivity {
     EditText editExampleSentence;
     Button btnAddWord;
     Button btnGetTranslation;
-    ProgressDialog pd;
+//    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +47,12 @@ public class AddWordActivity extends AppCompatActivity {
             }
         });
 
+        btnGetTranslation = findViewById(R.id.button_get_translation);
         btnGetTranslation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AddWordActivity.this, WordAlternativeTranslationsActivity.class);
-                intent.putExtra(EXTRA_WORD_TO_GET_TRANSLATION, editWord.getText());
+                intent.putExtra("wordToTranslate", editWord.getText().toString());
                 startActivityForResult(intent, GET_TRANSLATIONS_CODE);
             }
         });
@@ -75,5 +77,11 @@ public class AddWordActivity extends AppCompatActivity {
         finish();
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GET_TRANSLATIONS_CODE && resultCode == RESULT_OK){
+            editWordTranslation.setText(data.getStringExtra(WordAlternativeTranslationsActivity.EXTRA_TRANSLATION_RESULT));
+        }
+    }
 }

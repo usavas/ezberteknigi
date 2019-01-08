@@ -1,6 +1,5 @@
 package com.example.savas.ezberteknigi.Activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -36,8 +35,6 @@ public class WordAlternativeTranslationsActivity extends AppCompatActivity {
 
     final WordTranslationAdapter translationAdapter = new WordTranslationAdapter();
 
-    private ProgressDialog pd;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +46,8 @@ public class WordAlternativeTranslationsActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(translationAdapter);
 
-        String wordToSearch = getIntent().getStringExtra(AddWordActivity.EXTRA_WORD_TO_GET_TRANSLATION);
+        Intent intent = getIntent();
+        String wordToSearch = intent.getStringExtra("wordToTranslate");
         new JsonTask().execute("http://cevir.ws/v1?q="+ wordToSearch +"&m=25&p=exact&l=en");
 
         Button btnAcceptTranslationsAndReturn = findViewById(R.id.button_accept_translations);
@@ -88,14 +86,14 @@ public class WordAlternativeTranslationsActivity extends AppCompatActivity {
 
     private class JsonTask extends AsyncTask<String, String, JSONObject> {
 
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            pd = new ProgressDialog(getApplicationContext());
-            pd.setMessage("Please wait");
-            pd.setCancelable(false);
-            pd.show();
-        }
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//
+//            pd = new ProgressDialog(getApplicationContext());
+//            pd.setMessage("Please wait");
+//            pd.setCancelable(false);
+//            pd.show();
+//        }
 
         protected JSONObject doInBackground(String... params) {
 
@@ -152,19 +150,31 @@ public class WordAlternativeTranslationsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(JSONObject jsonResult) {
             super.onPostExecute(jsonResult);
-            if (pd.isShowing()){
-                pd.dismiss();
-            }
+//            if (pd.isShowing()){
+//                pd.dismiss();
+//            }
 
             List<String> arrTranslations = new ArrayList<>();
             try {
-
                 JSONArray jsonArrayWords = jsonResult.getJSONArray("word");
-                JSONArray arrayTranslations = jsonArrayWords.getJSONObject(0)
-                        .getJSONArray("desc");
-                for(int i = 0; i < arrayTranslations.length(); i++){
-                    arrTranslations.add(arrayTranslations.getJSONObject(i).toString());
+                for (int i = 0; i < jsonArrayWords.length(); i++){
+                    JSONObject wordObject = jsonArrayWords.getJSONObject(i);
+                    String translations = wordObject.getString("desc");
+                    System.out.println(translations);
+                    String[] arrTranslations1 = translations.split(";");
+                    for (int j = 0; j < arrTranslations1.length; j++){
+                        String[] arrTranslations2 = arrTranslations1[j].split(",");
+                        for (int x = 0; x < arrTranslations2.length; x++){
+                            arrTranslations.add(arrTranslations2[x]);
+                        }
+                    }
                 }
+
+//                JSONArray arrayTranslations = jsonArrayWords.getJSONObject(0)
+//                        .getJSONArray("desc");
+//                for(int i = 0; i < arrayTranslations.length(); i++){
+//                    arrTranslations.add(arrayTranslations.getJSONObject(i).toString());
+//                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

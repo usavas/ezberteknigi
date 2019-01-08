@@ -2,6 +2,7 @@ package com.example.savas.ezberteknigi.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +13,19 @@ import com.example.savas.ezberteknigi.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 public class WordTranslationAdapter extends RecyclerView.Adapter<WordTranslationAdapter.TranslationHolder> {
     private List<String> translations = new ArrayList<>();
     private OnItemClickListener listener;
 
     class TranslationHolder extends RecyclerView.ViewHolder{
-        private TextView tvTranslation;
+        private TextView tvItemTranslation;
 
         public TranslationHolder(@NonNull View itemView) {
             super(itemView);
-            tvTranslation = itemView.findViewById(R.id.tvItemTranslation);
+            tvItemTranslation = itemView.findViewById(R.id.translation_relative_layout).findViewById(R.id.tvItemTranslation);
+            Log.d(TAG, "TranslationHolder: itemView: " + itemView.toString() + "tvItemTranslation" + tvItemTranslation.getText());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -40,13 +44,13 @@ public class WordTranslationAdapter extends RecyclerView.Adapter<WordTranslation
     public WordTranslationAdapter.TranslationHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.word_item, viewGroup, false);
-        return new WordTranslationAdapter.TranslationHolder(itemView);
+        return new TranslationHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TranslationHolder translationHolder, int i) {
         String currentWord = translations.get(i);
-        translationHolder.tvTranslation.setText(currentWord);
+        translationHolder.tvItemTranslation.setText(currentWord);
     }
 
     @Override
