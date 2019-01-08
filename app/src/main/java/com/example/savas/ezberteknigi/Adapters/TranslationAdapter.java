@@ -14,6 +14,7 @@ import java.util.List;
 
 public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.TranslationHolder> {
     private List<String> translations = new ArrayList<>();
+    private OnItemClickListener listener;
 
     @NonNull
     @Override
@@ -45,6 +46,24 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
         public TranslationHolder(@NonNull View itemView) {
             super(itemView);
             tvTranslation = itemView.findViewById(R.id.text_view_translation);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION){
+                        listener.onItemClick(translations.get(position));
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(String string);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 }
