@@ -4,22 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.WordAlternativeTranslationsActivity">
+    tools:context=".Activities.TranslationActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_translations"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/alternative_translation_item"
-        >
-
-    </android.support.v7.widget.RecyclerView>
+        tools:listitem="@layout/translation_item" />
 
     <Button
-        android:id="@+id/button_accept_translations"
+        android:id="@+id/button_return"
+        android:text="return"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="KABUL ET VE GERİ DÖN"
-        android:textSize="24sp"/>
+        android:layout_height="wrap_content" />
 
 </android.support.design.widget.CoordinatorLayout>

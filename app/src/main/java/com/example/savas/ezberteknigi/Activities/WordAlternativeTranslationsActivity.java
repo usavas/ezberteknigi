@@ -8,10 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
-import com.example.savas.ezberteknigi.Adapters.WordTranslationAdapter;
+import com.example.savas.ezberteknigi.Adapters.TranslationAdapter;
 import com.example.savas.ezberteknigi.R;
 
 import org.json.JSONArray;
@@ -33,50 +31,60 @@ public class WordAlternativeTranslationsActivity extends AppCompatActivity {
     public static final String EXTRA_TRANSLATION_RESULT = "com.example.savas.ezberteknigi.EXTRA_TRANSLATION_RESULT";
     private List<String> arrResultOfTranslation = new ArrayList<>();
 
-    final WordTranslationAdapter translationAdapter = new WordTranslationAdapter();
+//    WordTranslationAdapter translationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_word_alternative_translations);
+//        setContentView(R.layout.activity_word_alternative_translations);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view_translations);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
+//        RecyclerView recyclerView = findViewById(R.id.recycler_view_translations);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setHasFixedSize(true);
 
-        recyclerView.setAdapter(translationAdapter);
+        List<String> translations = new ArrayList<>();
+        translations.add("deneme1");
+        translations.add("deneme2");
+        translations.add("deneme1");
+        translations.add("deneme2");
+        translations.add("deneme2");
+
+        TranslationAdapter adapter = new TranslationAdapter();
+//        recyclerView.setAdapter(adapter);
+        adapter.setTranslations(translations);
 
         Intent intent = getIntent();
         String wordToSearch = intent.getStringExtra("wordToTranslate");
-        new JsonTask().execute("http://cevir.ws/v1?q="+ wordToSearch +"&m=25&p=exact&l=en");
 
-        Button btnAcceptTranslationsAndReturn = findViewById(R.id.button_accept_translations);
-        btnAcceptTranslationsAndReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String resultOfTranslations = "";
-                for (int i = 0; i < arrResultOfTranslation.size(); i++){
-                    resultOfTranslations += arrResultOfTranslation.get(i) + ", ";
-                }
+//        new JsonTask().execute("http://cevir.ws/v1?q="+ wordToSearch +"&m=25&p=exact&l=en");
 
-                Intent intent = new Intent();
-                intent.putExtra(EXTRA_TRANSLATION_RESULT, removeLastChar(resultOfTranslations.trim()));
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
+//        Button btnAcceptTranslationsAndReturn = findViewById(R.id.button_accept_translations);
+//        btnAcceptTranslationsAndReturn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String resultOfTranslations = "";
+//                for (int i = 0; i < arrResultOfTranslation.size(); i++){
+//                    resultOfTranslations += arrResultOfTranslation.get(i) + ", ";
+//                }
+//
+//                Intent intent = new Intent();
+//                intent.putExtra(EXTRA_TRANSLATION_RESULT, removeLastChar(resultOfTranslations.trim()));
+//                setResult(RESULT_OK, intent);
+//                finish();
+//            }
+//        });
 
-        translationAdapter.setOnItemClickListener(new WordTranslationAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(String translation) {
-                if (arrResultOfTranslation.contains(translation)){
-                    arrResultOfTranslation.remove(translation);
-                }
-                else {
-                    arrResultOfTranslation.add(translation);
-                }
-            }
-        });
+//        translationAdapter.setOnItemClickListener(new WordTranslationAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(String translation) {
+//                if (arrResultOfTranslation.contains(translation)){
+//                    arrResultOfTranslation.remove(translation);
+//                }
+//                else {
+//                    arrResultOfTranslation.add(translation);
+//                }
+//            }
+//        });
     }
 
     @NonNull
@@ -169,19 +177,12 @@ public class WordAlternativeTranslationsActivity extends AppCompatActivity {
                         }
                     }
                 }
-
-//                JSONArray arrayTranslations = jsonArrayWords.getJSONObject(0)
-//                        .getJSONArray("desc");
-//                for(int i = 0; i < arrayTranslations.length(); i++){
-//                    arrTranslations.add(arrayTranslations.getJSONObject(i).toString());
-//                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            translationAdapter.setTranslations(arrTranslations);
+//            translationAdapter.setTranslations(arrTranslations);
 
         }
     }
-
 }

@@ -51,8 +51,8 @@ public class AddWordActivity extends AppCompatActivity {
         btnGetTranslation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddWordActivity.this, WordAlternativeTranslationsActivity.class);
-                intent.putExtra("wordToTranslate", editWord.getText().toString());
+                Intent intent = new Intent(AddWordActivity.this, TranslationActivity.class);
+                intent.putExtra(EXTRA_WORD_TO_GET_TRANSLATION, editWord.getText().toString());
                 startActivityForResult(intent, GET_TRANSLATIONS_CODE);
             }
         });
@@ -81,7 +81,7 @@ public class AddWordActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GET_TRANSLATIONS_CODE && resultCode == RESULT_OK){
-            editWordTranslation.setText(data.getStringExtra(WordAlternativeTranslationsActivity.EXTRA_TRANSLATION_RESULT));
+            editWordTranslation.setText(data.getStringExtra(TranslationActivity.EXTRA_TRANSLATION_RESULT));
         }
     }
 }
