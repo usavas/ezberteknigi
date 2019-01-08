@@ -14,6 +14,7 @@ import java.util.List;
 
 public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.TranslationHolder> {
     private List<String> translations = new ArrayList<>();
+
     private OnItemClickListener listener;
 
     @NonNull
@@ -43,7 +44,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
     class TranslationHolder extends RecyclerView.ViewHolder{
         private TextView tvTranslation;
 
-        public TranslationHolder(@NonNull View itemView) {
+        public TranslationHolder(@NonNull final View itemView) {
             super(itemView);
             tvTranslation = itemView.findViewById(R.id.text_view_translation);
 
@@ -52,7 +53,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION){
-                        listener.onItemClick(translations.get(position));
+                        listener.onItemClick(v, translations.get(position));
                     }
                 }
             });
@@ -60,7 +61,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
     }
 
     public interface OnItemClickListener{
-        void onItemClick(String string);
+        void onItemClick(View view, String string);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){

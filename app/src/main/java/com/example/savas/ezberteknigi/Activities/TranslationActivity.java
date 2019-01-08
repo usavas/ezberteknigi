@@ -1,6 +1,8 @@
 package com.example.savas.ezberteknigi.Activities;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -42,7 +44,7 @@ public class TranslationActivity extends AppCompatActivity {
         final List<String> arrResultOfTranslation = new ArrayList<>();
         final TranslationAdapter adapter = new TranslationAdapter();
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        final RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
@@ -51,7 +53,6 @@ public class TranslationActivity extends AppCompatActivity {
         try {
             JSONObject jsonObject = new JsonTask().execute("http://cevir.ws/v1?q="+ wordToSearch +"&m=25&p=exact&l=en").get();
             adapter.setTranslations(retrieveTranslations(jsonObject));
-            Toast.makeText(this, jsonObject.toString(), Toast.LENGTH_SHORT).show();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -78,18 +79,17 @@ public class TranslationActivity extends AppCompatActivity {
 
         adapter.setOnItemClickListener(new TranslationAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(String translation) {
-                Toast.makeText(TranslationActivity.this, translation, Toast.LENGTH_SHORT).show();
-
+            public void onItemClick(View v, String translation) {
                 if (arrResultOfTranslation.contains(translation)){
                     arrResultOfTranslation.remove(translation);
+                    v.getBackground().setColorFilter(Color.parseColor("#00FF00"), PorterDuff.Mode.DARKEN);
                 }
                 else {
                     arrResultOfTranslation.add(translation);
+                    v.getBackground().setColorFilter(Color.parseColor("#0000FF"), PorterDuff.Mode.DARKEN);
                 }
             }
         });
-
     }
 
     @NonNull
