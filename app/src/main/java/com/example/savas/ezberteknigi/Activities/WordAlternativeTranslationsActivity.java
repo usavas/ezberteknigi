@@ -162,24 +162,24 @@ public class WordAlternativeTranslationsActivity extends AppCompatActivity {
 //                pd.dismiss();
 //            }
 
-            List<String> arrTranslations = new ArrayList<>();
-            try {
-                JSONArray jsonArrayWords = jsonResult.getJSONArray("word");
-                for (int i = 0; i < jsonArrayWords.length(); i++){
-                    JSONObject wordObject = jsonArrayWords.getJSONObject(i);
-                    String translations = wordObject.getString("desc");
-                    System.out.println(translations);
-                    String[] arrTranslations1 = translations.split(";");
-                    for (int j = 0; j < arrTranslations1.length; j++){
-                        String[] arrTranslations2 = arrTranslations1[j].split(",");
-                        for (int x = 0; x < arrTranslations2.length; x++){
-                            arrTranslations.add(arrTranslations2[x]);
+                List<String> arrTranslations = new ArrayList<>();
+                try {
+                    JSONArray jsonArrayWords = jsonResult.getJSONArray("word");
+                    for (int i = 0; i < jsonArrayWords.length(); i++){
+                        JSONObject wordObject = jsonArrayWords.getJSONObject(i);
+                        String translations = wordObject.getString("desc");
+                        System.out.println(translations);
+                        String[] arrTranslations1 = translations.split(";");
+                        for (int j = 0; j < arrTranslations1.length; j++){
+                            String[] arrTranslations2 = arrTranslations1[j].split(",");
+                            for (int x = 0; x < arrTranslations2.length; x++){
+                                arrTranslations.add(arrTranslations2[x]);
+                            }
                         }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
 //            translationAdapter.setTranslations(arrTranslations);
 
