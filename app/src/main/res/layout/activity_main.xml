@@ -28,15 +28,15 @@
         app:layout_constraintTop_toBottomOf="@+id/button_reading_texts"
         android:text="@string/words" />
 
-    <!--<Button-->
-        <!--android:id="@+id/button_add_sample_reading_text"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/moduleButtonHeight"-->
-        <!--android:layout_marginStart="@dimen/moduleMarginStart"-->
-        <!--android:layout_marginTop="@dimen/moduleMarginTop"-->
-        <!--android:layout_marginEnd="@dimen/moduleMarginEnd"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/button_words"-->
+    <Button
+        android:id="@+id/button_deneme"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/moduleButtonHeight"
+        android:layout_marginStart="@dimen/moduleMarginStart"
+        android:layout_marginTop="@dimen/moduleMarginTop"
+        android:layout_marginEnd="@dimen/moduleMarginEnd"
+        app:layout_constraintTop_toBottomOf="@+id/button_words"
 
-        <!--android:text="ADD SAMPLE READING" />-->
+        android:text="DENEME" />
 
 </android.support.constraint.ConstraintLayout>

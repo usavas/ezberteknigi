@@ -4,24 +4,51 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import com.example.savas.ezberteknigi.DAO.WordDao;
 import com.example.savas.ezberteknigi.Models.EzberTeknigiDatabase;
 import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Models.WordMinimal;
 
 
 public class WordRepository {
     private WordDao wordDao;
     private LiveData<List<Word>> allWords;
+    private List<WordMinimal> wordsMinial;
 
     public WordRepository(Application application) {
         EzberTeknigiDatabase ezberTeknigiDatabase = EzberTeknigiDatabase.getInstance(application);
         wordDao = ezberTeknigiDatabase.wordDao();
         allWords = wordDao.getAllWords();
+        try {
+            wordsMinial = getWordsMinimal();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public LiveData<List<Word>> getAllWords(){
         return allWords;
+    }
+
+    public List<WordMinimal> getWordsMinimal() throws ExecutionException, InterruptedException {
+        return new GetWordsMinimalAsyncTask(wordDao).execute().get();
+    }
+
+    private static class GetWordsMinimalAsyncTask extends AsyncTask<Word, Void, List<WordMinimal>> {
+        private WordDao wordDao;
+
+        private GetWordsMinimalAsyncTask(WordDao wordDao) {
+            this.wordDao = wordDao;
+        }
+
+        @Override
+        protected List<WordMinimal> doInBackground(Word... words) {
+            return wordDao.getAllWordsMinimal();
+        }
     }
 
     public void insert(Word word){

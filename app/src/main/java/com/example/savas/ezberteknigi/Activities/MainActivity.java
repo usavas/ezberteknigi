@@ -39,14 +39,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        final Button btnAddSampleReading;
-//        btnAddSampleReading = findViewById(R.id.button_add_sample_reading_text);
-//        btnAddSampleReading.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        Button btnDeneme;
+        btnDeneme = findViewById(R.id.button_deneme);
+        btnDeneme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenActivity();
+            }
+        });
+    }
+
+    private void OpenActivity(){
+        Intent intent = new Intent(this.getApplicationContext(), WordActivitySample.class);
+        startActivity(intent);
     }
 
     private void addSampleNews() {

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.savas.ezberteknigi">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +24,8 @@
         <activity android:name=".Activities.ReadingTextDetailActivity" />
         <activity android:name=".Activities.AddWordActivity" />
         <activity android:name=".Activities.WordAlternativeTranslationsActivity" />
-        <activity android:name=".Activities.TranslationActivity"></activity>
+        <activity android:name=".Activities.TranslationActivity" />
+        <activity android:name=".Activities.WordActivitySample"></activity>
     </application>
 
 </manifest>
