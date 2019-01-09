@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.ReadingTextHolder> {
     private List<ReadingText> readingTexts = new ArrayList();
+    private OnItemClickListener listener;
 
     @NonNull
     @Override
@@ -49,6 +50,24 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
             super(itemView);
             header = itemView.findViewById(R.id.tvItemHeader);
             content = itemView.findViewById(R.id.tvItemContent);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (listener != null && pos != RecyclerView.NO_POSITION){
+                        listener.onItemClick(readingTexts.get(pos));
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(ReadingText readingText);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 }

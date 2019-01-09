@@ -23,6 +23,10 @@ public class ReadingText {
     @ColumnInfo(name = "word_count")
     private int wordCount;
 
+    public ReadingText(){
+
+    }
+
     public ReadingText(String source, String header, String documentType, int difficultyRate, String content, int wordCount) {
         this.source = source;
         this.header = header;

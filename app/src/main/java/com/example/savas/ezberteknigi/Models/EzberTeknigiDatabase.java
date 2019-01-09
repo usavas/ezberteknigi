@@ -65,8 +65,27 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
             wordDao.deleteAllWords();
             readingTextDao.deleteAllReadingTexts();
 
-            readingTextDao.insert(new ReadingText("BBC", "header",  "news", 7, "this is the news content. reading text may be as long as it would", 109));
-            readingTextDao.insert(new ReadingText("Guardian", "header1", "news", 6, "this is the news content. reading text may be as long as it would", 99));
+            String newsContent = "this is the news content. reading text may be as long as it would this is the news content. " +
+                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it wouldthis " +
+                    "is the news content. reading text may be as long as it wouldthis is the news content. reading text may be as " +
+                    "long as it wouldthis is the news content. reading text may be as long as it wouldthis is the news content. " +
+                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it wouldthis " +
+                    "is the news content. reading text may be as long as it wouldthis is the news content. reading text may be as " +
+                    "long as it wouldthis is the news content. reading text may be as long as it wouldthis is the news content. " +
+                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it wouldthis " +
+                    "is the news content. reading text may be as long as it wouldthis is the news content. reading text may be as l" +
+                    "ong as it wouldthis is the news content. reading text may be as long as it wouldthis is the news content. " +
+                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
+                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
+                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
+                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
+                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
+                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
+                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
+                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would";
+
+            readingTextDao.insert(new ReadingText("BBC", "header",  "news", 7, newsContent, 109));
+            readingTextDao.insert(new ReadingText("Guardian", "header1", "news", 6, newsContent, 99));
             readingTextDao.insert(new ReadingText("Tom Sawyer", "header2", "story", 3, "this is the story content. reading text may be as long as it would", 300));
 
             wordDao.insert(new Word("word", "kelime", 1, "this is a word example sentence", new Date(), 1, 0, 0, 0, 0, 0));
