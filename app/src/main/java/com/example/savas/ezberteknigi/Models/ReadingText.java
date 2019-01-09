@@ -2,10 +2,16 @@ package com.example.savas.ezberteknigi.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity(tableName = "reading_text_table")
 public class ReadingText {
+
+    public static int DOCUMENT_TYPE_NEWS = 0;
+    public static int DOCUMENT_TYPE_BOOK = 1;
+    public static int DOCUMENT_TYPE_OTHER = 2;
+
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "reading_text_id")
@@ -15,7 +21,7 @@ public class ReadingText {
     @ColumnInfo(name = "header")
     private String header;
     @ColumnInfo(name = "document_type")
-    private String documentType;
+    private int documentType;
     @ColumnInfo(name = "difficulty_rate")
     private int difficultyRate;
     @ColumnInfo(name = "content")
@@ -23,17 +29,27 @@ public class ReadingText {
     @ColumnInfo(name = "word_count")
     private int wordCount;
 
+    @Ignore
     public ReadingText(){
 
     }
 
-    public ReadingText(String source, String header, String documentType, int difficultyRate, String content, int wordCount) {
+    public ReadingText(String source, String header, int documentType, int difficultyRate, String content) {
         this.source = source;
         this.header = header;
         this.documentType = documentType;
         this.difficultyRate = difficultyRate;
         this.content = content;
-        this.wordCount = wordCount;
+
+        wordCount = this.calculateWordCount(content);
+    }
+
+    private int calculateWordCount(String content){
+        if (content == null || content.isEmpty()) {
+            return 0;
+        }
+        String[] wordsInContent = content.split("\\s+");
+        return wordsInContent.length;
     }
 
     public int getReadingTextId() {
@@ -44,7 +60,7 @@ public class ReadingText {
         return source;
     }
 
-    public String getDocumentType() {
+    public int getDocumentType() {
         return documentType;
     }
 
@@ -72,7 +88,7 @@ public class ReadingText {
         this.source = source;
     }
 
-    public void setDocumentType(String documentType) {
+    public void setDocumentType(int documentType) {
         this.documentType = documentType;
     }
 

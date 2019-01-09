@@ -46,7 +46,7 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
         private TextView header;
         private TextView content;
 
-        public ReadingTextHolder(@NonNull View itemView) {
+        ReadingTextHolder(@NonNull View itemView) {
             super(itemView);
             header = itemView.findViewById(R.id.tvItemHeader);
             content = itemView.findViewById(R.id.tvItemContent);

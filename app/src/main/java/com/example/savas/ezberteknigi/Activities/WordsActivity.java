@@ -18,7 +18,6 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
-import java.util.Date;
 import java.util.List;
 
 public class WordsActivity extends AppCompatActivity {
@@ -86,8 +85,10 @@ public class WordsActivity extends AppCompatActivity {
             String exampleSentence = data.getStringExtra(AddWordActivity.EXTRA_EXAMPLE_SENTENCE);
 
             Word word = new Word(
-                    wordContent, wordTranslation, 0, exampleSentence, new Date(),
-                    0, 0,0,0,0,0);
+                    wordContent,
+                    wordTranslation,
+                    0,
+                    exampleSentence);
             wordViewModel.insert(word);
             Toast.makeText(this, "Kelime eklendi", Toast.LENGTH_SHORT).show();
         }

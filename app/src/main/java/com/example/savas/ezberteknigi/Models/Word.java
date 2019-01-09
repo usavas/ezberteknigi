@@ -2,6 +2,7 @@ package com.example.savas.ezberteknigi.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
@@ -15,6 +16,13 @@ import java.util.Date;
 //                onUpdate = CASCADE)
 )
 public class Word {
+
+    public final static int WORD_LEARNING = 0;
+    public final static int WORD_MASTERED = 1;
+
+    public final static String EXAMPLE_SENTENCE_DELIMITER_REGEX = "##";
+
+    public final static int READING_TEXT_ID_DEFAULT = -1;
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "word_id")
@@ -45,22 +53,52 @@ public class Word {
     @ColumnInfo(name = "details_seen_count")
     private int detailsSeenCount;
 
+    @Ignore
     public Word(){
 
     }
 
-    public Word(String word, String translation, int readingTextId, String exampleSentence, Date dateSaved, int wordState, int revisionPeriodCount, int errorCount, int correctCount, int screeningCount, int detailsSeenCount) {
+    @Ignore
+    public Word(String word,
+                String translation,
+                int readingTextId,
+                String exampleSentence){
         this.word = word;
         this.translation = translation;
         this.readingTextId = readingTextId;
         this.exampleSentence = exampleSentence;
-        this.dateSaved =  dateSaved;
+
+        this.dateSaved =  new Date();
+        this.wordState = 0;
+        this.revisionPeriodCount = 0;
+        this.errorCount = 0;
+        this.correctCount = 0;
+        this.screeningCount = 0;
+        this.detailsSeenCount = 0;
+    }
+
+    public Word(String word,
+                String translation,
+                int readingTextId,
+                String exampleSentence,
+                int wordState,
+                int revisionPeriodCount,
+                int errorCount,
+                int correctCount,
+                int screeningCount,
+                int detailsSeenCount) {
+        this.word = word;
+        this.translation = translation;
+        this.readingTextId = readingTextId;
+        this.exampleSentence = exampleSentence;
         this.wordState = wordState;
         this.revisionPeriodCount = revisionPeriodCount;
         this.errorCount = errorCount;
         this.correctCount = correctCount;
         this.screeningCount = screeningCount;
         this.detailsSeenCount = detailsSeenCount;
+
+        this.dateSaved =  new Date();
     }
 
     public int getWordId() {

@@ -14,7 +14,7 @@ import com.example.savas.ezberteknigi.DAO.WordDao;
 
 import java.util.Date;
 
-@Database(entities = {ReadingText.class, Word.class}, version = 5)
+@Database(entities = {ReadingText.class, Word.class}, version = 6)
 public abstract class EzberTeknigiDatabase extends RoomDatabase {
 
     private static EzberTeknigiDatabase instance;
@@ -84,18 +84,18 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
                     "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
                     "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would";
 
-            readingTextDao.insert(new ReadingText("BBC", "header",  "news", 7, newsContent, 109));
-            readingTextDao.insert(new ReadingText("Guardian", "header1", "news", 6, newsContent, 99));
-            readingTextDao.insert(new ReadingText("Tom Sawyer", "header2", "story", 3, "this is the story content. reading text may be as long as it would", 300));
+            readingTextDao.insert(new ReadingText("BBC", "header", ReadingText.DOCUMENT_TYPE_NEWS, 7, newsContent));
+            readingTextDao.insert(new ReadingText("Guardian", "header1", ReadingText.DOCUMENT_TYPE_NEWS, 6, newsContent));
+            readingTextDao.insert(new ReadingText("Tom Sawyer", "header2", ReadingText.DOCUMENT_TYPE_BOOK, 3, "this is the story content. reading text may be as long as it would"));
 
-            wordDao.insert(new Word("word", "kelime", 1, "this is a word example sentence", new Date(), 1, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("book", "kitap", 1, "this is a book example sentence", new Date(), 1, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("music", "müzik", 2, "this is a music example sentence", new Date(), 1, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("art", "sanat", 2, "this is an art example sentence", new Date(), 1, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("ballet", "bale", 2, "this is a ballet example sentence", new Date(), 1, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("theatre", "tiyatro", 2, "this is a theatre example sentence", new Date(), 1, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("nay", "ney", 2, "this is a nay example sentence", new Date(), 1, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("violin", "keman", 3, "this is a violin example sentence", new Date(), 1, 0, 0, 0, 0, 0));
+            wordDao.insert(new Word("word", "kelime", 1, "this is a word example sentence"));
+            wordDao.insert(new Word("book", "kitap", 1, "this is a book example sentence",1, 0, 0, 0, 0, 0));
+            wordDao.insert(new Word("music", "müzik", 2, "this is a music example sentence", 1, 0, 0, 0, 0, 0));
+            wordDao.insert(new Word("art", "sanat", 2, "this is an art example sentence", 1, 0, 0, 0, 0, 0));
+            wordDao.insert(new Word("ballet", "bale", 2, "this is a ballet example sentence", 1, 0, 0, 0, 0, 0));
+            wordDao.insert(new Word("theatre", "tiyatro", 2, "this is a theatre example sentence", 1, 0, 0, 0, 0, 0));
+            wordDao.insert(new Word("nay", "ney", 2, "this is a nay example sentence", 1, 0, 0, 0, 0, 0));
+            wordDao.insert(new Word("violin", "keman", 3, "this is a violin example sentence", 1, 0, 0, 0, 0, 0));
 
             return null;
         }
