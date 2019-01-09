@@ -24,6 +24,11 @@ import java.util.List;
 public class WordsActivity extends AppCompatActivity {
     public static final int ADD_WORD_REQUEST = 1;
 
+    public static final String EXTRA_WORD_WORD = "EXTRA_WORD_WORD";
+    public static final String EXTRA_WORD_TRANSLATION = "EXTRA_TRANSLATION";
+    public static final String EXTRA_WORD_EXAMPLE_SENTENCE = "EXTRA_EXAMPLE_SENTENCE";
+
+
     WordViewModel wordViewModel;
     private TextView tvItemCount;
 
@@ -58,6 +63,17 @@ public class WordsActivity extends AppCompatActivity {
                 tvItemCount.setText(String.valueOf(words.size() + " words listed"));
             }
         });
+
+        wordAdapter.setOnItemClickListener(new WordAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Word word) {
+                Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
+                intent.putExtra(EXTRA_WORD_WORD, word.getWord());
+                intent.putExtra(EXTRA_WORD_TRANSLATION, word.getTranslation());
+                intent.putExtra(EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -66,8 +82,8 @@ public class WordsActivity extends AppCompatActivity {
 
         if (requestCode == ADD_WORD_REQUEST && resultCode == RESULT_OK){
             String wordContent = data.getStringExtra(AddWordActivity.EXTRA_WORD);
-            String wordTranslation = data.getStringExtra(AddWordActivity.EXTRA_WORD_TRANSLATION);
-            String exampleSentence = data.getStringExtra(AddWordActivity.EXTRA_WORD_EXAMPLE_SENTENCE);
+            String wordTranslation = data.getStringExtra(AddWordActivity.EXTRA_TRANSLATION);
+            String exampleSentence = data.getStringExtra(AddWordActivity.EXTRA_EXAMPLE_SENTENCE);
 
             Word word = new Word(
                     wordContent, wordTranslation, 0, exampleSentence, new Date(),

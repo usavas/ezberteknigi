@@ -9,4 +9,6 @@
     <dimen name="buttonTextSize">20sp</dimen>
     <dimen name="buttonPadding">10dp</dimen>
 
+    <dimen name="textViewStandardTextSize">20sp</dimen>
+
 </resources>

@@ -45,6 +45,10 @@ public class Word {
     @ColumnInfo(name = "details_seen_count")
     private int detailsSeenCount;
 
+    public Word(){
+
+    }
+
     public Word(String word, String translation, int readingTextId, String exampleSentence, Date dateSaved, int wordState, int revisionPeriodCount, int errorCount, int correctCount, int screeningCount, int detailsSeenCount) {
         this.word = word;
         this.translation = translation;

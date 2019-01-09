@@ -25,7 +25,8 @@
         <activity android:name=".Activities.AddWordActivity" />
         <activity android:name=".Activities.WordAlternativeTranslationsActivity" />
         <activity android:name=".Activities.TranslationActivity" />
-        <activity android:name=".Activities.WordActivitySample"></activity>
+        <activity android:name=".Activities.WordActivitySample" />
+        <activity android:name=".Activities.WordDetailActivity"></activity>
     </application>
 
 </manifest>

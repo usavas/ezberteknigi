@@ -15,6 +15,7 @@ import java.util.List;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     private List<Word> words = new ArrayList<>();
+    private OnItemClickListener listener;
 
     class WordHolder extends RecyclerView.ViewHolder{
         private TextView word;
@@ -22,6 +23,16 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         public WordHolder(@NonNull View itemView) {
             super(itemView);
             word = itemView.findViewById(R.id.tvItemWord);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (listener != null && pos != RecyclerView.NO_POSITION){
+                        listener.onItemClick(words.get(pos));
+                    }
+                }
+            });
         }
     }
 
@@ -48,6 +59,18 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         this.words = words;
         notifyDataSetChanged();
     }
+
+    public interface OnItemClickListener{
+        void onItemClick(Word word);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
+
+
+
+
 
 
 

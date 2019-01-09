@@ -1,6 +1,5 @@
 package com.example.savas.ezberteknigi.Activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +16,8 @@ public class AddWordActivity extends AppCompatActivity {
     public static final int GET_TRANSLATIONS_CODE = 3;
 
     public static final String EXTRA_WORD = "com.example.savas.ezberteknigi.EXTRA_WORD";
-    public static final String EXTRA_WORD_TRANSLATION = "com.example.savas.ezberteknigi.EXTRA_WORD_TRANSLATION";
-    public static final String EXTRA_WORD_EXAMPLE_SENTENCE = "com.example.savas.ezberteknigi.EXTRA_WORD_EXAMPLE_SENTENCE";
+    public static final String EXTRA_TRANSLATION = "com.example.savas.ezberteknigi.EXTRA_TRANSLATION";
+    public static final String EXTRA_EXAMPLE_SENTENCE = "com.example.savas.ezberteknigi.EXTRA_EXAMPLE_SENTENCE";
 
     public static final String EXTRA_WORD_TO_GET_TRANSLATION = "com.example.savas.ezberteknigi.EXTRA_WORD_TO_GET_TRANSLATION";
 
@@ -70,8 +69,8 @@ public class AddWordActivity extends AppCompatActivity {
 
         Intent data = new Intent();
         data.putExtra(EXTRA_WORD, word);
-        data.putExtra(EXTRA_WORD_TRANSLATION, wordTranslation);
-        data.putExtra(EXTRA_WORD_EXAMPLE_SENTENCE, exampleSentence);
+        data.putExtra(EXTRA_TRANSLATION, wordTranslation);
+        data.putExtra(EXTRA_EXAMPLE_SENTENCE, exampleSentence);
 
         setResult(RESULT_OK, data);
         finish();
