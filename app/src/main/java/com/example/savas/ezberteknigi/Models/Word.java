@@ -7,6 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Entity(tableName = "word_table"
 //        ,foreignKeys = @ForeignKey(
@@ -99,6 +100,27 @@ public class Word {
         this.detailsSeenCount = detailsSeenCount;
 
         this.dateSaved =  new Date();
+    }
+
+    @Ignore
+    public long getTimeElapsedInMinutes () {
+        return getDateDiff(getDateSaved(), new Date(), TimeUnit.MINUTES);
+    }
+
+    @Ignore
+    public long getTimeElapsedInHours () {
+        return getDateDiff(getDateSaved(), new Date(), TimeUnit.HOURS);
+    }
+
+    @Ignore
+    public long getTimeElapsedInDays () {
+        return getDateDiff(getDateSaved(), new Date(), TimeUnit.DAYS);
+    }
+
+    @Ignore
+    private static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+        long diffInMilliSeconds = date2.getTime() - date1.getTime();
+        return timeUnit.convert(diffInMilliSeconds, TimeUnit.MILLISECONDS);
     }
 
     public int getWordId() {

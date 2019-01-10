@@ -27,7 +27,6 @@ public class WordsActivity extends AppCompatActivity {
     public static final String EXTRA_WORD_TRANSLATION = "EXTRA_TRANSLATION";
     public static final String EXTRA_WORD_EXAMPLE_SENTENCE = "EXTRA_EXAMPLE_SENTENCE";
 
-
     WordViewModel wordViewModel;
     private TextView tvItemCount;
 
@@ -37,12 +36,9 @@ public class WordsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_words);
 
         FloatingActionButton buttonAddNote = findViewById(R.id.button_add_word);
-        buttonAddNote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WordsActivity.this, AddWordActivity.class);
-                startActivityForResult(intent, ADD_WORD_REQUEST);
-            }
+        buttonAddNote.setOnClickListener(v -> {
+            Intent intent = new Intent(WordsActivity.this, AddWordActivity.class);
+            startActivityForResult(intent, ADD_WORD_REQUEST);
         });
 
         tvItemCount = findViewById(R.id.tvItemCount);
@@ -55,23 +51,17 @@ public class WordsActivity extends AppCompatActivity {
         recyclerView.setAdapter(wordAdapter);
 
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
-        wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
-            @Override
-            public void onChanged(@Nullable List<Word> words) {
-                wordAdapter.setWords(words);
-                tvItemCount.setText(String.valueOf(words.size() + " words listed"));
-            }
+        wordViewModel.getAllWords().observe(this, words -> {
+            wordAdapter.setWords(words);
+            tvItemCount.setText(String.valueOf(words.size() + " words listed"));
         });
 
-        wordAdapter.setOnItemClickListener(new WordAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Word word) {
-                Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
-                intent.putExtra(EXTRA_WORD_WORD, word.getWord());
-                intent.putExtra(EXTRA_WORD_TRANSLATION, word.getTranslation());
-                intent.putExtra(EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
-                startActivity(intent);
-            }
+        wordAdapter.setOnItemClickListener(word -> {
+            Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
+            intent.putExtra(EXTRA_WORD_WORD, word.getWord());
+            intent.putExtra(EXTRA_WORD_TRANSLATION, word.getTranslation());
+            intent.putExtra(EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
+            startActivity(intent);
         });
     }
 

@@ -35,21 +35,13 @@ public class ReadingTextsActivity extends AppCompatActivity {
         recyclerView.setAdapter(readingTextAdapter);
 
         readingTextViewModel = ViewModelProviders.of(this).get(ReadingTextViewModel.class);
-        readingTextViewModel.getAllReadingTexts().observe(this, new Observer<List<ReadingText>>() {
-            @Override
-            public void onChanged(@Nullable List<ReadingText> readingTexts) {
-                readingTextAdapter.setReadingTexts(readingTexts);
-            }
-        });
+        readingTextViewModel.getAllReadingTexts().observe(this, readingTexts -> readingTextAdapter.setReadingTexts(readingTexts));
 
-        readingTextAdapter.setOnItemClickListener(new ReadingTextAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(ReadingText readingText) {
-                Intent intent = new Intent(getApplicationContext(), ReadingTextDetailActivity.class);
-                intent.putExtra(EXTRA_READING_TEXT_DETAIL_HEADER, readingText.getHeader());
-                intent.putExtra(EXTRA_READING_TEXT_DETAIL_CONTENT, readingText.getContent());
-                startActivity(intent);
-            }
+        readingTextAdapter.setOnItemClickListener(readingText -> {
+            Intent intent = new Intent(getApplicationContext(), ReadingTextDetailActivity.class);
+            intent.putExtra(EXTRA_READING_TEXT_DETAIL_HEADER, readingText.getHeader());
+            intent.putExtra(EXTRA_READING_TEXT_DETAIL_CONTENT, readingText.getContent());
+            startActivity(intent);
         });
     }
 }
