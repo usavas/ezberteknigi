@@ -35,18 +35,55 @@ import java.util.concurrent.ExecutionException;
 public class TranslationActivity extends AppCompatActivity {
 
     public static String EXTRA_TRANSLATION_RESULT = "EXTRA_TRANSLATION_RESULT";
+    final List<String> arrResultOfTranslation = new ArrayList<>();
+    final TranslationAdapter adapter = new TranslationAdapter();
+
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_translation);
 
-        final List<String> arrResultOfTranslation = new ArrayList<>();
-        final TranslationAdapter adapter = new TranslationAdapter();
-
-        final RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
+
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Button btnReturn = findViewById(R.id.button_return);
+        btnReturn.setOnClickListener(v -> {
+            String resultOfTranslations = "";
+            for (int i = 0; i < arrResultOfTranslation.size(); i++){
+                resultOfTranslations += arrResultOfTranslation.get(i) + ", ";
+            }
+
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_TRANSLATION_RESULT, removeLastChar(resultOfTranslations.trim()));
+            setResult(RESULT_OK, intent);
+            finish();
+        });
+
+        adapter.setOnItemClickListener((v, translation) -> {
+            if (arrResultOfTranslation.contains(translation)){
+                arrResultOfTranslation.remove(translation);
+                v.getBackground().setColorFilter(Color.parseColor("#00FF00"), PorterDuff.Mode.DARKEN);
+            }
+            else {
+                arrResultOfTranslation.add(translation);
+                v.getBackground().setColorFilter(Color.parseColor("#0000FF"), PorterDuff.Mode.DARKEN);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         Intent intent = getIntent();
         String wordToSearch = intent.getStringExtra(AddWordActivity.EXTRA_WORD_TO_GET_TRANSLATION);
@@ -59,37 +96,6 @@ public class TranslationActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        recyclerView.setAdapter(adapter);
-
-        Button btnReturn = findViewById(R.id.button_return);
-        btnReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String resultOfTranslations = "";
-                for (int i = 0; i < arrResultOfTranslation.size(); i++){
-                    resultOfTranslations += arrResultOfTranslation.get(i) + ", ";
-                }
-
-                Intent intent = new Intent();
-                intent.putExtra(EXTRA_TRANSLATION_RESULT, removeLastChar(resultOfTranslations.trim()));
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
-
-        adapter.setOnItemClickListener(new TranslationAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, String translation) {
-                if (arrResultOfTranslation.contains(translation)){
-                    arrResultOfTranslation.remove(translation);
-                    v.getBackground().setColorFilter(Color.parseColor("#00FF00"), PorterDuff.Mode.DARKEN);
-                }
-                else {
-                    arrResultOfTranslation.add(translation);
-                    v.getBackground().setColorFilter(Color.parseColor("#0000FF"), PorterDuff.Mode.DARKEN);
-                }
-            }
-        });
     }
 
     @NonNull
