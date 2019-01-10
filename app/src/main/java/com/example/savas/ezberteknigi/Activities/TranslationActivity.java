@@ -69,14 +69,14 @@ public class TranslationActivity extends AppCompatActivity {
             finish();
         });
 
-        adapter.setOnItemClickListener((v, translation) -> {
+        adapter.setOnItemClickListener((v, translation, view) -> {
             if (arrResultOfTranslation.contains(translation)){
                 arrResultOfTranslation.remove(translation);
-                v.getBackground().setColorFilter(Color.parseColor("#00FF00"), PorterDuff.Mode.DARKEN);
+                view.setBackgroundColor(getResources().getColor(R.color.moduleColor));
             }
             else {
+                view.setBackgroundColor(Color.YELLOW);
                 arrResultOfTranslation.add(translation);
-                v.getBackground().setColorFilter(Color.parseColor("#0000FF"), PorterDuff.Mode.DARKEN);
             }
         });
     }

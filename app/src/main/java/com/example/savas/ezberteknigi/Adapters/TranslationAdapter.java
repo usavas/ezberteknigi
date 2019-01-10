@@ -1,10 +1,14 @@
 package com.example.savas.ezberteknigi.Adapters;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.savas.ezberteknigi.R;
@@ -48,20 +52,19 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
             super(itemView);
             tvTranslation = itemView.findViewById(R.id.text_view_translation);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (listener != null && position != RecyclerView.NO_POSITION){
-                        listener.onItemClick(v, translations.get(position));
-                    }
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION){
+                    listener.onItemClick(v, translations.get(position), itemView);
+
+//                    itemView.setBackgroundColor(Color.YELLOW);
                 }
             });
         }
     }
 
     public interface OnItemClickListener{
-        void onItemClick(View view, String string);
+        void onItemClick(View view, String string, View itemView);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
