@@ -89,10 +89,10 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
             readingTextDao.insert(new ReadingText("Tom Sawyer", "header2", ReadingText.DOCUMENT_TYPE_BOOK, 3, "this is the story content. reading text may be as long as it would"));
 
             wordDao.insert(new Word("word", "kelime", 1, "this is a word example sentence"));
-            wordDao.insert(new Word("book", "kitap", 1, "this is a book example sentence",1, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("music", "müzik", 2, "this is a music example sentence", 1, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("art", "sanat", 2, "this is an art example sentence", 1, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("ballet", "bale", 2, "this is a ballet example sentence", 1, 0, 0, 0, 0, 0));
+            wordDao.insert(new Word("book", "kitap", 1, "this is a book example sentence",0, 0, 0, 0, 0, 0));
+            wordDao.insert(new Word("music", "müzik", 2, "this is a music example sentence", 0, 0, 0, 0, 0, 0));
+            wordDao.insert(new Word("art", "sanat", 2, "this is an art example sentence", 0, 0, 0, 0, 0, 0));
+            wordDao.insert(new Word("ballet", "bale", 2, "this is a ballet example sentence", 0, 0, 0, 0, 0, 0));
             wordDao.insert(new Word("theatre", "tiyatro", 2, "this is a theatre example sentence", 1, 0, 0, 0, 0, 0));
             wordDao.insert(new Word("nay", "ney", 2, "this is a nay example sentence", 1, 0, 0, 0, 0, 0));
             wordDao.insert(new Word("violin", "keman", 3, "this is a violin example sentence", 1, 0, 0, 0, 0, 0));

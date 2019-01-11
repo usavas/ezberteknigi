@@ -17,11 +17,16 @@ public class WordViewModel extends AndroidViewModel {
 
     private WordRepository repository;
     private LiveData<List<Word>> allWords;
+    private LiveData<List<Word>> allWordsLearning;
+    private LiveData<List<Word>> allWordsMastered;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public WordViewModel(@NonNull Application application) {
         super(application);
         repository = new WordRepository(application);
         allWords = repository.getAllWords();
+        allWordsLearning = repository.getAllWordsBasedOnState(Word.WORD_LEARNING);
+        allWordsMastered = repository.getAllWordsBasedOnState(Word.WORD_MASTERED);
     }
 
     public void insert(Word word){
@@ -39,4 +44,17 @@ public class WordViewModel extends AndroidViewModel {
     public LiveData<List<Word>> getAllWords(){
         return allWords;
     }
+
+    public LiveData<List<Word>> getAllWordsBasedOnState(int wordState) {
+        if (wordState == Word.WORD_LEARNING){
+            return allWordsLearning;
+        }
+        else if (wordState == Word.WORD_MASTERED){
+            return allWordsMastered;
+        }
+        else {
+            return  null;
+        }
+    }
+
 }

@@ -30,6 +30,9 @@ public interface WordDao extends BaseDao {
     @Query("SELECT * FROM word_table")
     LiveData<List<Word>> getAllWords();
 
+    @Query("SELECT * FROM word_table WHERE word_state = :wordState")
+    LiveData<List<Word>> getWordsByWordState(int wordState);
+
     @Query("SELECT word_id, word, translation, reading_text_id, example_sentence, date_saved, word_state FROM word_table")
     List<WordMinimal> getAllWordsMinimal();
 }

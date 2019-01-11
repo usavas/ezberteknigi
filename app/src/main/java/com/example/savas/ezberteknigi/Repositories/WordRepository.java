@@ -3,8 +3,13 @@ package com.example.savas.ezberteknigi.Repositories;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.strictmode.WebViewMethodCalledOnWrongThreadViolation;
+import android.support.annotation.RequiresApi;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 import com.example.savas.ezberteknigi.DAO.WordDao;
 import com.example.savas.ezberteknigi.Models.EzberTeknigiDatabase;
@@ -15,14 +20,19 @@ import com.example.savas.ezberteknigi.Models.WordMinimal;
 public class WordRepository {
     private WordDao wordDao;
     private LiveData<List<Word>> allWords;
-    private List<WordMinimal> wordsMinial;
+    private LiveData<List<Word>> allWordsLearning;
+    private LiveData<List<Word>> allWordsMastered;
+    private List<WordMinimal> wordsMinimal;
 
     public WordRepository(Application application) {
         EzberTeknigiDatabase ezberTeknigiDatabase = EzberTeknigiDatabase.getInstance(application);
         wordDao = ezberTeknigiDatabase.wordDao();
         allWords = wordDao.getAllWords();
+        allWordsLearning = wordDao.getWordsByWordState(Word.WORD_LEARNING);
+        allWordsMastered = wordDao.getWordsByWordState(Word.WORD_MASTERED);
+
         try {
-            wordsMinial = getWordsMinimal();
+            wordsMinimal = getWordsMinimal();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -32,6 +42,16 @@ public class WordRepository {
 
     public LiveData<List<Word>> getAllWords(){
         return allWords;
+    }
+
+    public LiveData<List<Word>> getAllWordsBasedOnState(int wordState){
+        if (wordState == Word.WORD_LEARNING) {
+            return allWordsLearning;
+        } else if (wordState == Word.WORD_MASTERED){
+            return allWordsMastered;
+        } else {
+            return null;
+        }
     }
 
     public List<WordMinimal> getWordsMinimal() throws ExecutionException, InterruptedException {

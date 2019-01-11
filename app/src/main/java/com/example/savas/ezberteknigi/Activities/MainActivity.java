@@ -46,13 +46,14 @@ public class MainActivity extends AppCompatActivity {
         btnDeneme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.w("OPEN ACTIVITY", "method called");
                 OpenActivity();
             }
         });
     }
 
     private void OpenActivity(){
-        Intent intent = new Intent(this.getApplicationContext(), WordActivitySample.class);
+        Intent intent = new Intent(this.getApplicationContext(), WordActivity2.class);
         startActivity(intent);
     }
 
