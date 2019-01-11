@@ -64,66 +64,72 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setWordsRevision(List<Word> words){
+    public void setWordsRevision(List<Word> _words){
         List<Word> resultWords;
 
-        resultWords = words.stream()
+        resultWords = _words.stream()
                 .filter(w-> w.getRevisionPeriodCount() == 0 && w.getTimeElapsedInMinutes() >= 30)
                 .collect(Collectors.toList());
         if (resultWords.size() > 0) {
             this.words = resultWords;
+            notifyDataSetChanged();
             return;
         }
 
-        resultWords = words.stream()
+        resultWords = _words.stream()
                 .filter(w-> w.getRevisionPeriodCount() == 1 && w.getTimeElapsedInHours() >= 1)
                 .collect(Collectors.toList());
         if (resultWords.size() > 0) {
             this.words = resultWords;
+            notifyDataSetChanged();
             return;
         }
 
-        resultWords = words.stream()
+        resultWords = _words.stream()
                 .filter(w-> w.getRevisionPeriodCount() == 2 && w.getTimeElapsedInHours() >= 2)
                 .collect(Collectors.toList());
         if (resultWords.size() > 0) {
             this.words = resultWords;
+            notifyDataSetChanged();
             return;
         }
 
-        resultWords = words.stream()
+        resultWords = _words.stream()
                 .filter(w-> w.getRevisionPeriodCount() == 3 && w.getTimeElapsedInHours() >= 6)
                 .collect(Collectors.toList());
         if (resultWords.size() > 0) {
             this.words = resultWords;
+            notifyDataSetChanged();
             return;
         }
 
-        resultWords = words.stream()
+        resultWords = _words.stream()
                 .filter(w-> w.getRevisionPeriodCount() == 4 && w.getTimeElapsedInHours() >= 12)
                 .collect(Collectors.toList());
         if (resultWords.size() > 0) {
             this.words = resultWords;
+            notifyDataSetChanged();
             return;
         }
 
-        resultWords = words.stream()
+        resultWords = _words.stream()
                 .filter(w-> w.getRevisionPeriodCount() == 5 && w.getTimeElapsedInHours() >= 24)
                 .collect(Collectors.toList());
         if (resultWords.size() > 0) {
             this.words = resultWords;
+            notifyDataSetChanged();
             return;
         }
 
-        resultWords = words.stream()
+        resultWords = _words.stream()
                 .filter(w-> w.getRevisionPeriodCount() == 6 && w.getTimeElapsedInDays() >= 7)
                 .collect(Collectors.toList());
         if (resultWords.size() > 0) {
             this.words = resultWords;
+            notifyDataSetChanged();
             return;
         }
 
-        notifyDataSetChanged();
     }
 
     public interface OnItemClickListener{

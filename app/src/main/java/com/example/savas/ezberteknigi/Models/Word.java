@@ -120,8 +120,9 @@ public class Word {
 
     @Ignore
     private static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
-        long diffInMilliSeconds = date2.getTime() - date1.getTime();
-        return timeUnit.convert(diffInMilliSeconds, TimeUnit.MILLISECONDS);
+        return 35;
+//        long diffInMilliSeconds = date2.getTime() - date1.getTime();
+//        return timeUnit.convert(diffInMilliSeconds, TimeUnit.MILLISECONDS);
     }
 
     public int getWordId() {
