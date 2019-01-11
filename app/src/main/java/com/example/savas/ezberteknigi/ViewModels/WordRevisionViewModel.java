@@ -17,12 +17,10 @@ import java.util.stream.Collectors;
 public class WordRevisionViewModel extends AndroidViewModel {
 
     private WordRepository repository;
-    private LiveData<List<Word>> allWords;
 
     public WordRevisionViewModel(@NonNull Application application) {
         super(application);
         repository = new WordRepository(application);
-        allWords = repository.getAllWords();
     }
 
     public void update(Word word){ repository.update(word); }
@@ -34,7 +32,7 @@ public class WordRevisionViewModel extends AndroidViewModel {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public LiveData<List<Word>> getNextSeriesForRevision(){
 
-        List<Word> words = allWords.getValue();
+        List<Word> words = new ArrayList<>();
         List<Word> resultWords;
 
         resultWords = words.stream()
