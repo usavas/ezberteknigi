@@ -20,11 +20,11 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 
 public class WordActivity2 extends AppCompatActivity
-        implements WordLearningFragment.OnFragmentInteractionListener,
-        WordMasteredFragment.OnFragmentInteractionListener {
+        implements WordLearningFragment.OnFragmentInteractionListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -95,12 +95,10 @@ public class WordActivity2 extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 0){
-                return WordLearningFragment.newInstance("PARAM_1", "PARAM_2");
+                return WordLearningFragment.newInstance(Word.WORD_LEARNING);
             } else if (position == 1){
-                return WordMasteredFragment.newInstance("PARAM_1", "PARAM_2");
+                return WordLearningFragment.newInstance(Word.WORD_MASTERED);
             }
             return null;
         }

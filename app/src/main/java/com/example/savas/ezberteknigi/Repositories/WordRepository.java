@@ -9,7 +9,6 @@ import android.support.annotation.RequiresApi;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 import com.example.savas.ezberteknigi.DAO.WordDao;
 import com.example.savas.ezberteknigi.Models.EzberTeknigiDatabase;
@@ -83,6 +82,10 @@ public class WordRepository {
         new DeleteWordAsyncTask(wordDao).execute(word);
     }
 
+    public Word getWordById(int id) throws ExecutionException, InterruptedException {
+        return new GetWordByIdAasyncTask(wordDao).execute(id).get();
+    }
+
     private static class InsertWordAsyncTask extends AsyncTask<Word, Void, Void> {
         private WordDao wordDao;
 
@@ -122,6 +125,19 @@ public class WordRepository {
         protected Void doInBackground(Word... words) {
             wordDao.delete(words[0]);
             return null;
+        }
+    }
+
+    private static class GetWordByIdAasyncTask extends AsyncTask<Integer, Void, Word>{
+        private WordDao wordDao;
+
+        private GetWordByIdAasyncTask(WordDao wordDao) {
+            this.wordDao = wordDao;
+        }
+
+        @Override
+        protected Word doInBackground(Integer... ints){
+            return wordDao.getWordById(ints[0]);
         }
     }
 }

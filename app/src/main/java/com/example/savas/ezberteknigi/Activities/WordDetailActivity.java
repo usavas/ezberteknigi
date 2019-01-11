@@ -1,13 +1,17 @@
 package com.example.savas.ezberteknigi.Activities;
 
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
+import com.example.savas.ezberteknigi.Repositories.WordRepository;
+
+import java.util.concurrent.ExecutionException;
 
 public class WordDetailActivity extends AppCompatActivity {
     public static Word word;
@@ -21,11 +25,33 @@ public class WordDetailActivity extends AppCompatActivity {
     }
 
     private void populateWordContent() {
-        word = new Word();
-        Intent intent = getIntent();
-        word.setWord(intent.getStringExtra(WordsActivity.EXTRA_WORD_WORD));
-        word.setTranslation(intent.getStringExtra(WordsActivity.EXTRA_WORD_TRANSLATION));
-        word.setExampleSentence(intent.getStringExtra(WordsActivity.EXTRA_WORD_EXAMPLE_SENTENCE));
+
+        Button btnSetWordState = findViewById(R.id.button_set_mastered_or_learning);
+
+        WordRepository repo = new WordRepository(getApplication());
+        try {
+            word = repo.getWordById(getIntent().getIntExtra((WordsActivity.EXTRA_WORD_ID), 0));
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (word.getWordState() == Word.WORD_LEARNING){
+            btnSetWordState.setText("MARK AS MASTERED");
+        } else if (word.getWordState() == Word.WORD_MASTERED){
+            btnSetWordState.setText("MARK AS LEARNING");
+        }
+
+        btnSetWordState.setOnClickListener(v -> {
+            if (word.getWordState() == Word.WORD_LEARNING){
+                word.setWordState(Word.WORD_MASTERED);
+            }
+            else if (word.getWordState() == Word.WORD_MASTERED){
+                word.setWordState(Word.WORD_LEARNING);
+            }
+            repo.update(word);
+            finish();
+        });
 
         TextView tvWord = findViewById(R.id.text_view_word_word);
         TextView tvTranslation = findViewById(R.id.text_view_word_translation);

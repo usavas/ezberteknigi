@@ -19,6 +19,7 @@ import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 public class WordsActivity extends AppCompatActivity {
     public static final int ADD_WORD_REQUEST = 1;
 
+    public static final String EXTRA_WORD_ID = "EXTRA_WORD_ID";
     public static final String EXTRA_WORD_WORD = "EXTRA_WORD_WORD";
     public static final String EXTRA_WORD_TRANSLATION = "EXTRA_TRANSLATION";
     public static final String EXTRA_WORD_EXAMPLE_SENTENCE = "EXTRA_EXAMPLE_SENTENCE";
@@ -54,6 +55,7 @@ public class WordsActivity extends AppCompatActivity {
 
         wordAdapter.setOnItemClickListener(word -> {
             Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
+            intent.putExtra(EXTRA_WORD_ID, word.getWordId());
             intent.putExtra(EXTRA_WORD_WORD, word.getWord());
             intent.putExtra(EXTRA_WORD_TRANSLATION, word.getTranslation());
             intent.putExtra(EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());

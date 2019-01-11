@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi.Activities;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -28,22 +29,14 @@ import static android.app.Activity.RESULT_OK;
 public class WordLearningFragment extends Fragment {
 
     public static final int ADD_WORD_REQUEST = 1;
-
-    public static final String EXTRA_WORD_WORD = "EXTRA_WORD_WORD";
-    public static final String EXTRA_WORD_TRANSLATION = "EXTRA_TRANSLATION";
-    public static final String EXTRA_WORD_EXAMPLE_SENTENCE = "EXTRA_EXAMPLE_SENTENCE";
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String WORD_LEARNING_MASTERED = "param1";
 
     TextView tvItemCount;
     WordViewModel wordViewModel;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int mParam1;
 
     private OnFragmentInteractionListener mListener;
 
@@ -56,15 +49,13 @@ public class WordLearningFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment WordLearningFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WordLearningFragment newInstance(String param1, String param2) {
+    public static WordLearningFragment newInstance(int param1) {
         WordLearningFragment fragment = new WordLearningFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(WORD_LEARNING_MASTERED, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,9 +64,61 @@ public class WordLearningFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getInt(WORD_LEARNING_MASTERED);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        final View view = inflater.inflate(R.layout.fragment_word_learning, container, false);
+
+        FloatingActionButton buttonAddNote = view.findViewById(R.id.fab_add_word_learning);;
+        if (mParam1 == Word.WORD_LEARNING){
+            buttonAddNote.setOnClickListener(v -> {
+                Intent intent = new Intent(getContext(), AddWordActivity.class);
+                startActivityForResult(intent, ADD_WORD_REQUEST);
+            });
+        } else {
+
+        }
+
+        tvItemCount = view.findViewById(R.id.text_view_item_count_learning);
+
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_word_learning);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+
+        final WordAdapter wordAdapter = new WordAdapter();
+        recyclerView.setAdapter(wordAdapter);
+
+        wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
+
+        if (mParam1 == Word.WORD_LEARNING){
+            wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, words -> {
+                wordAdapter.setWords(words);
+                tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+            });
+        }
+        else if (mParam1 == Word.WORD_MASTERED){
+            wordViewModel.getAllWordsBasedOnState(Word.WORD_MASTERED).observe(this, words -> {
+                wordAdapter.setWords(words);
+                tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+            });
+        }
+
+        wordAdapter.setOnItemClickListener(word -> {
+            Intent intent = new Intent(getContext(), WordDetailActivity.class);
+            intent.putExtra(WordsActivity.EXTRA_WORD_ID, word.getWordId());
+            intent.putExtra(WordsActivity.EXTRA_WORD_WORD, word.getWord());
+            intent.putExtra(WordsActivity.EXTRA_WORD_TRANSLATION, word.getTranslation());
+            intent.putExtra(WordsActivity.EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
+            startActivity(intent);
+        });
+
+        return view;
     }
 
     @Override
@@ -98,45 +141,6 @@ public class WordLearningFragment extends Fragment {
         else {
             Toast.makeText(getActivity(), "Kelime eklenmedi", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_word_learning, container, false);
-
-        FloatingActionButton buttonAddNote = view.findViewById(R.id.fab_add_word_learning);
-        buttonAddNote.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), AddWordActivity.class);
-            startActivityForResult(intent, ADD_WORD_REQUEST);
-        });
-
-        tvItemCount = view.findViewById(R.id.text_view_item_count_learning);
-
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_word_learning);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
-
-        final WordAdapter wordAdapter = new WordAdapter();
-        recyclerView.setAdapter(wordAdapter);
-
-        wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
-        wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, words -> {
-            wordAdapter.setWords(words);
-            tvItemCount.setText(String.valueOf(words.size() + " words listed"));
-        });
-
-        wordAdapter.setOnItemClickListener(word -> {
-            Intent intent = new Intent(getActivity().getApplicationContext(), WordDetailActivity.class);
-            intent.putExtra(EXTRA_WORD_WORD, word.getWord());
-            intent.putExtra(EXTRA_WORD_TRANSLATION, word.getTranslation());
-            intent.putExtra(EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
-            startActivity(intent);
-        });
-
-        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
