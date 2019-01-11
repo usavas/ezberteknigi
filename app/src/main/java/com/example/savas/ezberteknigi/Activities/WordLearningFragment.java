@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.savas.ezberteknigi.Adapters.WordAdapter;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
+import com.example.savas.ezberteknigi.ViewModels.WordRevisionViewModel;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
 import static android.app.Activity.RESULT_OK;
@@ -35,6 +36,7 @@ public class WordLearningFragment extends Fragment {
 
     TextView tvItemCount;
     WordViewModel wordViewModel;
+    WordRevisionViewModel wordRevisionViewModel;
 
     private int mParam1;
 
@@ -96,17 +98,19 @@ public class WordLearningFragment extends Fragment {
 
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
 
-        if (mParam1 == Word.WORD_LEARNING){
+        if (mParam1 == Word.WORD_LEARNING) {
             wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, words -> {
                 wordAdapter.setWords(words);
                 tvItemCount.setText(String.valueOf(words.size() + " words listed"));
             });
-        }
-        else if (mParam1 == Word.WORD_MASTERED){
+        } else if (mParam1 == Word.WORD_MASTERED) {
             wordViewModel.getAllWordsBasedOnState(Word.WORD_MASTERED).observe(this, words -> {
                 wordAdapter.setWords(words);
                 tvItemCount.setText(String.valueOf(words.size() + " words listed"));
             });
+        } else if(mParam1 == Word.WORD_REVISION){
+            wordRevisionViewModel = ViewModelProviders.of(this).get(WordRevisionViewModel.class);
+
         }
 
         wordAdapter.setOnItemClickListener(word -> {

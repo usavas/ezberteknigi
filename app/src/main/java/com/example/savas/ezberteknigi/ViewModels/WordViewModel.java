@@ -11,7 +11,6 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class WordViewModel extends AndroidViewModel {
 

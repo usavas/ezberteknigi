@@ -20,6 +20,7 @@ public class Word {
 
     public final static int WORD_LEARNING = 0;
     public final static int WORD_MASTERED = 1;
+    public final static int WORD_REVISION = 2;
 
     public final static String EXAMPLE_SENTENCE_DELIMITER_REGEX = "##";
 

@@ -32,7 +32,7 @@ public class WordRevisionViewModel extends AndroidViewModel {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public LiveData<List<Word>> fetchNextSeriesForRevision(){
+    public LiveData<List<Word>> getNextSeriesForRevision(){
 
         List<Word> words = allWords.getValue();
         List<Word> resultWords;

@@ -21,41 +21,37 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btnReadingTexts;
-        btnReadingTexts = findViewById(R.id.button_reading_texts);
-        btnReadingTexts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ReadingTextsActivity.class);
-                startActivity(intent);
-            }
+        Button btnStartsReadingTexts;
+        btnStartsReadingTexts = findViewById(R.id.button_start_reading_texts);
+        btnStartsReadingTexts.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), ReadingTextsActivity.class);
+            startActivity(intent);
         });
 
-        Button btnWords;
-        btnWords = findViewById(R.id.button_words);
-        btnWords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), WordsActivity.class);
-                startActivity(intent);
-            }
+        Button btnStartWords;
+        btnStartWords = findViewById(R.id.button_start_words);
+        btnStartWords.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), WordsActivity.class);
+            startActivity(intent);
         });
 
-        Button btnDeneme;
-        btnDeneme = findViewById(R.id.button_deneme);
-        btnDeneme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.w("OPEN ACTIVITY", "method called");
-                OpenActivity();
-            }
+        Button btnStartWordsLearningMastered;
+        btnStartWordsLearningMastered = findViewById(R.id.button_start_words_learning_mastered);
+        btnStartWordsLearningMastered.setOnClickListener(v -> {
+            Intent intent = new Intent(this.getApplicationContext(), WordActivity2.class);
+            startActivity(intent);
         });
+
+        Button btnStartWordsRevision;
+        btnStartWordsRevision = findViewById(R.id.button_start_words_revision);
+        btnStartWordsRevision.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), WordRevisionActivity.class);
+            startActivity(intent);
+        });
+
     }
 
-    private void OpenActivity(){
-        Intent intent = new Intent(this.getApplicationContext(), WordActivity2.class);
-        startActivity(intent);
-    }
+
 
     private void addSampleNews() {
         ReadingTextRepository repository = new ReadingTextRepository(getApplication());

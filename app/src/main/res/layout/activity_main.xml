@@ -7,7 +7,7 @@
     tools:context=".Activities.MainActivity">
 
     <Button
-        android:id="@+id/button_reading_texts"
+        android:id="@+id/button_start_reading_texts"
         android:layout_width="match_parent"
         android:layout_height="@dimen/moduleButtonHeight"
         android:layout_marginStart="@dimen/moduleMarginStart"
@@ -19,24 +19,34 @@
         />
 
     <Button
-        android:id="@+id/button_words"
+        android:id="@+id/button_start_words"
         android:layout_width="match_parent"
         android:layout_height="@dimen/moduleButtonHeight"
         android:layout_marginStart="@dimen/moduleMarginStart"
         android:layout_marginTop="@dimen/moduleMarginTop"
         android:layout_marginEnd="@dimen/moduleMarginEnd"
-        app:layout_constraintTop_toBottomOf="@+id/button_reading_texts"
+        app:layout_constraintTop_toBottomOf="@+id/button_start_reading_texts"
         android:text="@string/words" />
 
     <Button
-        android:id="@+id/button_deneme"
+        android:id="@+id/button_start_words_learning_mastered"
         android:layout_width="match_parent"
         android:layout_height="@dimen/moduleButtonHeight"
         android:layout_marginStart="@dimen/moduleMarginStart"
         android:layout_marginTop="@dimen/moduleMarginTop"
         android:layout_marginEnd="@dimen/moduleMarginEnd"
-        app:layout_constraintTop_toBottomOf="@+id/button_words"
+        app:layout_constraintTop_toBottomOf="@+id/button_start_words"
+        android:text="WORDS 2" />
 
-        android:text="DENEME" />
+    <Button
+        android:id="@+id/button_start_words_revision"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/moduleButtonHeight"
+        android:layout_marginStart="@dimen/moduleMarginStart"
+        android:layout_marginTop="@dimen/moduleMarginTop"
+        android:layout_marginEnd="@dimen/moduleMarginEnd"
+        app:layout_constraintTop_toBottomOf="@+id/button_start_words_learning_mastered"
+        android:text="WORDS REVISION" />
+
 
 </android.support.constraint.ConstraintLayout>
