@@ -1,6 +1,8 @@
 package com.example.savas.ezberteknigi.Adapters;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import com.example.savas.ezberteknigi.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     private List<Word> words = new ArrayList<>();
@@ -57,6 +60,69 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 
     public void setWords(List<Word> words){
         this.words = words;
+        notifyDataSetChanged();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setWordsRevision(List<Word> words){
+        List<Word> resultWords;
+
+        resultWords = words.stream()
+                .filter(w-> w.getRevisionPeriodCount() == 0 && w.getTimeElapsedInMinutes() >= 30)
+                .collect(Collectors.toList());
+        if (resultWords.size() > 0) {
+            this.words = resultWords;
+            return;
+        }
+
+        resultWords = words.stream()
+                .filter(w-> w.getRevisionPeriodCount() == 1 && w.getTimeElapsedInHours() >= 1)
+                .collect(Collectors.toList());
+        if (resultWords.size() > 0) {
+            this.words = resultWords;
+            return;
+        }
+
+        resultWords = words.stream()
+                .filter(w-> w.getRevisionPeriodCount() == 2 && w.getTimeElapsedInHours() >= 2)
+                .collect(Collectors.toList());
+        if (resultWords.size() > 0) {
+            this.words = resultWords;
+            return;
+        }
+
+        resultWords = words.stream()
+                .filter(w-> w.getRevisionPeriodCount() == 3 && w.getTimeElapsedInHours() >= 6)
+                .collect(Collectors.toList());
+        if (resultWords.size() > 0) {
+            this.words = resultWords;
+            return;
+        }
+
+        resultWords = words.stream()
+                .filter(w-> w.getRevisionPeriodCount() == 4 && w.getTimeElapsedInHours() >= 12)
+                .collect(Collectors.toList());
+        if (resultWords.size() > 0) {
+            this.words = resultWords;
+            return;
+        }
+
+        resultWords = words.stream()
+                .filter(w-> w.getRevisionPeriodCount() == 5 && w.getTimeElapsedInHours() >= 24)
+                .collect(Collectors.toList());
+        if (resultWords.size() > 0) {
+            this.words = resultWords;
+            return;
+        }
+
+        resultWords = words.stream()
+                .filter(w-> w.getRevisionPeriodCount() == 6 && w.getTimeElapsedInDays() >= 7)
+                .collect(Collectors.toList());
+        if (resultWords.size() > 0) {
+            this.words = resultWords;
+            return;
+        }
+
         notifyDataSetChanged();
     }
 

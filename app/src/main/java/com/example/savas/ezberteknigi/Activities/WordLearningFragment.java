@@ -1,6 +1,5 @@
 package com.example.savas.ezberteknigi.Activities;
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 import com.example.savas.ezberteknigi.Adapters.WordAdapter;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.ViewModels.WordRevisionViewModel;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
 import static android.app.Activity.RESULT_OK;
@@ -30,13 +28,10 @@ import static android.app.Activity.RESULT_OK;
 public class WordLearningFragment extends Fragment {
 
     public static final int ADD_WORD_REQUEST = 1;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String WORD_LEARNING_MASTERED = "param1";
+    private static final String WORD_TYPE_PARAM = "param1";
 
     TextView tvItemCount;
     WordViewModel wordViewModel;
-    WordRevisionViewModel wordRevisionViewModel;
 
     private int mParam1;
 
@@ -46,18 +41,10 @@ public class WordLearningFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment WordLearningFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static WordLearningFragment newInstance(int param1) {
         WordLearningFragment fragment = new WordLearningFragment();
         Bundle args = new Bundle();
-        args.putInt(WORD_LEARNING_MASTERED, param1);
+        args.putInt(WORD_TYPE_PARAM, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,7 +53,7 @@ public class WordLearningFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(WORD_LEARNING_MASTERED);
+            mParam1 = getArguments().getInt(WORD_TYPE_PARAM);
         }
     }
 
@@ -109,8 +96,10 @@ public class WordLearningFragment extends Fragment {
                 tvItemCount.setText(String.valueOf(words.size() + " words listed"));
             });
         } else if(mParam1 == Word.WORD_REVISION){
-            wordRevisionViewModel = ViewModelProviders.of(this).get(WordRevisionViewModel.class);
-
+            wordViewModel.getAllWords().observe(this, words -> {
+                wordAdapter.setWordsRevision(words);
+                tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+            });
         }
 
         wordAdapter.setOnItemClickListener(word -> {

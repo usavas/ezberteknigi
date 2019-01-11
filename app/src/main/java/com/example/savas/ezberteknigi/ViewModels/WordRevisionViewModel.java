@@ -43,21 +43,21 @@ public class WordRevisionViewModel extends AndroidViewModel {
         }
 
         resultWords = words.stream()
-                .filter(w-> w.getRevisionPeriodCount() == 0 && w.getTimeElapsedInHours() >= 2)
+                .filter(w-> w.getRevisionPeriodCount() == 1 && w.getTimeElapsedInHours() >= 2)
                 .collect(Collectors.toList());
         if (resultWords.size() > 0) {
             return (LiveData<List<Word>>) resultWords;
         }
 
         resultWords = words.stream()
-                .filter(w-> w.getRevisionPeriodCount() == 0 && w.getTimeElapsedInHours() >= 24)
+                .filter(w-> w.getRevisionPeriodCount() == 2 && w.getTimeElapsedInHours() >= 24)
                 .collect(Collectors.toList());
         if (resultWords.size() > 0) {
             return (LiveData<List<Word>>) resultWords;
         }
 
         resultWords = words.stream()
-                .filter(w-> w.getRevisionPeriodCount() == 0 && w.getTimeElapsedInDays() >= 7)
+                .filter(w-> w.getRevisionPeriodCount() == 3 && w.getTimeElapsedInDays() >= 7)
                 .collect(Collectors.toList());
         if (resultWords.size() > 0) {
             return (LiveData<List<Word>>) resultWords;

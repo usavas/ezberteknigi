@@ -21,8 +21,6 @@ implements WordLearningFragment.OnFragmentInteractionListener {
         }
     }
 
-
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
