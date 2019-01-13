@@ -46,6 +46,11 @@ public class AddWordActivity extends AppCompatActivity {
             }
         });
 
+        String wordForTranslation = getIntent().getStringExtra(ReadingTextDetailActivity.WORD_TO_PASS_FOR_TRANSLATION);
+        if (wordForTranslation != null && wordForTranslation != ""){
+            editWord.setText(wordForTranslation);
+        }
+
         btnGetTranslation = findViewById(R.id.button_get_translation);
         btnGetTranslation.setOnClickListener(new View.OnClickListener() {
             @Override

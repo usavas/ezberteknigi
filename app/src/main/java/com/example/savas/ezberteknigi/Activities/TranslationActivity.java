@@ -252,6 +252,12 @@ public class TranslationActivity extends AppCompatActivity {
 
     @NonNull
     private static String removeLastChar(String str) {
-        return str.substring(0, str.length() - 1);
+        if (str != null){
+            if (str.length() != 0){
+                return str.substring(0, str.length() - 1);
+            }
+        }
+
+        return "";
     }
 }
