@@ -76,6 +76,8 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
                 }
 
+                //TODO: test for developer branch test
+
                 Intent intent = new Intent(getApplicationContext(), AddWordActivity.class);
                 intent.putExtra(WORD_TO_PASS_FOR_TRANSLATION, selectedText); //selectedText
                 startActivityForResult(intent, RESULT_CODE_FOR_READING);
