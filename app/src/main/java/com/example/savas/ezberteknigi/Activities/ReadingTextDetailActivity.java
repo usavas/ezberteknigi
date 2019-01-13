@@ -25,11 +25,13 @@ import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
+import java.util.concurrent.ExecutionException;
+
 import javax.security.auth.callback.Callback;
 
 public class ReadingTextDetailActivity extends AppCompatActivity {
 
-    public WordRepository repository;
+    public WordRepository wordRepository;
 
     public static String WORD_TO_PASS_FOR_TRANSLATION = "WORD_TO_PASS_FOR_TRANSLATION";
     public static int RESULT_CODE_FOR_READING = 4;
@@ -55,7 +57,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         tvHeader.setText(readingText.getHeader());
         tvContent.setText(readingText.getContent());
 
-        repository = new WordRepository(getApplication());
+        wordRepository = new WordRepository(getApplication());
 //        registerForContextMenu(tvContent);
 
         tvContent.setOnLongClickListener(v -> {
@@ -73,14 +75,31 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                 //there should be many more conditions and/or regex processes on the string got from edittext
                 if (selectedText.trim() != ""
                         && selectedText.trim().split(" ").length == 1){
-
+                    try {
+                        //TODO: instead of sending to query, just use the second one
+                        if (wordRepository.existsWord(selectedText.trim())){
+                            Word word = wordRepository.getWordByWord(selectedText);
+                            Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
+                            intent.putExtra(WordsActivity.EXTRA_WORD_ID, word.getWordId());
+                            intent.putExtra(WordsActivity.EXTRA_WORD_WORD, word.getWord());
+                            intent.putExtra(WordsActivity.EXTRA_WORD_TRANSLATION, word.getTranslation());
+                            intent.putExtra(WordsActivity.EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(getApplicationContext(), AddWordActivity.class);
+                            intent.putExtra(WORD_TO_PASS_FOR_TRANSLATION, selectedText); //selectedText
+                            startActivityForResult(intent, RESULT_CODE_FOR_READING);
+                        }
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 //TODO: test for developer branch test
 
-                Intent intent = new Intent(getApplicationContext(), AddWordActivity.class);
-                intent.putExtra(WORD_TO_PASS_FOR_TRANSLATION, selectedText); //selectedText
-                startActivityForResult(intent, RESULT_CODE_FOR_READING);
+
 
             }, 10);
             return false;
@@ -121,7 +140,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                     wordTranslation,
                     0,
                     exampleSentence);
-            repository.insert(word);
+            wordRepository.insert(word);
             Toast.makeText(this, "Kelime eklendi", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Kelime eklenmedi", Toast.LENGTH_SHORT).show();

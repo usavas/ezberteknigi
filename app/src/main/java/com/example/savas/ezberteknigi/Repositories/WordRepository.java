@@ -3,9 +3,6 @@ package com.example.savas.ezberteknigi.Repositories;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.strictmode.WebViewMethodCalledOnWrongThreadViolation;
-import android.support.annotation.RequiresApi;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -82,8 +79,16 @@ public class WordRepository {
         new DeleteWordAsyncTask(wordDao).execute(word);
     }
 
+    public Boolean existsWord(String word) throws ExecutionException, InterruptedException {
+        return new ExistsWordAsyncTask(wordDao).execute(word).get();
+    }
+
     public Word getWordById(int id) throws ExecutionException, InterruptedException {
-        return new GetWordByIdAasyncTask(wordDao).execute(id).get();
+        return new GetWordByIdAsyncTask(wordDao).execute(id).get();
+    }
+
+    public Word getWordByWord(String word) throws ExecutionException, InterruptedException {
+        return new GetWordByWordAsyncTask(wordDao).execute(word).get();
     }
 
     private static class InsertWordAsyncTask extends AsyncTask<Word, Void, Void> {
@@ -128,10 +133,10 @@ public class WordRepository {
         }
     }
 
-    private static class GetWordByIdAasyncTask extends AsyncTask<Integer, Void, Word>{
+    private static class GetWordByIdAsyncTask extends AsyncTask<Integer, Void, Word>{
         private WordDao wordDao;
 
-        private GetWordByIdAasyncTask(WordDao wordDao) {
+        private GetWordByIdAsyncTask(WordDao wordDao) {
             this.wordDao = wordDao;
         }
 
@@ -140,4 +145,32 @@ public class WordRepository {
             return wordDao.getWordById(ints[0]);
         }
     }
+
+    private static class ExistsWordAsyncTask extends AsyncTask<String, Void, Boolean>{
+        private WordDao wordDao;
+
+        private ExistsWordAsyncTask(WordDao wordDao) {
+            this.wordDao = wordDao;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings){
+            return wordDao.wordExists(strings[0]);
+        }
+    }
+
+    private static class GetWordByWordAsyncTask extends AsyncTask<String, Void, Word>{
+        private WordDao wordDao;
+
+        private GetWordByWordAsyncTask(WordDao wordDao) {
+            this.wordDao = wordDao;
+        }
+
+        @Override
+        protected Word doInBackground(String ... strings){
+            return wordDao.getWordByWord(strings[0]);
+        }
+    }
+
+
 }
