@@ -33,6 +33,9 @@ public interface WordDao extends BaseDao {
     @Query("SELECT * FROM word_table WHERE word_id = :wordId")
     Word getWordById (int wordId);
 
+    @Query("SELECT EXISTS(SELECT * FROM word_table WHERE word = :word)")
+    boolean existsWord(String word);
+
     @Query("SELECT * FROM word_table WHERE word_state = :wordState")
     LiveData<List<Word>> getWordsByWordState(int wordState);
 
