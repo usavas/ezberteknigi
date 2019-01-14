@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi.Adapters;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.TranslationHolder> {
     private List<String> translations = new ArrayList<>();
+    private List<String> results = new ArrayList<>();
 
     private OnItemClickListener listener;
 
@@ -29,6 +31,29 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
     public void onBindViewHolder(@NonNull TranslationHolder translationHolder, int i) {
         String translation = translations.get(i);
         translationHolder.tvTranslation.setText(translation);
+
+        if (results.contains(translation)){
+            translationHolder.itemView.setBackgroundColor(Color.YELLOW);
+        } else {
+            translationHolder.itemView.setBackgroundColor(translationHolder.tvTranslation.getContext().getResources().getColor(R.color.moduleColor));
+        }
+
+        translationHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (results.contains(translation)){
+                    translationHolder.itemView.setBackgroundColor(v.getContext().getResources().getColor(R.color.moduleColor));
+                    results.remove(translation);
+                } else {
+                    translationHolder.itemView.setBackgroundColor(Color.YELLOW);
+                    results.add(translation);
+                }
+
+                if (listener != null){
+                    listener.onItemClick(v, translation);
+                }
+            }
+        });
     }
 
     @Override
@@ -51,16 +76,14 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (listener != null && position != RecyclerView.NO_POSITION){
-                    listener.onItemClick(v, translations.get(position), itemView);
-
-//                    itemView.setBackgroundColor(Color.YELLOW);
+                    listener.onItemClick(v, translations.get(position));
                 }
             });
         }
     }
 
     public interface OnItemClickListener{
-        void onItemClick(View view, String string, View itemView);
+        void onItemClick(View view, String translation);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
