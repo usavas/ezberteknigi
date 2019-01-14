@@ -25,11 +25,13 @@ import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
+import java.util.concurrent.ExecutionException;
+
 import javax.security.auth.callback.Callback;
 
 public class ReadingTextDetailActivity extends AppCompatActivity {
 
-    public WordRepository repository;
+    public WordRepository wordRepository;
 
     public static String WORD_TO_PASS_FOR_TRANSLATION = "WORD_TO_PASS_FOR_TRANSLATION";
     public static int RESULT_CODE_FOR_READING = 4;
@@ -55,7 +57,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         tvHeader.setText(readingText.getHeader());
         tvContent.setText(readingText.getContent());
 
-        repository = new WordRepository(getApplication());
+        wordRepository = new WordRepository(getApplication());
 //        registerForContextMenu(tvContent);
 
         tvContent.setOnLongClickListener(v -> {
@@ -119,7 +121,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                     wordTranslation,
                     0,
                     exampleSentence);
-            repository.insert(word);
+            wordRepository.insert(word);
             Toast.makeText(this, "Kelime eklendi", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Kelime eklenmedi", Toast.LENGTH_SHORT).show();
