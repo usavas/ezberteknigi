@@ -59,7 +59,7 @@ public class TranslationActivity extends AppCompatActivity {
         Button btnReturn = findViewById(R.id.button_return);
         btnReturn.setOnClickListener(v -> {
             String resultOfTranslations = "";
-            for (int i = 0; i < arrResultOfTranslation.size(); i++){
+            for (int i = 0; i < arrResultOfTranslation.size(); i++) {
                 resultOfTranslations += arrResultOfTranslation.get(i) + ", ";
             }
 
@@ -69,13 +69,13 @@ public class TranslationActivity extends AppCompatActivity {
             finish();
         });
 
-        adapter.setOnItemClickListener((v, translation, view) -> {
+        adapter.setOnItemClickListener((v, translation) -> {
             if (arrResultOfTranslation.contains(translation)){
                 arrResultOfTranslation.remove(translation);
-                view.setBackgroundColor(getResources().getColor(R.color.moduleColor));
+
             }
             else {
-                view.setBackgroundColor(Color.YELLOW);
+
                 arrResultOfTranslation.add(translation);
             }
         });
@@ -120,75 +120,6 @@ public class TranslationActivity extends AppCompatActivity {
         }
         return arrTranslations;
     }
-
-//    private List<String> RetrieveTranslations(TranslationAdapter adapter, String wordToSearch) {
-//        HttpURLConnection connection = null;
-//        BufferedReader reader = null;
-//
-//        try {
-//            URL url = new URL("http://cevir.ws/v1?q="+ wordToSearch +"&m=25&p=exact&l=en");
-//            try {
-//                connection = (HttpURLConnection) url.openConnection();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            if (connection != null) {
-//                connection.connect();
-//            }
-//
-//            assert connection != null;
-//            InputStream stream = connection.getInputStream();
-//            reader = new BufferedReader(new InputStreamReader(stream));
-//
-//            StringBuffer buffer = new StringBuffer();
-//            String line = "";
-//
-//            while ((line = reader.readLine()) != null) {
-//                buffer.append(line+"\n");
-//                Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-//            }
-//
-//            JSONObject jsonResult = new JSONObject(buffer.toString());
-//            List<String> arrTranslations = new ArrayList<>();
-//            try {
-//                JSONArray jsonArrayWords = jsonResult.getJSONArray("word");
-//                for (int i = 0; i < jsonArrayWords.length(); i++){
-//                    JSONObject wordObject = jsonArrayWords.getJSONObject(i);
-//                    String translationsStr = wordObject.getString("desc");
-//                    System.out.println(translationsStr);
-//                    String[] arrTranslations1 = translationsStr.split(";");
-//                    for (int j = 0; j < arrTranslations1.length; j++){
-//                        String[] arrTranslations2 = arrTranslations1[j].split(",");
-//                        for (int x = 0; x < arrTranslations2.length; x++){
-//                            arrTranslations.add(arrTranslations2[x]);
-//                        }
-//                    }
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            return arrTranslations;
-//
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (connection != null) {
-//                connection.disconnect();
-//            }
-//            try {
-//                if (reader != null) {
-//                    reader.close();
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return null;
-//    }
 
     private class JsonTask extends AsyncTask<String, String, JSONObject> {
         protected JSONObject doInBackground(String... params) {
