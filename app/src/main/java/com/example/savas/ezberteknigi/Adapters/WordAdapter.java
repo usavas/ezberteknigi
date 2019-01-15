@@ -26,7 +26,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         private TextView tvExampleSentece;
         private View viewSubItem;
 
-        public WordHolder(@NonNull View itemView) {
+        WordHolder(@NonNull View itemView) {
             super(itemView);
             tvWord = itemView.findViewById(R.id.tvItemWord);
             tvTranslation = itemView.findViewById(R.id.sub_item_translation);
@@ -74,9 +74,18 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         });
     }
 
+    public void removeItem(int position){
+        words.remove(words.get(position));
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return words.size();
+    }
+
+    public Word getWordAt(int position){
+        return words.get(position);
     }
 
     public void setWords(List<Word> words){

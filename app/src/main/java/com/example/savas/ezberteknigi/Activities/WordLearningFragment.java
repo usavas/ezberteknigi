@@ -6,12 +6,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.DragAndDropPermissions;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +68,16 @@ public class WordLearningFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_word_learning, container, false);
 
+        tvItemCount = view.findViewById(R.id.text_view_item_count_learning);
+
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_word_learning);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+
+        final WordAdapter wordAdapter = new WordAdapter();
+        recyclerView.setAdapter(wordAdapter);
+
+
         FloatingActionButton buttonAddNote = view.findViewById(R.id.fab_add_word_learning);;
         if (mParam1 == Word.WORD_LEARNING){
             buttonAddNote.setOnClickListener(v -> {
@@ -74,14 +88,46 @@ public class WordLearningFragment extends Fragment {
 
         }
 
-        tvItemCount = view.findViewById(R.id.text_view_item_count_learning);
+        if (mParam1 == Word.WORD_REVISION){
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                    return false;
+                }
 
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_word_learning);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
-        final WordAdapter wordAdapter = new WordAdapter();
-        recyclerView.setAdapter(wordAdapter);
+                    //TODO: add word reviewed method here (simply increment 1 the wordRevisionCount and remove the item from adapter and notify changes)
+                    if (i == ItemTouchHelper.LEFT || i == ItemTouchHelper.RIGHT) {
+                        wordAdapter.removeItem(viewHolder.getAdapterPosition());
+                        Snackbar.make(view, "SWIPED TO LEFT or RIGHT, word reviewed count incremented", Snackbar.LENGTH_LONG).show();
+                    }
+                }
+            }).attachToRecyclerView(recyclerView);
+        }
+
+        if (mParam1 == Word.WORD_MASTERED || mParam1 == Word.WORD_LEARNING){
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.DOWN) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                    if (mParam1 == Word.WORD_LEARNING || mParam1 == Word.WORD_MASTERED) {
+                        if (i == ItemTouchHelper.DOWN) {
+                            //TODO: show item details like in the adapter
+                            Snackbar.make(view, "SWIPED DOWN, word item details shown", Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            }).attachToRecyclerView(recyclerView);
+        }
+
+
 
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
 
