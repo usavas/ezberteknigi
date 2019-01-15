@@ -101,8 +101,24 @@ public class WordLearningFragment extends Fragment {
 
                     //TODO: add word reviewed method here (simply increment 1 the wordRevisionCount and remove the item from adapter and notify changes)
                     if (i == ItemTouchHelper.LEFT || i == ItemTouchHelper.RIGHT) {
-                        wordAdapter.removeItem(viewHolder.getAdapterPosition());
-                        Snackbar.make(view, "SWIPED TO LEFT or RIGHT, word reviewed count incremented", Snackbar.LENGTH_LONG).show();
+
+                        Word word = wordAdapter.getWordAt(viewHolder.getAdapterPosition());
+                        word.setRevisionPeriodCount(word.getRevisionPeriodCount() + 1);
+                        wordViewModel.update(word);
+
+//                        wordAdapter.removeItem(viewHolder.getAdapterPosition());
+
+                        Snackbar snackbar = Snackbar.make(view,
+                                "SWIPED TO LEFT or RIGHT, word reviewed count incremented",
+                                Snackbar.LENGTH_LONG);
+                        snackbar.setAction("SNACK_BAR_UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                word.setRevisionPeriodCount(word.getRevisionPeriodCount() - 1);
+                                wordViewModel.update(word);
+                            }
+                        });
+                        snackbar.show();
                     }
                 }
             }).attachToRecyclerView(recyclerView);
@@ -126,8 +142,6 @@ public class WordLearningFragment extends Fragment {
                 }
             }).attachToRecyclerView(recyclerView);
         }
-
-
 
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
 
