@@ -46,6 +46,7 @@ public class AddWordActivity extends AppCompatActivity {
             }
         });
 
+        editExampleSentence.setText(getIntent().getStringExtra(ReadingTextDetailActivity.EXAMPLE_SENTENCE_TO_PASS));
         String wordForTranslation = getIntent().getStringExtra(ReadingTextDetailActivity.WORD_TO_PASS_FOR_TRANSLATION);
         if (wordForTranslation != null && wordForTranslation != ""){
             editWord.setText(wordForTranslation);

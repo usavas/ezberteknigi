@@ -37,7 +37,9 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
     public WordRepository wordRepository;
 
-    public static String WORD_TO_PASS_FOR_TRANSLATION = "WORD_TO_PASS_FOR_TRANSLATION";
+    public static String WORD_TO_PASS_FOR_TRANSLATION = "ReadingTextDetailActivity.WORD_TO_PASS_FOR_TRANSLATION";
+    public static String EXAMPLE_SENTENCE_TO_PASS = "ReadingTextDetailActivity.EXAMPLE_SENTENCE_TO_PASS";
+
     public static int RESULT_CODE_FOR_READING = 4;
 
     private ReadingText readingText;
@@ -83,9 +85,10 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                 if (selectedText.trim() != ""
                         && selectedText.trim().split(" ").length == 1){
                     try {
-                        //TODO: instead of sending to query, just use the second one
-                        if (wordRepository.existsWord(selectedText.trim())){
-                            Word word = wordRepository.getWordByWord(selectedText);
+                        //TODO: instead of sending two queries, just use the second one
+
+                        Word word = wordRepository.getWordByWord(selectedText.trim());
+                        if (word != null) {
                             Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
                             intent.putExtra(WordsActivity.EXTRA_WORD_ID, word.getWordId());
                             intent.putExtra(WordsActivity.EXTRA_WORD_WORD, word.getWord());
@@ -95,6 +98,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                         } else {
                             Intent intent = new Intent(getApplicationContext(), AddWordActivity.class);
                             intent.putExtra(WORD_TO_PASS_FOR_TRANSLATION, selectedText); //selectedText
+                            intent.putExtra(EXAMPLE_SENTENCE_TO_PASS, selectedSentence);
                             startActivityForResult(intent, RESULT_CODE_FOR_READING);
                         }
                     } catch (ExecutionException e) {
@@ -129,7 +133,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
     private static int getNearestStartingIndex(String text, int index){
         String[] sentenceSeparators = new String[]{
-                "? ", ". ", "! ", "... ", ".. "
+                "? ", ". ", "! ", "... ", ".. ", ".\n", ".\t"
         };
         int nearestStarterIndex = 0;
         for (String separator: sentenceSeparators) {
@@ -144,7 +148,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
     private static int getNearestFinisherIndex(String text, int index){
         String[] sentenceSeparators = new String[]{
-                "? ", ". ", "! ", "... ", ".. "
+                "? ", ". ", "! ", "... ", ".. ", ".\n", ".\t"
         };
         int nearestFinisherIndex = text.length() - 1;
         for (String separator: sentenceSeparators) {
