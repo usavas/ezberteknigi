@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -25,7 +26,10 @@ import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
 import javax.security.auth.callback.Callback;
 
@@ -62,15 +66,18 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
         tvContent.setOnLongClickListener(v -> {
             new Handler().postDelayed(() -> {
-                int startIndex = tvContent.getSelectionStart();
-                int endIndex = tvContent.getSelectionEnd();
+                int selectionStart = tvContent.getSelectionStart();
+                int selectionEnd = tvContent.getSelectionEnd();
 
-                if ((endIndex - startIndex) <= 0) {
+                if ((selectionEnd - selectionStart) <= 0) {
                     return;
                 }
 
-                //TODO: if selectedText exists in the words the user saved, return WordDetailActivity with parameters else start the AddWordActivity
-                String selectedText = tvContent.getText().toString().substring(startIndex, endIndex);
+                String selectedText = tvContent.getText().toString().substring(selectionStart, selectionEnd);
+                String text = tvContent.getText().toString();
+
+                String selectedSentence = getSelectedSentence(text, selectionStart, selectionEnd);
+                Log.wtf("SELECTED SENTENCE: ", selectedSentence);
 
                 //there should be many more conditions and/or regex processes on the string got from edittext
                 if (selectedText.trim() != ""
@@ -96,14 +103,58 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-
-                //TODO: test for developer branch test
-
-
-
             }, 10);
             return false;
         });
+    }
+
+    public static String getSelectedSentence(String text, int selectionIndex, int finisherIndex){
+        Log.wtf("selection index", String.valueOf(selectionIndex));
+        Log.wtf("selection index", String.valueOf(finisherIndex));
+
+        return text.substring(getNearestStartingIndex(text, selectionIndex), getNearestFinisherIndex(text, finisherIndex));
+    }
+
+    public static List<String> getSentences(String text, String word) {
+        final Pattern END_OF_SENTENCE = Pattern.compile("(?<=[.?!(...)])[\\s\\n\\t+]");
+        String[] sentences = END_OF_SENTENCE.split(text);
+        List<String> sentencesContaining = new ArrayList<>();
+        for (String sentence : sentences) {
+            if (sentence.contains(word.toLowerCase())){
+                sentencesContaining.add(sentence);
+            }
+        }
+        return sentencesContaining;
+    }
+
+    private static int getNearestStartingIndex(String text, int index){
+        String[] sentenceSeparators = new String[]{
+                "? ", ". ", "! ", "... ", ".. "
+        };
+        int nearestStarterIndex = 0;
+        for (String separator: sentenceSeparators) {
+            int startingCharIndex = text.lastIndexOf(separator, index) + 1;
+            if (startingCharIndex > nearestStarterIndex){
+                nearestStarterIndex = startingCharIndex;
+            }
+        }
+        Log.wtf("nearest starter", String.valueOf(nearestStarterIndex));
+        return nearestStarterIndex;
+    }
+
+    private static int getNearestFinisherIndex(String text, int index){
+        String[] sentenceSeparators = new String[]{
+                "? ", ". ", "! ", "... ", ".. "
+        };
+        int nearestFinisherIndex = text.length() - 1;
+        for (String separator: sentenceSeparators) {
+            int finishingCharIndex = text.indexOf(separator, index) + 1;
+            if (finishingCharIndex < nearestFinisherIndex && finishingCharIndex > 0){
+                nearestFinisherIndex = finishingCharIndex;
+            }
+        }
+        Log.wtf("nearest finisher", String.valueOf(nearestFinisherIndex));
+        return nearestFinisherIndex;
     }
 
     @Override
