@@ -1,91 +1,138 @@
 package com.example.savas.ezberteknigi.Activities;
 
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.savas.ezberteknigi.Adapters.WordAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
+import android.widget.TextView;
+
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
-public class WordsActivity extends AppCompatActivity {
-    public static final int ADD_WORD_REQUEST = 1;
+public class WordsActivity extends AppCompatActivity
+        implements WordsFragment.OnFragmentInteractionListener {
 
-    public static final String EXTRA_WORD_ID = "EXTRA_WORD_ID";
-    public static final String EXTRA_WORD_WORD = "EXTRA_WORD_WORD";
-    public static final String EXTRA_WORD_TRANSLATION = "EXTRA_TRANSLATION";
-    public static final String EXTRA_WORD_EXAMPLE_SENTENCE = "EXTRA_EXAMPLE_SENTENCE";
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    WordViewModel wordViewModel;
-    private TextView tvItemCount;
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_words);
 
-        FloatingActionButton buttonAddNote = findViewById(R.id.button_add_word);
-        buttonAddNote.setOnClickListener(v -> {
-            Intent intent = new Intent(WordsActivity.this, AddWordActivity.class);
-            startActivityForResult(intent, ADD_WORD_REQUEST);
-        });
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        tvItemCount = findViewById(R.id.tvItemCount);
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        final WordAdapter wordAdapter = new WordAdapter();
-        RecyclerView recyclerView = findViewById(R.id.recycler_view_word);
-
-        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-
-        recyclerView.setAdapter(wordAdapter);
-
-        wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
-        wordViewModel.getAllWords().observe(this, words -> {
-            wordAdapter.setWords(words);
-            tvItemCount.setText(String.valueOf(words.size() + " words listed"));
-        });
-
-        wordAdapter.setOnItemClickListener(word -> {
-            Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
-            intent.putExtra(EXTRA_WORD_ID, word.getWordId());
-            intent.putExtra(EXTRA_WORD_WORD, word.getWord());
-            intent.putExtra(EXTRA_WORD_TRANSLATION, word.getTranslation());
-            intent.putExtra(EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
-            startActivity(intent);
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_word_activity, menu);
+        return true;
+    }
 
-        if (requestCode == ADD_WORD_REQUEST && resultCode == RESULT_OK){
-            String wordContent = data.getStringExtra(AddWordActivity.EXTRA_WORD);
-            String wordTranslation = data.getStringExtra(AddWordActivity.EXTRA_TRANSLATION);
-            String exampleSentence = data.getStringExtra(AddWordActivity.EXTRA_EXAMPLE_SENTENCE);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-            Word word = new Word(
-                    wordContent,
-                    wordTranslation,
-                    0,
-                    exampleSentence);
-            wordViewModel.insert(word);
-            Toast.makeText(this, "Kelime eklendi", Toast.LENGTH_SHORT).show();
+        if (id == R.id.action_settings) {
+            return true;
         }
-        else {
-            Toast.makeText(this, "Kelime eklenmedi", Toast.LENGTH_SHORT).show();
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        Log.w(this.toString(), "onFragmentInteraction called");
+    }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0){
+                return WordsFragment.newInstance(Word.WORD_ALL);
+            } else if (position == 1){
+                return WordsFragment.newInstance(Word.WORD_LEARNING);
+            } else if (position == 2){
+                return WordsFragment.newInstance(Word.WORD_MASTERED);
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+    }
+
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public PlaceholderFragment() {
+        }
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_word_activity2, container, false);
+            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            return rootView;
         }
     }
 }

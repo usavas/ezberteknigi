@@ -28,7 +28,7 @@ public class WordDetailActivity extends AppCompatActivity {
 
         WordRepository repo = new WordRepository(getApplication());
         try {
-            word = repo.getWordById(getIntent().getIntExtra((WordsActivity.EXTRA_WORD_ID), 0));
+            word = repo.getWordById(getIntent().getIntExtra((WordsActivity2.EXTRA_WORD_ID), 0));
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

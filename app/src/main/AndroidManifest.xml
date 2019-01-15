@@ -20,14 +20,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.ReadingTextsActivity" />
-        <activity android:name=".Activities.WordsActivity" />
+        <activity android:name=".Activities.WordsActivity2" />
         <activity android:name=".Activities.ReadingTextDetailActivity" />
         <activity android:name=".Activities.AddWordActivity" />
         <activity android:name=".Activities.TranslationActivity" />
         <activity android:name=".Activities.WordActivitySample" />
         <activity android:name=".Activities.WordDetailActivity" />
         <activity
-            android:name=".Activities.WordActivity2"
+            android:name=".Activities.WordsActivity"
             android:label="@string/title_activity_word2"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activities.WordRevisionActivity"></activity>

@@ -3,17 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.WordLearningFragment"
-    android:orientation="horizontal">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Activities.WordsActivity2">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_word_learning"
+        android:id="@+id/recycler_view_word"
         android:layout_width="match_parent"
         android:layout_height="480dp"
         tools:listitem="@layout/word_item" />
 
+    <TextView
+        android:id="@+id/tvItemCount"
+        android:text="ITEM COUNT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_add_word"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="-24dp"
+        />
+
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add_word_learning"
+        android:id="@+id/button_add_word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -21,13 +31,5 @@
         android:layout_marginEnd="19dp"
         android:layout_marginBottom="24dp"
         android:src="@drawable/ic_add_black_24dp" />
-
-    <TextView
-        android:id="@+id/text_view_item_count_learning"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:text="ITEM COUNT (WORD LEARNING FRAGMENT)" />
 
 </RelativeLayout>

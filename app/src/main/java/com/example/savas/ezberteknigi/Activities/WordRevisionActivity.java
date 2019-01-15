@@ -8,7 +8,7 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 
 public class WordRevisionActivity extends AppCompatActivity
-implements WordLearningFragment.OnFragmentInteractionListener {
+implements WordsFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +16,7 @@ implements WordLearningFragment.OnFragmentInteractionListener {
         setContentView(R.layout.word_revision_activity);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, WordLearningFragment.newInstance(Word.WORD_REVISION))
+                    .replace(R.id.container, WordsFragment.newInstance(Word.WORD_REVISION))
                     .commitNow();
         }
     }

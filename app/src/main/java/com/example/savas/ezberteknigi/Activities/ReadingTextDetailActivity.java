@@ -1,22 +1,14 @@
 package com.example.savas.ezberteknigi.Activities;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Intent;
-import android.media.session.PlaybackState;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,14 +16,11 @@ import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
-import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
-
-import javax.security.auth.callback.Callback;
 
 public class ReadingTextDetailActivity extends AppCompatActivity {
 
@@ -90,10 +79,10 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                         Word word = wordRepository.getWordByWord(selectedText.trim());
                         if (word != null) {
                             Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
-                            intent.putExtra(WordsActivity.EXTRA_WORD_ID, word.getWordId());
-                            intent.putExtra(WordsActivity.EXTRA_WORD_WORD, word.getWord());
-                            intent.putExtra(WordsActivity.EXTRA_WORD_TRANSLATION, word.getTranslation());
-                            intent.putExtra(WordsActivity.EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
+                            intent.putExtra(WordsActivity2.EXTRA_WORD_ID, word.getWordId());
+                            intent.putExtra(WordsActivity2.EXTRA_WORD_WORD, word.getWord());
+                            intent.putExtra(WordsActivity2.EXTRA_WORD_TRANSLATION, word.getTranslation());
+                            intent.putExtra(WordsActivity2.EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
                             startActivity(intent);
                         } else {
                             Intent intent = new Intent(getApplicationContext(), AddWordActivity.class);
