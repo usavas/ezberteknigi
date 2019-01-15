@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,11 +41,14 @@ public class WordsActivity extends AppCompatActivity {
 
         tvItemCount = findViewById(R.id.tvItemCount);
 
+        final WordAdapter wordAdapter = new WordAdapter();
         RecyclerView recyclerView = findViewById(R.id.recycler_view_word);
+
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        final WordAdapter wordAdapter = new WordAdapter();
         recyclerView.setAdapter(wordAdapter);
 
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);

@@ -34,6 +34,7 @@ public class Word {
     @ColumnInfo(name = "reading_text_id")
     private int readingTextId;
 
+
     //TODO: either make this another class or add logic to store multiple sentences
     @ColumnInfo(name = "example_sentence")
     private String exampleSentence;
@@ -215,5 +216,16 @@ public class Word {
 
     public void setDetailsSeenCount(int detailsSeenCount) {
         this.detailsSeenCount = detailsSeenCount;
+    }
+
+    @Ignore
+    private boolean expanded;
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
     }
 }

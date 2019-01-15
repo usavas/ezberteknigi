@@ -20,12 +20,18 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     private List<Word> words = new ArrayList<>();
     private OnItemClickListener listener;
 
-    class WordHolder extends RecyclerView.ViewHolder{
-        private TextView word;
+    public class WordHolder extends RecyclerView.ViewHolder{
+        private TextView tvWord;
+        private TextView tvTranslation;
+        private TextView tvExampleSentece;
+        private View viewSubItem;
 
         public WordHolder(@NonNull View itemView) {
             super(itemView);
-            word = itemView.findViewById(R.id.tvItemWord);
+            tvWord = itemView.findViewById(R.id.tvItemWord);
+            tvTranslation = itemView.findViewById(R.id.sub_item_translation);
+            tvExampleSentece = itemView.findViewById(R.id.sub_item_example_sentence);
+            viewSubItem = itemView.findViewById(R.id.sub_item);
 
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
@@ -33,6 +39,15 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
                     listener.onItemClick(words.get(pos));
                 }
             });
+        }
+
+        private void bind(Word word) {
+            boolean expanded = word.isExpanded();
+            viewSubItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
+
+            tvWord.setText(word.getWord());
+            tvTranslation.setText("translation: " + word.getTranslation());
+            tvExampleSentece.setText("example: " + word.getExampleSentence());
         }
     }
 
@@ -47,7 +62,16 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     @Override
     public void onBindViewHolder(@NonNull WordAdapter.WordHolder wordHolder, int i) {
         Word currentWord = words.get(i);
-        wordHolder.word.setText(currentWord.getWord());
+
+        wordHolder.bind(currentWord);
+
+        wordHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentWord.setExpanded(!currentWord.isExpanded());
+                notifyItemChanged(i);
+            }
+        });
     }
 
     @Override
