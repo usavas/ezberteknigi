@@ -98,8 +98,6 @@ public class WordLearningFragment extends Fragment {
 
                 @Override
                 public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
-                    //TODO: add word reviewed method here (simply increment 1 the wordRevisionCount and remove the item from adapter and notify changes)
                     if (i == ItemTouchHelper.LEFT || i == ItemTouchHelper.RIGHT) {
 
                         Word word = wordAdapter.getWordAt(viewHolder.getAdapterPosition());
