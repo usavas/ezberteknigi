@@ -106,12 +106,10 @@ public class WordLearningFragment extends Fragment {
                         word.setRevisionPeriodCount(word.getRevisionPeriodCount() + 1);
                         wordViewModel.update(word);
 
-//                        wordAdapter.removeItem(viewHolder.getAdapterPosition());
-
                         Snackbar snackbar = Snackbar.make(view,
-                                "SWIPED TO LEFT or RIGHT, word reviewed count incremented",
+                                "Kelime gözden geçirildi: " + word.getWord(),
                                 Snackbar.LENGTH_LONG);
-                        snackbar.setAction("SNACK_BAR_UNDO", new View.OnClickListener() {
+                        snackbar.setAction("İPTAL ET", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 word.setRevisionPeriodCount(word.getRevisionPeriodCount() - 1);
