@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 //                onUpdate = CASCADE)
 )
 public class Word {
-
     public final static int WORD_LEARNING = 0;
     public final static int WORD_MASTERED = 1;
     public final static int WORD_REVISION = 2;
