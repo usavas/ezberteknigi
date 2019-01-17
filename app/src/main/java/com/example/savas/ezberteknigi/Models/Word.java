@@ -23,7 +23,6 @@ public class Word {
     public final static int WORD_ALL = 3;
 
     public final static String EXAMPLE_SENTENCE_DELIMITER_REGEX = "##";
-
     public final static int READING_TEXT_ID_DEFAULT = -1;
 
     @PrimaryKey(autoGenerate = true)
@@ -33,7 +32,6 @@ public class Word {
     private String translation;
     @ColumnInfo(name = "reading_text_id")
     private int readingTextId;
-
 
     //TODO: either make this another class or add logic to store multiple sentences
     @ColumnInfo(name = "example_sentence")

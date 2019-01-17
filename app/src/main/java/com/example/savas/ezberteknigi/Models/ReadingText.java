@@ -8,22 +8,26 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "reading_text_table")
 public class ReadingText {
 
+    @Ignore
     public static int DOCUMENT_TYPE_NEWS = 0;
+    @Ignore
     public static int DOCUMENT_TYPE_BOOK = 1;
+    @Ignore
     public static int DOCUMENT_TYPE_OTHER = 2;
 
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "reading_text_id")
     private int readingTextId;
-    private String source;
 
+    private String language;
+    private String source;
     @ColumnInfo(name = "header")
     private String header;
     @ColumnInfo(name = "document_type")
-    private int documentType;
+    private int contentType;
     @ColumnInfo(name = "difficulty_rate")
-    private int difficultyRate;
+    private int difficultyLevel;
     @ColumnInfo(name = "content")
     private String content;
     @ColumnInfo(name = "word_count")
@@ -34,11 +38,12 @@ public class ReadingText {
 
     }
 
-    public ReadingText(String source, String header, int documentType, int difficultyRate, String content) {
+    public ReadingText(String language, String source, String header, int contentType, int difficultyLevel, String content) {
+        this.language = language;
         this.source = source;
         this.header = header;
-        this.documentType = documentType;
-        this.difficultyRate = difficultyRate;
+        this.contentType = contentType;
+        this.difficultyLevel = difficultyLevel;
         this.content = content;
 
         wordCount = this.calculateWordCount(content);
@@ -56,20 +61,28 @@ public class ReadingText {
         return readingTextId;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
     public String getSource() {
         return source;
     }
 
-    public int getDocumentType() {
-        return documentType;
+    public int getContentType() {
+        return contentType;
     }
 
     public String getHeader() {
         return header;
     }
 
-    public int getDifficultyRate() {
-        return difficultyRate;
+    public int getDifficultyLevel() {
+        return difficultyLevel;
     }
 
     public String getContent() {
@@ -88,16 +101,16 @@ public class ReadingText {
         this.source = source;
     }
 
-    public void setDocumentType(int documentType) {
-        this.documentType = documentType;
+    public void setContentType(int contentType) {
+        this.contentType = contentType;
     }
 
     public void setHeader(String header) {
         this.header = header;
     }
 
-    public void setDifficultyRate(int difficultyRate) {
-        this.difficultyRate = difficultyRate;
+    public void setDifficultyLevel(int difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
     }
 
     public void setContent(String content) {
