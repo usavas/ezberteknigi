@@ -12,6 +12,9 @@ import android.util.Log;
 import com.example.savas.ezberteknigi.DAO.ReadingTextDao;
 import com.example.savas.ezberteknigi.DAO.WordDao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @Database(entities = {ReadingText.class, Word.class}, version = 7)
@@ -40,13 +43,13 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             Log.d("EzberTeknigiDatabase", "instance= " + ((instance == null) ? "null" : instance.toString()));
-            new PopulateDbAsyncTask(instance).execute();
+//            new PopulateDbAsyncTask(instance).execute();
         }
 
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-//            new PopulateDbAsyncTask(instance).execute();
+            new PopulateDbAsyncTask(instance).execute();
         }
     };
 
@@ -133,13 +136,16 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
             readingTextDao.insert(new ReadingText("en", "Guardian", "header1", ReadingText.DOCUMENT_TYPE_NEWS, 6, news));
             readingTextDao.insert(new ReadingText("en", "Tom Sawyer", "header2", ReadingText.DOCUMENT_TYPE_BOOK, 3, "this is the story content. reading text may be as long as it would"));
 
-            wordDao.insert(new Word("word", "kelime", 1, "this is a word example sentence"));
-            wordDao.insert(new Word("coffee", "kahve", 0, "I drink coffee"));
-            wordDao.insert(new Word("soda", "maden suyu", 0, "I drink soda"));
-            wordDao.insert(new Word("world", "dünya", 0, "I see world"));
-            wordDao.insert(new Word("point", "nokta", 0, "I draw point"));
-            wordDao.insert(new Word("sentence", "cümle", 0, "This is rather a long sentence, because some sentences should be longer than usual for test purposes"));
-            wordDao.insert(new Word("advertisement", "reklam", 0, "I see advertisement in every single video on youtube"));
+
+            long t = Calendar.getInstance().getTimeInMillis();
+
+//            wordDao.insert(new Word("word", "kelime", 1, "this is a word example sentence", new Date(t + 60000)));
+//            wordDao.insert(new Word("coffee", "kahve", 0, "I drink coffee", new Date(t + 60000)));
+//            wordDao.insert(new Word("soda", "maden suyu", 0, "I drink soda", new Date(t - 10000)) );
+//            wordDao.insert(new Word("world", "dünya", 0, "I see world",new Date(t - 10000)));
+//            wordDao.insert(new Word("point", "nokta", 0, "I draw point", new Date(t + 10000)));
+//            wordDao.insert(new Word("sentence", "cümle", 0, "This is rather a long sentence, because some sentences should be longer than usual for test purposes", new Date(t + 30000)));
+//            wordDao.insert(new Word("advertisement", "reklam", 0, "I see advertisement in every single video on youtube", new Date(t + 20000)));
 
             wordDao.insert(new Word("book", "kitap", 1, "this is a book example sentence",0, 0, 0, 0, 0, 0));
             wordDao.insert(new Word("music", "müzik", 2, "this is a music example sentence", 0, 0, 0, 0, 0, 0));
@@ -150,6 +156,16 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
             wordDao.insert(new Word("violin", "keman", 3, "this is a violin example sentence", 1, 0, 0, 0, 0, 0));
 
             return null;
+        }
+
+        Date toDateFromString(String dateInStr){
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-DD HH:MM:SS");
+            try {
+                return formatter.parse(dateInStr);
+
+            } catch (ParseException e) {
+                return null;
+            }
         }
     }
 }

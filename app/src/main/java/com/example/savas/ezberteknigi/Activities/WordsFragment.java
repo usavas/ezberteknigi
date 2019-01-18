@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi.Activities;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
+import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -80,30 +83,42 @@ public class WordsFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_word_learning);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
+//        recyclerView.setHasFixedSize(true);
 
         recyclerView.setAdapter(wordAdapter);
 
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
         if (mParam1 == Word.WORD_ALL) {
-            wordViewModel.getAllWords().observe(this, (List<Word> words) -> {
-                wordAdapter.setWords(words);
-                tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+            wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
+                @Override
+                public void onChanged(@Nullable List<Word> words) {
+                    wordAdapter.setWords(words);
+                    tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+                }
             });
         } else if (mParam1 == Word.WORD_LEARNING) {
-            wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, (List<Word> words) -> {
-                wordAdapter.setWords(words);
-                tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+            wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, new Observer<List<Word>>() {
+                @Override
+                public void onChanged(@Nullable List<Word> words) {
+                    wordAdapter.setWords(words);
+                    tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+                }
             });
         } else if (mParam1 == Word.WORD_MASTERED) {
-            wordViewModel.getAllWordsBasedOnState(Word.WORD_MASTERED).observe(this, words -> {
-                wordAdapter.setWords(words);
-                tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+            wordViewModel.getAllWordsBasedOnState(Word.WORD_MASTERED).observe(this, new Observer<List<Word>>() {
+                @Override
+                public void onChanged(@Nullable List<Word> words) {
+                    wordAdapter.setWords(words);
+                    tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+                }
             });
         } else if (mParam1 == Word.WORD_REVISION) {
-            wordViewModel.getAllWords().observe(this, words -> {
-                wordAdapter.setWordsRevision(words);
-                tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+            wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
+                @Override
+                public void onChanged(@Nullable List<Word> words) {
+                    wordAdapter.setWordsRevision(words);
+                    tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+                }
             });
         }
 
@@ -139,6 +154,11 @@ public class WordsFragment extends Fragment {
                     if (i == ItemTouchHelper.LEFT || i == ItemTouchHelper.RIGHT) {
 
                         Word word = wordAdapter.getWordAt(viewHolder.getAdapterPosition());
+
+                        Log.wtf("ELAPSED MINUTES", String.valueOf(word.getTimeElapsedInMinutes()));
+                        Log.wtf("DATE SAVED", String.valueOf(word.getDateSaved()));
+                        Log.wtf("CURRENT DATE", String.valueOf(new Date()));
+
                         word.setRevisionPeriodCount(word.getRevisionPeriodCount() + 1);
                         wordViewModel.update(word);
 

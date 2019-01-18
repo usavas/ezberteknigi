@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.crypto.spec.RC5ParameterSpec;
+
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     private List<Word> words = new ArrayList<>();
     private OnItemClickListener listener;
@@ -85,7 +87,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     }
 
     public Word getWordAt(int position){
-        return words.get(position);
+        Word word = words.get(position);
+        return word;
     }
 
     public void setWords(List<Word> words){
@@ -93,125 +96,46 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         notifyDataSetChanged();
     }
 
+    public static int REV_1_MIN = 0;
+    public static int REV_2_HOUR = 1;
+    public static int REV_3_HOUR = 2;
+    public static int REV_4_HOUR = 3;
+    public static int REV_5_HOUR = 4;
+    public static int REV_6_HOUR = 5;
+    public static int REV_7_DAY = 6;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setWordsRevision(List<Word> _words){
-        List<Word> resultWords;
+    public void setWordsRevision(List<Word> _words) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            resultWords = _words.stream()
-                    .filter(w -> w.getRevisionPeriodCount() == 0 && w.getTimeElapsedInMinutes() >= 30)
-                    .collect(Collectors.toList());
-            if (resultWords.size() > 0) {
-                this.words = resultWords;
-                notifyDataSetChanged();
-                return;
-            }
+        List<Word> resultWords = new ArrayList<>();
 
-            resultWords = _words.stream()
-                    .filter(w -> w.getRevisionPeriodCount() == 1 && w.getTimeElapsedInHours() >= 1)
-                    .collect(Collectors.toList());
-            if (resultWords.size() > 0) {
-                this.words = resultWords;
-                notifyDataSetChanged();
-                return;
-            }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            resultWords.addAll(_words.stream()
+//                    .filter(w -> (w.getRevisionPeriodCount() == 0 && w.getTimeElapsedInMinutes() >= REV_1_MIN)
+//                            || (w.getRevisionPeriodCount() == 1 && w.getTimeElapsedInMinutes() >= REV_2_HOUR)
+//                            || (w.getRevisionPeriodCount() == 2 && w.getTimeElapsedInMinutes() >= REV_3_HOUR)
+//                            || (w.getRevisionPeriodCount() == 3 && w.getTimeElapsedInMinutes() >= REV_4_HOUR)
+//                            || (w.getRevisionPeriodCount() == 4 && w.getTimeElapsedInMinutes() >= REV_5_HOUR)
+//                            || (w.getRevisionPeriodCount() == 5 && w.getTimeElapsedInMinutes() >= REV_6_HOUR)
+//                            || (w.getRevisionPeriodCount() == 6 && w.getTimeElapsedInMinutes() >= REV_7_DAY))
+//                    .collect(Collectors.toList()));
+//
+//            this.words = resultWords;
+//            notifyDataSetChanged();
+//            return;
+//
+//        } else {
 
-            resultWords = _words.stream()
-                    .filter(w-> w.getRevisionPeriodCount() == 2 && w.getTimeElapsedInHours() >= 2)
-                    .collect(Collectors.toList());
-            if (resultWords.size() > 0) {
-                this.words = resultWords;
-                notifyDataSetChanged();
-                return;
-            }
-
-            resultWords = _words.stream()
-                    .filter(w-> w.getRevisionPeriodCount() == 3 && w.getTimeElapsedInHours() >= 6)
-                    .collect(Collectors.toList());
-            if (resultWords.size() > 0) {
-                this.words = resultWords;
-                notifyDataSetChanged();
-                return;
-            }
-
-            resultWords = _words.stream()
-                    .filter(w-> w.getRevisionPeriodCount() == 4 && w.getTimeElapsedInHours() >= 12)
-                    .collect(Collectors.toList());
-            if (resultWords.size() > 0) {
-                this.words = resultWords;
-                notifyDataSetChanged();
-                return;
-            }
-
-            resultWords = _words.stream()
-                    .filter(w-> w.getRevisionPeriodCount() == 5 && w.getTimeElapsedInHours() >= 24)
-                    .collect(Collectors.toList());
-            if (resultWords.size() > 0) {
-                this.words = resultWords;
-                notifyDataSetChanged();
-                return;
-            }
-
-            resultWords = _words.stream()
-                    .filter(w-> w.getRevisionPeriodCount() == 6 && w.getTimeElapsedInDays() >= 7)
-                    .collect(Collectors.toList());
-            if (resultWords.size() > 0) {
-                this.words = resultWords;
-                notifyDataSetChanged();
-                return;
-            }
-        }
-        else {
-            List<Word> listToRevise;
-            listToRevise = getWordRevisionList(_words, 0, TimeType.MINUTE, 30);
-            if (listToRevise.size() > 0){
-                this.words = listToRevise;
-                notifyDataSetChanged();
-                return;
-            }
-
-            listToRevise = getWordRevisionList(_words, 1, TimeType.HOUR, 1);
-            if (listToRevise.size() > 0){
-                this.words = listToRevise;
-                notifyDataSetChanged();
-                return;
-            }
-
-            listToRevise = getWordRevisionList(_words, 2, TimeType.HOUR, 2);
-            if (listToRevise.size() > 0){
-                this.words = listToRevise;
-                notifyDataSetChanged();
-                return;
-            }
-
-            listToRevise = getWordRevisionList(_words, 3, TimeType.HOUR, 6);
-            if (listToRevise.size() > 0){
-                this.words = listToRevise;
-                notifyDataSetChanged();
-                return;
-            }
-
-            listToRevise = getWordRevisionList(_words, 4, TimeType.HOUR, 12);
-            if (listToRevise.size() > 0){
-                this.words = listToRevise;
-                notifyDataSetChanged();
-                return;
-            }
-
-            listToRevise = getWordRevisionList(_words, 5, TimeType.HOUR, 24);
-            if (listToRevise.size() > 0){
-                this.words = listToRevise;
-                notifyDataSetChanged();
-                return;
-            }
-
-            listToRevise = getWordRevisionList(_words, 6, TimeType.DAY, 7);
-            if (listToRevise.size() > 0){
-                this.words = listToRevise;
-                notifyDataSetChanged();
-                return;
-            }
-        }
+        resultWords.addAll(getWordRevisionList(_words, 0, TimeType.MINUTE, REV_1_MIN));
+        resultWords.addAll(getWordRevisionList(_words, 1, TimeType.MINUTE, REV_2_HOUR));
+        resultWords.addAll(getWordRevisionList(_words, 2, TimeType.MINUTE, REV_3_HOUR));
+        resultWords.addAll(getWordRevisionList(_words, 3, TimeType.MINUTE, REV_4_HOUR));
+        resultWords.addAll(getWordRevisionList(_words, 4, TimeType.MINUTE, REV_5_HOUR));
+        resultWords.addAll(getWordRevisionList(_words, 5, TimeType.MINUTE, REV_6_HOUR));
+        resultWords.addAll(getWordRevisionList(_words, 6, TimeType.MINUTE, REV_7_DAY));
+        this.words = resultWords;
+        notifyDataSetChanged();
+//        }
     }
 
     private List<Word> getWordRevisionList(List<Word> _words, int _periodCount, TimeType timeType, int _timeAmount){
@@ -220,6 +144,9 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 
         for (Word word: _words) {
             switch (timeType){
+                case SECOND:
+                    elapsedTime = word.getTimeElapsedInSeconds();
+                    break;
                 case MINUTE:
                     elapsedTime = word.getTimeElapsedInMinutes();
                     break;
@@ -239,7 +166,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     }
 
     private enum TimeType{
-        MINUTE, HOUR, DAY
+        MINUTE, HOUR, DAY, SECOND
     }
 
     public interface OnItemClickListener{
@@ -249,5 +176,4 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     public void setOnItemClickListener(OnItemClickListener listener){
         this.listener = listener;
     }
-
 }

@@ -5,7 +5,9 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
+import android.util.Log;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -70,8 +72,9 @@ public class Word {
         this.exampleSentence = exampleSentence;
 
         this.dateSaved =  new Date();
+        this.revisionPeriodCount = 0 ;
+
         this.wordState = 0;
-        this.revisionPeriodCount = 0;
         this.errorCount = 0;
         this.correctCount = 0;
         this.screeningCount = 0;
@@ -103,25 +106,33 @@ public class Word {
     }
 
     @Ignore
+    public long getTimeElapsedInSeconds() {
+        return getDateDiff(getDateSaved(), TimeUnit.SECONDS);
+    }
+
+    @Ignore
     public long getTimeElapsedInMinutes () {
-        return getDateDiff(getDateSaved(), new Date(), TimeUnit.MINUTES);
+        return getDateDiff(getDateSaved(), TimeUnit.MINUTES);
     }
 
     @Ignore
     public long getTimeElapsedInHours () {
-        return getDateDiff(getDateSaved(), new Date(), TimeUnit.HOURS);
+        return getDateDiff(getDateSaved(), TimeUnit.HOURS);
     }
 
     @Ignore
     public long getTimeElapsedInDays () {
-        return getDateDiff(getDateSaved(), new Date(), TimeUnit.DAYS);
+        return getDateDiff(getDateSaved(), TimeUnit.DAYS);
     }
 
     @Ignore
-    private static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
-        return 35;
-//        long diffInMilliSeconds = date2.getTime() - date1.getTime();
-//        return timeUnit.convert(diffInMilliSeconds, TimeUnit.MILLISECONDS);
+    private static long getDateDiff(Date dateSaved, TimeUnit timeUnit) {
+        Date currDate = new Date();
+        long currTime = currDate.getTime();
+        long savedTime = dateSaved.getTime();
+
+        long diffInMilliSeconds = currTime - savedTime;
+        return timeUnit.convert(diffInMilliSeconds, TimeUnit.MILLISECONDS);
     }
 
     public int getWordId() {

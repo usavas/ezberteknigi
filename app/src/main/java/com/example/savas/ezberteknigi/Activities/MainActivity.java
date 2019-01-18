@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private void addSampleNews() {
         ReadingTextRepository repository = new ReadingTextRepository(getApplication());
         String newsContent = "this is the content of a BBC news pagethis is the content of a BBC news pagethis is the content of a BBC news pagethis is the content of a BBC news page";
-        repository.insert(new ReadingText("BBC", "sample header", DOCUMENT_TYPE_NEWS, 7, newsContent));
+        repository.insert(new ReadingText("en", "BBC", "sample header", DOCUMENT_TYPE_NEWS, 7, newsContent));
 
         Log.d("MainAct", "news inserted");
         Toast.makeText(MainActivity.this, "row saved", Toast.LENGTH_SHORT).show();

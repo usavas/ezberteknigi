@@ -23,7 +23,7 @@ public interface ReadingTextDao extends BaseDao {
     @Delete
     void delete(ReadingText readingText);
 
-    @Query("SELECT * FROM reading_text_table ORDER BY difficultyLevel DESC")
+    @Query("SELECT * FROM reading_text_table ORDER BY difficulty_rate DESC")
     LiveData<List<ReadingText>> getAllReadingTexts();
 
     @Query("DELETE FROM reading_text_table")

@@ -17,6 +17,8 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
+import java.util.Date;
+
 public class WordsActivity2 extends AppCompatActivity {
     public static final int ADD_WORD_REQUEST = 1;
 

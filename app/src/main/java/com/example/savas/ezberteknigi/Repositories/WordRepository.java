@@ -3,6 +3,7 @@ package com.example.savas.ezberteknigi.Repositories;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -72,7 +73,9 @@ public class WordRepository {
     }
 
     public void update(Word word){
+        Log.wtf("WordRepository.java date of word before update", word.getDateSaved().toString());
         new UpdateWordAsyncTask(wordDao).execute(word);
+        Log.wtf("WordRepository.java date of word after update", word.getDateSaved().toString());
     }
 
     public void delete(Word word){

@@ -29,41 +29,41 @@ public class WordRevisionViewModel extends AndroidViewModel {
         repository.delete(word);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public LiveData<List<Word>> getNextSeriesForRevision(){
-
-        List<Word> words = new ArrayList<>();
-        List<Word> resultWords;
-
-        resultWords = words.stream()
-                .filter(w-> w.getRevisionPeriodCount() == 0 && w.getTimeElapsedInMinutes() >= 30)
-                .collect(Collectors.toList());
-        if (resultWords.size() > 0) {
-            return (LiveData<List<Word>>) resultWords;
-        }
-
-        resultWords = words.stream()
-                .filter(w-> w.getRevisionPeriodCount() == 1 && w.getTimeElapsedInHours() >= 2)
-                .collect(Collectors.toList());
-        if (resultWords.size() > 0) {
-            return (LiveData<List<Word>>) resultWords;
-        }
-
-        resultWords = words.stream()
-                .filter(w-> w.getRevisionPeriodCount() == 2 && w.getTimeElapsedInHours() >= 24)
-                .collect(Collectors.toList());
-        if (resultWords.size() > 0) {
-            return (LiveData<List<Word>>) resultWords;
-        }
-
-        resultWords = words.stream()
-                .filter(w-> w.getRevisionPeriodCount() == 3 && w.getTimeElapsedInDays() >= 7)
-                .collect(Collectors.toList());
-        if (resultWords.size() > 0) {
-            return (LiveData<List<Word>>) resultWords;
-        }
-
-        return null;
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public LiveData<List<Word>> getNextSeriesForRevision(){
+//
+//        List<Word> words = new ArrayList<>();
+//        List<Word> resultWords;
+//
+//        resultWords = words.stream()
+//                .filter(w-> w.getRevisionPeriodCount() == 0 && w.getTimeElapsedInMinutes() >= 1)
+//                .collect(Collectors.toList());
+//        if (resultWords.size() > 0) {
+//            return (LiveData<List<Word>>) resultWords;
+//        }
+//
+//        resultWords = words.stream()
+//                .filter(w-> w.getRevisionPeriodCount() == 1 && w.getTimeElapsedInMinutes() >= 2)
+//                .collect(Collectors.toList());
+//        if (resultWords.size() > 0) {
+//            return (LiveData<List<Word>>) resultWords;
+//        }
+//
+//        resultWords = words.stream()
+//                .filter(w-> w.getRevisionPeriodCount() == 2 && w.getTimeElapsedInMinutes() >= 3)
+//                .collect(Collectors.toList());
+//        if (resultWords.size() > 0) {
+//            return (LiveData<List<Word>>) resultWords;
+//        }
+//
+//        resultWords = words.stream()
+//                .filter(w-> w.getRevisionPeriodCount() == 3 && w.getTimeElapsedInMinutes() >= 4)
+//                .collect(Collectors.toList());
+//        if (resultWords.size() > 0) {
+//            return (LiveData<List<Word>>) resultWords;
+//        }
+//
+//        return null;
+//    }
 
 }
