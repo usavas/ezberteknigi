@@ -18,13 +18,10 @@ import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
-import static com.example.savas.ezberteknigi.Activities.WordsFragment.EXTRA_WORD_ID;
-import static com.example.savas.ezberteknigi.Activities.WordsFragment.EXTRA_WORD_WORD;
 
 public class ReadingTextDetailActivity extends AppCompatActivity {
 
