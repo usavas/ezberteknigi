@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
+import static com.example.savas.ezberteknigi.Activities.WordsFragment.EXTRA_WORD_ID;
+import static com.example.savas.ezberteknigi.Activities.WordsFragment.EXTRA_WORD_WORD;
+
 public class ReadingTextDetailActivity extends AppCompatActivity {
 
     public WordRepository wordRepository;
@@ -80,10 +83,10 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                         Word word = wordRepository.getWordByWord(selectedText.trim());
                         if (word != null) {
                             Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
-                            intent.putExtra(WordsActivity2.EXTRA_WORD_ID, word.getWordId());
-                            intent.putExtra(WordsActivity2.EXTRA_WORD_WORD, word.getWord());
-                            intent.putExtra(WordsActivity2.EXTRA_WORD_TRANSLATION, word.getTranslation());
-                            intent.putExtra(WordsActivity2.EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
+                            intent.putExtra(WordsFragment.EXTRA_WORD_ID, word.getWordId());
+                            intent.putExtra(WordsFragment.EXTRA_WORD_WORD, word.getWord());
+                            intent.putExtra(WordsFragment.EXTRA_WORD_TRANSLATION, word.getTranslation());
+                            intent.putExtra(WordsFragment.EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
                             startActivity(intent);
                         } else {
                             Intent intent = new Intent(getApplicationContext(), AddWordActivity.class);

@@ -12,6 +12,8 @@ import com.example.savas.ezberteknigi.Repositories.WordRepository;
 
 import java.util.concurrent.ExecutionException;
 
+import static com.example.savas.ezberteknigi.Activities.WordsFragment.EXTRA_WORD_ID;
+
 public class WordDetailActivity extends AppCompatActivity {
     public static Word word;
 
@@ -29,7 +31,7 @@ public class WordDetailActivity extends AppCompatActivity {
 
         WordRepository repo = new WordRepository(getApplication());
         try {
-            word = repo.getWordById(getIntent().getIntExtra((WordsActivity2.EXTRA_WORD_ID), 0));
+            word = repo.getWordById(getIntent().getIntExtra((EXTRA_WORD_ID), 0));
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

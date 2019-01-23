@@ -27,15 +27,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        Button btnStartWords;
-        btnStartWords = findViewById(R.id.button_start_words);
-        btnStartWords.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), WordsActivity2.class);
-            startActivity(intent);
-        });
-
         Button btnStartWordsLearningMastered;
-        btnStartWordsLearningMastered = findViewById(R.id.button_start_words_learning_mastered);
+        btnStartWordsLearningMastered = findViewById(R.id.button_start_words);
         btnStartWordsLearningMastered.setOnClickListener(v -> {
             Intent intent = new Intent(this.getApplicationContext(), WordsActivity.class);
             startActivity(intent);

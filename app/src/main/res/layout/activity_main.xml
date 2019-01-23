@@ -6,47 +6,53 @@
     android:layout_height="match_parent"
     tools:context=".Activities.MainActivity">
 
-    <Button
-        android:id="@+id/button_start_reading_texts"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/moduleButtonHeight"
-        android:layout_marginStart="@dimen/moduleMarginStart"
-        android:layout_marginTop="@dimen/moduleMarginTop"
-        android:layout_marginEnd="@dimen/moduleMarginEnd"
-        android:text="@string/readingTexts"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
 
-    <Button
-        android:id="@+id/button_start_words"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/moduleButtonHeight"
-        android:layout_marginStart="@dimen/moduleMarginStart"
-        android:layout_marginTop="@dimen/moduleMarginTop"
-        android:layout_marginEnd="@dimen/moduleMarginEnd"
-        app:layout_constraintTop_toBottomOf="@+id/button_start_reading_texts"
-        android:text="@string/words" />
+        android:layout_height="302dp">
 
-    <Button
-        android:id="@+id/button_start_words_learning_mastered"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/moduleButtonHeight"
-        android:layout_marginStart="@dimen/moduleMarginStart"
-        android:layout_marginTop="@dimen/moduleMarginTop"
-        android:layout_marginEnd="@dimen/moduleMarginEnd"
-        app:layout_constraintTop_toBottomOf="@+id/button_start_words"
-        android:text="WORDS 2" />
+        <Button
+            android:id="@+id/button_start_reading_texts"
+            android:drawableTop="@drawable/button_documents"
+            android:padding="16dp"
+            android:layout_width="183dp"
+            android:layout_height="129dp"
+            android:layout_marginStart="@dimen/moduleMarginStart"
+            android:layout_marginTop="@dimen/moduleMarginTop"
+            android:background="@color/white"
+            android:text="Okumalar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button_start_words_revision"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/moduleButtonHeight"
-        android:layout_marginStart="@dimen/moduleMarginStart"
-        android:layout_marginTop="@dimen/moduleMarginTop"
-        android:layout_marginEnd="@dimen/moduleMarginEnd"
-        app:layout_constraintTop_toBottomOf="@+id/button_start_words_learning_mastered"
-        android:text="WORDS REVISION" />
+        <Button
+            android:id="@+id/button_start_words"
+            android:drawableTop="@drawable/button_hello_speech_word"
+            android:padding="16dp"
+            android:layout_width="170dp"
+            android:layout_height="129dp"
+            android:layout_marginStart="@dimen/moduleMarginStart"
+            android:layout_marginTop="@dimen/moduleMarginTop"
+            android:background="@color/white"
+            android:text="KELİMELER"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button_start_reading_texts"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button_start_words_revision"
+            android:drawableTop="@drawable/button_revision"
+            android:padding="16dp"
+            android:layout_width="184dp"
+            android:layout_height="140dp"
+            android:layout_marginStart="@dimen/moduleMarginStart"
+            android:layout_marginTop="@dimen/moduleMarginTop"
+            android:background="@color/white"
+            android:text="KELİME TEKRARI"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_start_words" />
+
+    </android.support.constraint.ConstraintLayout>
+
 
 
 </android.support.constraint.ConstraintLayout>

@@ -20,7 +20,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.ReadingTextsActivity" />
-        <activity android:name=".Activities.WordsActivity2" />
         <activity android:name=".Activities.ReadingTextDetailActivity" />
         <activity android:name=".Activities.AddWordActivity" />
         <activity android:name=".Activities.TranslationActivity" />

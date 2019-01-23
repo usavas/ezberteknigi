@@ -6,4 +6,8 @@
 
     <color name="moduleBackColor">#0000FF</color>
     <color name="moduleColor">#FFFFFF</color>
+
+    <color name="white">#FFF</color>
+
+    <color name="pastelBlue">#779ecb</color>
 </resources>
