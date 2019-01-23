@@ -78,9 +78,11 @@ public class WordsFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_words, container, false);
         tvItemCount = view.findViewById(R.id.text_view_item_count_learning);
+        FloatingActionButton buttonAddNote = view.findViewById(R.id.fab_add_word_learning);
+
         final WordAdapter wordAdapter = new WordAdapter();
 
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_word_learning);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_word);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 //        recyclerView.setHasFixedSize(true);
@@ -89,6 +91,7 @@ public class WordsFragment extends Fragment {
 
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
         if (mParam1 == Word.WORD_ALL) {
+            buttonAddNote.setVisibility(View.VISIBLE);
             wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
@@ -97,6 +100,7 @@ public class WordsFragment extends Fragment {
                 }
             });
         } else if (mParam1 == Word.WORD_LEARNING) {
+            buttonAddNote.setVisibility(View.VISIBLE);
             wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, new Observer<List<Word>>() {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
@@ -105,6 +109,7 @@ public class WordsFragment extends Fragment {
                 }
             });
         } else if (mParam1 == Word.WORD_MASTERED) {
+            buttonAddNote.setVisibility(View.GONE);
             wordViewModel.getAllWordsBasedOnState(Word.WORD_MASTERED).observe(this, new Observer<List<Word>>() {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
@@ -113,6 +118,7 @@ public class WordsFragment extends Fragment {
                 }
             });
         } else if (mParam1 == Word.WORD_REVISION) {
+            buttonAddNote.setVisibility(View.GONE);
             wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
@@ -122,7 +128,6 @@ public class WordsFragment extends Fragment {
             });
         }
 
-        FloatingActionButton buttonAddNote = view.findViewById(R.id.fab_add_word_learning);
         if (mParam1 == Word.WORD_ALL || mParam1 == Word.WORD_LEARNING) {
             buttonAddNote.setOnClickListener(v -> {
                 Intent intent = new Intent(getContext(), AddWordActivity.class);

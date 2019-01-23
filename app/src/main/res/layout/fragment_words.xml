@@ -7,9 +7,9 @@
     android:orientation="horizontal">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_word_learning"
+        android:id="@+id/recycler_view_word"
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="match_parent"
         tools:listitem="@layout/word_item" />
 
     <android.support.design.widget.FloatingActionButton
