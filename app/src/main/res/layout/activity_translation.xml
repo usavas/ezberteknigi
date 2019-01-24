@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.TranslationActivity"
+    android:background="@color/carbon"
     android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView

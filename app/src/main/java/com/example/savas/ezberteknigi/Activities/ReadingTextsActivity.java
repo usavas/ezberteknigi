@@ -27,6 +27,7 @@ public class ReadingTextsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading_texts);
+        setTitle("Kayıtlı Hikayeler");
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view_reading_text);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

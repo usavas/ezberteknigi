@@ -21,6 +21,7 @@ public class WordDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_detail);
+        setTitle("Kelime Detayları");
 
         populateWordContent();
     }

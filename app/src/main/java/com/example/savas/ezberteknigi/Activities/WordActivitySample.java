@@ -25,6 +25,7 @@ public class WordActivitySample extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_sample);
+        setTitle("Sample Word Activity");
 
         List<WordMinimal> wordMinimals = new ArrayList<>();
         WordRepository repo = new WordRepository(getApplication());

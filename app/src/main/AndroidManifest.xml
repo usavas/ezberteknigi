@@ -15,21 +15,24 @@
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".Activities.ReadingTextsActivity" />
-        <activity android:name=".Activities.ReadingTextDetailActivity" />
-        <activity android:name=".Activities.AddWordActivity" />
-        <activity android:name=".Activities.TranslationActivity" />
+        <activity android:name=".Activities.ReadingTextDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Activities.AddWordActivity"
+            android:label="Kelime Ekle"/>
+        <activity android:name=".Activities.TranslationActivity"
+            android:label="Alternatif Çeviriler"/>
         <activity android:name=".Activities.WordActivitySample" />
-        <activity android:name=".Activities.WordDetailActivity" />
+        <activity android:name=".Activities.WordDetailActivity"
+            android:label="Kelime Detayları"/>
         <activity
             android:name=".Activities.WordsActivity"
-            android:label="@string/title_activity_word2"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.WordRevisionActivity" />
+            android:label="Kelimeler" />
+        <activity android:name=".Activities.WordRevisionActivity"
+            android:label="Kelime Tekrarı"/>
 
         <meta-data
             android:name="preloaded_fonts"

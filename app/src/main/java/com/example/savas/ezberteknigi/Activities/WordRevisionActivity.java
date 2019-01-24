@@ -14,6 +14,7 @@ implements WordsFragment.OnFragmentInteractionListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_revision_activity);
+        setTitle("Kelime Tekrarları");
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, WordsFragment.newInstance(Word.WORD_REVISION))
@@ -22,7 +23,7 @@ implements WordsFragment.OnFragmentInteractionListener {
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    public void onFragmentInteraction(String title) {
+        
     }
 }
