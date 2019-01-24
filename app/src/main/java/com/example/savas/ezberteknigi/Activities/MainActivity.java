@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -29,9 +30,12 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnStartWordsLearningMastered;
         btnStartWordsLearningMastered = findViewById(R.id.button_start_words);
-        btnStartWordsLearningMastered.setOnClickListener(v -> {
-            Intent intent = new Intent(this.getApplicationContext(), WordsActivity.class);
-            startActivity(intent);
+        btnStartWordsLearningMastered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this.getApplicationContext(), WordsActivity.class);
+                MainActivity.this.startActivity(intent);
+            }
         });
 
         Button btnStartWordsRevision;
@@ -40,10 +44,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(v.getContext(), WordRevisionActivity.class);
             startActivity(intent);
         });
-
     }
-
-
 
     private void addSampleNews() {
         ReadingTextRepository repository = new ReadingTextRepository(getApplication());

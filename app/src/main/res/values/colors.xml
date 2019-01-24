@@ -6,8 +6,22 @@
 
     <color name="moduleBackColor">#0000FF</color>
     <color name="moduleColor">#FFFFFF</color>
-
     <color name="white">#FFF</color>
 
+
+
+    <color name="vermillon">#DC4A1A</color>
+    <color name="sunshine">#F7B733</color>
+    <color name="sunshine2">#E7A723</color>
+    <color name="sunshine3">#FAFAAA</color>
+    <color name="clean">#DFDCE3</color>
+
+    <color name="lavender">#6D7993</color>
+    <color name="carbon">#BBB</color>
+    <color name="blackboard">#565656</color>
+    <color name="powder">#8FD8D2</color>
+    <color name="orange">#E27D60</color>
     <color name="pastelBlue">#779ecb</color>
+
+
 </resources>
