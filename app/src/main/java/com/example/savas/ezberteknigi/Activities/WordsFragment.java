@@ -52,7 +52,6 @@ public class WordsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public WordsFragment() {
-        // Required empty public constructor
     }
 
     public static WordsFragment newInstance(int param1) {
