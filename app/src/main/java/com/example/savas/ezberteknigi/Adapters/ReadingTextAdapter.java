@@ -17,6 +17,14 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
     private List<ReadingText> readingTexts = new ArrayList();
     private OnItemClickListener listener;
 
+    public interface OnItemClickListener{
+        void onItemClick(ReadingText readingText);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
+
     @NonNull
     @Override
     public ReadingTextHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -63,11 +71,5 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
         }
     }
 
-    public interface OnItemClickListener{
-        void onItemClick(ReadingText readingText);
-    }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.listener = listener;
-    }
 }

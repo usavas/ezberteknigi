@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.savas.ezberteknigi.Models.Word;
@@ -14,31 +15,49 @@ import com.example.savas.ezberteknigi.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.crypto.spec.RC5ParameterSpec;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     private List<Word> words = new ArrayList<>();
     private OnItemClickListener listener;
 
+    public interface OnItemClickListener{
+        void onItemClick(Word word);
+        void onMarkClick(Word word);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
+
     public class WordHolder extends RecyclerView.ViewHolder{
         private TextView tvWord;
         private TextView tvTranslation;
-        private TextView tvExampleSentece;
+        private TextView tvExampleSentence;
         private View viewSubItem;
+        private Button btnMark;
 
         WordHolder(@NonNull View itemView) {
             super(itemView);
             tvWord = itemView.findViewById(R.id.tvItemWord);
             tvTranslation = itemView.findViewById(R.id.sub_item_translation);
-            tvExampleSentece = itemView.findViewById(R.id.sub_item_example_sentence);
+            tvExampleSentence = itemView.findViewById(R.id.sub_item_example_sentence);
             viewSubItem = itemView.findViewById(R.id.sub_item);
+            btnMark = itemView.findViewById(R.id.button_sub_item_item_learn_mastered);
 
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
                 if (listener != null && pos != RecyclerView.NO_POSITION){
                     listener.onItemClick(words.get(pos));
+                }
+            });
+
+            btnMark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (listener != null && pos != RecyclerView.NO_POSITION){
+                        listener.onMarkClick(words.get(pos));
+                    }
                 }
             });
         }
@@ -48,8 +67,13 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
             viewSubItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
             tvWord.setText(word.getWord());
-            tvTranslation.setText("translation: " + word.getTranslation());
-            tvExampleSentece.setText("example: " + word.getExampleSentence());
+            tvTranslation.setText(word.getTranslation());
+            tvExampleSentence.setText(word.getExampleSentence());
+            if (word.getWordState() == Word.WORD_LEARNING){
+                btnMark.setText("ÖĞRENDİM");
+            } else if (word.getWordState() == Word.WORD_MASTERED) {
+                btnMark.setText("KELİMEYİ HATIRLAYAMADIM");
+            }
         }
     }
 
@@ -169,11 +193,5 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         MINUTE, HOUR, DAY, SECOND
     }
 
-    public interface OnItemClickListener{
-        void onItemClick(Word word);
-    }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.listener = listener;
-    }
 }

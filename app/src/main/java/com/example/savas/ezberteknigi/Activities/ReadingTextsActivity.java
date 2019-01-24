@@ -21,6 +21,7 @@ public class ReadingTextsActivity extends AppCompatActivity {
 
     public static String EXTRA_READING_TEXT_DETAIL_HEADER = "EXTRA_READING_TEXT_DETAIL_HEADER";
     public static String EXTRA_READING_TEXT_DETAIL_CONTENT = "EXTRA_READING_TEXT_DETAIL_CONTENT";
+    public static String EXTRA_READING_TEXT_DETAIL_ID = "EXTRA_READING_TEXT_DETAIL_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +38,15 @@ public class ReadingTextsActivity extends AppCompatActivity {
         readingTextViewModel = ViewModelProviders.of(this).get(ReadingTextViewModel.class);
         readingTextViewModel.getAllReadingTexts().observe(this, readingTexts -> readingTextAdapter.setReadingTexts(readingTexts));
 
-        readingTextAdapter.setOnItemClickListener(readingText -> {
-            Intent intent = new Intent(getApplicationContext(), ReadingTextDetailActivity.class);
-            intent.putExtra(EXTRA_READING_TEXT_DETAIL_HEADER, readingText.getHeader());
-            intent.putExtra(EXTRA_READING_TEXT_DETAIL_CONTENT, readingText.getContent());
-            startActivity(intent);
+        readingTextAdapter.setOnItemClickListener(new ReadingTextAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(ReadingText readingText) {
+                Intent intent = new Intent(ReadingTextsActivity.this.getApplicationContext(), ReadingTextDetailActivity.class);
+                intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
+                intent.putExtra(EXTRA_READING_TEXT_DETAIL_HEADER, readingText.getHeader());
+                intent.putExtra(EXTRA_READING_TEXT_DETAIL_CONTENT, readingText.getContent());
+                ReadingTextsActivity.this.startActivity(intent);
+            }
         });
     }
 }

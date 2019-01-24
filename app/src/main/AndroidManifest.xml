@@ -29,11 +29,12 @@
             android:name=".Activities.WordsActivity"
             android:label="@string/title_activity_word2"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.WordRevisionActivity"></activity>
+        <activity android:name=".Activities.WordRevisionActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

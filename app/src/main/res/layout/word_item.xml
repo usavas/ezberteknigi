@@ -61,9 +61,10 @@
             <Button
                 android:id="@+id/button_sub_item_item_learn_mastered"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="@dimen/textViewMargin"
                 android:layout_marginStart="@dimen/textViewMargin"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="@dimen/textViewMargin"
                 android:padding="@dimen/textViewPadding"
                 android:text="MARK AS MASTERED/LEARNING"

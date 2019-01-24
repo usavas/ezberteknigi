@@ -128,20 +128,28 @@ public class WordsFragment extends Fragment {
             });
         }
 
+        wordAdapter.setOnItemClickListener(new WordAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Word word) {
+
+            }
+            @Override
+            public void onMarkClick(Word word) {
+                if (word.getWordState() == Word.WORD_LEARNING){
+                    word.setWordState(Word.WORD_MASTERED);
+                } else if (word.getWordState() == Word.WORD_MASTERED){
+                    word.setWordState(Word.WORD_LEARNING);
+                }
+                wordViewModel.update(word);
+            }
+        });
+
         if (mParam1 == Word.WORD_ALL || mParam1 == Word.WORD_LEARNING) {
             buttonAddNote.setOnClickListener(v -> {
                 Intent intent = new Intent(getContext(), AddWordActivity.class);
                 startActivityForResult(intent, ADD_WORD_REQUEST);
             });
 
-//            wordAdapter.setOnItemClickListener(word -> {
-//                Intent intent = new Intent(getContext(), WordDetailActivity.class);
-//                intent.putExtra(EXTRA_WORD_ID, word.getWordId());
-//                intent.putExtra(EXTRA_WORD_WORD, word.getWord());
-//                intent.putExtra(EXTRA_WORD_TRANSLATION, word.getTranslation());
-//                intent.putExtra(EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
-//                startActivity(intent);
-//            });
         } else {
 
         }

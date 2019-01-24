@@ -3,6 +3,7 @@ package com.example.savas.ezberteknigi.Activities;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +24,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 
-public class ReadingTextDetailActivity extends AppCompatActivity {
+public class ReadingTextDetailActivity extends AppCompatActivity implements WordDialogFragment.DialogListener {
 
     public WordRepository wordRepository;
 
@@ -44,6 +45,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
         readingText = new ReadingText();
         Intent sender = getIntent();
+        readingText.setReadingTextId(sender.getIntExtra(ReadingTextsActivity.EXTRA_READING_TEXT_DETAIL_ID, 0));
         readingText.setHeader(sender.getStringExtra(ReadingTextsActivity.EXTRA_READING_TEXT_DETAIL_HEADER));
         readingText.setContent(sender.getStringExtra(ReadingTextsActivity.EXTRA_READING_TEXT_DETAIL_CONTENT));
 
@@ -73,23 +75,17 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
                 //there should be many more conditions and/or regex processes on the string got from edittext
                 if (selectedText.trim() != ""
-                        && selectedText.trim().split(" ").length == 1){
+                        && selectedText.trim().split(" ").length == 1) {
                     try {
-                        //TODO: instead of sending two queries, just use the second one
-
                         Word word = wordRepository.getWordByWord(selectedText.trim());
                         if (word != null) {
-                            Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
-                            intent.putExtra(WordsFragment.EXTRA_WORD_ID, word.getWordId());
-                            intent.putExtra(WordsFragment.EXTRA_WORD_WORD, word.getWord());
-                            intent.putExtra(WordsFragment.EXTRA_WORD_TRANSLATION, word.getTranslation());
-                            intent.putExtra(WordsFragment.EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
-                            startActivity(intent);
+                            //TODO: open show word detail fragment (first create the fragment :D)
+
+
+                            OpenWordDetailsActivity(word);
                         } else {
-                            Intent intent = new Intent(getApplicationContext(), AddWordActivity.class);
-                            intent.putExtra(WORD_TO_PASS_FOR_TRANSLATION, selectedText); //selectedText
-                            intent.putExtra(EXAMPLE_SENTENCE_TO_PASS, selectedSentence);
-                            startActivityForResult(intent, RESULT_CODE_FOR_READING);
+                            openDialog(selectedText, "", selectedSentence);
+                            //penAddWordActivityForResult(selectedText, selectedSentence);
                         }
                     } catch (ExecutionException e) {
                         e.printStackTrace();
@@ -97,16 +93,43 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-            }, 10);
+            }, 1000);
             return false;
         });
     }
 
-    public static String getSelectedSentence(String text, int selectionIndex, int finisherIndex){
-        Log.wtf("selection index", String.valueOf(selectionIndex));
-        Log.wtf("selection index", String.valueOf(finisherIndex));
+    private void OpenWordDetailsActivity(Word word) {
+        Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
+        intent.putExtra(WordsFragment.EXTRA_WORD_ID, word.getWordId());
+        intent.putExtra(WordsFragment.EXTRA_WORD_WORD, word.getWord());
+        intent.putExtra(WordsFragment.EXTRA_WORD_TRANSLATION, word.getTranslation());
+        intent.putExtra(WordsFragment.EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
+        startActivity(intent);
+    }
 
-        return text.substring(getNearestStartingIndex(text, selectionIndex), getNearestFinisherIndex(text, finisherIndex));
+    private void OpenAddWordActivityForResult(String selectedText, String selectedSentence) {
+        Intent intent = new Intent(getApplicationContext(), AddWordActivity.class);
+        intent.putExtra(WORD_TO_PASS_FOR_TRANSLATION, selectedText); //selectedText
+        intent.putExtra(EXAMPLE_SENTENCE_TO_PASS, selectedSentence);
+        startActivityForResult(intent, RESULT_CODE_FOR_READING);
+    }
+
+    private void openDialog(String word, String translation, String exampleSentence) {
+        WordDialogFragment wordDialogFragment = WordDialogFragment.newInstance(word, translation, exampleSentence);
+        wordDialogFragment.show(getSupportFragmentManager(), "example dialog");
+    }
+
+    @Override
+    public void insertWord(String word, String translation, String exampleSentence, int learningMastered) {
+        Word w = new Word(word, translation, readingText.getReadingTextId(), exampleSentence);
+        w.setWordState(learningMastered);
+        wordRepository.insert(w);
+
+        Log.wtf( "READINGTEXTDETAIL", "WORD INSERTED TO DB, masteredLearning: " + learningMastered);
+    }
+
+    public static String getSelectedSentence(String text, int selectionIndex, int finisherIndex) {
+        return text.substring(getNearestStartingIndex(text, selectionIndex), getNearestFinisherIndex(text, finisherIndex)).trim();
     }
 
     public static List<String> getSentences(String text, String word) {
@@ -114,21 +137,21 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         String[] sentences = END_OF_SENTENCE.split(text);
         List<String> sentencesContaining = new ArrayList<>();
         for (String sentence : sentences) {
-            if (sentence.contains(word.toLowerCase())){
+            if (sentence.contains(word.toLowerCase())) {
                 sentencesContaining.add(sentence);
             }
         }
         return sentencesContaining;
     }
 
-    private static int getNearestStartingIndex(String text, int index){
+    private static int getNearestStartingIndex(String text, int index) {
         String[] sentenceSeparators = new String[]{
                 "? ", ". ", "! ", "... ", ".. ", ".\n", ".\t"
         };
         int nearestStarterIndex = 0;
-        for (String separator: sentenceSeparators) {
+        for (String separator : sentenceSeparators) {
             int startingCharIndex = text.lastIndexOf(separator, index) + 1;
-            if (startingCharIndex > nearestStarterIndex){
+            if (startingCharIndex > nearestStarterIndex) {
                 nearestStarterIndex = startingCharIndex;
             }
         }
@@ -136,14 +159,14 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         return nearestStarterIndex;
     }
 
-    private static int getNearestFinisherIndex(String text, int index){
+    private static int getNearestFinisherIndex(String text, int index) {
         String[] sentenceSeparators = new String[]{
                 "? ", ". ", "! ", "... ", ".. ", ".\n", ".\t"
         };
         int nearestFinisherIndex = text.length() - 1;
-        for (String separator: sentenceSeparators) {
+        for (String separator : sentenceSeparators) {
             int finishingCharIndex = text.indexOf(separator, index) + 1;
-            if (finishingCharIndex < nearestFinisherIndex && finishingCharIndex > 0){
+            if (finishingCharIndex < nearestFinisherIndex && finishingCharIndex > 0) {
                 nearestFinisherIndex = finishingCharIndex;
             }
         }

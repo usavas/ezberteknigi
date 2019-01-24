@@ -69,14 +69,15 @@ public class TranslationActivity extends AppCompatActivity {
             finish();
         });
 
-        adapter.setOnItemClickListener((v, translation) -> {
-            if (arrResultOfTranslation.contains(translation)){
-                arrResultOfTranslation.remove(translation);
+        adapter.setOnItemClickListener(new TranslationAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, String translation) {
+                if (arrResultOfTranslation.contains(translation)) {
+                    arrResultOfTranslation.remove(translation);
 
-            }
-            else {
-
-                arrResultOfTranslation.add(translation);
+                } else {
+                    arrResultOfTranslation.add(translation);
+                }
             }
         });
     }
