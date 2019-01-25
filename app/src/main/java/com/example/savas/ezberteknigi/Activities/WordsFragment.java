@@ -165,7 +165,7 @@ public class WordsFragment extends Fragment {
                     if (i == ItemTouchHelper.LEFT || i == ItemTouchHelper.RIGHT) {
 
                         Word word = wordAdapter.getWordAt(viewHolder.getAdapterPosition());
-                        Date prevDateToRollBack = word.getDateSaved();
+                        Date prevDateToRollBack = word.getDateLastRevision();
                         updateRevision(word);
 
                         Snackbar snackbar = Snackbar.make(view,

@@ -1,0 +1,34 @@
+{"books": 
+    [
+        {
+            "title": "",
+            "author": "",
+            "chapters" : [
+                {
+                    "chapter1": "...chapter content placeholder..."
+                },
+                {
+                    "chapter2": "........."
+                },
+                {
+                    "chapter3": "........."
+                }
+            ]
+        },
+        {
+            "title": "",
+            "author": "",
+            "chapters" : [
+                {
+                    "chapter1": "...chapter content placeholder..."
+                },
+                {
+                    "chapter2": "........."
+                },
+                {
+                    "chapter3": "........."
+                }
+            ]
+        }
+    ]
+}

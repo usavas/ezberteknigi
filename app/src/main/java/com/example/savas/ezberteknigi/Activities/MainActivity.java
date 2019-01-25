@@ -11,6 +11,9 @@ import android.widget.Toast;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static com.example.savas.ezberteknigi.Models.ReadingText.DOCUMENT_TYPE_NEWS;
 
@@ -43,6 +46,17 @@ public class MainActivity extends AppCompatActivity {
         btnStartWordsRevision.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), WordRevisionActivity.class);
             startActivity(intent);
+        });
+
+        Button btnDeneme = findViewById(R.id.button);
+        btnDeneme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseApp.initializeApp(getApplicationContext());
+                DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("message");
+
+                myRef.setValue("Hello, World!");
+            }
         });
     }
 

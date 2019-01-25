@@ -61,7 +61,7 @@ public class Word {
     private int detailsSeenCount;
 
     @Ignore
-    public Word(){
+    public Word() {
 
     }
 
@@ -69,14 +69,15 @@ public class Word {
     public Word(String word,
                 String translation,
                 int readingTextId,
-                String exampleSentence){
+                String exampleSentence) {
         this.word = word;
         this.translation = translation;
         this.readingTextId = readingTextId;
         this.exampleSentence = exampleSentence;
 
-        this.dateSaved =  new Date();
-        this.revisionPeriodCount = 0 ;
+        this.dateSaved = new Date();
+        this.dateLastRevision = new Date();
+        this.revisionPeriodCount = 0;
 
         this.wordState = 0;
         this.errorCount = 0;
@@ -106,36 +107,37 @@ public class Word {
         this.screeningCount = screeningCount;
         this.detailsSeenCount = detailsSeenCount;
 
-        this.dateSaved =  new Date();
+        this.dateSaved = new Date();
+        this.dateLastRevision = new Date();
     }
 
     @Ignore
     public long getTimeElapsedInSeconds() {
-        return getDateDiff(getDateSaved(), TimeUnit.SECONDS);
+        return getDateDiff(TimeUnit.SECONDS);
     }
 
     @Ignore
-    public long getTimeElapsedInMinutes () {
-        return getDateDiff(getDateSaved(), TimeUnit.MINUTES);
+    public long getTimeElapsedInMinutes() {
+        return getDateDiff(TimeUnit.MINUTES);
     }
 
     @Ignore
-    public long getTimeElapsedInHours () {
-        return getDateDiff(getDateSaved(), TimeUnit.HOURS);
+    public long getTimeElapsedInHours() {
+        return getDateDiff(TimeUnit.HOURS);
     }
 
     @Ignore
-    public long getTimeElapsedInDays () {
-        return getDateDiff(getDateSaved(), TimeUnit.DAYS);
+    public long getTimeElapsedInDays() {
+        return getDateDiff(TimeUnit.DAYS);
     }
 
     @Ignore
-    private static long getDateDiff(Date dateSaved, TimeUnit timeUnit) {
+    private long getDateDiff(TimeUnit timeUnit) {
         Date currDate = new Date();
         long currTime = currDate.getTime();
-        long savedTime = dateSaved.getTime();
+        long updateTime = dateLastRevision.getTime();
 
-        long diffInMilliSeconds = currTime - savedTime;
+        long diffInMilliSeconds = currTime - updateTime;
         return timeUnit.convert(diffInMilliSeconds, TimeUnit.MILLISECONDS);
     }
 
@@ -187,15 +189,18 @@ public class Word {
         return screeningCount;
     }
 
-    public int getDetailsSeenCount() { return detailsSeenCount;}
-
+    public int getDetailsSeenCount() {
+        return detailsSeenCount;
+    }
 
 
     public void setWordId(int id) {
         this.wordId = id;
     }
 
-    public void setWord(String word) {this.word = word;}
+    public void setWord(String word) {
+        this.word = word;
+    }
 
     public void setTranslation(String translation) {
         this.translation = translation;

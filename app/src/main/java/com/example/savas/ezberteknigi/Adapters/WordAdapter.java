@@ -120,13 +120,13 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         notifyDataSetChanged();
     }
 
-    public static int REV_1_MIN = 0;
+    public static int REV_1_MIN = 30;
     public static int REV_2_HOUR = 1;
     public static int REV_3_HOUR = 2;
-    public static int REV_4_HOUR = 3;
-    public static int REV_5_HOUR = 4;
-    public static int REV_6_HOUR = 5;
-    public static int REV_7_DAY = 6;
+    public static int REV_4_HOUR = 6;
+    public static int REV_5_HOUR = 12;
+    public static int REV_6_HOUR = 24;
+    public static int REV_7_DAY = 5;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setWordsRevision(List<Word> _words) {
@@ -151,12 +151,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 //        } else {
 
         resultWords.addAll(getWordRevisionList(_words, 0, TimeType.MINUTE, REV_1_MIN));
-        resultWords.addAll(getWordRevisionList(_words, 1, TimeType.MINUTE, REV_2_HOUR));
-        resultWords.addAll(getWordRevisionList(_words, 2, TimeType.MINUTE, REV_3_HOUR));
-        resultWords.addAll(getWordRevisionList(_words, 3, TimeType.MINUTE, REV_4_HOUR));
-        resultWords.addAll(getWordRevisionList(_words, 4, TimeType.MINUTE, REV_5_HOUR));
-        resultWords.addAll(getWordRevisionList(_words, 5, TimeType.MINUTE, REV_6_HOUR));
-        resultWords.addAll(getWordRevisionList(_words, 6, TimeType.MINUTE, REV_7_DAY));
+        resultWords.addAll(getWordRevisionList(_words, 1, TimeType.HOUR, REV_2_HOUR));
+        resultWords.addAll(getWordRevisionList(_words, 2, TimeType.HOUR, REV_3_HOUR));
+        resultWords.addAll(getWordRevisionList(_words, 3, TimeType.HOUR, REV_4_HOUR));
+        resultWords.addAll(getWordRevisionList(_words, 4, TimeType.HOUR, REV_5_HOUR));
+        resultWords.addAll(getWordRevisionList(_words, 5, TimeType.HOUR, REV_6_HOUR));
+        resultWords.addAll(getWordRevisionList(_words, 6, TimeType.DAY, REV_7_DAY));
         this.words = resultWords;
         notifyDataSetChanged();
 //        }
