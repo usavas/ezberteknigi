@@ -74,7 +74,6 @@ public class WordsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_words, container, false);
         tvItemCount = view.findViewById(R.id.text_view_item_count_learning);
         FloatingActionButton buttonAddNote = view.findViewById(R.id.fab_add_word_learning);
@@ -166,13 +165,8 @@ public class WordsFragment extends Fragment {
                     if (i == ItemTouchHelper.LEFT || i == ItemTouchHelper.RIGHT) {
 
                         Word word = wordAdapter.getWordAt(viewHolder.getAdapterPosition());
-
-                        Log.wtf("ELAPSED MINUTES", String.valueOf(word.getTimeElapsedInMinutes()));
-                        Log.wtf("DATE SAVED", String.valueOf(word.getDateSaved()));
-                        Log.wtf("CURRENT DATE", String.valueOf(new Date()));
-
-                        word.setRevisionPeriodCount(word.getRevisionPeriodCount() + 1);
-                        wordViewModel.update(word);
+                        Date prevDateToRollBack = word.getDateSaved();
+                        updateRevision(word);
 
                         Snackbar snackbar = Snackbar.make(view,
                                 "Kelime gözden geçirildi: " + word.getWord(),
@@ -180,8 +174,7 @@ public class WordsFragment extends Fragment {
                         snackbar.setAction("İPTAL ET", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                word.setRevisionPeriodCount(word.getRevisionPeriodCount() - 1);
-                                wordViewModel.update(word);
+                                rollBackRevision(word, prevDateToRollBack);
                             }
                         });
                         snackbar.show();
@@ -190,28 +183,23 @@ public class WordsFragment extends Fragment {
             }).attachToRecyclerView(recyclerView);
         }
 
-        if (mParam1 == Word.WORD_MASTERED || mParam1 == Word.WORD_LEARNING) {
-            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.DOWN) {
-                @Override
-                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                    return false;
-                }
-
-                @Override
-                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-                    if (mParam1 == Word.WORD_LEARNING || mParam1 == Word.WORD_MASTERED) {
-                        if (i == ItemTouchHelper.DOWN) {
-                            //TODO: show item details like in the adapter
-                            Snackbar.make(view, "SWIPED DOWN, word item details shown", Snackbar.LENGTH_LONG).show();
-                        }
-                    }
-                }
-            }).attachToRecyclerView(recyclerView);
-        }
-
         return view;
     }
 
+    private void updateRevision(Word word) {
+        word.setRevisionPeriodCount(word.getRevisionPeriodCount() + 1);
+        word.setDateLastRevision(new Date());
+        wordViewModel.update(word);
+    }
+    private void rollBackRevision(Word word, Date prevDateToRollBack) {
+        word.setRevisionPeriodCount(word.getRevisionPeriodCount() - 1);
+        word.setDateLastRevision(prevDateToRollBack);
+        wordViewModel.update(word);
+    }
+
+    /*
+    * Return from AddWordActivity
+    * */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

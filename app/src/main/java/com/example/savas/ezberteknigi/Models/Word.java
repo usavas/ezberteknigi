@@ -43,6 +43,10 @@ public class Word {
     @TypeConverters({TimeStampConverter.class})
     private Date dateSaved;
 
+    @ColumnInfo(name = "revision_date")
+    @TypeConverters(TimeStampConverter.class)
+    private Date dateLastRevision;
+
     @ColumnInfo(name = "word_state")
     private int wordState;
     @ColumnInfo(name = "revision_period_count")
@@ -159,6 +163,10 @@ public class Word {
         return dateSaved;
     }
 
+    public Date getDateLastRevision() {
+        return dateLastRevision;
+    }
+
     public int getWordState() {
         return wordState;
     }
@@ -181,6 +189,8 @@ public class Word {
 
     public int getDetailsSeenCount() { return detailsSeenCount;}
 
+
+
     public void setWordId(int id) {
         this.wordId = id;
     }
@@ -201,6 +211,10 @@ public class Word {
 
     public void setDateSaved(Date dateSaved) {
         this.dateSaved = dateSaved;
+    }
+
+    public void setDateLastRevision(Date dateLastRevision) {
+        this.dateLastRevision = dateLastRevision;
     }
 
     public void setWordState(int wordState) {
