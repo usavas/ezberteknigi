@@ -42,7 +42,6 @@ public class WordDialogFragment extends AppCompatDialogFragment {
 
         builder.setView(view);
 
-
         editWord = view.findViewById(R.id.edit_word_word_fragment);
         editTranslation = view.findViewById(R.id.edit_word_translation_fragment);
         editExampleSentence = view.findViewById(R.id.edit_word_example_sentence_fragment);
