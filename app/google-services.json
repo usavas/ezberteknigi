@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "353570654383",
+    "firebase_url": "https://ezberteknigi.firebaseio.com",
+    "project_id": "ezberteknigi",
+    "storage_bucket": "ezberteknigi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353570654383:android:f11a951a8ca6a4bf",
+        "android_client_info": {
+          "package_name": "com.example.savas.ezberteknigi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353570654383-roll3cnpava3v1c22q962n975pbfmao2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.savas.ezberteknigi",
+            "certificate_hash": "6a38affc01aabf6a51a5119617d4c0c4a5b143dd"
+          }
+        },
+        {
+          "client_id": "353570654383-007t6f4j4in2j56kohhbdbp16f4c6fok.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy72uEzZamr1tALDbxyGE9K1axsZNRvU8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353570654383-007t6f4j4in2j56kohhbdbp16f4c6fok.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
