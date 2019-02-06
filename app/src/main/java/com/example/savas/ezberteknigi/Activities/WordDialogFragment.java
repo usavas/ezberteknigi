@@ -42,6 +42,7 @@ public class WordDialogFragment extends AppCompatDialogFragment {
 
         builder.setView(view);
 
+
         editWord = view.findViewById(R.id.edit_word_word_fragment);
         editTranslation = view.findViewById(R.id.edit_word_translation_fragment);
         editExampleSentence = view.findViewById(R.id.edit_word_example_sentence_fragment);
@@ -50,8 +51,8 @@ public class WordDialogFragment extends AppCompatDialogFragment {
         editTranslation.setText(getArguments().getString("TRANSLATION"));
         editExampleSentence.setText(getArguments().getString("EXAMPLE_SENTENCE"));
 
-        Button btnAddWord = view.findViewById(R.id.button_add_word_fragment);
-        btnAddWord.setOnClickListener(new View.OnClickListener() {
+        Button btnAddLearning = view.findViewById(R.id.button_add_word_fragment);
+        btnAddLearning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String word = editWord.getText().toString();
@@ -63,8 +64,8 @@ public class WordDialogFragment extends AppCompatDialogFragment {
             }
         });
 
-        Button btnCancel = view.findViewById(R.id.button_add_word_mastered_fragment);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        Button btnAddMastered = view.findViewById(R.id.button_add_word_mastered_fragment);
+        btnAddMastered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String word = editWord.getText().toString();
