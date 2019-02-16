@@ -52,12 +52,17 @@ public class MainActivity extends AppCompatActivity {
         btnDeneme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseApp.initializeApp(getApplicationContext());
-                DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("message");
-
-                myRef.setValue("Hello, World!");
+                Intent intent = new Intent(MainActivity.this, BottomNavigationActivity.class);
+                startActivity(intent);
             }
         });
+    }
+
+    private void sendDataToFirebase() {
+        FirebaseApp.initializeApp(getApplicationContext());
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("message");
+
+        myRef.setValue("Hello, World!");
     }
 
     private void addSampleNews() {

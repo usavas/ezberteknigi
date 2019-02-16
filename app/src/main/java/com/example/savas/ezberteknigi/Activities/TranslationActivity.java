@@ -90,6 +90,7 @@ public class TranslationActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String wordToSearch = intent.getStringExtra(AddWordActivity.EXTRA_WORD_TO_GET_TRANSLATION);
         try {
+            //web API is no longer available
             JSONObject jsonObject = new JsonTask().execute("http://cevir.ws/v1?q="+ wordToSearch +"&m=25&p=exact&l=en").get();
             adapter.setTranslations(retrieveTranslations(jsonObject));
         } catch (ExecutionException e) {
@@ -97,7 +98,6 @@ public class TranslationActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 
     @NonNull
