@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_documents"
+        android:icon="@drawable/button_documents"
+        android:title="Okumalar" />
+
+    <item
+        android:id="@+id/navigation_words"
+        android:icon="@drawable/button_hello_speech_word"
+        android:title="Kelimeler" />
+
+    <item
+        android:id="@+id/navigation_revision_words"
+        android:icon="@drawable/button_revision"
+        android:title="Kelime Tekrarı" />
+
+</menu>
