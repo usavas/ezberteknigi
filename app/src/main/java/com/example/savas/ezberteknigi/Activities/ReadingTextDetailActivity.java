@@ -45,9 +45,9 @@ public class ReadingTextDetailActivity extends AppCompatActivity implements Word
 
         readingText = new ReadingText();
         Intent sender = getIntent();
-        readingText.setReadingTextId(sender.getIntExtra(ReadingTextsActivity.EXTRA_READING_TEXT_DETAIL_ID, 0));
-        readingText.setHeader(sender.getStringExtra(ReadingTextsActivity.EXTRA_READING_TEXT_DETAIL_HEADER));
-        readingText.setContent(sender.getStringExtra(ReadingTextsActivity.EXTRA_READING_TEXT_DETAIL_CONTENT));
+        readingText.setReadingTextId(sender.getIntExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_ID, 0));
+        readingText.setHeader(sender.getStringExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_HEADER));
+        readingText.setContent(sender.getStringExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_CONTENT));
 
         tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
         tvContent = findViewById(R.id.text_view_reading_text_detail_content);

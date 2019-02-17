@@ -25,7 +25,7 @@ public class Word {
     public final static int WORD_ALL = 3;
 
     public final static String EXAMPLE_SENTENCE_DELIMITER_REGEX = "##";
-    public final static int READING_TEXT_ID_DEFAULT = -1;
+    public final static int READING_TEXT_ID_DEFAULT = 0;
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "word_id")

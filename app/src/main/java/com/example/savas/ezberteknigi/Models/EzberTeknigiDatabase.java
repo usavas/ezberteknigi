@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-@Database(entities = {ReadingText.class, Word.class}, version = 8)
+@Database(entities = {ReadingText.class, Word.class}, version = 10)
 public abstract class EzberTeknigiDatabase extends RoomDatabase {
 
     private static EzberTeknigiDatabase instance;
@@ -43,13 +43,13 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             Log.d("EzberTeknigiDatabase", "instance= " + ((instance == null) ? "null" : instance.toString()));
-//            new PopulateDbAsyncTask(instance).execute();
+            new PopulateDbAsyncTask(instance).execute();
         }
 
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-            new PopulateDbAsyncTask(instance).execute();
+//            new PopulateDbAsyncTask(instance).execute();
         }
     };
 
@@ -113,47 +113,33 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
                     "US President Donald Trump has said he is willing to intervene in the case.\n" +
                     "\n" +
                     "The arrest came against the background of an increasingly acrimonious trade dispute between the US and China.";
-            String newsContent = "this is the news content. reading text may be as long as it would this is the news content. " +
-                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it wouldthis " +
-                    "is the news content. reading text may be as long as it wouldthis is the news content. reading text may be as " +
-                    "long as it wouldthis is the news content. reading text may be as long as it wouldthis is the news content. " +
-                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it wouldthis " +
-                    "is the news content. reading text may be as long as it wouldthis is the news content. reading text may be as " +
-                    "long as it wouldthis is the news content. reading text may be as long as it wouldthis is the news content. " +
-                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it wouldthis " +
-                    "is the news content. reading text may be as long as it wouldthis is the news content. reading text may be as l" +
-                    "ong as it wouldthis is the news content. reading text may be as long as it wouldthis is the news content. " +
-                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
-                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
-                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
-                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
-                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
-                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
-                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would" +
-                    "reading text may be as long as it wouldthis is the news content. reading text may be as long as it would";
+            String newsContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam nulla facilisi cras fermentum odio eu feugiat pretium. Sagittis purus sit amet volutpat consequat mauris nunc congue nisi. Eget felis eget nunc lobortis mattis. Duis tristique sollicitudin nibh sit amet commodo nulla. Morbi enim nunc faucibus a pellentesque sit. Enim sed faucibus turpis in eu mi bibendum neque egestas. Mauris cursus mattis molestie a iaculis. Dignissim convallis aenean et tortor at risus viverra adipiscing. Urna cursus eget nunc scelerisque viverra. Eu sem integer vitae justo eget magna fermentum iaculis. Auctor eu augue ut lectus arcu bibendum at. Fermentum iaculis eu non diam. Tellus orci ac auctor augue mauris augue neque gravida in. Ullamcorper sit amet risus nullam eget. Sodales ut etiam sit amet nisl purus in mollis. Amet consectetur adipiscing elit ut aliquam. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa.\n" +
+                    "\n" +
+                    "Laoreet id donec ultrices tincidunt. Commodo odio aenean sed adipiscing diam. Nunc vel risus commodo viverra maecenas accumsan lacus. Ultrices gravida dictum fusce ut placerat. Sed viverra tellus in hac. Vitae ultricies leo integer malesuada nunc. Turpis egestas integer eget aliquet. Feugiat nisl pretium fusce id. Elementum eu facilisis sed odio morbi quis commodo odio. Fames ac turpis egestas integer eget aliquet nibh. Cras tincidunt lobortis feugiat vivamus at augue eget arcu. Sed euismod nisi porta lorem mollis aliquam. Aliquet porttitor lacus luctus accumsan tortor posuere ac. Elementum curabitur vitae nunc sed. Vel quam elementum pulvinar etiam non quam lacus suspendisse faucibus. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Id aliquet risus feugiat in. Tellus cras adipiscing enim eu turpis egestas. Ut enim blandit volutpat maecenas volutpat.";
 
-            readingTextDao.insert(new ReadingText("en", "BBC", "header", ReadingText.DOCUMENT_TYPE_NEWS, 7, newsContent));
-            readingTextDao.insert(new ReadingText("en", "Guardian", "header1", ReadingText.DOCUMENT_TYPE_NEWS, 6, news));
-            readingTextDao.insert(new ReadingText("en", "Tom Sawyer", "header2", ReadingText.DOCUMENT_TYPE_BOOK, 3, "this is the story content. reading text may be as long as it would"));
+            readingTextDao.insert(new ReadingText("en", "BBC", "BBC", ReadingText.DOCUMENT_TYPE_NEWS, 7, news));
+            readingTextDao.insert(new ReadingText("en", "Guardian", "Guardian", ReadingText.DOCUMENT_TYPE_NEWS, 6, newsContent));
+            readingTextDao.insert(new ReadingText("en", "Tom Sawyer", "Tom Sawyer", ReadingText.DOCUMENT_TYPE_BOOK, 3, newsContent));
+            readingTextDao.insert(new ReadingText("en", "Another story", "Another story", ReadingText.DOCUMENT_TYPE_BOOK, 3, newsContent));
+            readingTextDao.insert(new ReadingText("en", "Yet Another story", "Yet Another story", ReadingText.DOCUMENT_TYPE_BOOK, 3, newsContent));
+            readingTextDao.insert(new ReadingText("en", "War and Peace", "War and Peace", ReadingText.DOCUMENT_TYPE_BOOK, 3, newsContent));
+            readingTextDao.insert(new ReadingText("en", "White Fang", "White Fang", ReadingText.DOCUMENT_TYPE_BOOK, 3, newsContent));
 
+            wordDao.insert(new Word("word", "kelime", 1, "this is a word example sentence"));
+            wordDao.insert(new Word("coffee", "kahve", 0, "I drink coffee"));
+            wordDao.insert(new Word("soda", "maden suyu", 0, "I drink soda"));
+            wordDao.insert(new Word("world", "dünya", 0, "I see world"));
+            wordDao.insert(new Word("point", "nokta", 0, "I draw point"));
+            wordDao.insert(new Word("sentence", "cümle", 0, "This is rather a long sentence, because some sentences should be longer than usual for test purposes"));
+            wordDao.insert(new Word("advertisement", "reklam", 0, "I see advertisement in every single video on youtube"));
 
-            long t = Calendar.getInstance().getTimeInMillis();
-
-//            wordDao.insert(new Word("word", "kelime", 1, "this is a word example sentence", new Date(t + 60000)));
-//            wordDao.insert(new Word("coffee", "kahve", 0, "I drink coffee", new Date(t + 60000)));
-//            wordDao.insert(new Word("soda", "maden suyu", 0, "I drink soda", new Date(t - 10000)) );
-//            wordDao.insert(new Word("world", "dünya", 0, "I see world",new Date(t - 10000)));
-//            wordDao.insert(new Word("point", "nokta", 0, "I draw point", new Date(t + 10000)));
-//            wordDao.insert(new Word("sentence", "cümle", 0, "This is rather a long sentence, because some sentences should be longer than usual for test purposes", new Date(t + 30000)));
-//            wordDao.insert(new Word("advertisement", "reklam", 0, "I see advertisement in every single video on youtube", new Date(t + 20000)));
-
-            wordDao.insert(new Word("book", "kitap", 1, "this is a book example sentence",0, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("music", "müzik", 2, "this is a music example sentence", 0, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("art", "sanat", 2, "this is an art example sentence", 0, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("ballet", "bale", 2, "this is a ballet example sentence", 0, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("theatre", "tiyatro", 2, "this is a theatre example sentence", 1, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("nay", "ney", 2, "this is a nay example sentence", 1, 0, 0, 0, 0, 0));
-            wordDao.insert(new Word("violin", "keman", 3, "this is a violin example sentence", 1, 0, 0, 0, 0, 0));
+//            wordDao.insert(new Word("book", "kitap", 1, "this is a book example sentence",0, 0, 0, 0, 0, 0));
+//            wordDao.insert(new Word("music", "müzik", 2, "this is a music example sentence", 0, 0, 0, 0, 0, 0));
+//            wordDao.insert(new Word("art", "sanat", 2, "this is an art example sentence", 0, 0, 0, 0, 0, 0));
+//            wordDao.insert(new Word("ballet", "bale", 2, "this is a ballet example sentence", 0, 0, 0, 0, 0, 0));
+//            wordDao.insert(new Word("theatre", "tiyatro", 2, "this is a theatre example sentence", 1, 0, 0, 0, 0, 0));
+//            wordDao.insert(new Word("nay", "ney", 2, "this is a nay example sentence", 1, 0, 0, 0, 0, 0));
+//            wordDao.insert(new Word("violin", "keman", 3, "this is a violin example sentence", 1, 0, 0, 0, 0, 0));
 
             return null;
         }

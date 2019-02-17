@@ -4,12 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/carbon"
-    tools:context=".Activities.ReadingTextsActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".Activities.ReadingTextsFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_reading_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/reading_text_item" />
+        tools:listitem="@layout/reading_text_item"
+        android:layout_marginBottom="8dp"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

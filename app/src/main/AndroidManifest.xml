@@ -14,6 +14,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Activities.HomeFragment">
+
+        </activity>
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,8 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ReadingTextsActivity" />
-        <activity android:name=".Activities.BottomNavigationActivity" />
         <activity
             android:name=".Activities.ReadingTextDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -32,15 +33,11 @@
         <activity
             android:name=".Activities.TranslationActivity"
             android:label="Alternatif Çeviriler" />
-        <activity android:name=".Activities.WordActivitySample" />
         <activity
             android:name=".Activities.WordDetailActivity"
             android:label="Kelime Detayları" />
         <activity
-            android:name=".Activities.WordsActivity"
-            android:label="Kelimeler" />
-        <activity
-            android:name=".Activities.WordRevisionActivity"
+            android:name=".Activities.WordRevisionFragment"
             android:label="Kelime Tekrarı" />
 
         <meta-data

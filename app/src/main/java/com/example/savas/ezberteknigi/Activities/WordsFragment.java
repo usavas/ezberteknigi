@@ -117,6 +117,7 @@ public class WordsFragment extends Fragment {
             });
         } else if (mParam1 == Word.WORD_REVISION) {
             buttonAddNote.setVisibility(View.GONE);
+            getActivity().setTitle("Tekrar Edilecek Kelimeler");
             wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
