@@ -46,7 +46,7 @@ implements WordsFragment.OnFragmentInteractionListener {
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    selectedFragment = new HomeFragment();
+                    selectedFragment = new IndexFragment();
                     break;
                 case R.id.navigation_documents:
                     selectedFragment = new ReadingTextsFragment();

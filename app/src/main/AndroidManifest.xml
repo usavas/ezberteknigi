@@ -14,9 +14,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Activities.HomeFragment">
 
-        </activity>
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,9 +34,6 @@
         <activity
             android:name=".Activities.WordDetailActivity"
             android:label="Kelime Detayları" />
-        <activity
-            android:name=".Activities.WordRevisionFragment"
-            android:label="Kelime Tekrarı" />
 
         <meta-data
             android:name="preloaded_fonts"

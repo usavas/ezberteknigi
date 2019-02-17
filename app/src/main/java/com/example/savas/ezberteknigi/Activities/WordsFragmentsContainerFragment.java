@@ -33,12 +33,12 @@ public class WordsFragmentsContainerFragment extends Fragment
         getActivity().setTitle("Kelimeler");
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
-        tabLayout = (TabLayout) getActivity().findViewById(R.id.fragment_word_activity_tabs);
+//        tabLayout = (TabLayout) getActivity().findViewById(R.id.fragment_word_activity_tabs);
         mViewPager = (ViewPager) getActivity().findViewById(R.id.fragment_word_activity_container);
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+//        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+//        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
 
     @Override

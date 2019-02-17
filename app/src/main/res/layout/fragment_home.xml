@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/carbon"
+    android:fitsSystemWindows="true"
     tools:context=".Activities.HomeFragment">
 
     <Button
@@ -17,9 +17,7 @@
         android:drawableTop="@drawable/button_documents"
         android:padding="16dp"
         android:text="Okumalar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+ />
 
     <Button
         android:id="@+id/button_start_words"
@@ -32,10 +30,7 @@
         android:drawableTop="@drawable/button_hello_speech_word"
         android:padding="16dp"
         android:text="KELİMELER"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_start_reading_texts" />
+/>
 
     <Button
         android:id="@+id/button_start_words_revision"
@@ -47,10 +42,7 @@
         android:layout_weight="1"
         android:drawableTop="@drawable/button_revision"
         android:padding="16dp"
-        android:text="KELİME TEKRARI"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_start_words" />
+        android:text="KELİME TEKRARI" />
 
     <Button
         android:id="@+id/button"
@@ -59,10 +51,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_start_words_revision" />
+        android:text="Button" />
 
     <!--<LinearLayout-->
         <!--android:layout_width="match_parent"-->
@@ -81,4 +70,4 @@
 
 
 
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>
