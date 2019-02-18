@@ -29,10 +29,10 @@ implements WordsFragment.OnFragmentInteractionListener {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation_view);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
-//                    new ReadingTextsFragment()).commit();
-//        }
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
+                    new IndexFragment()).commit();
+        }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
