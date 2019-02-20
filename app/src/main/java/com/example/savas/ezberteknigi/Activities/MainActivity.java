@@ -26,13 +26,12 @@ implements WordsFragment.OnFragmentInteractionListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation_view);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //On device rotation
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
-                    new ReadingTextsFragment()).commit();
+                    new IndexFragment()).commit();
         }
     }
 
@@ -58,10 +57,10 @@ implements WordsFragment.OnFragmentInteractionListener {
                     selectedFragment = new WordRevisionFragment();
                     break;
             }
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
-                    selectedFragment).commit();
-
+            if (selectedFragment != null){
+                getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
+                        selectedFragment).commit();
+            }
             return true;
         }
     };
