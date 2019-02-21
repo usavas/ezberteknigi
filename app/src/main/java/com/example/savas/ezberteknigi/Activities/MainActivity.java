@@ -1,11 +1,16 @@
 package com.example.savas.ezberteknigi.Activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
@@ -68,6 +73,37 @@ implements WordsFragment.OnFragmentInteractionListener {
     @Override
     public void onFragmentInteraction(String title) {
         setTitle(title);
+    }
+
+
+    private boolean doubleBackToExitPressedOnce;
+    private Handler mHandler = new Handler();
+
+    private final Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            doubleBackToExitPressedOnce = false;
+        }
+    };
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        if (mHandler != null) { mHandler.removeCallbacks(mRunnable); }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Çıkmak için tekrar GERİ tuşuna basın!", Toast.LENGTH_SHORT).show();
+        mHandler.postDelayed(mRunnable, 1500);
     }
 
 
