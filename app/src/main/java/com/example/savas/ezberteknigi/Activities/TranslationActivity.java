@@ -1,8 +1,6 @@
 package com.example.savas.ezberteknigi.Activities;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Adapters.TranslationAdapter;
 import com.example.savas.ezberteknigi.R;
