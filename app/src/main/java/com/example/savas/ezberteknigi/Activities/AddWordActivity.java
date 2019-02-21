@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
+import com.example.savas.ezberteknigi.Repositories.WordRepository;
 
 public class AddWordActivity extends AppCompatActivity {
 
@@ -74,8 +76,12 @@ public class AddWordActivity extends AppCompatActivity {
 
     private void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (sharedText != null) {
+        if (sharedText.startsWith("http")){
+            //TODO: add content of this to reading text
+        } else if (sharedText != null) {
             editWord.setText(sharedText);
+            WordRepository repo = new WordRepository(getApplication());
+            repo.insert(new Word(editWord.getText().toString(), editWordTranslation.getText().toString(), 0, editExampleSentence.getText().toString()));
         }
     }
 
