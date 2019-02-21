@@ -12,7 +12,7 @@ def makeMultipleNewlinesSingle(string):
     return string
 
 def replaceForJson(string):
-    return string.replace("\"", "\\\"").replace("\t", "\\t").replace("\n", "\\n").replace("\r", "\\r").replace("\b","\\b").replace("\f", "\\f").replace("'", "\'").replace("’", "\'").replace("‘", "\'")
+    return string.replace("\"", "\\\"").replace("\t", "\\t").replace("\n\n\n", "\\n").replace("\n\n", "\\n").replace("\n", "\\n").replace("\r\r", "\\r").replace("\r", "\\r").replace("\b","\\b").replace("\f", "\\f").replace("'", "\'").replace("’", "\'").replace("‘", "\'")
 
 def makeJson(author, title, genre, level, content, storyline, hardwords):
     json = """{
@@ -53,17 +53,18 @@ def getHardWordsJson(hardwords):
 def getStorylineContentJson(content):
         return replaceForJson(content)
 
-#TODO: make it so it returns chapter contents
 def getChapters(fileName):
     with open(fileName) as f:
         chapters = dict()       
         chapter = ""
         chapterHeader = ""
         prevChapterHeader = ""
+        chapterExists = False 
 
         for line in f.readlines():            
             # l = line.strip()
             if "chapter" in line.lower() and (len(line.split()) == 2 or len(line.split()) == 3):
+                chapterExists = True
                 prevChapterHeader = line.strip()
                 if chapter.strip() != "":
                     if chapterHeader == "":
@@ -72,9 +73,11 @@ def getChapters(fileName):
                         chapters[chapterHeader] = chapter
                 chapterHeader = line.strip()
                 chapter = ""
-
             elif line != "":
                 chapter += line
+        
+        if chapterExists == False:
+            chapters[getTitle(fileName)] = chapter
 
         chaptersInJson = "["
         for key, value in chapters.items():
