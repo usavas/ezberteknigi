@@ -106,7 +106,6 @@ implements WordsFragment.OnFragmentInteractionListener {
         mHandler.postDelayed(mRunnable, 1500);
     }
 
-
     private void sendDataToFirebase() {
         FirebaseApp.initializeApp(getApplicationContext());
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("message");

@@ -170,7 +170,7 @@ public class WordsFragment extends Fragment {
                         updateRevision(word);
 
                         Snackbar snackbar = Snackbar.make(view,
-                                "Kelime gözden geçirildi: " + word.getWord(),
+                                "Kelime tekrar edildi: " + word.getWord(),
                                 Snackbar.LENGTH_LONG);
                         snackbar.setAction("İPTAL ET", new View.OnClickListener() {
                             @Override
