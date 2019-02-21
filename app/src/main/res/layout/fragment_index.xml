@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/carbon"
     tools:context=".Activities.IndexFragment">
 
@@ -14,5 +15,13 @@
         android:layout_marginTop="60dp"
         android:text="Index Fragment"
         android:textSize="20sp"/>
+
+    <Button
+        android:id="@+id/button_index_deneme"
+        android:layout_width="259dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="Button"
+        app:layout_anchorGravity="bottom|left" />
 
 </android.support.design.widget.CoordinatorLayout>

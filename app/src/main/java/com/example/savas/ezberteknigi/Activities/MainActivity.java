@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.Services.WordAndTextService;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
