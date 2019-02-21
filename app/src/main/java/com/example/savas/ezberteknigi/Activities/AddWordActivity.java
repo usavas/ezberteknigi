@@ -26,7 +26,6 @@ public class AddWordActivity extends AppCompatActivity {
     EditText editExampleSentence;
     Button btnAddWord;
     Button btnGetTranslation;
-//    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +60,23 @@ public class AddWordActivity extends AppCompatActivity {
                 startActivityForResult(intent, GET_TRANSLATIONS_CODE);
             }
         });
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                handleSendText(intent);
+            }
+        }
+    }
+
+    private void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            editWord.setText(sharedText);
+        }
     }
 
     private void saveWord(){

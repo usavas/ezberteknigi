@@ -15,11 +15,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".Activities.DummyIntentConsumerActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
-            </intent-filter>
+
         </activity>
 
         <service
@@ -45,7 +41,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.AddWordActivity"
-            android:label="Kelime Ekle" />
+            android:label="Kelime Ekle" >
+
+            <intent-filter android:label="Öğreneceklerime Ekle">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".Activities.TranslationActivity"
             android:label="Alternatif Çeviriler" />
