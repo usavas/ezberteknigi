@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 
 import static com.example.savas.ezberteknigi.Activities.WordsFragment.EXTRA_WORD_ID;
 
-public class WordDetailActivity extends AppCompatActivity {
+public class WordDetailActivityDeprecated extends AppCompatActivity {
     public static Word word;
 
     @Override

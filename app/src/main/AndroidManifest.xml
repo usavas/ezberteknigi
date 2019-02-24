@@ -53,9 +53,6 @@
         <activity
             android:name=".Activities.TranslationActivity"
             android:label="Alternatif Çeviriler" />
-        <activity
-            android:name=".Activities.WordDetailActivity"
-            android:label="Kelime Detayları" />
 
         <meta-data
             android:name="preloaded_fonts"
