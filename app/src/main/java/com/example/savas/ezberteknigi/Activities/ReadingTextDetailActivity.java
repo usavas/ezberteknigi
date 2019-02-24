@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 
-public class ReadingTextDetailActivity extends AppCompatActivity implements WordDialogFragment.DialogListener {
+public class ReadingTextDetailActivity extends AppCompatActivity implements AddWordFragment.DialogListener {
 
     public WordRepository wordRepository;
 
@@ -78,13 +78,10 @@ public class ReadingTextDetailActivity extends AppCompatActivity implements Word
                     try {
                         Word word = wordRepository.getWordByWord(selectedText.trim());
                         if (word != null) {
-                            //TODO: open show word detail fragment (first create the fragment :D)
+                            openWordDetailsDialog(word.getWordId());
 
-
-                            OpenWordDetailsActivity(word);
                         } else {
-                            openDialog(selectedText, "", selectedSentence);
-                            //penAddWordActivityForResult(selectedText, selectedSentence);
+                            openAddWordDialog(selectedText, "", selectedSentence);
                         }
                     } catch (ExecutionException e) {
                         e.printStackTrace();
@@ -92,30 +89,35 @@ public class ReadingTextDetailActivity extends AppCompatActivity implements Word
                         e.printStackTrace();
                     }
                 }
-            }, 1000);
+            }, 800);
             return false;
         });
     }
 
-    private void OpenWordDetailsActivity(Word word) {
-        Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
-        intent.putExtra(WordsFragment.EXTRA_WORD_ID, word.getWordId());
-        intent.putExtra(WordsFragment.EXTRA_WORD_WORD, word.getWord());
-        intent.putExtra(WordsFragment.EXTRA_WORD_TRANSLATION, word.getTranslation());
-        intent.putExtra(WordsFragment.EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
-        startActivity(intent);
+//    private void OpenWordDetailsActivity(Word word) {
+//        Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
+//        intent.putExtra(WordsFragment.EXTRA_WORD_ID, word.getWordId());
+//        intent.putExtra(WordsFragment.EXTRA_WORD_WORD, word.getWord());
+//        intent.putExtra(WordsFragment.EXTRA_WORD_TRANSLATION, word.getTranslation());
+//        intent.putExtra(WordsFragment.EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
+//        startActivity(intent);
+//    }
+
+//    private void OpenAddWordActivityForResult(String selectedText, String selectedSentence) {
+//        Intent intent = new Intent(getApplicationContext(), AddWordActivity.class);
+//        intent.putExtra(WORD_TO_PASS_FOR_TRANSLATION, selectedText); //selectedText
+//        intent.putExtra(EXAMPLE_SENTENCE_TO_PASS, selectedSentence);
+//        startActivityForResult(intent, RESULT_CODE_FOR_READING);
+//    }
+
+    private void openAddWordDialog(String word, String translation, String exampleSentence) {
+        AddWordFragment wordDialogFragment = AddWordFragment.newInstance(word, translation, exampleSentence);
+        wordDialogFragment.show(getSupportFragmentManager(), "add word");
     }
 
-    private void OpenAddWordActivityForResult(String selectedText, String selectedSentence) {
-        Intent intent = new Intent(getApplicationContext(), AddWordActivity.class);
-        intent.putExtra(WORD_TO_PASS_FOR_TRANSLATION, selectedText); //selectedText
-        intent.putExtra(EXAMPLE_SENTENCE_TO_PASS, selectedSentence);
-        startActivityForResult(intent, RESULT_CODE_FOR_READING);
-    }
-
-    private void openDialog(String word, String translation, String exampleSentence) {
-        WordDialogFragment wordDialogFragment = WordDialogFragment.newInstance(word, translation, exampleSentence);
-        wordDialogFragment.show(getSupportFragmentManager(), "example dialog");
+    private void openWordDetailsDialog(int wordId) {
+        WordDetailFragment wordDetailFragment= WordDetailFragment.newInstance(wordId);
+        wordDetailFragment.show(getSupportFragmentManager(), "see word details");
     }
 
     @Override

@@ -3,9 +3,7 @@ package com.example.savas.ezberteknigi.Activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +13,15 @@ import android.widget.EditText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 
-public class WordDialogFragment extends AppCompatDialogFragment {
+public class AddWordFragment extends AppCompatDialogFragment {
     private DialogListener listener;
     private EditText editWord;
     private EditText editTranslation;
     private EditText editExampleSentence;
 
 
-    public static WordDialogFragment newInstance(String word, String translation, String exampleSentence) {
-        WordDialogFragment f = new WordDialogFragment();
+    public static AddWordFragment newInstance(String word, String translation, String exampleSentence) {
+        AddWordFragment f = new AddWordFragment();
 
         Bundle args = new Bundle();
         args.putString("WORD", word);
@@ -38,7 +36,7 @@ public class WordDialogFragment extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_dialog_word, null);
+        View view = inflater.inflate(R.layout.fragment_add_word, null);
 
         builder.setView(view);
 

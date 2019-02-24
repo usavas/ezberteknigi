@@ -9,6 +9,7 @@ import com.example.savas.ezberteknigi.DAO.WordDao;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
 import java.util.concurrent.ExecutionException;
 
@@ -29,7 +30,6 @@ public class WordDetailActivity extends AppCompatActivity {
     private void populateWordContent() {
 
         Button btnSetWordState = findViewById(R.id.button_set_mastered_or_learning);
-
         WordRepository repo = new WordRepository(getApplication());
         try {
             word = repo.getWordById(getIntent().getIntExtra((EXTRA_WORD_ID), 0));
