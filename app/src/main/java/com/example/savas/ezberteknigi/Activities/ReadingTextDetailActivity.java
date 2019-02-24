@@ -126,7 +126,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity implements AddW
         w.setWordState(learningMastered);
         wordRepository.insert(w);
 
-        Log.wtf( "READINGTEXTDETAIL", "WORD INSERTED TO DB, masteredLearning: " + learningMastered);
+        Log.d( "READINGTEXTDETAIL", "WORD INSERTED TO DB, masteredLearning: " + learningMastered);
     }
 
     public static String getSelectedSentence(String text, int selectionIndex, int finisherIndex) {
@@ -147,7 +147,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity implements AddW
 
     private static int getNearestStartingIndex(String text, int index) {
         String[] sentenceSeparators = new String[]{
-                "? ", ". ", "! ", "... ", ".. ", ".\n", ".\t"
+                "? ", ". ", "! ", "... ", ".. ", ".\n", "\n", ".\t"
         };
         int nearestStarterIndex = 0;
         for (String separator : sentenceSeparators) {
@@ -162,7 +162,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity implements AddW
 
     private static int getNearestFinisherIndex(String text, int index) {
         String[] sentenceSeparators = new String[]{
-                "? ", ". ", "! ", "... ", ".. ", ".\n", ".\t"
+                "? ", ". ", "! ", "... ", ".. ", ".\n", "\n", ".\t"
         };
         int nearestFinisherIndex = text.length() - 1;
         for (String separator : sentenceSeparators) {
