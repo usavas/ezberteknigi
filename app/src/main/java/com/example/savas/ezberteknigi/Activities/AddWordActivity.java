@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Models.Word;
@@ -29,38 +30,12 @@ public class AddWordActivity extends AppCompatActivity {
     Button btnAddWord;
     Button btnAddWordMastered;
 
+    TextView tvHttpContent;
+    Button btnSaveHttpContent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_word);
-        setTitle("Kelime Ekle");
-
-        editWord = findViewById(R.id.edit_word_word_fragment);
-        editWordTranslation = findViewById(R.id.edit_word_translation_fragment);
-        editExampleSentence = findViewById(R.id.edit_word_example_sentence_fragment);
-        btnAddWord = findViewById(R.id.button_add_word_fragment);
-        btnAddWordMastered = findViewById(R.id.button_add_word_mastered_fragment);
-
-        btnAddWord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveWord();
-            }
-        });
-
-        btnAddWordMastered.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveWord();
-            }
-        });
-
-        editExampleSentence.setText(getIntent().getStringExtra(ReadingTextDetailActivity.EXAMPLE_SENTENCE_TO_PASS));
-        String wordForTranslation = getIntent().getStringExtra(ReadingTextDetailActivity.WORD_TO_PASS_FOR_TRANSLATION);
-        if (wordForTranslation != null && wordForTranslation != ""){
-            editWord.setText(wordForTranslation);
-        }
-
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -68,22 +43,56 @@ public class AddWordActivity extends AppCompatActivity {
 
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
-                handleSendText(intent);
+                String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+                if (sharedText.startsWith("http")){
+                    setContentView(R.layout.activity_http_handler);
+                    setTitle("Web İçeriği Ekle");
+
+                    tvHttpContent = findViewById(R.id.tv_http_contents);
+                    btnSaveHttpContent = findViewById(R.id.button_add_http_content);
+
+                    tvHttpContent.setText(sharedText);
+                    btnSaveHttpContent.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //TODO: save http content logic
+                        }
+                    });
+
+
+
+                } else {
+                    setContentView(R.layout.activity_add_word);
+                    setTitle("Kelime Ekle");
+
+                    editWord = findViewById(R.id.edit_word_word_fragment);
+                    editWordTranslation = findViewById(R.id.edit_word_translation_fragment);
+                    editExampleSentence = findViewById(R.id.edit_word_example_sentence_fragment);
+                    btnAddWord = findViewById(R.id.button_add_word_fragment);
+                    btnAddWordMastered = findViewById(R.id.button_add_word_mastered_fragment);
+
+                    editWord.setText(sharedText);
+
+                    btnAddWord.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            saveWord(Word.WORD_LEARNING);
+                        }
+                    });
+
+                    btnAddWordMastered.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            saveWord(Word.WORD_MASTERED);
+                        }
+                    });
+                }
             }
         }
     }
 
-    private void handleSendText(Intent intent) {
-        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (sharedText.startsWith("http")){
-            //TODO: add content of this to reading text
-        } else if (sharedText != null) {
-            editWord.setText(sharedText);
-
-        }
-    }
-
-    private void saveWord(){
+    private void saveWord(int wordState){
         String word = editWord.getText().toString();
         String wordTranslation = editWordTranslation.getText().toString();
         String exampleSentence = editExampleSentence.getText().toString();
@@ -92,8 +101,11 @@ public class AddWordActivity extends AppCompatActivity {
             Toast.makeText(this, "Lütfen kelime ve çevirisini giriniz", Toast.LENGTH_SHORT).show();
             return;
         } else {
+            Word w = new Word(word, wordTranslation, 0, exampleSentence);
+            w.setWordState(wordState);
+
             WordRepository repo = new WordRepository(getApplication());
-            repo.insert(new Word(word, wordTranslation, 0, exampleSentence));
+            repo.insert(w);
         }
 
         finish();
