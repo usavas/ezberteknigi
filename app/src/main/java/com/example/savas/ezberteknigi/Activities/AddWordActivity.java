@@ -27,7 +27,7 @@ public class AddWordActivity extends AppCompatActivity {
     EditText editWordTranslation;
     EditText editExampleSentence;
     Button btnAddWord;
-    Button btnGetTranslation;
+    Button btnAddWordMastered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +35,20 @@ public class AddWordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_word);
         setTitle("Kelime Ekle");
 
-        editWord = findViewById(R.id.editWord);
-        editWordTranslation = findViewById(R.id.editWordTranslation);
-        editExampleSentence = findViewById(R.id.editExampleSentence);
-        btnAddWord = findViewById(R.id.button_save_word);
+        editWord = findViewById(R.id.edit_word_word_fragment);
+        editWordTranslation = findViewById(R.id.edit_word_translation_fragment);
+        editExampleSentence = findViewById(R.id.edit_word_example_sentence_fragment);
+        btnAddWord = findViewById(R.id.button_add_word_fragment);
+        btnAddWordMastered = findViewById(R.id.button_add_word_mastered_fragment);
 
         btnAddWord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveWord();
+            }
+        });
+
+        btnAddWordMastered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveWord();
@@ -53,15 +61,6 @@ public class AddWordActivity extends AppCompatActivity {
             editWord.setText(wordForTranslation);
         }
 
-        btnGetTranslation = findViewById(R.id.button_get_translation);
-        btnGetTranslation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddWordActivity.this, TranslationActivity.class);
-                intent.putExtra(EXTRA_WORD_TO_GET_TRANSLATION, editWord.getText().toString());
-                startActivityForResult(intent, GET_TRANSLATIONS_CODE);
-            }
-        });
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -80,8 +79,7 @@ public class AddWordActivity extends AppCompatActivity {
             //TODO: add content of this to reading text
         } else if (sharedText != null) {
             editWord.setText(sharedText);
-            WordRepository repo = new WordRepository(getApplication());
-            repo.insert(new Word(editWord.getText().toString(), editWordTranslation.getText().toString(), 0, editExampleSentence.getText().toString()));
+
         }
     }
 
@@ -93,22 +91,12 @@ public class AddWordActivity extends AppCompatActivity {
         if (word.trim().isEmpty() || wordTranslation.trim().isEmpty()) {
             Toast.makeText(this, "Lütfen kelime ve çevirisini giriniz", Toast.LENGTH_SHORT).show();
             return;
+        } else {
+            WordRepository repo = new WordRepository(getApplication());
+            repo.insert(new Word(word, wordTranslation, 0, exampleSentence));
         }
 
-        Intent data = new Intent();
-        data.putExtra(EXTRA_WORD, word);
-        data.putExtra(EXTRA_TRANSLATION, wordTranslation);
-        data.putExtra(EXTRA_EXAMPLE_SENTENCE, exampleSentence);
-
-        setResult(RESULT_OK, data);
         finish();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GET_TRANSLATIONS_CODE && resultCode == RESULT_OK){
-            editWordTranslation.setText(data.getStringExtra(TranslationActivity.EXTRA_TRANSLATION_RESULT));
-        }
-    }
 }

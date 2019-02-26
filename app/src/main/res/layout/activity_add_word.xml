@@ -7,73 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".Activities.AddWordActivity">
 
-    <EditText
-        android:id="@+id/editWord"
-        android:layout_width="match_parent"
+   <include layout="@layout/layout_add_word_inputs"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="Kelimeyi giriniz..."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+       android:layout_width="match_parent" />
 
-    <EditText
-        android:id="@+id/editWordTranslation"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="Kelimenin anlamlarını giriniz..."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editWord" />
-
-    <EditText
-        android:id="@+id/editExampleSentence"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="Örnek cümle giriniz... (isteğe bağlı)"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editWordTranslation" />
-
-    <Button
-        android:id="@+id/button_save_word"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/buttonPadding"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:textSize="@dimen/buttonTextSize"
-        android:text="SAVE"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editExampleSentence" />
-
-    <Button
-        android:id="@+id/button_get_translation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/buttonPadding"
-        android:textSize="@dimen/buttonTextSize"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Get Word Translation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_save_word" />
 </android.support.constraint.ConstraintLayout>

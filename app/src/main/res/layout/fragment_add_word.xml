@@ -5,58 +5,7 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <EditText
-        android:id="@+id/edit_word_word_fragment"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginTop="2dp"
+    <include layout="@layout/layout_add_word_inputs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="word" />
-
-    <EditText
-        android:id="@+id/edit_word_translation_fragment"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="translation" />
-
-    <EditText
-        android:id="@+id/edit_word_example_sentence_fragment"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:maxLines="3"
-        android:text="example_sentence" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginTop="2dp">
-        <Button
-            android:id="@+id/button_add_word_mastered_fragment"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ÖĞRENDİM" />
-        <Button
-            android:id="@+id/button_add_word_fragment"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ÖĞREN" />
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
 </LinearLayout>
