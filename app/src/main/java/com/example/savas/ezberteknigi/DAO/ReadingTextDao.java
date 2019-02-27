@@ -28,4 +28,7 @@ public interface ReadingTextDao extends BaseDao {
 
     @Query("DELETE FROM reading_text_table")
     void deleteAllReadingTexts();
+
+    @Query("SELECT * FROM reading_text_table WHERE reading_text_id = :readingTextId")
+    ReadingText getReadingTextById (int readingTextId);
 }

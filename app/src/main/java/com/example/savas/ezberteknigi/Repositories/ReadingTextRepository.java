@@ -3,11 +3,13 @@ package com.example.savas.ezberteknigi.Repositories;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.support.annotation.RequiresPermission;
 
 import com.example.savas.ezberteknigi.DAO.ReadingTextDao;
 import com.example.savas.ezberteknigi.Models.EzberTeknigiDatabase;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ReadingTextRepository {
     private ReadingTextDao readingTextDao;
@@ -31,6 +33,17 @@ public class ReadingTextRepository {
         new DeleteReadingTextAsyncTask(readingTextDao).execute(readingText);
     }
 
+    public ReadingText getReadingTextById(int readingTextId){
+        try {
+            return new GetReadingTextById(readingTextDao).execute(readingTextId).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void deleteAllReadingTexts() {
         new DeleteAllReadingTextsAsyncTask(readingTextDao).execute();
     }
@@ -50,6 +63,19 @@ public class ReadingTextRepository {
         protected Void doInBackground(ReadingText... readingTexts) {
             readingTextDao.insert(readingTexts[0]);
             return null;
+        }
+    }
+
+    private static class GetReadingTextById extends AsyncTask<Integer, Void, ReadingText> {
+        private ReadingTextDao readingTextDao;
+
+        private GetReadingTextById(ReadingTextDao readingTextDao) {
+            this.readingTextDao = readingTextDao;
+        }
+
+        @Override
+        protected ReadingText doInBackground(Integer... ints) {
+            return readingTextDao.getReadingTextById(ints[0]);
         }
     }
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.example.savas.ezberteknigi.ExampleSentenceExtractor;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
+import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import java.util.regex.Pattern;
 public class ReadingTextDetailActivity extends AppCompatActivity {
 
     public WordRepository wordRepository;
+    public ReadingTextRepository readingTextRepository;
 
     public static String WORD_TO_PASS_FOR_TRANSLATION = "ReadingTextDetailActivity.WORD_TO_PASS_FOR_TRANSLATION";
     public static String EXAMPLE_SENTENCE_TO_PASS = "ReadingTextDetailActivity.EXAMPLE_SENTENCE_TO_PASS";
@@ -40,7 +43,6 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reading_text_detail);
 
         readingText = new ReadingText();
         Intent sender = getIntent();
@@ -48,42 +50,47 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         readingText.setHeader(sender.getStringExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_HEADER));
         readingText.setContent(sender.getStringExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_CONTENT));
 
-        tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
-        tvContent = findViewById(R.id.text_view_reading_text_detail_content);
 
-        tvHeader.setText(readingText.getHeader());
-        tvContent.setText(readingText.getContent());
+        //TODO: get single reading text by readingTextId, setView to HTTP web viewer container layout
+        readingTextRepository = new ReadingTextRepository(getApplication());
+        ReadingText rt = readingTextRepository.getReadingTextById(readingText.getReadingTextId());
+        if (rt.getSource().startsWith("http")){
+            setContentView(R.layout.activity_http_handler);
+            WebView wv = findViewById(R.id.web_view);
+            wv.loadUrl(rt.getSource());
+        } else {
+            setContentView(R.layout.activity_reading_text_detail);
+            tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
+            tvContent = findViewById(R.id.text_view_reading_text_detail_content);
+
+            tvHeader.setText(readingText.getHeader());
+            tvContent.setText(readingText.getContent());
 
 //        registerForContextMenu(tvContent);
 
-        tvContent.setOnLongClickListener(v -> {
-            new Handler().postDelayed(() -> {
-                int wordSelectionStart = tvContent.getSelectionStart();
-                int wordSelectionEnd = tvContent.getSelectionEnd();
+            tvContent.setOnLongClickListener(v -> {
+                new Handler().postDelayed(() -> {
+                    int wordSelectionStart = tvContent.getSelectionStart();
+                    int wordSelectionEnd = tvContent.getSelectionEnd();
 
-                if (wordSelectionStart > wordSelectionEnd){
-                    return;
-                }
+                    if (wordSelectionStart > wordSelectionEnd){
+                        return;
+                    }
 
-                String selectedText = tvContent.getText().toString().substring(wordSelectionStart, wordSelectionEnd);
-                String text = tvContent.getText().toString();
+                    String selectedText = tvContent.getText().toString().substring(wordSelectionStart, wordSelectionEnd);
+                    String text = tvContent.getText().toString();
 
-                String selectedSentence = ExampleSentenceExtractor
-                        .getSelectedSentence(text, wordSelectionStart, wordSelectionEnd);
-                showWordDialog(selectedText, selectedSentence);
-//                if (selectedText.trim() != ""
-//                        && selectedText.trim().split(" ").length == 1) {
-//                    Word word = returnWordIfExists(selectedText);
-//                    if (word == null) {
-//                        openAddWordDialog(selectedText, getTranslation(selectedText), selectedSentence);
-//                    } else {
-//                        openWordDetailsDialog(word.getWordId());
-//                    }
-//                }
+                    String selectedSentence = ExampleSentenceExtractor
+                            .getSelectedSentence(text, wordSelectionStart, wordSelectionEnd);
+                    showWordDialog(selectedText, selectedSentence);
+                }, 800);
+                return false;
+            });
 
-            }, 800);
-            return false;
-        });
+        }
+
+
+
     }
 
     private boolean verifySelection(int wordSelectionStart, int wordSelectionEnd) {
