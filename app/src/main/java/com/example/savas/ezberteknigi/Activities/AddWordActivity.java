@@ -1,7 +1,6 @@
 package com.example.savas.ezberteknigi.Activities;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.Toast;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.WebsiteContentRetriever;
 
 public class AddWordActivity extends AppCompatActivity {
 
@@ -41,6 +41,8 @@ public class AddWordActivity extends AppCompatActivity {
         String action = intent.getAction();
         String type = intent.getType();
 
+        String webContent = "";
+
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -50,18 +52,15 @@ public class AddWordActivity extends AppCompatActivity {
                     setTitle("Web İçeriği Ekle");
 
                     tvHttpContent = findViewById(R.id.tv_http_contents);
-                    btnSaveHttpContent = findViewById(R.id.button_add_http_content);
+                    tvHttpContent.setText(WebsiteContentRetriever.ReceiveWebsiteContent(sharedText));
 
-                    tvHttpContent.setText(sharedText);
+                    btnSaveHttpContent = findViewById(R.id.button_add_http_content);
                     btnSaveHttpContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //TODO: save http content logic
+                            saveHttpContent(tvHttpContent.getText().toString());
                         }
                     });
-
-
-
                 } else {
                     setContentView(R.layout.activity_add_word);
                     setTitle("Kelime Ekle");
@@ -90,6 +89,10 @@ public class AddWordActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void saveHttpContent(String httpContent){
+        //TODO: save http content
     }
 
     private void saveWord(int wordState){
