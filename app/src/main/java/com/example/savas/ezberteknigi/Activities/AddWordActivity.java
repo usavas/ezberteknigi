@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -60,7 +61,11 @@ public class AddWordActivity extends AppCompatActivity {
                     btnSaveHttpContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            saveHttpContent(tvHttpContent.getText().toString());
+
+                            WebView wv = findViewById(R.id.web_view);
+                            wv.loadUrl(sharedText);
+
+//                            saveHttpContent(sharedText, tvHttpContent.getText().toString());
                         }
                     });
                 } else {
@@ -93,10 +98,10 @@ public class AddWordActivity extends AppCompatActivity {
         }
     }
 
-    private void saveHttpContent(String httpContent){
+    private void saveHttpContent(String httpAddress, String httpContent){
         //TODO: save http content
         ReadingTextViewModel vm = new ReadingTextViewModel(getApplication());
-        vm.insert(new ReadingText("English", "source_sample", "sample_web_header", ReadingText.DOCUMENT_TYPE_OTHER, 7, httpContent));
+        vm.insert(new ReadingText("English", httpAddress, "sample_web_header", ReadingText.DOCUMENT_TYPE_OTHER, 7, httpContent));
     }
 
     private void saveWord(int wordState){

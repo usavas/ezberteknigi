@@ -41,6 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_http_contents" />
 
     <WebView
+        android:id="@+id/web_view"
         android:layout_width="395dp"
         android:layout_height="436dp"
         android:layout_marginStart="8dp"
