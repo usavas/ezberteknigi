@@ -18,10 +18,12 @@ import java.util.concurrent.ExecutionException;
 
 public class WordDetailFragment extends DialogFragment {
     public static int _wordId;
+    public static int _readingTextId;
 
-    public static WordDetailFragment newInstance(int wordId) {
+    public static WordDetailFragment newInstance(int wordId, int readingTextId) {
         WordDetailFragment f = new WordDetailFragment();
         _wordId = wordId;
+        _readingTextId = readingTextId;
         return f;
     }
 

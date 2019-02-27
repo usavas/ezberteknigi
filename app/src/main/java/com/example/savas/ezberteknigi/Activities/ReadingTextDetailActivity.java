@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.savas.ezberteknigi.ExampleSentenceExtractor;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -23,7 +24,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 
-public class ReadingTextDetailActivity extends AppCompatActivity implements AddWordFragment.DialogListener {
+public class ReadingTextDetailActivity extends AppCompatActivity {
 
     public WordRepository wordRepository;
 
@@ -33,7 +34,6 @@ public class ReadingTextDetailActivity extends AppCompatActivity implements AddW
     public static int RESULT_CODE_FOR_READING = 4;
 
     private ReadingText readingText;
-
     private TextView tvHeader;
     private TextView tvContent;
 
@@ -54,44 +54,78 @@ public class ReadingTextDetailActivity extends AppCompatActivity implements AddW
         tvHeader.setText(readingText.getHeader());
         tvContent.setText(readingText.getContent());
 
-        wordRepository = new WordRepository(getApplication());
 //        registerForContextMenu(tvContent);
 
         tvContent.setOnLongClickListener(v -> {
             new Handler().postDelayed(() -> {
-                int selectionStart = tvContent.getSelectionStart();
-                int selectionEnd = tvContent.getSelectionEnd();
+                int wordSelectionStart = tvContent.getSelectionStart();
+                int wordSelectionEnd = tvContent.getSelectionEnd();
 
-                if ((selectionEnd - selectionStart) <= 0) {
+                if (wordSelectionStart > wordSelectionEnd){
                     return;
                 }
 
-                String selectedText = tvContent.getText().toString().substring(selectionStart, selectionEnd);
+                String selectedText = tvContent.getText().toString().substring(wordSelectionStart, wordSelectionEnd);
                 String text = tvContent.getText().toString();
 
-                String selectedSentence = getSelectedSentence(text, selectionStart, selectionEnd);
-                Log.wtf("SELECTED SENTENCE: ", selectedSentence);
+                String selectedSentence = ExampleSentenceExtractor
+                        .getSelectedSentence(text, wordSelectionStart, wordSelectionEnd);
+                showWordDialog(selectedText, selectedSentence);
+//                if (selectedText.trim() != ""
+//                        && selectedText.trim().split(" ").length == 1) {
+//                    Word word = returnWordIfExists(selectedText);
+//                    if (word == null) {
+//                        openAddWordDialog(selectedText, getTranslation(selectedText), selectedSentence);
+//                    } else {
+//                        openWordDetailsDialog(word.getWordId());
+//                    }
+//                }
 
-                //there should be many more conditions and/or regex processes on the string got from edittext
-                if (selectedText.trim() != ""
-                        && selectedText.trim().split(" ").length == 1) {
-                    try {
-                        Word word = wordRepository.getWordByWord(selectedText.trim());
-                        if (word != null) {
-                            openWordDetailsDialog(word.getWordId());
-
-                        } else {
-                            openAddWordDialog(selectedText, "", selectedSentence);
-                        }
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
             }, 800);
             return false;
         });
+    }
+
+    private boolean verifySelection(int wordSelectionStart, int wordSelectionEnd) {
+        if ((wordSelectionEnd - wordSelectionStart) > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private void showWordDialog(String wordString, String exampleSentence) {
+        //TODO: implement word extraction logic
+        if (wordString.trim() != ""
+                && wordString.trim().split(" ").length == 1) {
+            Word word = returnWordIfExists(wordString);
+
+            if (word == null) {
+                openAddWordDialog(wordString, getTranslation(wordString), exampleSentence);
+            } else {
+                openWordDetailsDialog(word.getWordId());
+            }
+        }
+    }
+
+    private Word returnWordIfExists(String wordString) {
+        try {
+            wordRepository = new WordRepository(getApplication());
+            Word word = wordRepository.getWordByWord(wordString.trim());
+            if (word == null) {
+                return null;
+            } else {
+                return word;
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String getTranslation(String word){
+        return word + " translation (sample)";
     }
 
 //    private void OpenWordDetailsActivity(Word word) {
@@ -111,110 +145,64 @@ public class ReadingTextDetailActivity extends AppCompatActivity implements AddW
 //    }
 
     private void openAddWordDialog(String word, String translation, String exampleSentence) {
-        AddWordFragment wordDialogFragment = AddWordFragment.newInstance(word, translation, exampleSentence);
+        AddWordFragment wordDialogFragment = AddWordFragment.newInstance(word, translation, exampleSentence, readingText.getReadingTextId());
         wordDialogFragment.show(getSupportFragmentManager(), "add word");
     }
 
     private void openWordDetailsDialog(int wordId) {
-        WordDetailFragment wordDetailFragment= WordDetailFragment.newInstance(wordId);
+        WordDetailFragment wordDetailFragment= WordDetailFragment.newInstance(wordId, readingText.getReadingTextId());
         wordDetailFragment.show(getSupportFragmentManager(), "see word details");
     }
 
-    @Override
-    public void insertWord(String word, String translation, String exampleSentence, int learningMastered) {
-        Word w = new Word(word, translation, readingText.getReadingTextId(), exampleSentence);
-        w.setWordState(learningMastered);
-        wordRepository.insert(w);
+//    @Override
+//    public void insertWord(String word, String translation, String exampleSentence, int learningMastered) {
+//        Word w = new Word(word, translation, readingText.getReadingTextId(), exampleSentence);
+//        w.setWordState(learningMastered);
+//        wordRepository.insert(w);
+//
+//        Log.d( "READINGTEXTDETAIL", "WORD INSERTED TO DB, masteredLearning: " + learningMastered);
+//    }
 
-        Log.d( "READINGTEXTDETAIL", "WORD INSERTED TO DB, masteredLearning: " + learningMastered);
-    }
-
-    public static String getSelectedSentence(String text, int selectionIndex, int finisherIndex) {
-        return text.substring(getNearestStartingIndex(text, selectionIndex), getNearestFinisherIndex(text, finisherIndex)).trim();
-    }
-
-    public static List<String> getSentences(String text, String word) {
-        final Pattern END_OF_SENTENCE = Pattern.compile("(?<=[.?!(...)])[\\s\\n\\t+]");
-        String[] sentences = END_OF_SENTENCE.split(text);
-        List<String> sentencesContaining = new ArrayList<>();
-        for (String sentence : sentences) {
-            if (sentence.contains(word.toLowerCase())) {
-                sentencesContaining.add(sentence);
-            }
-        }
-        return sentencesContaining;
-    }
-
-    private static int getNearestStartingIndex(String text, int index) {
-        String[] sentenceSeparators = new String[]{
-                "? ", ". ", "! ", "... ", ".. ", ".\n", "\n", ".\t"
-        };
-        int nearestStarterIndex = 0;
-        for (String separator : sentenceSeparators) {
-            int startingCharIndex = text.lastIndexOf(separator, index) + 1;
-            if (startingCharIndex > nearestStarterIndex) {
-                nearestStarterIndex = startingCharIndex;
-            }
-        }
-        Log.wtf("nearest starter", String.valueOf(nearestStarterIndex));
-        return nearestStarterIndex;
-    }
-
-    private static int getNearestFinisherIndex(String text, int index) {
-        String[] sentenceSeparators = new String[]{
-                "? ", ". ", "! ", "... ", ".. ", ".\n", "\n", ".\t"
-        };
-        int nearestFinisherIndex = text.length() - 1;
-        for (String separator : sentenceSeparators) {
-            int finishingCharIndex = text.indexOf(separator, index) + 1;
-            if (finishingCharIndex < nearestFinisherIndex && finishingCharIndex > 0) {
-                nearestFinisherIndex = finishingCharIndex;
-            }
-        }
-        Log.wtf("nearest finisher", String.valueOf(nearestFinisherIndex));
-        return nearestFinisherIndex;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
 //         menu.add(0, v.getId(), 0, selectedText);
 //
 //         ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 //         ClipData data = ClipData.newPlainText("copied text", tvContent.getText());
 //         clipboard.setPrimaryClip(data);
-    }
+//    }
 
     //NOT IMPLEMENTED YET, will be implemented if arises the need
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (item.getTitle() == "Save") {
-        } else {
-            return false;
-        }
-        return true;
-    }
+//    @Override
+//    public boolean onContextItemSelected(MenuItem item) {
+//        if (item.getTitle() == "Save") {
+//        } else {
+//            return false;
+//        }
+//        return true;
+//    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RESULT_CODE_FOR_READING && resultCode == RESULT_OK) {
-            String wordContent = data.getStringExtra(AddWordActivity.EXTRA_WORD);
-            String wordTranslation = data.getStringExtra(AddWordActivity.EXTRA_TRANSLATION);
-            String exampleSentence = data.getStringExtra(AddWordActivity.EXTRA_EXAMPLE_SENTENCE);
-
-            Word word = new Word(
-                    wordContent,
-                    wordTranslation,
-                    0,
-                    exampleSentence);
-            wordRepository.insert(word);
-            Toast.makeText(this, "Kelime eklendi", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Kelime eklenmedi", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == RESULT_CODE_FOR_READING && resultCode == RESULT_OK) {
+//            String wordContent = data.getStringExtra(AddWordActivity.EXTRA_WORD);
+//            String wordTranslation = data.getStringExtra(AddWordActivity.EXTRA_TRANSLATION);
+//            String exampleSentence = data.getStringExtra(AddWordActivity.EXTRA_EXAMPLE_SENTENCE);
+//
+//            Word word = new Word(
+//                    wordContent,
+//                    wordTranslation,
+//                    0,
+//                    exampleSentence);
+//            wordRepository.insert(word);
+//            Toast.makeText(this, "Kelime eklendi", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, "Kelime eklenmedi", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
 
 }

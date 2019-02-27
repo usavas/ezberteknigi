@@ -9,19 +9,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
+import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
 public class AddWordFragment extends AppCompatDialogFragment {
-    private DialogListener listener;
+//    private DialogListener listener;
     private EditText editWord;
     private EditText editTranslation;
     private EditText editExampleSentence;
 
+    private static int _readingTextId;
 
-    public static AddWordFragment newInstance(String word, String translation, String exampleSentence) {
+
+    public static AddWordFragment newInstance(String word, String translation, String exampleSentence, int readingTextId) {
         AddWordFragment f = new AddWordFragment();
+        _readingTextId = readingTextId;
 
         Bundle args = new Bundle();
         args.putString("WORD", word);
@@ -56,8 +62,11 @@ public class AddWordFragment extends AppCompatDialogFragment {
                 String translation = editTranslation.getText().toString();
                 String exampleSentence = editExampleSentence.getText().toString();
 
-                listener.insertWord(word, translation, exampleSentence, Word.WORD_LEARNING);
-                getDialog().dismiss();
+                if (word.trim() != "" && translation.trim() != ""){
+                    saveWord(word, translation, exampleSentence, Word.WORD_LEARNING);
+                } else {
+                    showWordTranslationEmptyError();
+                }
             }
         });
 
@@ -69,27 +78,42 @@ public class AddWordFragment extends AppCompatDialogFragment {
                 String translation = editTranslation.getText().toString();
                 String exampleSentence = editExampleSentence.getText().toString();
 
-                listener.insertWord(word, translation, exampleSentence, Word.WORD_MASTERED);
-                getDialog().dismiss();
+                if (word.trim() != "" && translation.trim() != ""){
+                    saveWord(word, translation, exampleSentence, Word.WORD_MASTERED);
+                } else {
+                    showWordTranslationEmptyError();
+                }
             }
         });
 
         return builder.create();
     }
 
+    private void showWordTranslationEmptyError() {
+        Toast.makeText(getContext(), "Kelime ve çevirisini giriniz!", Toast.LENGTH_LONG).show();
+    }
+
+    private void saveWord(String word, String translation, String exampleSentence, int learningMastered){
+        WordRepository repo = new WordRepository(getActivity().getApplication());
+        Word w = new Word(word, translation, _readingTextId, exampleSentence);
+        w.setWordState(learningMastered);
+        repo.insert(w);
+        getDialog().dismiss();
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        try {
-            listener = (DialogListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() +
-                    "must implement ExampleDialogListener");
-        }
+//        try {
+//            listener = (DialogListener) context;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(context.toString() +
+//                    "must implement ExampleDialogListener");
+//        }
     }
-
-    public interface DialogListener {
-        void insertWord(String word, String translation, String exampleSentence, int learningMastered);
-    }
+//
+//    public interface DialogListener {
+//        void insertWord(String word, String translation, String exampleSentence, int learningMastered);
+//    }
 }
