@@ -17,7 +17,6 @@ import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
 public class AddWordFragment extends AppCompatDialogFragment {
-//    private DialogListener listener;
     private EditText editWord;
     private EditText editTranslation;
     private EditText editExampleSentence;
@@ -105,15 +104,5 @@ public class AddWordFragment extends AppCompatDialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-//        try {
-//            listener = (DialogListener) context;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(context.toString() +
-//                    "must implement ExampleDialogListener");
-//        }
     }
-//
-//    public interface DialogListener {
-//        void insertWord(String word, String translation, String exampleSentence, int learningMastered);
-//    }
 }
