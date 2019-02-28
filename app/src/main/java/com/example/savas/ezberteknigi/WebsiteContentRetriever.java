@@ -14,12 +14,26 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.content.ContentValues.TAG;
 
 
 public class WebsiteContentRetriever {
 
+
+    public static boolean isValidHttp(String urlAddress) {
+        if (urlAddress.startsWith("http://") || urlAddress.startsWith("https://")){
+            return true;
+        } else {
+            return false;
+        }
+//        Pattern p = Pattern.compile("");
+//        Matcher m;
+//        m=p.matcher(urlAddress);
+//        return m.matches();
+    }
 
     public static String ReceiveWebsiteContent(String url) {
 

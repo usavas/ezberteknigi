@@ -19,10 +19,12 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.WebsiteContentRetriever;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -54,9 +56,10 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         //TODO: get single reading text by readingTextId, setView to HTTP web viewer container layout
         readingTextRepository = new ReadingTextRepository(getApplication());
         ReadingText rt = readingTextRepository.getReadingTextById(readingText.getReadingTextId());
-        if (rt.getSource().startsWith("http")){
-            setContentView(R.layout.activity_http_handler);
-            WebView wv = findViewById(R.id.web_view);
+
+        if (WebsiteContentRetriever.isValidHttp(rt.getSource())){
+            setContentView(R.layout.activity_http_viewer);
+            WebView wv = findViewById(R.id.web_view_reading_text);
             wv.loadUrl(rt.getSource());
         } else {
             setContentView(R.layout.activity_reading_text_detail);
@@ -65,8 +68,6 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
             tvHeader.setText(readingText.getHeader());
             tvContent.setText(readingText.getContent());
-
-//        registerForContextMenu(tvContent);
 
             tvContent.setOnLongClickListener(v -> {
                 new Handler().postDelayed(() -> {
@@ -86,10 +87,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                 }, 800);
                 return false;
             });
-
         }
-
-
 
     }
 
@@ -135,22 +133,6 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         return word + " translation (sample)";
     }
 
-//    private void OpenWordDetailsActivity(Word word) {
-//        Intent intent = new Intent(getApplicationContext(), WordDetailActivity.class);
-//        intent.putExtra(WordsFragment.EXTRA_WORD_ID, word.getWordId());
-//        intent.putExtra(WordsFragment.EXTRA_WORD_WORD, word.getWord());
-//        intent.putExtra(WordsFragment.EXTRA_WORD_TRANSLATION, word.getTranslation());
-//        intent.putExtra(WordsFragment.EXTRA_WORD_EXAMPLE_SENTENCE, word.getExampleSentence());
-//        startActivity(intent);
-//    }
-
-//    private void OpenAddWordActivityForResult(String selectedText, String selectedSentence) {
-//        Intent intent = new Intent(getApplicationContext(), AddWordActivity.class);
-//        intent.putExtra(WORD_TO_PASS_FOR_TRANSLATION, selectedText); //selectedText
-//        intent.putExtra(EXAMPLE_SENTENCE_TO_PASS, selectedSentence);
-//        startActivityForResult(intent, RESULT_CODE_FOR_READING);
-//    }
-
     private void openAddWordDialog(String word, String translation, String exampleSentence) {
         AddWordFragment wordDialogFragment = AddWordFragment.newInstance(word, translation, exampleSentence, readingText.getReadingTextId());
         wordDialogFragment.show(getSupportFragmentManager(), "add word");
@@ -160,56 +142,5 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         WordDetailFragment wordDetailFragment= WordDetailFragment.newInstance(wordId, readingText.getReadingTextId());
         wordDetailFragment.show(getSupportFragmentManager(), "see word details");
     }
-
-//    @Override
-//    public void insertWord(String word, String translation, String exampleSentence, int learningMastered) {
-//        Word w = new Word(word, translation, readingText.getReadingTextId(), exampleSentence);
-//        w.setWordState(learningMastered);
-//        wordRepository.insert(w);
-//
-//        Log.d( "READINGTEXTDETAIL", "WORD INSERTED TO DB, masteredLearning: " + learningMastered);
-//    }
-
-//    @Override
-//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
-//         menu.add(0, v.getId(), 0, selectedText);
-//
-//         ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-//         ClipData data = ClipData.newPlainText("copied text", tvContent.getText());
-//         clipboard.setPrimaryClip(data);
-//    }
-
-    //NOT IMPLEMENTED YET, will be implemented if arises the need
-//    @Override
-//    public boolean onContextItemSelected(MenuItem item) {
-//        if (item.getTitle() == "Save") {
-//        } else {
-//            return false;
-//        }
-//        return true;
-//    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == RESULT_CODE_FOR_READING && resultCode == RESULT_OK) {
-//            String wordContent = data.getStringExtra(AddWordActivity.EXTRA_WORD);
-//            String wordTranslation = data.getStringExtra(AddWordActivity.EXTRA_TRANSLATION);
-//            String exampleSentence = data.getStringExtra(AddWordActivity.EXTRA_EXAMPLE_SENTENCE);
-//
-//            Word word = new Word(
-//                    wordContent,
-//                    wordTranslation,
-//                    0,
-//                    exampleSentence);
-//            wordRepository.insert(word);
-//            Toast.makeText(this, "Kelime eklendi", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(this, "Kelime eklenmedi", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
 
 }

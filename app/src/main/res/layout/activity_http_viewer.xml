@@ -1,37 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/carbon"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.AddWordActivity">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Activities.ReadingTextDetailActivity">
 
     <TextView
-        android:id="@+id/tv_url_address"
-        android:layout_width="389dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="HTTP HANDLER ACTIVITY"
-        android:maxLines="3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_add_http_content"
+        android:id="@+id/tv_header_url_address"
         android:layout_width="match_parent"
-        android:layout_height="79dp"
+        android:layout_height="65dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="OKUMA LİSTESİNE EKLE"
+        android:padding="8dp"
+        android:text="Header"
+        android:textSize="@dimen/textViewStandardTextSize"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_url_address" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-
+    <WebView
+        android:id="@+id/web_view_reading_text"
+        android:layout_width="match_parent"
+        android:layout_height="644dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_header_url_address" />
 
 </android.support.constraint.ConstraintLayout>

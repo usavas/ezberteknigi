@@ -33,7 +33,7 @@ public class AddWordActivity extends AppCompatActivity {
     Button btnAddWord;
     Button btnAddWordMastered;
 
-    TextView tvHttpContent;
+    TextView tvHttpAddress;
     Button btnSaveHttpContent;
 
     @Override
@@ -54,18 +54,14 @@ public class AddWordActivity extends AppCompatActivity {
                     setContentView(R.layout.activity_http_handler);
                     setTitle("Web İçeriği Ekle");
 
-                    tvHttpContent = findViewById(R.id.tv_http_contents);
-                    tvHttpContent.setText(WebsiteContentRetriever.ReceiveWebsiteContent(sharedText));
+                    tvHttpAddress = findViewById(R.id.tv_url_address);
+                    tvHttpAddress.setText(sharedText);
 
                     btnSaveHttpContent = findViewById(R.id.button_add_http_content);
                     btnSaveHttpContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
-                            WebView wv = findViewById(R.id.web_view);
-                            wv.loadUrl(sharedText);
-
-//                            saveHttpContent(sharedText, tvHttpContent.getText().toString());
+                            saveHttpContent(sharedText, WebsiteContentRetriever.ReceiveWebsiteContent(sharedText));
                         }
                     });
                 } else {
