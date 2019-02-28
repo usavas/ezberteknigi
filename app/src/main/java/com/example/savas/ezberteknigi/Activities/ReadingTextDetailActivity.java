@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +44,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
     private TextView tvHeader;
     private TextView tvContent;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +60,53 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         readingTextRepository = new ReadingTextRepository(getApplication());
         ReadingText rt = readingTextRepository.getReadingTextById(readingText.getReadingTextId());
 
-        if (WebsiteContentRetriever.isValidHttp(rt.getSource())){
+        if (WebsiteContentRetriever.isValidHttp(rt.getSource())) {
             setContentView(R.layout.activity_http_viewer);
             WebView wv = findViewById(R.id.web_view_reading_text);
             wv.loadUrl(rt.getSource());
+            wv.getSettings().setJavaScriptEnabled(true);
+
+            wv.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    new Handler().postDelayed(() -> {
+
+                        wv.evaluateJavascript("(function(){return window.selectionStart})()",
+                                new ValueCallback<String>() {
+                                    @Override
+                                    public void onReceiveValue(String range) {
+                                        Toast.makeText(ReadingTextDetailActivity.this, range, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+//                        wv.evaluateJavascript("(function(){return window.getSelection().toString()})()",
+//                                new ValueCallback<String>() {
+//                                    @Override
+//                                    public void onReceiveValue(String selectedText) {
+//
+//                                        if (selectedText.trim() != ""){
+//                                            wv.evaluateJavascript("(function(){return document.body.innerHTML.toString()})()",
+//                                                    new ValueCallback<String>() {
+//                                                        @Override
+//                                                        public void onReceiveValue(String text) {
+//                                                            if (text.trim() != "") {
+//                                                                String selectedSentence = ExampleSentenceExtractor
+//                                                                        .getSelectedSentence(text, wordSelectionStart, wordSelectionEnd);
+//                                                            }
+//                                                        }
+//                                                    });
+//                                        }
+//                                    }
+//                                });
+                    }, 800);
+
+//                    showWordDialog(selectedText, selectedSentence);
+
+                    return false;
+                }
+            });
+
         } else {
             setContentView(R.layout.activity_reading_text_detail);
             tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
@@ -74,7 +120,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                     int wordSelectionStart = tvContent.getSelectionStart();
                     int wordSelectionEnd = tvContent.getSelectionEnd();
 
-                    if (wordSelectionStart > wordSelectionEnd){
+                    if (wordSelectionStart > wordSelectionEnd) {
                         return;
                     }
 
@@ -129,7 +175,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         return null;
     }
 
-    private String getTranslation(String word){
+    private String getTranslation(String word) {
         return word + " translation (sample)";
     }
 
@@ -139,7 +185,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
     }
 
     private void openWordDetailsDialog(int wordId) {
-        WordDetailFragment wordDetailFragment= WordDetailFragment.newInstance(wordId, readingText.getReadingTextId());
+        WordDetailFragment wordDetailFragment = WordDetailFragment.newInstance(wordId, readingText.getReadingTextId());
         wordDetailFragment.show(getSupportFragmentManager(), "see word details");
     }
 
