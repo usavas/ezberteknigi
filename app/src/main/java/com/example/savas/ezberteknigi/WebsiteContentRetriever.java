@@ -24,15 +24,10 @@ public class WebsiteContentRetriever {
 
 
     public static boolean isValidHttp(String urlAddress) {
-        if (urlAddress.startsWith("http://") || urlAddress.startsWith("https://")){
-            return true;
-        } else {
-            return false;
-        }
-//        Pattern p = Pattern.compile("");
-//        Matcher m;
-//        m=p.matcher(urlAddress);
-//        return m.matches();
+        Pattern p = Pattern.compile("(http)|(https)://(www.)?");
+        Matcher m;
+        m=p.matcher(urlAddress);
+        return m.find();
     }
 
     public static String ReceiveWebsiteContent(String url) {

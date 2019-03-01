@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi;
 
+import android.service.autofill.RegexValidator;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -9,7 +10,9 @@ import java.util.regex.Pattern;
 public class ExampleSentenceExtractor {
 
     public static List<String> getSentences(String text, String word) {
-        final Pattern END_OF_SENTENCE = Pattern.compile("(?<=[.?!(...)])[\\s\\n\\t+]");
+        final Pattern END_OF_SENTENCE = Pattern.compile("(?<=[.?!(...)])[\\s\\n\\t]+");
+//        final Pattern END_OF_SENTENCE = Pattern.compile("([.!?])(\\n|\\s)+");
+
         String[] sentences = END_OF_SENTENCE.split(text);
         List<String> sentencesContaining = new ArrayList<>();
         for (String sentence : sentences) {
@@ -17,6 +20,8 @@ public class ExampleSentenceExtractor {
                 sentencesContaining.add(sentence);
             }
         }
+
+
         return sentencesContaining;
     }
 

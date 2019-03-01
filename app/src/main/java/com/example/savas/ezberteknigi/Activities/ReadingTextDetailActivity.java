@@ -55,7 +55,6 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         readingText.setHeader(sender.getStringExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_HEADER));
         readingText.setContent(sender.getStringExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_CONTENT));
 
-
         //TODO: get single reading text by readingTextId, setView to HTTP web viewer container layout
         readingTextRepository = new ReadingTextRepository(getApplication());
         ReadingText rt = readingTextRepository.getReadingTextById(readingText.getReadingTextId());
@@ -69,39 +68,39 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
             wv.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-
                     new Handler().postDelayed(() -> {
-
-                        wv.evaluateJavascript("(function(){return window.selectionStart})()",
+                        wv.evaluateJavascript("(function(){return window.getSelection().toString()})()",
                                 new ValueCallback<String>() {
                                     @Override
-                                    public void onReceiveValue(String range) {
-                                        Toast.makeText(ReadingTextDetailActivity.this, range, Toast.LENGTH_SHORT).show();
+                                    public void onReceiveValue(String selected) {
+                                        String selectedText = selected.substring(1, selected.length() - 1).trim();
+                                        Toast.makeText(ReadingTextDetailActivity.this, selectedText, Toast.LENGTH_LONG).show();
+                                        Log.d("XXXXXXXXXXXXXXXXXXXXXXX", "selected text: " + selectedText + "\tselected: " + selected);
+
+                                        if (selectedText.trim() != "") {
+                                            wv.evaluateJavascript("(function(){return document.body.innerText})()",
+                                                    new ValueCallback<String>() {
+                                                        @Override
+                                                        public void onReceiveValue(String text) {
+                                                            if (text.trim() != "") {
+                                                                Log.d("XXXXXXXXXXXXXXXXXXXXXXX", "sentences: " + text);
+                                                                List<String> selectedSentences = ExampleSentenceExtractor
+                                                                        .getSentences(text, selectedText);
+
+                                                                String singleSentence = "";
+                                                                if (selectedSentences.size() > 0){
+                                                                    singleSentence = selectedSentences.get(0);
+                                                                    Log.d("XXXXXXXXXXXXXXXXXXXXXXX", "sentence: " + singleSentence);
+
+                                                                }
+                                                                showWordDialog(selectedText, singleSentence);
+                                                            }
+                                                        }
+                                                    });
+                                        }
                                     }
                                 });
-
-//                        wv.evaluateJavascript("(function(){return window.getSelection().toString()})()",
-//                                new ValueCallback<String>() {
-//                                    @Override
-//                                    public void onReceiveValue(String selectedText) {
-//
-//                                        if (selectedText.trim() != ""){
-//                                            wv.evaluateJavascript("(function(){return document.body.innerHTML.toString()})()",
-//                                                    new ValueCallback<String>() {
-//                                                        @Override
-//                                                        public void onReceiveValue(String text) {
-//                                                            if (text.trim() != "") {
-//                                                                String selectedSentence = ExampleSentenceExtractor
-//                                                                        .getSelectedSentence(text, wordSelectionStart, wordSelectionEnd);
-//                                                            }
-//                                                        }
-//                                                    });
-//                                        }
-//                                    }
-//                                });
                     }, 800);
-
-//                    showWordDialog(selectedText, selectedSentence);
 
                     return false;
                 }
@@ -120,7 +119,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                     int wordSelectionStart = tvContent.getSelectionStart();
                     int wordSelectionEnd = tvContent.getSelectionEnd();
 
-                    if (wordSelectionStart > wordSelectionEnd) {
+                    if (!verifySelection(wordSelectionStart, wordSelectionEnd)) {
                         return;
                     }
 
@@ -129,6 +128,8 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
                     String selectedSentence = ExampleSentenceExtractor
                             .getSelectedSentence(text, wordSelectionStart, wordSelectionEnd);
+                    Log.d("XXXXXXXXXXXXXXXX", "not webview text: " + text);
+                    Log.d("XXXXXXXXXXXXXXXX", "not webview sentence: " + selectedSentence);
                     showWordDialog(selectedText, selectedSentence);
                 }, 800);
                 return false;
