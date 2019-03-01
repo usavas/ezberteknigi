@@ -5,6 +5,9 @@ import android.util.Log;
 
 import com.google.android.gms.common.util.IOUtils;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,19 +23,12 @@ import java.util.regex.Pattern;
 import static android.content.ContentValues.TAG;
 
 
-public class WebsiteContentRetriever {
+public class WebContentRetrieverViaHttpRequest implements WebContentRetrievable{
 
+    @Override
+    public String retrieveContent(String url) {
+        String result = "";
 
-    public static boolean isValidHttp(String urlAddress) {
-        Pattern p = Pattern.compile("(http)|(https)://(www.)?");
-        Matcher m;
-        m=p.matcher(urlAddress);
-        return m.find();
-    }
-
-    public static String ReceiveWebsiteContent(String url) {
-
-        String result = null;
         try {
             result = new ContentTask().execute(url).get();
         } catch (ExecutionException e) {
@@ -40,6 +36,8 @@ public class WebsiteContentRetriever {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+
         return result;
     }
 
@@ -64,14 +62,16 @@ public class WebsiteContentRetriever {
                 InputStream stream = connection.getInputStream();
                 reader = new BufferedReader(new InputStreamReader(stream));
 
-                StringBuffer buffer = new StringBuffer();
+                StringBuffer bufferHtml = new StringBuffer();
                 String line = "";
                 while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
+                    bufferHtml.append(line+"\n");
                 }
 
-                Log.d(TAG, "doInBackground: buffer result: " + buffer.toString());
-                return buffer.toString();
+                Log.d(TAG, "doInBackground: buffer result: " + bufferHtml.toString());
+                return bufferHtml.toString();
+
+                //TODO: get just the inner Texts (html without tags)
 
             } catch (IOException e) {
                 e.printStackTrace();

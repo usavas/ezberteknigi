@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,7 +14,9 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
-import com.example.savas.ezberteknigi.WebsiteContentRetriever;
+import com.example.savas.ezberteknigi.WebContentRetrievable;
+import com.example.savas.ezberteknigi.WebContentRetrieverViaHttpRequest;
+import com.example.savas.ezberteknigi.WebContentRetrieverViaJsoup;
 
 public class AddWordActivity extends AppCompatActivity {
 
@@ -44,8 +45,6 @@ public class AddWordActivity extends AppCompatActivity {
         String action = intent.getAction();
         String type = intent.getType();
 
-        String webContent = "";
-
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -61,7 +60,8 @@ public class AddWordActivity extends AppCompatActivity {
                     btnSaveHttpContent.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            saveHttpContent(sharedText, WebsiteContentRetriever.ReceiveWebsiteContent(sharedText));
+                            WebContentRetrievable retriever = new WebContentRetrieverViaJsoup();
+                            saveHttpContent(sharedText, retriever.retrieveContent(sharedText));
                         }
                     });
                 } else {
@@ -97,7 +97,7 @@ public class AddWordActivity extends AppCompatActivity {
     private void saveHttpContent(String httpAddress, String httpContent){
         //TODO: save http content
         ReadingTextViewModel vm = new ReadingTextViewModel(getApplication());
-        vm.insert(new ReadingText("English", httpAddress, "sample_web_header", ReadingText.DOCUMENT_TYPE_OTHER, 7, httpContent));
+        vm.insert(new ReadingText("en", httpAddress, "sample_web_header", ReadingText.DOCUMENT_TYPE_OTHER, 7, httpContent));
     }
 
     private void saveWord(int wordState){

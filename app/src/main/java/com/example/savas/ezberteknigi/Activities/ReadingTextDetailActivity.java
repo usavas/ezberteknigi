@@ -3,12 +3,9 @@ package com.example.savas.ezberteknigi.Activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
@@ -21,13 +18,11 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
-import com.example.savas.ezberteknigi.WebsiteContentRetriever;
+import com.example.savas.ezberteknigi.WebContentRetrievable;
+import com.example.savas.ezberteknigi.WebContentRetrieverViaHttpRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class ReadingTextDetailActivity extends AppCompatActivity {
@@ -59,7 +54,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         readingTextRepository = new ReadingTextRepository(getApplication());
         ReadingText rt = readingTextRepository.getReadingTextById(readingText.getReadingTextId());
 
-        if (WebsiteContentRetriever.isValidHttp(rt.getSource())) {
+        if (WebContentRetrievable.isValidUrl(rt.getSource())) {
             setContentView(R.layout.activity_http_viewer);
             WebView wv = findViewById(R.id.web_view_reading_text);
             wv.loadUrl(rt.getSource());
