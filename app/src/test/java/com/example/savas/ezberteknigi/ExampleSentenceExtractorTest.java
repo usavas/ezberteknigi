@@ -14,7 +14,7 @@ public class ExampleSentenceExtractorTest {
     public void extractSentencesFromText(){
         List<String> sentences = ExampleSentenceExtractor.getSentences("This is another not containing sentence.        " +
                 "This is too with spaces.    Another example sample contain word. " +
-                "Example word sample containing sentence.\ntwo separate sentences, separate by sample dot." +
+                "Example word sample containing sentence\".\"\ntwo separate sentences, separate by sample dot." +
                 "Not ending there because of word without spaces. \n\n\nBut this sample line.", "sample");
         System.out.println("extractSentencesFromText: " + sentences.get(0));
         System.out.println("extractSentencesFromText: " + sentences.get(1));

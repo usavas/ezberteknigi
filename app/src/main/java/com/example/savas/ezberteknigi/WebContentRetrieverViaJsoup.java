@@ -27,7 +27,7 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
 
             try {
                 Document doc = Jsoup.connect(params[0]).get();
-                String result = doc.text();
+                String result = doc.body().text();
                 return result;
             } catch (IOException e) {
                 e.printStackTrace();

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class ExampleSentenceExtractor {
 
     public static List<String> getSentences(String text, String word) {
-        final Pattern END_OF_SENTENCE = Pattern.compile("(?<=[.?!(...)])[\\s\\n\\t]+");
+        final Pattern END_OF_SENTENCE = Pattern.compile("(?<=[.?!(...)])(\")?[\\s\\n\\t]+");
 //        final Pattern END_OF_SENTENCE = Pattern.compile("([.!?])(\\n|\\s)+");
 
         String[] sentences = END_OF_SENTENCE.split(text);
@@ -21,7 +21,6 @@ public class ExampleSentenceExtractor {
             }
         }
 
-
         return sentencesContaining;
     }
 
@@ -31,7 +30,7 @@ public class ExampleSentenceExtractor {
 
     private static int getNearestStartingIndex(String text, int index) {
         String[] sentenceSeparators = new String[]{
-                "? ", ". ", "! ", "... ", ".. ", ".\n", "\n", ".\t"
+                "? ", ". ", "! ", "... ", ".. ", ".\n", "\n", ".\t", ".\"", "\"."
         };
         int nearestStarterIndex = 0;
         for (String separator : sentenceSeparators) {
@@ -46,7 +45,7 @@ public class ExampleSentenceExtractor {
 
     private static int getNearestFinisherIndex(String text, int index) {
         String[] sentenceSeparators = new String[]{
-                "? ", ". ", "! ", "... ", ".. ", ".\n", "\n", ".\t"
+                "? ", ". ", "! ", "... ", ".. ", ".\n", "\n", ".\t", ".\"", "\"."
         };
         int nearestFinisherIndex = text.length() - 1;
         for (String separator : sentenceSeparators) {

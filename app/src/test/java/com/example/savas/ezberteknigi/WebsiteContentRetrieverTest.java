@@ -12,14 +12,14 @@ public class WebsiteContentRetrieverTest {
     @Test
     public void retrieveContentJsoup(){
         WebContentRetrievable retriever = new WebContentRetrieverViaJsoup();
-        String content = retriever.retrieveContent("https://medium.com/s/joint-accounts/when-roommates-rebel-against-sharing-costs-95a772c251bc");
-        System.out.println("via Jsoup: " + content);
+//        String content = retriever.retrieveContent("https://medium.com/s/joint-accounts/when-roommates-rebel-against-sharing-costs-95a772c251bc");
+//        System.out.println("via Jsoup: " + content);
     }
 
     @Test
     public void retrieveContentHttpRequests(){
         WebContentRetrievable retriever = new WebContentRetrieverViaHttpRequest();
-        String content = retriever.retrieveContent("https://medium.com/s/joint-accounts/when-roommates-rebel-against-sharing-costs-95a772c251bc");
-        System.out.println("via Http: " + content);
+//        String content = retriever.retrieveContent("https://medium.com/s/joint-accounts/when-roommates-rebel-against-sharing-costs-95a772c251bc");
+//        System.out.println("via Http: " + content);
     }
 }

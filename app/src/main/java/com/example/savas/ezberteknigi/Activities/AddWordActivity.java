@@ -98,6 +98,7 @@ public class AddWordActivity extends AppCompatActivity {
         //TODO: save http content
         ReadingTextViewModel vm = new ReadingTextViewModel(getApplication());
         vm.insert(new ReadingText("en", httpAddress, "sample_web_header", ReadingText.DOCUMENT_TYPE_OTHER, 7, httpContent));
+        finish();
     }
 
     private void saveWord(int wordState){

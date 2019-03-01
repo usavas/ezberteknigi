@@ -54,7 +54,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         readingTextRepository = new ReadingTextRepository(getApplication());
         ReadingText rt = readingTextRepository.getReadingTextById(readingText.getReadingTextId());
 
-        if (WebContentRetrievable.isValidUrl(rt.getSource())) {
+        if (!WebContentRetrievable.isValidUrl(rt.getSource())) {
             setContentView(R.layout.activity_http_viewer);
             WebView wv = findViewById(R.id.web_view_reading_text);
             wv.loadUrl(rt.getSource());
