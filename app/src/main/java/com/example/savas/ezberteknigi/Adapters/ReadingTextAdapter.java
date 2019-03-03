@@ -45,6 +45,11 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
         return readingTexts.size();
     }
 
+    public ReadingText getReadingTextAt(int position){
+        ReadingText rt = readingTexts.get(position);
+        return rt;
+    }
+
     public void setReadingTexts(List<ReadingText> readingTexts){
         this.readingTexts = readingTexts;
         notifyDataSetChanged();
