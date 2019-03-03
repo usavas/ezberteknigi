@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.BLL.DummyTranslateProvider;
 import com.example.savas.ezberteknigi.BLL.ExampleSentenceExtractor;
@@ -112,10 +114,18 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         tvContent = findViewById(R.id.text_view_reading_text_detail_content);
 
         tvHeader.setText(readingText.getHeader());
+
+        //TODO: (maybe) if the content is HTML then
+        //        tvContent.setText(Html.fromHtml(readingText.getContent()));
         tvContent.setText(readingText.getContent());
 
         tvContent.setOnLongClickListener(v -> {
             new Handler().postDelayed(() -> {
+
+                Toast.makeText(this, "XXXXXXXX baseline: " + tvContent.getBaseline(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "XXXXXXXX extended padding top: " + tvContent.getExtendedPaddingTop(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "XXXXXXXX extended padding top: " + tvContent., Toast.LENGTH_SHORT).show();
+
                 int wordSelectionStart = tvContent.getSelectionStart();
                 int wordSelectionEnd = tvContent.getSelectionEnd();
 
