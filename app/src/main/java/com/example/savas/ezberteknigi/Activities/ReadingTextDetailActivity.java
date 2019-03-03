@@ -51,7 +51,6 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         readingText.setHeader(sender.getStringExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_HEADER));
         readingText.setContent(sender.getStringExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_CONTENT));
 
-        //TODO: get single reading text by readingTextId, setView to HTTP web viewer container layout
         readingTextRepository = new ReadingTextRepository(getApplication());
         ReadingText rt = readingTextRepository.getReadingTextById(readingText.getReadingTextId());
 
