@@ -29,7 +29,7 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
     @Override
     public ReadingTextHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.reading_text_item, viewGroup, false);
+                .inflate(R.layout.item_reading_text, viewGroup, false);
         return new ReadingTextHolder(itemView);
     }
 

@@ -85,7 +85,7 @@ public class TranslationActivity extends AppCompatActivity {
         super.onResume();
 
         Intent intent = getIntent();
-        String wordToSearch = intent.getStringExtra(AddWordActivity.EXTRA_WORD_TO_GET_TRANSLATION);
+        String wordToSearch = intent.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_WORD_TO_GET_TRANSLATION);
         try {
             //web API is no longer available
             JSONObject jsonObject = new JsonTask().execute("http://cevir.ws/v1?q="+ wordToSearch +"&m=25&p=exact&l=en").get();

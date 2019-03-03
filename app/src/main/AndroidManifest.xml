@@ -18,8 +18,6 @@
             android:name=".Activities.SaveWebpageIntentService"
             android:exported="true"></service>
 
-        <activity android:name=".Activities.DummyIntentConsumerActivity"></activity>
-
         <service
             android:name=".Services.WordAndTextService"
             android:enabled="true"
@@ -44,7 +42,7 @@
             android:name=".Activities.ReadingTextDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.AddWordActivity"
+            android:name=".Activities.AddSharedWordWordOrWebPageActivity"
             android:label="Kelime Ekle">
             <intent-filter android:label="Öğreneceklerime Ekle">
                 <action android:name="android.intent.action.SEND" />

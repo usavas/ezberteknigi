@@ -32,7 +32,7 @@ public class WordDetailFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_word_detail, null);
+        View view = inflater.inflate(R.layout.fragment_dialog_word_detail, null);
         builder.setView(view);
 
         WordRepository repo = new WordRepository(getActivity().getApplication());

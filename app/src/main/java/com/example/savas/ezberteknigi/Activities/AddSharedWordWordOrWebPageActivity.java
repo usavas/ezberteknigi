@@ -9,16 +9,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
-import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
-import com.example.savas.ezberteknigi.WebContentRetrievable;
-import com.example.savas.ezberteknigi.WebContentRetrieverViaHttpRequest;
-import com.example.savas.ezberteknigi.WebContentRetrieverViaJsoup;
 
-public class AddWordActivity extends AppCompatActivity {
+public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
 
     public static final int GET_TRANSLATIONS_CODE = 3;
 
@@ -62,7 +57,7 @@ public class AddWordActivity extends AppCompatActivity {
                     finish();
 
                 } else {
-                    setContentView(R.layout.activity_add_word);
+                    setContentView(R.layout.activity_add_shared_word_or_webpage);
                     setTitle("Kelime Ekle");
 
                     editWord = findViewById(R.id.edit_word_word_fragment);

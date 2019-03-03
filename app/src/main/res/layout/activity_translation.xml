@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/translation_item" />
+        tools:listitem="@layout/item_translation" />
 
     <Button
         android:id="@+id/button_return"

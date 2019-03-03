@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
-import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
 public class AddWordFragment extends AppCompatDialogFragment {
     private EditText editWord;
@@ -41,7 +40,7 @@ public class AddWordFragment extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_add_word, null);
+        View view = inflater.inflate(R.layout.fragment_dialog_add_word, null);
 
         builder.setView(view);
 

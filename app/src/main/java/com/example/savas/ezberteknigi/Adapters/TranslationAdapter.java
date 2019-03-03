@@ -23,7 +23,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
     @Override
     public TranslationHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.translation_item, viewGroup, false);
+                .inflate(R.layout.item_translation, viewGroup, false);
         return new TranslationHolder(itemView);
     }
 

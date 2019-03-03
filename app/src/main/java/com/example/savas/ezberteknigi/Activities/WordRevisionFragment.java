@@ -17,7 +17,7 @@ implements WordsFragment.OnFragmentInteractionListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_word_revision, container, false);
+        return inflater.inflate(R.layout.fragment_main_word_revision, container, false);
     }
 
     @Override

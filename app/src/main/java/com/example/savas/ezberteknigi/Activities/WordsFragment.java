@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,7 +143,7 @@ public class WordsFragment extends Fragment {
 
         if (mParam1 == Word.WORD_ALL || mParam1 == Word.WORD_LEARNING) {
             buttonAddNote.setOnClickListener(v -> {
-                Intent intent = new Intent(getContext(), AddWordActivity.class);
+                Intent intent = new Intent(getContext(), AddSharedWordWordOrWebPageActivity.class);
                 startActivityForResult(intent, ADD_WORD_REQUEST);
             });
 
@@ -199,16 +197,16 @@ public class WordsFragment extends Fragment {
     }
 
     /*
-    * Return from AddWordActivity
+    * Return from AddSharedWordWordOrWebPageActivity
     * */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ADD_WORD_REQUEST && resultCode == RESULT_OK) {
-            String wordContent = data.getStringExtra(AddWordActivity.EXTRA_WORD);
-            String wordTranslation = data.getStringExtra(AddWordActivity.EXTRA_TRANSLATION);
-            String exampleSentence = data.getStringExtra(AddWordActivity.EXTRA_EXAMPLE_SENTENCE);
+            String wordContent = data.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_WORD);
+            String wordTranslation = data.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_TRANSLATION);
+            String exampleSentence = data.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_EXAMPLE_SENTENCE);
 
             Word word = new Word(
                     wordContent,

@@ -81,7 +81,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     @Override
     public WordAdapter.WordHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.word_item, viewGroup, false);
+                .inflate(R.layout.item_word, viewGroup, false);
         return new WordHolder(itemView);
     }
 
