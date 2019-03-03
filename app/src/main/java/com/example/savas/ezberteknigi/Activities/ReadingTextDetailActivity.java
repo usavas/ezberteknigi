@@ -56,82 +56,89 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         ReadingText rt = readingTextRepository.getReadingTextById(readingText.getReadingTextId());
 
         if (!WebContentRetrievable.isValidUrl(rt.getSource())) {
-            setContentView(R.layout.activity_http_viewer);
-            WebView wv = findViewById(R.id.web_view_reading_text);
-            wv.loadUrl(rt.getSource());
-            wv.getSettings().setJavaScriptEnabled(true);
-
-            wv.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    new Handler().postDelayed(() -> {
-                        wv.evaluateJavascript("(function(){return window.getSelection().toString()})()",
-                                new ValueCallback<String>() {
-                                    @Override
-                                    public void onReceiveValue(String selected) {
-                                        String selectedText = selected.substring(1, selected.length() - 1).trim();
-                                        Toast.makeText(ReadingTextDetailActivity.this, selectedText, Toast.LENGTH_LONG).show();
-                                        Log.d("XXXXXXXXXXXXXXXXXXXXXXX", "selected text: " + selectedText + "\tselected: " + selected);
-
-                                        if (selectedText.trim() != "") {
-                                            wv.evaluateJavascript("(function(){return document.body.innerText})()",
-                                                    new ValueCallback<String>() {
-                                                        @Override
-                                                        public void onReceiveValue(String text) {
-                                                            if (text.trim() != "") {
-                                                                Log.d("XXXXXXXXXXXXXXXXXXXXXXX", "sentences: " + text);
-                                                                List<String> selectedSentences = ExampleSentenceExtractor
-                                                                        .getSentences(text, selectedText);
-
-                                                                String singleSentence = "";
-                                                                if (selectedSentences.size() > 0){
-                                                                    singleSentence = selectedSentences.get(0);
-                                                                    Log.d("XXXXXXXXXXXXXXXXXXXXXXX", "sentence: " + singleSentence);
-
-                                                                }
-                                                                showWordDialog(selectedText, singleSentence);
-                                                            }
-                                                        }
-                                                    });
-                                        }
-                                    }
-                                });
-                    }, 800);
-
-                    return false;
-                }
-            });
+            prepareLayoutForWebPageAdding(rt);
 
         } else {
-            setContentView(R.layout.activity_reading_text_detail);
-            tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
-            tvContent = findViewById(R.id.text_view_reading_text_detail_content);
-
-            tvHeader.setText(readingText.getHeader());
-            tvContent.setText(readingText.getContent());
-
-            tvContent.setOnLongClickListener(v -> {
-                new Handler().postDelayed(() -> {
-                    int wordSelectionStart = tvContent.getSelectionStart();
-                    int wordSelectionEnd = tvContent.getSelectionEnd();
-
-                    if (!verifySelection(wordSelectionStart, wordSelectionEnd)) {
-                        return;
-                    }
-
-                    String selectedText = tvContent.getText().toString().substring(wordSelectionStart, wordSelectionEnd);
-                    String text = tvContent.getText().toString();
-
-                    String selectedSentence = ExampleSentenceExtractor
-                            .getSelectedSentence(text, wordSelectionStart, wordSelectionEnd);
-                    Log.d("XXXXXXXXXXXXXXXX", "not webview text: " + text);
-                    Log.d("XXXXXXXXXXXXXXXX", "not webview sentence: " + selectedSentence);
-                    showWordDialog(selectedText, selectedSentence);
-                }, 800);
-                return false;
-            });
+            prepareLayoutForWordAdding();
         }
+    }
 
+    private void prepareLayoutForWebPageAdding(ReadingText rt) {
+        setContentView(R.layout.activity_http_viewer);
+        WebView wv = findViewById(R.id.web_view_reading_text);
+        wv.loadUrl(rt.getSource());
+        wv.getSettings().setJavaScriptEnabled(true);
+
+        wv.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                new Handler().postDelayed(() -> {
+                    wv.evaluateJavascript("(function(){return window.getSelection().toString()})()",
+                            new ValueCallback<String>() {
+                                @Override
+                                public void onReceiveValue(String selected) {
+                                    String selectedText = selected.substring(1, selected.length() - 1).trim();
+                                    Toast.makeText(ReadingTextDetailActivity.this, selectedText, Toast.LENGTH_LONG).show();
+                                    Log.d("XXXXXXXXXXXXXXXXXXXXXXX", "selected text: " + selectedText + "\tselected: " + selected);
+
+                                    if (selectedText.trim() != "") {
+                                        wv.evaluateJavascript("(function(){return document.body.innerText})()",
+                                                new ValueCallback<String>() {
+                                                    @Override
+                                                    public void onReceiveValue(String text) {
+                                                        if (text.trim() != "") {
+                                                            Log.d("XXXXXXXXXXXXXXXXXXXXXXX", "sentences: " + text);
+                                                            List<String> selectedSentences = ExampleSentenceExtractor
+                                                                    .getSentences(text, selectedText);
+
+                                                            String singleSentence = "";
+                                                            if (selectedSentences.size() > 0){
+                                                                singleSentence = selectedSentences.get(0);
+                                                                Log.d("XXXXXXXXXXXXXXXXXXXXXXX", "sentence: " + singleSentence);
+
+                                                            }
+                                                            showWordDialog(selectedText, singleSentence);
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                }
+                            });
+                }, 800);
+
+                return false;
+            }
+        });
+    }
+
+    private void prepareLayoutForWordAdding() {
+        setContentView(R.layout.activity_reading_text_detail);
+        tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
+        tvContent = findViewById(R.id.text_view_reading_text_detail_content);
+
+        tvHeader.setText(readingText.getHeader());
+        tvContent.setText(readingText.getContent());
+
+        tvContent.setOnLongClickListener(v -> {
+            new Handler().postDelayed(() -> {
+                int wordSelectionStart = tvContent.getSelectionStart();
+                int wordSelectionEnd = tvContent.getSelectionEnd();
+
+                if (!verifySelection(wordSelectionStart, wordSelectionEnd)) {
+                    return;
+                }
+
+                String selectedText = tvContent.getText().toString().substring(wordSelectionStart, wordSelectionEnd);
+                String text = tvContent.getText().toString();
+
+                String selectedSentence = ExampleSentenceExtractor
+                        .getSelectedSentence(text, wordSelectionStart, wordSelectionEnd);
+                Log.d("XXXXXXXXXXXXXXXX", "not webview text: " + text);
+                Log.d("XXXXXXXXXXXXXXXX", "not webview sentence: " + selectedSentence);
+                showWordDialog(selectedText, selectedSentence);
+            }, 800);
+            return false;
+        });
     }
 
     private boolean verifySelection(int wordSelectionStart, int wordSelectionEnd) {
