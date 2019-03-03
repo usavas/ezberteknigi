@@ -49,21 +49,18 @@ public class AddWordActivity extends AppCompatActivity {
             if ("text/plain".equals(type)) {
                 String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
 
+                //TODO: if valid url check here
                 if (sharedText.startsWith("http")){
-                    setContentView(R.layout.activity_http_handler);
-                    setTitle("Web İçeriği Ekle");
 
-                    tvHttpAddress = findViewById(R.id.tv_url_address);
-                    tvHttpAddress.setText(sharedText);
+                    Intent intentService = new Intent();
+                    intentService.setClass(this, SaveWebpageIntentService.class);
+                    intentService.putExtra(SaveWebpageIntentService.WEB_ADDRESS_TO_SAVE, sharedText);
+                    startService(intentService);
 
-                    btnSaveHttpContent = findViewById(R.id.button_add_http_content);
-                    btnSaveHttpContent.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            WebContentRetrievable retriever = new WebContentRetrieverViaJsoup();
-                            saveHttpContent(sharedText, retriever.retrieveContent(sharedText));
-                        }
-                    });
+                    Toast.makeText(this, "Kelime Öğren Programına Eklendi", Toast.LENGTH_LONG).show();
+                    
+                    finish();
+
                 } else {
                     setContentView(R.layout.activity_add_word);
                     setTitle("Kelime Ekle");
@@ -92,13 +89,6 @@ public class AddWordActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    private void saveHttpContent(String httpAddress, String httpContent){
-        //TODO: save http content
-        ReadingTextViewModel vm = new ReadingTextViewModel(getApplication());
-        vm.insert(new ReadingText("en", httpAddress, "sample_web_header", ReadingText.DOCUMENT_TYPE_OTHER, 7, httpContent));
-        finish();
     }
 
     private void saveWord(int wordState){

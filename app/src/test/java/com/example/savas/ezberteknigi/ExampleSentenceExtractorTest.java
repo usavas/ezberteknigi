@@ -16,10 +16,10 @@ public class ExampleSentenceExtractorTest {
                 "This is too with spaces.    Another example sample contain word. " +
                 "Example word sample containing sentence\".\"\ntwo separate sentences, separate by sample dot." +
                 "Not ending there because of word without spaces. \n\n\nBut this sample line.", "sample");
-        System.out.println("extractSentencesFromText: " + sentences.get(0));
-        System.out.println("extractSentencesFromText: " + sentences.get(1));
-        System.out.println("extractSentencesFromText: " + sentences.get(2));
-        System.out.println("extractSentencesFromText: " + sentences.get(3));
+//        System.out.println("extractSentencesFromText: " + sentences.get(0));
+//        System.out.println("extractSentencesFromText: " + sentences.get(1));
+//        System.out.println("extractSentencesFromText: " + sentences.get(2));
+//        System.out.println("extractSentencesFromText: " + sentences.get(3));
 
         assert sentences.size() == 4;
     }

@@ -11,7 +11,7 @@ public class WebsiteContentRetrieverTest {
 
     @Test
     public void retrieveContentJsoup(){
-        WebContentRetrievable retriever = new WebContentRetrieverViaJsoup();
+        WebContentRetrieverViaJsoup retriever = new WebContentRetrieverViaJsoup();
 //        String content = retriever.retrieveContent("https://medium.com/s/joint-accounts/when-roommates-rebel-against-sharing-costs-95a772c251bc");
 //        System.out.println("via Jsoup: " + content);
     }
