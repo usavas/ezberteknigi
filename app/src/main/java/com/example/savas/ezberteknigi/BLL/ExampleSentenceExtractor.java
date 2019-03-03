@@ -10,7 +10,8 @@ import java.util.regex.Pattern;
 public class ExampleSentenceExtractor {
 
     public static List<String> getSentences(String text, String word) {
-        final Pattern END_OF_SENTENCE = Pattern.compile("(?<=[.?!(...)])(\")?[\\s\\n\\t]+");
+//        final Pattern END_OF_SENTENCE = Pattern.compile("(?<=[.?!(...)])(\")?[\\s\\n\\t]+");
+        final Pattern END_OF_SENTENCE = Pattern.compile("(?<=[.?!(...)])[\"”]?[\\s\\n\\t]+");
 //        final Pattern END_OF_SENTENCE = Pattern.compile("([.!?])(\\n|\\s)+");
 
         String[] sentences = END_OF_SENTENCE.split(text);

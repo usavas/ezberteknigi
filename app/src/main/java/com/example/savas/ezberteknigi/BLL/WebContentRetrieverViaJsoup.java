@@ -1,15 +1,19 @@
 package com.example.savas.ezberteknigi.BLL;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Node;
 
 import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
     @Override
@@ -35,7 +39,12 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
 
                 titleAndContent.add(doc.title());
                 //TODO: further html manipulation might be needed
+
+
                 titleAndContent.add(doc.body().text());
+
+                Log.d(TAG, "doInBackground: " + doc.body().text());
+                Log.d(TAG, "doInBackground: " + doc.body().wholeText());
 
                 return titleAndContent;
             } catch (IOException e) {

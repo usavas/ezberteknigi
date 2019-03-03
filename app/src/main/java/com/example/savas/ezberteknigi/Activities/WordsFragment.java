@@ -143,8 +143,11 @@ public class WordsFragment extends Fragment {
 
         if (mParam1 == Word.WORD_ALL || mParam1 == Word.WORD_LEARNING) {
             buttonAddNote.setOnClickListener(v -> {
-                Intent intent = new Intent(getContext(), AddSharedWordWordOrWebPageActivity.class);
-                startActivityForResult(intent, ADD_WORD_REQUEST);
+//                Intent intent = new Intent(getContext(), AddSharedWordWordOrWebPageActivity.class);
+//                startActivityForResult(intent, ADD_WORD_REQUEST);
+
+                AddWordFragment wordDialogFragment = AddWordFragment.newInstance();
+                wordDialogFragment.show(getFragmentManager(), "Kelime Ekle");
             });
 
         } else {
