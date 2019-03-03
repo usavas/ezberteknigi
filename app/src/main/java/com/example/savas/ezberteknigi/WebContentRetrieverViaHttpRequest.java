@@ -3,22 +3,15 @@ package com.example.savas.ezberteknigi;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.android.gms.common.util.IOUtils;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static android.content.ContentValues.TAG;
 
@@ -26,19 +19,21 @@ import static android.content.ContentValues.TAG;
 public class WebContentRetrieverViaHttpRequest implements WebContentRetrievable{
 
     @Override
-    public String retrieveContent(String url) {
-        String result = "";
+    public List<String> retrieveContent(String url) {
+        String content = "";
 
         try {
-            result = new ContentTask().execute(url).get();
+             content = new ContentTask().execute(url).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-
-        return result;
+        List<String> titleAndContent = new ArrayList<>();
+        titleAndContent.add("no title");
+        titleAndContent.add(content);
+        return titleAndContent;
     }
 
     private static class ContentTask extends AsyncTask<String, String, String> {

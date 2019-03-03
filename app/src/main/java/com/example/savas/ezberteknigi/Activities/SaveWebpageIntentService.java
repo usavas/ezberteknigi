@@ -8,6 +8,8 @@ import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
 import com.example.savas.ezberteknigi.WebContentRetrievable;
 import com.example.savas.ezberteknigi.WebContentRetrieverViaJsoup;
 
+import java.util.List;
+
 public class SaveWebpageIntentService extends IntentService {
 
     public static final String WEB_ADDRESS_TO_SAVE = "WEBPAGE_SHARE_WEB_ADDRESS";
@@ -25,10 +27,11 @@ public class SaveWebpageIntentService extends IntentService {
         String url = intent.getStringExtra(WEB_ADDRESS_TO_SAVE);
 
         WebContentRetrievable retriever = new WebContentRetrieverViaJsoup();
-        saveHttpContent(url, retriever.retrieveContent(url));
+        List<String> titleAndContent = retriever.retrieveContent(url);
+        saveHttpContent(url, titleAndContent.get(0), titleAndContent.get(1));
     }
 
-    private void saveHttpContent(String httpAddress, String httpContent){
+    private void saveHttpContent(String httpAddress, String title, String httpContent){
         ReadingTextViewModel vm = new ReadingTextViewModel(getApplication());
         vm.insert(new ReadingText("en", httpAddress, "sample_web_header", ReadingText.DOCUMENT_TYPE_OTHER, 7, httpContent));
     }

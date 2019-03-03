@@ -24,7 +24,7 @@ public class WordsFragmentsContainerFragment extends Fragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_words_fragments_container, container, false);
+        return inflater.inflate(R.layout.fragment_main_words_fragments_container, container, false);
     }
 
     @Override

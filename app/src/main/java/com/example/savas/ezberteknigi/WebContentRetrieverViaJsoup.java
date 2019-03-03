@@ -1,23 +1,19 @@
 package com.example.savas.ezberteknigi;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static android.support.constraint.Constraints.TAG;
-
 public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
     @Override
-    public String retrieveContent(String url) {
+    public List<String> retrieveContent(String url) {
 
         try {
             return new ContentTask().execute(url).get();
@@ -29,15 +25,19 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
         return null;
     }
 
-    private static class ContentTask extends AsyncTask<String, String, String> {
-        protected String doInBackground(String... params) {
+    private static class ContentTask extends AsyncTask<String, String, List<String>> {
+        protected List<String> doInBackground(String... params) {
 
             try {
                 Document doc = Jsoup.connect(params[0]).get();
-                //TODO: further html manipulation might be needed
 
-                String result = doc.body().text();
-                return result;
+                List<String> titleAndContent = new ArrayList<>();
+
+                titleAndContent.add(doc.title());
+                //TODO: further html manipulation might be needed
+                titleAndContent.add(doc.body().text());
+
+                return titleAndContent;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -46,7 +46,7 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(List<String> s) {
             super.onPostExecute(s);
         }
     }
