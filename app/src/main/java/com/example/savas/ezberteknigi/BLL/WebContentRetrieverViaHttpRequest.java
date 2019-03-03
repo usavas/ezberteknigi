@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi;
+package com.example.savas.ezberteknigi.BLL;
 
 import android.os.AsyncTask;
 import android.util.Log;

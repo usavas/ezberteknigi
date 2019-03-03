@@ -5,8 +5,8 @@ import android.content.Intent;
 
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
-import com.example.savas.ezberteknigi.WebContentRetrievable;
-import com.example.savas.ezberteknigi.WebContentRetrieverViaJsoup;
+import com.example.savas.ezberteknigi.BLL.WebContentRetrievable;
+import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaJsoup;
 
 import java.util.List;
 
@@ -33,6 +33,6 @@ public class SaveWebpageIntentService extends IntentService {
 
     private void saveHttpContent(String httpAddress, String title, String httpContent){
         ReadingTextViewModel vm = new ReadingTextViewModel(getApplication());
-        vm.insert(new ReadingText("en", httpAddress, "sample_web_header", ReadingText.DOCUMENT_TYPE_OTHER, 7, httpContent));
+        vm.insert(new ReadingText("en", httpAddress, title, ReadingText.DOCUMENT_TYPE_OTHER, 7, httpContent));
     }
 }

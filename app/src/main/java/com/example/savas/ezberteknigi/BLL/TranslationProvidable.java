@@ -1,5 +1,5 @@
 package com.example.savas.ezberteknigi.BLL;
 
-public interface Translator {
+public interface TranslationProvidable {
     String[] getMeaningOf(String word);
 }

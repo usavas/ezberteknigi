@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi;
+package com.example.savas.ezberteknigi.BLL;
 
 import java.util.List;
 import java.util.regex.Matcher;

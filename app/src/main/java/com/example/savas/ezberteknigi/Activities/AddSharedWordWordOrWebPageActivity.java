@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.savas.ezberteknigi.BLL.DummyTranslateProvider;
+import com.example.savas.ezberteknigi.BLL.TranslationProvidable;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
@@ -67,6 +69,8 @@ public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
                     btnAddWordMastered = findViewById(R.id.button_add_word_mastered_fragment);
 
                     editWord.setText(sharedText);
+                    TranslationProvidable translatable = new DummyTranslateProvider();
+                    editWordTranslation.setText(translatable.getMeaningOf(sharedText)[0]);
 
                     btnAddWord.setOnClickListener(new View.OnClickListener() {
                         @Override

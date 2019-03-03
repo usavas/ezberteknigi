@@ -12,14 +12,15 @@ import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.savas.ezberteknigi.ExampleSentenceExtractor;
+import com.example.savas.ezberteknigi.BLL.DummyTranslateProvider;
+import com.example.savas.ezberteknigi.BLL.ExampleSentenceExtractor;
+import com.example.savas.ezberteknigi.BLL.TranslationProvidable;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
-import com.example.savas.ezberteknigi.WebContentRetrievable;
-import com.example.savas.ezberteknigi.WebContentRetrieverViaHttpRequest;
+import com.example.savas.ezberteknigi.BLL.WebContentRetrievable;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -141,9 +142,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
     }
 
     private void showWordDialog(String wordString, String exampleSentence) {
-        //TODO: implement word extraction logic
-        if (wordString.trim() != ""
-                && wordString.trim().split(" ").length == 1) {
+        if (wordString.trim() != "" && wordString.trim().split(" ").length == 1) {
             Word word = returnWordIfExists(wordString);
 
             if (word == null) {
@@ -172,7 +171,8 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
     }
 
     private String getTranslation(String word) {
-        return word + " translation (sample)";
+        TranslationProvidable translatable = new DummyTranslateProvider();
+        return translatable.getMeaningOf(word)[0];
     }
 
     private void openAddWordDialog(String word, String translation, String exampleSentence) {

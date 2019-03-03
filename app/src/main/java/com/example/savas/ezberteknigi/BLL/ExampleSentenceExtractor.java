@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi;
+package com.example.savas.ezberteknigi.BLL;
 
 import android.service.autofill.RegexValidator;
 import android.util.Log;

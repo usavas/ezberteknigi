@@ -1,12 +1,10 @@
 package com.example.savas.ezberteknigi;
 
-import android.util.Log;
+import com.example.savas.ezberteknigi.BLL.ExampleSentenceExtractor;
 
 import org.junit.Test;
 
 import java.util.List;
-
-import static android.support.constraint.Constraints.TAG;
 
 public class ExampleSentenceExtractorTest {
 
