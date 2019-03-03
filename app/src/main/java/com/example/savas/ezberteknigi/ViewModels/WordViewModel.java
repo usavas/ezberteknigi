@@ -36,6 +36,16 @@ public class WordViewModel extends AndroidViewModel {
         repository.update(word);
     }
 
+    public void markAsMastered(Word word) {
+        word.setWordState(Word.WORD_MASTERED);
+        repository.update(word);
+    }
+
+    public void markAsLearning(Word word){
+        word.setWordState(Word.WORD_LEARNING);
+        repository.update(word);
+    }
+
     public void delete(Word word){
         repository.delete(word);
     }

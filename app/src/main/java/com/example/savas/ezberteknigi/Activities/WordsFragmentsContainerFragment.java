@@ -17,10 +17,6 @@ import com.example.savas.ezberteknigi.R;
 public class WordsFragmentsContainerFragment extends Fragment
         implements WordsFragment.OnFragmentInteractionListener {
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
-    private TabLayout tabLayout;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,9 +28,9 @@ public class WordsFragmentsContainerFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle("Kelimeler");
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
-        tabLayout = (TabLayout) getActivity().findViewById(R.id.fragment_word_activity_tabs);
-        mViewPager = (ViewPager) getActivity().findViewById(R.id.fragment_word_activity_container);
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        TabLayout tabLayout = getActivity().findViewById(R.id.fragment_word_activity_tabs);
+        ViewPager mViewPager = getActivity().findViewById(R.id.fragment_word_activity_container);
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

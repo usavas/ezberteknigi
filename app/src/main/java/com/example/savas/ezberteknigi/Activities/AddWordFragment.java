@@ -3,6 +3,7 @@ package com.example.savas.ezberteknigi.Activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.media.MediaRouter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ public class AddWordFragment extends AppCompatDialogFragment {
     private static String STARTING_ACTIVITY_TO_ADD_WORD =  "STARTING_ACTIVITY_TO_ADD_WORD";
     private static String STARTING_ACTIVITY_FROM_READING_TEXTS =  "STARTING_ACTIVITY_FROM_READING_TEXTS";
     private static String STARTING_ACTIVITY_FROM_WORDS =  "STARTING_ACTIVITY_FROM_WORDS";
+
+    private static String STARTING_WORD_LEARNING_MASTERED = "STARTING_WORD_LEARNING_MASTERED";
 
     private EditText editWord;
     private EditText editTranslation;
@@ -39,10 +42,11 @@ public class AddWordFragment extends AppCompatDialogFragment {
         return f;
     }
 
-    public static AddWordFragment newInstance() {
+    public static AddWordFragment newInstance(int learningOrMastered) {
         AddWordFragment f = new AddWordFragment();
         Bundle args = new Bundle();
         args.putString(STARTING_ACTIVITY_TO_ADD_WORD, STARTING_ACTIVITY_FROM_WORDS);
+        args.putInt(STARTING_WORD_LEARNING_MASTERED, learningOrMastered);
         f.setArguments(args);
         return f;
     }
@@ -61,15 +65,26 @@ public class AddWordFragment extends AppCompatDialogFragment {
         editTranslation = view.findViewById(R.id.edit_word_translation_fragment);
         editExampleSentence = view.findViewById(R.id.edit_word_example_sentence_fragment);
 
+        Button btnAddLearning = view.findViewById(R.id.button_add_word_fragment);
+        Button btnAddMastered = view.findViewById(R.id.button_add_word_mastered_fragment);
+
         if (getArguments().getString(STARTING_ACTIVITY_TO_ADD_WORD) == STARTING_ACTIVITY_FROM_READING_TEXTS){
             editWord.setText(getArguments().getString("WORD"));
             editTranslation.setText(getArguments().getString("TRANSLATION"));
             editExampleSentence.setText(getArguments().getString("EXAMPLE_SENTENCE"));
+
+
         } else if (getArguments().getString(STARTING_ACTIVITY_TO_ADD_WORD) == STARTING_ACTIVITY_FROM_WORDS) {
-            //DO NOTHING
+            if (getArguments().getInt(STARTING_WORD_LEARNING_MASTERED) == Word.WORD_ALL){
+                // DO NOTHING
+            } else if (getArguments().getInt(STARTING_WORD_LEARNING_MASTERED) == Word.WORD_LEARNING){
+                btnAddMastered.setVisibility(View.GONE);
+            }
+            else if (getArguments().getInt(STARTING_WORD_LEARNING_MASTERED) == Word.WORD_MASTERED){
+                btnAddLearning.setVisibility(View.GONE);
+            }
         }
 
-        Button btnAddLearning = view.findViewById(R.id.button_add_word_fragment);
         btnAddLearning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +100,6 @@ public class AddWordFragment extends AppCompatDialogFragment {
             }
         });
 
-        Button btnAddMastered = view.findViewById(R.id.button_add_word_mastered_fragment);
         btnAddMastered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

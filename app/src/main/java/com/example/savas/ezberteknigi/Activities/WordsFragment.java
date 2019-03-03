@@ -26,6 +26,7 @@ import com.example.savas.ezberteknigi.Adapters.WordAdapter;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
+import com.google.android.gms.dynamic.ObjectWrapper;
 
 import java.util.Date;
 import java.util.List;
@@ -105,7 +106,7 @@ public class WordsFragment extends Fragment {
                 }
             });
         } else if (mParam1 == Word.WORD_MASTERED) {
-            buttonAddNote.setVisibility(View.GONE);
+//            buttonAddNote.setVisibility(View.GONE);
             wordViewModel.getAllWordsBasedOnState(Word.WORD_MASTERED).observe(this, new Observer<List<Word>>() {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
@@ -141,19 +142,31 @@ public class WordsFragment extends Fragment {
             }
         });
 
-        if (mParam1 == Word.WORD_ALL || mParam1 == Word.WORD_LEARNING) {
+        if (mParam1 == Word.WORD_ALL || mParam1 == Word.WORD_LEARNING || mParam1 == Word.WORD_MASTERED) {
             buttonAddNote.setOnClickListener(v -> {
 //                Intent intent = new Intent(getContext(), AddSharedWordWordOrWebPageActivity.class);
 //                startActivityForResult(intent, ADD_WORD_REQUEST);
 
-                AddWordFragment wordDialogFragment = AddWordFragment.newInstance();
+                AddWordFragment wordDialogFragment = new AddWordFragment();
+                if (mParam1 == Word.WORD_ALL){
+                    wordDialogFragment = AddWordFragment.newInstance(Word.WORD_ALL);
+                } else if(mParam1 == Word.WORD_LEARNING){
+                    wordDialogFragment = AddWordFragment.newInstance(Word.WORD_LEARNING);
+                }
+                else if (mParam1 == Word.WORD_MASTERED){
+                    wordDialogFragment = AddWordFragment.newInstance(Word.WORD_MASTERED);
+                }
                 wordDialogFragment.show(getFragmentManager(), "Kelime Ekle");
             });
 
-        } else {
-
         }
 
+        ImplementOnSwipedOnWords(view, wordAdapter, recyclerView);
+
+        return view;
+    }
+
+    private void ImplementOnSwipedOnWords(View view, WordAdapter wordAdapter, RecyclerView recyclerView) {
         if (mParam1 == Word.WORD_REVISION) {
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                     ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -211,11 +224,64 @@ public class WordsFragment extends Fragment {
                     }
                 }
             }).attachToRecyclerView(recyclerView);
+        } else if (mParam1 == Word.WORD_LEARNING) {
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                    if (i == ItemTouchHelper.LEFT || i == ItemTouchHelper.RIGHT) {
+
+                        Word word = wordAdapter.getWordAt(viewHolder.getAdapterPosition());
+                        wordViewModel.markAsMastered(word);
+
+                        Snackbar snackbar = Snackbar.make(view,
+                                "Öğrenildi olarak işaretlendi: " + word.getWord(),
+                                Snackbar.LENGTH_LONG);
+                        snackbar.setAction("GERİ AL", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                wordViewModel.markAsLearning(word);
+                            }
+                        });
+                        snackbar.show();
+                    }
+                }
+            }).attachToRecyclerView(recyclerView);
+        } else if (mParam1 == Word.WORD_MASTERED) {
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                    if (i == ItemTouchHelper.LEFT || i == ItemTouchHelper.RIGHT) {
+
+                        Word word = wordAdapter.getWordAt(viewHolder.getAdapterPosition());
+                        wordViewModel.markAsLearning(word);
+
+                        Snackbar snackbar = Snackbar.make(view,
+                                "Öğrenilecekler listesine eklendi: " + word.getWord(),
+                                Snackbar.LENGTH_LONG);
+                        snackbar.setAction("GERİ AL", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                wordViewModel.markAsMastered(word);
+                            }
+                        });
+                        snackbar.show();
+                    }
+                }
+            }).attachToRecyclerView(recyclerView);
         }
-
-        return view;
     }
-
     private void updateRevision(Word word) {
         word.setRevisionPeriodCount(word.getRevisionPeriodCount() + 1);
         word.setDateLastRevision(new Date());
@@ -227,29 +293,27 @@ public class WordsFragment extends Fragment {
         wordViewModel.update(word);
     }
 
-    /*
-    * Return from AddSharedWordWordOrWebPageActivity
-    * */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == ADD_WORD_REQUEST && resultCode == RESULT_OK) {
-            String wordContent = data.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_WORD);
-            String wordTranslation = data.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_TRANSLATION);
-            String exampleSentence = data.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_EXAMPLE_SENTENCE);
-
-            Word word = new Word(
-                    wordContent,
-                    wordTranslation,
-                    0,
-                    exampleSentence);
-            wordViewModel.insert(word);
-            Toast.makeText(getActivity(), "Kelime eklendi", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getActivity(), "Kelime eklenmedi", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == ADD_WORD_REQUEST && resultCode == RESULT_OK) {
+//            String wordContent = data.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_WORD);
+//            String wordTranslation = data.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_TRANSLATION);
+//            String exampleSentence = data.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_EXAMPLE_SENTENCE);
+//
+//            Word word = new Word(
+//                    wordContent,
+//                    wordTranslation,
+//                    0,
+//                    exampleSentence);
+//            wordViewModel.insert(word);
+//            Toast.makeText(getActivity(), "Kelime eklendi", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(getActivity(), "Kelime eklenmedi", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void updateActivityVariables(String title) {
