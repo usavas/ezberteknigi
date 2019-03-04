@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-@Database(entities = {ReadingText.class, Word.class}, version = 10)
+@Database(entities = {ReadingText.class, Word.class}, version = 11)
 public abstract class EzberTeknigiDatabase extends RoomDatabase {
 
     private static EzberTeknigiDatabase instance;
@@ -42,7 +42,6 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
-            Log.d("EzberTeknigiDatabase", "instance= " + ((instance == null) ? "null" : instance.toString()));
             new PopulateDbAsyncTask(instance).execute();
         }
 

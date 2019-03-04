@@ -1,15 +1,22 @@
 package com.example.savas.ezberteknigi.Activities;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.InputDevice;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
+import android.widget.AbsListView;
+import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,17 +35,17 @@ import java.util.concurrent.ExecutionException;
 
 public class ReadingTextDetailActivity extends AppCompatActivity {
 
+    private ReadingTextRepository readingTextRepository;
     private ReadingText readingText;
 
     private TextView tvHeader;
     private TextView tvContent;
+    private ScrollView scrollView;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ReadingTextRepository readingTextRepository;
         readingTextRepository = new ReadingTextRepository(getApplication());
         readingText = readingTextRepository.getReadingTextById(getIntent().getIntExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_ID, 0));
 
@@ -47,6 +54,13 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 //            prepareLayoutForReadingTextView();
         } else {
             prepareLayoutForReadingTextView();
+
+            scrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    scrollView.scrollTo(0, readingText.getLeftOffset());
+                }
+            });
         }
     }
 
@@ -108,23 +122,29 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void prepareLayoutForReadingTextView() {
         setContentView(R.layout.activity_reading_text_detail);
         tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
         tvContent = findViewById(R.id.text_view_reading_text_detail_content);
+        scrollView = findViewById(R.id.scroll_view);
 
         tvHeader.setText(readingText.getHeader());
 
-        //TODO: (maybe) if the content is HTML then
-        //        tvContent.setText(Html.fromHtml(readingText.getContent()));
+        //TODO: (maybe) if the content is HTML then //tvContent.setText(Html.fromHtml(readingText.getContent()));
         tvContent.setText(readingText.getContent());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    readingText.setLeftOffset(scrollY);
+                }
+            });
+        }
 
         tvContent.setOnLongClickListener(v -> {
             new Handler().postDelayed(() -> {
-
-                Toast.makeText(this, "XXXXXXXX baseline: " + tvContent.getBaseline(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "XXXXXXXX extended padding top: " + tvContent.getExtendedPaddingTop(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, "XXXXXXXX extended padding top: " + tvContent., Toast.LENGTH_SHORT).show();
 
                 int wordSelectionStart = tvContent.getSelectionStart();
                 int wordSelectionEnd = tvContent.getSelectionEnd();
@@ -138,8 +158,6 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
                 String selectedSentence = ExampleSentenceExtractor
                         .getSelectedSentence(text, wordSelectionStart, wordSelectionEnd);
-                Log.d("XXXXXXXXXXXXXXXX", "not webview text: " + text);
-                Log.d("XXXXXXXXXXXXXXXX", "not webview sentence: " + selectedSentence);
                 showWordDialog(selectedText, selectedSentence);
             }, 800);
             return false;
@@ -197,4 +215,13 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         wordDetailFragment.show(getSupportFragmentManager(), "see word details");
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveLeftOffset();
+    }
+
+    private void saveLeftOffset() {
+        readingTextRepository.update(readingText);
+    }
 }

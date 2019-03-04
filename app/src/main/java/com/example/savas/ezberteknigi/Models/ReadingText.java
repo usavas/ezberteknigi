@@ -15,7 +15,6 @@ public class ReadingText {
     @Ignore
     public static int DOCUMENT_TYPE_OTHER = 2;
 
-
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "reading_text_id")
     private int readingTextId;
@@ -32,6 +31,9 @@ public class ReadingText {
     private String content;
     @ColumnInfo(name = "word_count")
     private int wordCount;
+
+    @ColumnInfo(name = "left_offset")
+    private int leftOffset;
 
     @Ignore
     public ReadingText(){
@@ -93,6 +95,10 @@ public class ReadingText {
         return wordCount;
     }
 
+    public int getLeftOffset() {
+        return leftOffset;
+    }
+
     public void setReadingTextId(int id) {
         this.readingTextId = id;
     }
@@ -119,5 +125,9 @@ public class ReadingText {
 
     public void setWordCount(int wordCount) {
         this.wordCount = wordCount;
+    }
+
+    public void setLeftOffset(int leftOffset) {
+        this.leftOffset = leftOffset;
     }
 }

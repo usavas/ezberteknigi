@@ -11,6 +11,7 @@
         android:id="@+id/text_view_reading_text_detail_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:padding="8dp"
         android:text="Header"
@@ -18,23 +19,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/text_view_reading_text_detail_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:contextClickable="true"
-        android:enabled="true"
-        android:padding="8dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:fontFamily="@font/antic_slab"
-        android:text="Content"
-        android:textIsSelectable="true"
-        android:textSize="@dimen/textViewContentStandardTextSize"
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_reading_text_detail_header"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/text_view_reading_text_detail_header">
+
+        <TextView
+            android:id="@+id/text_view_reading_text_detail_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contextClickable="true"
+            android:enabled="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/antic_slab"
+            android:padding="8dp"
+            android:text="Content"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/textViewContentStandardTextSize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_reading_text_detail_header"
+            app:layout_constraintVertical_bias="0.0" />
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
