@@ -24,15 +24,4 @@
         app:layout_anchor="@+id/recycler_view_word"
         app:layout_anchorGravity="right|bottom" />
 
-    <TextView
-        android:id="@+id/text_view_item_count_learning"
-        android:layout_width="match_parent"
-        android:layout_margin="8dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:text="ITEM COUNT (WORD LEARNING FRAGMENT)"
-        app:layout_anchor="@+id/recycler_view_word"
-        app:layout_anchorGravity="bottom|center" />
-
 </android.support.design.widget.CoordinatorLayout>

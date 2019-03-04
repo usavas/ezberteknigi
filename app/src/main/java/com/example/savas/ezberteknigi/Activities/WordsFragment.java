@@ -43,7 +43,7 @@ public class WordsFragment extends Fragment {
     public static final String EXTRA_WORD_TRANSLATION = "EXTRA_TRANSLATION";
     public static final String EXTRA_WORD_EXAMPLE_SENTENCE = "EXTRA_EXAMPLE_SENTENCE";
 
-    TextView tvItemCount;
+//    TextView tvItemCount;
     WordViewModel wordViewModel;
 
     private int mParam1;
@@ -74,7 +74,7 @@ public class WordsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_words, container, false);
-        tvItemCount = view.findViewById(R.id.text_view_item_count_learning);
+//        tvItemCount = view.findViewById(R.id.text_view_item_count_learning);
         FloatingActionButton buttonAddNote = view.findViewById(R.id.fab_add_word_learning);
 
         final WordAdapter wordAdapter = new WordAdapter();
@@ -82,7 +82,7 @@ public class WordsFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_word);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
         recyclerView.setAdapter(wordAdapter);
 
@@ -93,7 +93,7 @@ public class WordsFragment extends Fragment {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
                     wordAdapter.setWords(words);
-                    tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+//                    tvItemCount.setText(String.valueOf(words.size() + " words listed"));
                 }
             });
         } else if (mParam1 == Word.WORD_LEARNING) {
@@ -102,7 +102,6 @@ public class WordsFragment extends Fragment {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
                     wordAdapter.setWords(words);
-                    tvItemCount.setText(String.valueOf(words.size() + " words listed"));
                 }
             });
         } else if (mParam1 == Word.WORD_MASTERED) {
@@ -111,7 +110,6 @@ public class WordsFragment extends Fragment {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
                     wordAdapter.setWords(words);
-                    tvItemCount.setText(String.valueOf(words.size() + " words listed"));
                 }
             });
         } else if (mParam1 == Word.WORD_REVISION) {
@@ -121,7 +119,6 @@ public class WordsFragment extends Fragment {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
                     wordAdapter.setWordsRevision(words);
-                    tvItemCount.setText(String.valueOf(words.size() + " words listed"));
                 }
             });
         }
