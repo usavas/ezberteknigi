@@ -14,10 +14,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+
         <service
             android:name=".Activities.SaveWebpageIntentService"
-            android:exported="true"></service>
-
+            android:exported="true" />
         <service
             android:name=".Services.WordAndTextService"
             android:enabled="true"

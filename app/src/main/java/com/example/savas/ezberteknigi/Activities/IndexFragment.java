@@ -42,11 +42,20 @@ public class IndexFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         Button btn = getActivity().findViewById(R.id.button_index_deneme);
+        btn.setVisibility(View.GONE);
         btn.setText("DENEME");
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        Button btnSearchBooks = getActivity().findViewById(R.id.button_search_books);
+        btnSearchBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
             }
         });
     }
