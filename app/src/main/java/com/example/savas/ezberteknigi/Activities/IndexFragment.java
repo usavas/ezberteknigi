@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import static android.content.ContentValues.TAG;
-import static com.example.savas.ezberteknigi.Models.ReadingText.DOCUMENT_TYPE_NEWS;
+import static com.example.savas.ezberteknigi.Models.ReadingText.DOCUMENT_TYPE_PLAIN;
 
 public class IndexFragment extends Fragment {
     @Nullable
@@ -71,7 +71,7 @@ public class IndexFragment extends Fragment {
     private void addSampleNews() {
         ReadingTextRepository repository = new ReadingTextRepository(getActivity().getApplication());
         String newsContent = "this is the content of a BBC news pagethis is the content of a BBC news pagethis is the content of a BBC news pagethis is the content of a BBC news page";
-        repository.insert(new ReadingText("en", "BBC", "sample header", DOCUMENT_TYPE_NEWS, 7, newsContent));
+        repository.insert(new ReadingText("en", "BBC", ReadingText.DOCUMENT_TYPE_PLAIN, newsContent));
     }
 
     private void addSampleWord(){

@@ -9,54 +9,42 @@ import android.arch.persistence.room.PrimaryKey;
 public class ReadingText {
 
     @Ignore
-    public static int DOCUMENT_TYPE_NEWS = 0;
+    public static int DOCUMENT_TYPE_PLAIN = 0;
     @Ignore
-    public static int DOCUMENT_TYPE_BOOK = 1;
+    public static int DOCUMENT_TYPE_WEB = 1;
     @Ignore
-    public static int DOCUMENT_TYPE_OTHER = 2;
+    public static int DOCUMENT_TYPE_BOOK = 2;
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "reading_text_id")
     private int readingTextId;
 
+    @ColumnInfo(name = "language")
     private String language;
+    @ColumnInfo(name = "source")
     private String source;
     @ColumnInfo(name = "header")
     private String header;
     @ColumnInfo(name = "document_type")
-    private int contentType;
-    @ColumnInfo(name = "difficulty_rate")
-    private int difficultyLevel;
+    private int document_type;
     @ColumnInfo(name = "content")
     private String content;
-    @ColumnInfo(name = "word_count")
-    private int wordCount;
-
     @ColumnInfo(name = "left_offset")
     private int leftOffset;
+
+    @ColumnInfo(name = "book")
+    private String book;
 
     @Ignore
     public ReadingText(){
 
     }
 
-    public ReadingText(String language, String source, String header, int contentType, int difficultyLevel, String content) {
+    public ReadingText(String language, String header, int document_type, String content) {
         this.language = language;
-        this.source = source;
         this.header = header;
-        this.contentType = contentType;
-        this.difficultyLevel = difficultyLevel;
+        this.document_type = document_type;
         this.content = content;
-
-        wordCount = this.calculateWordCount(content);
-    }
-
-    private int calculateWordCount(String content){
-        if (content == null || content.isEmpty()) {
-            return 0;
-        }
-        String[] wordsInContent = content.split("\\s+");
-        return wordsInContent.length;
     }
 
     public int getReadingTextId() {
@@ -75,16 +63,12 @@ public class ReadingText {
         return source;
     }
 
-    public int getContentType() {
-        return contentType;
+    public int getDocument_type() {
+        return document_type;
     }
 
     public String getHeader() {
         return header;
-    }
-
-    public int getDifficultyLevel() {
-        return difficultyLevel;
     }
 
     public String getContent() {
@@ -92,11 +76,34 @@ public class ReadingText {
     }
 
     public int getWordCount() {
-        return wordCount;
+        return calculateWordCount();
+    }
+    private int calculateWordCount(){
+        int len = 0;
+
+        if (this.getDocument_type() == DOCUMENT_TYPE_PLAIN || this.getDocument_type() == DOCUMENT_TYPE_WEB){
+            if (content == null || content.isEmpty()) {
+                len = 0;
+            } else {
+                String[] wordsInContent = content.split("\\s+");
+                len = wordsInContent.length;
+            }
+        } else if (this.getDocument_type() == DOCUMENT_TYPE_BOOK){
+            len = calculateBookWordCount();
+        }
+
+        return len;
+    }
+    private int calculateBookWordCount() {
+        throw new IllegalThreadStateException("Not implemented");
     }
 
     public int getLeftOffset() {
         return leftOffset;
+    }
+
+    public String getBook(){
+        return book;
     }
 
     public void setReadingTextId(int id) {
@@ -107,27 +114,23 @@ public class ReadingText {
         this.source = source;
     }
 
-    public void setContentType(int contentType) {
-        this.contentType = contentType;
+    public void setDocument_type(int document_type) {
+        this.document_type = document_type;
     }
 
     public void setHeader(String header) {
         this.header = header;
     }
 
-    public void setDifficultyLevel(int difficultyLevel) {
-        this.difficultyLevel = difficultyLevel;
-    }
-
     public void setContent(String content) {
         this.content = content;
     }
 
-    public void setWordCount(int wordCount) {
-        this.wordCount = wordCount;
-    }
-
     public void setLeftOffset(int leftOffset) {
         this.leftOffset = leftOffset;
+    }
+
+    public void setBook(String book){
+        this.book = book;
     }
 }

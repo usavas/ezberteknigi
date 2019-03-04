@@ -14,15 +14,15 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-public class Book{
+public class Book extends ReadingText{
 
-    String author;
-    List<Hashtable<String, String>> content;
-    String genre;
-    String[] hardwords;
-    String level;
-    String storyline;
-    String title;
+    private String author;
+    private List<Hashtable<String, String>> content;
+    private String genre;
+    private String[] hardwords;
+    private String level;
+    private String storyline;
+    private String title;
 
     public Book(){}
 

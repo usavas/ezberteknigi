@@ -7,17 +7,15 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.savas.ezberteknigi.DAO.ReadingTextDao;
 import com.example.savas.ezberteknigi.DAO.WordDao;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
-@Database(entities = {ReadingText.class, Word.class}, version = 11)
+@Database(entities = {ReadingText.class, Word.class}, version = 12)
 public abstract class EzberTeknigiDatabase extends RoomDatabase {
 
     private static EzberTeknigiDatabase instance;
@@ -116,13 +114,13 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
                     "\n" +
                     "Laoreet id donec ultrices tincidunt. Commodo odio aenean sed adipiscing diam. Nunc vel risus commodo viverra maecenas accumsan lacus. Ultrices gravida dictum fusce ut placerat. Sed viverra tellus in hac. Vitae ultricies leo integer malesuada nunc. Turpis egestas integer eget aliquet. Feugiat nisl pretium fusce id. Elementum eu facilisis sed odio morbi quis commodo odio. Fames ac turpis egestas integer eget aliquet nibh. Cras tincidunt lobortis feugiat vivamus at augue eget arcu. Sed euismod nisi porta lorem mollis aliquam. Aliquet porttitor lacus luctus accumsan tortor posuere ac. Elementum curabitur vitae nunc sed. Vel quam elementum pulvinar etiam non quam lacus suspendisse faucibus. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Id aliquet risus feugiat in. Tellus cras adipiscing enim eu turpis egestas. Ut enim blandit volutpat maecenas volutpat.";
 
-            readingTextDao.insert(new ReadingText("en", "BBC", "BBC", ReadingText.DOCUMENT_TYPE_NEWS, 7, news));
-            readingTextDao.insert(new ReadingText("en", "Guardian", "Guardian", ReadingText.DOCUMENT_TYPE_NEWS, 6, newsContent));
-            readingTextDao.insert(new ReadingText("en", "Tom Sawyer", "Tom Sawyer", ReadingText.DOCUMENT_TYPE_BOOK, 3, newsContent));
-            readingTextDao.insert(new ReadingText("en", "Another story", "Another story", ReadingText.DOCUMENT_TYPE_BOOK, 3, newsContent));
-            readingTextDao.insert(new ReadingText("en", "Yet Another story", "Yet Another story", ReadingText.DOCUMENT_TYPE_BOOK, 3, newsContent));
-            readingTextDao.insert(new ReadingText("en", "War and Peace", "War and Peace", ReadingText.DOCUMENT_TYPE_BOOK, 3, newsContent));
-            readingTextDao.insert(new ReadingText("en", "White Fang", "White Fang", ReadingText.DOCUMENT_TYPE_BOOK, 3, newsContent));
+            readingTextDao.insert(new ReadingText("en", "BBC", ReadingText.DOCUMENT_TYPE_PLAIN, news));
+            readingTextDao.insert(new ReadingText("en", "Guardian", ReadingText.DOCUMENT_TYPE_PLAIN, newsContent));
+            readingTextDao.insert(new ReadingText("en", "New York Times", ReadingText.DOCUMENT_TYPE_PLAIN, newsContent));
+            readingTextDao.insert(new ReadingText("en", "Readaing Text", ReadingText.DOCUMENT_TYPE_PLAIN, newsContent));
+            readingTextDao.insert(new ReadingText("en", "Another Reading Text", ReadingText.DOCUMENT_TYPE_PLAIN, newsContent));
+            readingTextDao.insert(new ReadingText("en", "Dünya Halleri", ReadingText.DOCUMENT_TYPE_PLAIN, newsContent));
+            readingTextDao.insert(new ReadingText("en", "Hocam abdest bozulur mu", ReadingText.DOCUMENT_TYPE_PLAIN, newsContent));
 
             wordDao.insert(new Word("word", "kelime", 1, "this is a word example sentence"));
             wordDao.insert(new Word("coffee", "kahve", 0, "I drink coffee"));
@@ -131,14 +129,6 @@ public abstract class EzberTeknigiDatabase extends RoomDatabase {
             wordDao.insert(new Word("point", "nokta", 0, "I draw point"));
             wordDao.insert(new Word("sentence", "cümle", 0, "This is rather a long sentence, because some sentences should be longer than usual for test purposes"));
             wordDao.insert(new Word("advertisement", "reklam", 0, "I see advertisement in every single video on youtube"));
-
-//            wordDao.insert(new Word("book", "kitap", 1, "this is a book example sentence",0, 0, 0, 0, 0, 0));
-//            wordDao.insert(new Word("music", "müzik", 2, "this is a music example sentence", 0, 0, 0, 0, 0, 0));
-//            wordDao.insert(new Word("art", "sanat", 2, "this is an art example sentence", 0, 0, 0, 0, 0, 0));
-//            wordDao.insert(new Word("ballet", "bale", 2, "this is a ballet example sentence", 0, 0, 0, 0, 0, 0));
-//            wordDao.insert(new Word("theatre", "tiyatro", 2, "this is a theatre example sentence", 1, 0, 0, 0, 0, 0));
-//            wordDao.insert(new Word("nay", "ney", 2, "this is a nay example sentence", 1, 0, 0, 0, 0, 0));
-//            wordDao.insert(new Word("violin", "keman", 3, "this is a violin example sentence", 1, 0, 0, 0, 0, 0));
 
             return null;
         }

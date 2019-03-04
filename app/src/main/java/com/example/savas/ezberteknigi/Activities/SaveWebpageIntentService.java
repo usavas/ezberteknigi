@@ -33,6 +33,8 @@ public class SaveWebpageIntentService extends IntentService {
 
     private void saveHttpContent(String httpAddress, String title, String httpContent){
         ReadingTextViewModel vm = new ReadingTextViewModel(getApplication());
-        vm.insert(new ReadingText("en", httpAddress, title, ReadingText.DOCUMENT_TYPE_OTHER, 7, httpContent));
+        ReadingText webContent = new ReadingText("en", title, ReadingText.DOCUMENT_TYPE_WEB, httpContent);
+        webContent.setSource(httpAddress);
+        vm.insert(webContent);
     }
 }

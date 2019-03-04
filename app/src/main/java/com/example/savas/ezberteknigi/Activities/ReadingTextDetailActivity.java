@@ -49,9 +49,11 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         readingTextRepository = new ReadingTextRepository(getApplication());
         readingText = readingTextRepository.getReadingTextById(getIntent().getIntExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_ID, 0));
 
-        if (WebContentRetrievable.isValidUrl(readingText.getSource())) {
-            prepareLayoutForWebView();
+        if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_WEB){
+            if (WebContentRetrievable.isValidUrl(readingText.getSource())) {
+                prepareLayoutForWebView();
 //            prepareLayoutForReadingTextView();
+            }
         } else {
             prepareLayoutForReadingTextView();
 
@@ -139,6 +141,14 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                 @Override
                 public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                     readingText.setLeftOffset(scrollY);
+                }
+            });
+        } else {
+            scrollView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    readingText.setLeftOffset(scrollView.getScrollY());
+                    return false;
                 }
             });
         }

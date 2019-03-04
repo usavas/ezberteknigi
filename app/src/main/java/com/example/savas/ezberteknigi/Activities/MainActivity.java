@@ -1,16 +1,12 @@
 package com.example.savas.ezberteknigi.Activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Models.ReadingText;
@@ -18,12 +14,11 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
-import com.example.savas.ezberteknigi.Services.WordAndTextService;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import static com.example.savas.ezberteknigi.Models.ReadingText.DOCUMENT_TYPE_NEWS;
+import static com.example.savas.ezberteknigi.Models.ReadingText.DOCUMENT_TYPE_PLAIN;
 
 public class MainActivity extends AppCompatActivity
 implements WordsFragment.OnFragmentInteractionListener {
@@ -118,7 +113,7 @@ implements WordsFragment.OnFragmentInteractionListener {
     private void addSampleNews() {
         ReadingTextRepository repository = new ReadingTextRepository(getApplication());
         String newsContent = "this is the content of a BBC news pagethis is the content of a BBC news pagethis is the content of a BBC news pagethis is the content of a BBC news page";
-        repository.insert(new ReadingText("en", "BBC", "sample header", DOCUMENT_TYPE_NEWS, 7, newsContent));
+        repository.insert(new ReadingText("en", "BBC", ReadingText.DOCUMENT_TYPE_PLAIN, newsContent));
     }
 
     private void addSampleWord(){
