@@ -1,5 +1,8 @@
 package com.example.savas.ezberteknigi.Activities;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +33,8 @@ public class SearchBooksActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setAdapter(adapter);
+
+
 
         List<BookWrapper> bookWrappers = BookWrapper.makeBookWrapperList(Book.getAllBooks());
         adapter.setBooks(bookWrappers);
