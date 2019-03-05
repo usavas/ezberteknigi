@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.savas.ezberteknigi.Adapters.SearchBookAdapter;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -55,7 +56,8 @@ public class IndexFragment extends Fragment {
         btnSearchBooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Intent i = new Intent(getContext(), SearchBooksActivity.class);
+                startActivity(i);
             }
         });
     }

@@ -35,13 +35,13 @@ import static android.app.Activity.RESULT_OK;
 
 public class WordsFragment extends Fragment {
 
-    public static final int ADD_WORD_REQUEST = 1;
+//    public static final int ADD_WORD_REQUEST = 1;
     private static final String WORD_TYPE_PARAM = "param1";
 
     public static final String EXTRA_WORD_ID = "EXTRA_WORD_ID";
-    public static final String EXTRA_WORD_WORD = "EXTRA_WORD_WORD";
-    public static final String EXTRA_WORD_TRANSLATION = "EXTRA_TRANSLATION";
-    public static final String EXTRA_WORD_EXAMPLE_SENTENCE = "EXTRA_EXAMPLE_SENTENCE";
+//    public static final String EXTRA_WORD_WORD = "EXTRA_WORD_WORD";
+//    public static final String EXTRA_WORD_TRANSLATION = "EXTRA_TRANSLATION";
+//    public static final String EXTRA_WORD_EXAMPLE_SENTENCE = "EXTRA_EXAMPLE_SENTENCE";
 
 //    TextView tvItemCount;
     WordViewModel wordViewModel;
@@ -74,7 +74,6 @@ public class WordsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_words, container, false);
-//        tvItemCount = view.findViewById(R.id.text_view_item_count_learning);
         FloatingActionButton buttonAddNote = view.findViewById(R.id.fab_add_word_learning);
 
         final WordAdapter wordAdapter = new WordAdapter();
@@ -141,9 +140,6 @@ public class WordsFragment extends Fragment {
 
         if (mParam1 == Word.WORD_ALL || mParam1 == Word.WORD_LEARNING || mParam1 == Word.WORD_MASTERED) {
             buttonAddNote.setOnClickListener(v -> {
-//                Intent intent = new Intent(getContext(), AddSharedWordWordOrWebPageActivity.class);
-//                startActivityForResult(intent, ADD_WORD_REQUEST);
-
                 AddWordFragment wordDialogFragment = new AddWordFragment();
                 if (mParam1 == Word.WORD_ALL){
                     wordDialogFragment = AddWordFragment.newInstance(Word.WORD_ALL);

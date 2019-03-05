@@ -1,5 +1,8 @@
 package com.example.savas.ezberteknigi.Models;
 
+import com.example.savas.ezberteknigi.BLL.WebContentRetrievable;
+import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaHttpRequest;
+import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaJsoup;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +17,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-public class Book extends ReadingText{
+public class Book {
 
     private String author;
     private List<Hashtable<String, String>> content;
@@ -34,6 +37,42 @@ public class Book extends ReadingText{
         this.level = level;
         this.storyline = storyline;
         this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public List<Hashtable<String, String>> getContent() {
+        return content;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public String[] getHardwords() {
+        return hardwords;
+    }
+
+    public String getHardWordsInString(){
+        StringBuilder builder = new StringBuilder();
+        for (String word: hardwords) {
+            builder.append(word).append(", ");
+        }
+        return builder.toString().trim().replaceAll(", $", "");
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public String getStoryline() {
+        return storyline;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public List<String> getChapterList(){
@@ -59,8 +98,14 @@ public class Book extends ReadingText{
 
     public static List<Book> getAllBooks(){
         List<Book> allBooks;
+        //TODO: replace with WebContentRetrievable object
+
         String apiRequestAddress = "https://ezberteknigi.firebaseio.com/books.json?print=pretty";
-        String apiResponse = getWebsiteContent(apiRequestAddress);
+
+        WebContentRetrievable retrievable = new WebContentRetrieverViaHttpRequest();
+        String apiResponse = retrievable.retrieveContent("https://ezberteknigi.firebaseio.com/books.json?print=pretty");
+
+//        String apiResponse = getWebsiteContent(apiRequestAddress);
 
         Gson gson = new Gson();
         Book[] bookArray = gson.fromJson(apiResponse, Book[].class);
@@ -69,7 +114,8 @@ public class Book extends ReadingText{
         return allBooks;
     }
 
-    public static String getWebsiteContent(String urlAddress){
+    // deprecated
+    private static String getWebsiteContent(String urlAddress){
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         String bufferString = "";

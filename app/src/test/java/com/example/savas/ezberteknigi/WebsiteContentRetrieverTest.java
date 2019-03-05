@@ -3,8 +3,11 @@ package com.example.savas.ezberteknigi;
 import com.example.savas.ezberteknigi.BLL.WebContentRetrievable;
 import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaHttpRequest;
 import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaJsoup;
+import com.example.savas.ezberteknigi.Models.Book;
 
 import org.junit.Test;
+
+import java.util.List;
 
 public class WebsiteContentRetrieverTest {
     @Test
@@ -16,14 +19,25 @@ public class WebsiteContentRetrieverTest {
     @Test
     public void retrieveContentJsoup(){
         WebContentRetrieverViaJsoup retriever = new WebContentRetrieverViaJsoup();
-//        String content = retriever.retrieveContent("https://medium.com/s/joint-accounts/when-roommates-rebel-against-sharing-costs-95a772c251bc");
+//        String content = retriever.retrieveTitleAndContent("https://medium.com/s/joint-accounts/when-roommates-rebel-against-sharing-costs-95a772c251bc");
 //        System.out.println("via Jsoup: " + content);
     }
 
     @Test
     public void retrieveContentHttpRequests(){
         WebContentRetrievable retriever = new WebContentRetrieverViaHttpRequest();
-//        String content = retriever.retrieveContent("https://medium.com/s/joint-accounts/when-roommates-rebel-against-sharing-costs-95a772c251bc");
+//        String content = retriever.retrieveTitleAndContent("https://medium.com/s/joint-accounts/when-roommates-rebel-against-sharing-costs-95a772c251bc");
 //        System.out.println("via Http: " + content);
+    }
+
+    @Test
+    public void getAllBooks_checkIfRestResponseCanConvertToBookObjects(){
+        List<Book> allBooks = Book.getAllBooks();
+        for (int i = 0; i < 1; i++){
+            System.out.println("book title: " + allBooks.get(i).getTitle());
+            for (String chapter: allBooks.get(i).getChapterList()) {
+                System.out.println(chapter);
+            }
+        }
     }
 }

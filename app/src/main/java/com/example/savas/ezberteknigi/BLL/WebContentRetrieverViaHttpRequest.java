@@ -19,11 +19,26 @@ import static android.content.ContentValues.TAG;
 public class WebContentRetrieverViaHttpRequest implements WebContentRetrievable{
 
     @Override
-    public List<String> retrieveContent(String url) {
+    public String retrieveContent(String url) {
         String content = "";
 
         try {
-             content = new ContentTask().execute(url).get();
+            content = new TitleAndContentTask().execute(url).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return content;
+    }
+
+    @Override
+    public List<String> retrieveTitleAndContent(String url) {
+        String content = "";
+
+        try {
+             content = new TitleAndContentTask().execute(url).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -36,7 +51,7 @@ public class WebContentRetrieverViaHttpRequest implements WebContentRetrievable{
         return titleAndContent;
     }
 
-    private static class ContentTask extends AsyncTask<String, String, String> {
+    private static class TitleAndContentTask extends AsyncTask<String, String, String> {
         protected String doInBackground(String... params) {
 
             HttpURLConnection connection = null;

@@ -20,16 +20,36 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     private List<Word> words = new ArrayList<>();
     private OnItemClickListener listener;
 
-    public interface OnItemClickListener{
-        void onItemClick(Word word);
-        void onMarkClick(Word word);
+    @NonNull
+    @Override
+    public WordHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View itemView = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.item_word, viewGroup, false);
+        return new WordHolder(itemView);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.listener = listener;
+    @Override
+    public void onBindViewHolder(@NonNull WordAdapter.WordHolder wordHolder, int i) {
+        Word currentWord = words.get(i);
+        wordHolder.bind(currentWord);
+
+        wordHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentWord.setExpanded(!currentWord.isExpanded());
+                notifyItemChanged(i);
+            }
+        });
     }
 
-    public class WordHolder extends RecyclerView.ViewHolder{
+    @Override
+    public int getItemCount() {
+        return words.size();
+    }
+
+
+
+    class WordHolder extends RecyclerView.ViewHolder{
         private TextView tvWord;
         private TextView tvTranslation;
         private TextView tvExampleSentence;
@@ -44,10 +64,13 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
             viewSubItem = itemView.findViewById(R.id.sub_item);
             btnMark = itemView.findViewById(R.id.button_sub_item_item_learn_mastered);
 
-            itemView.setOnClickListener(v -> {
-                int pos = getAdapterPosition();
-                if (listener != null && pos != RecyclerView.NO_POSITION){
-                    listener.onItemClick(words.get(pos));
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = WordHolder.this.getAdapterPosition();
+                    if (listener != null && pos != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(words.get(pos));
+                    }
                 }
             });
 
@@ -77,42 +100,22 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         }
     }
 
-    @NonNull
-    @Override
-    public WordAdapter.WordHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_word, viewGroup, false);
-        return new WordHolder(itemView);
+    public interface OnItemClickListener{
+        void onItemClick(Word word);
+        void onMarkClick(Word word);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull WordAdapter.WordHolder wordHolder, int i) {
-        Word currentWord = words.get(i);
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
 
-        wordHolder.bind(currentWord);
-
-        wordHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentWord.setExpanded(!currentWord.isExpanded());
-                notifyItemChanged(i);
-            }
-        });
+    public Word getWordAt(int position){
+        return words.get(position);
     }
 
     public void removeItem(int position){
         words.remove(words.get(position));
         notifyDataSetChanged();
-    }
-
-    @Override
-    public int getItemCount() {
-        return words.size();
-    }
-
-    public Word getWordAt(int position){
-        Word word = words.get(position);
-        return word;
     }
 
     public void setWords(List<Word> words){
@@ -133,23 +136,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 
         List<Word> resultWords = new ArrayList<>();
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            resultWords.addAll(_words.stream()
-//                    .filter(w -> (w.getRevisionPeriodCount() == 0 && w.getTimeElapsedInMinutes() >= REV_1_MIN)
-//                            || (w.getRevisionPeriodCount() == 1 && w.getTimeElapsedInMinutes() >= REV_2_HOUR)
-//                            || (w.getRevisionPeriodCount() == 2 && w.getTimeElapsedInMinutes() >= REV_3_HOUR)
-//                            || (w.getRevisionPeriodCount() == 3 && w.getTimeElapsedInMinutes() >= REV_4_HOUR)
-//                            || (w.getRevisionPeriodCount() == 4 && w.getTimeElapsedInMinutes() >= REV_5_HOUR)
-//                            || (w.getRevisionPeriodCount() == 5 && w.getTimeElapsedInMinutes() >= REV_6_HOUR)
-//                            || (w.getRevisionPeriodCount() == 6 && w.getTimeElapsedInMinutes() >= REV_7_DAY))
-//                    .collect(Collectors.toList()));
-//
-//            this.words = resultWords;
-//            notifyDataSetChanged();
-//            return;
-//
-//        } else {
-
         resultWords.addAll(getWordRevisionList(_words, 0, TimeType.MINUTE, REV_1_MIN));
         resultWords.addAll(getWordRevisionList(_words, 1, TimeType.HOUR, REV_2_HOUR));
         resultWords.addAll(getWordRevisionList(_words, 2, TimeType.HOUR, REV_3_HOUR));
@@ -159,7 +145,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         resultWords.addAll(getWordRevisionList(_words, 6, TimeType.DAY, REV_7_DAY));
         this.words = resultWords;
         notifyDataSetChanged();
-//        }
     }
 
     private List<Word> getWordRevisionList(List<Word> _words, int _periodCount, TimeType timeType, int _timeAmount){

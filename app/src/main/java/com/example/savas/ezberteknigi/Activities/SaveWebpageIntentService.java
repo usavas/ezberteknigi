@@ -27,7 +27,7 @@ public class SaveWebpageIntentService extends IntentService {
         String url = intent.getStringExtra(WEB_ADDRESS_TO_SAVE);
 
         WebContentRetrievable retriever = new WebContentRetrieverViaJsoup();
-        List<String> titleAndContent = retriever.retrieveContent(url);
+        List<String> titleAndContent = retriever.retrieveTitleAndContent(url);
         saveHttpContent(url, titleAndContent.get(0), titleAndContent.get(1));
     }
 

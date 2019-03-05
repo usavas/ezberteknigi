@@ -17,14 +17,6 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
     private List<ReadingText> readingTexts = new ArrayList();
     private OnItemClickListener listener;
 
-    public interface OnItemClickListener{
-        void onItemClick(ReadingText readingText);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.listener = listener;
-    }
-
     @NonNull
     @Override
     public ReadingTextHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -50,15 +42,7 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
         return readingTexts.size();
     }
 
-    public ReadingText getReadingTextAt(int position){
-        ReadingText rt = readingTexts.get(position);
-        return rt;
-    }
 
-    public void setReadingTexts(List<ReadingText> readingTexts){
-        this.readingTexts = readingTexts;
-        notifyDataSetChanged();
-    }
 
     class ReadingTextHolder extends RecyclerView.ViewHolder{
         private TextView header;
@@ -80,6 +64,26 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
             });
         }
     }
+
+    public interface OnItemClickListener{
+        void onItemClick(ReadingText readingText);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
+
+    public ReadingText getReadingTextAt(int position){
+        ReadingText rt = readingTexts.get(position);
+        return rt;
+    }
+
+    public void setReadingTexts(List<ReadingText> readingTexts){
+        this.readingTexts = readingTexts;
+        notifyDataSetChanged();
+    }
+
+
 
 
 }

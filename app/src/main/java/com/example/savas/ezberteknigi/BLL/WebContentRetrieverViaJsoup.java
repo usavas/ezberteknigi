@@ -5,7 +5,6 @@ import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Node;
 
 import java.io.IOException;
 
@@ -16,11 +15,45 @@ import java.util.concurrent.ExecutionException;
 import static android.support.constraint.Constraints.TAG;
 
 public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
+
     @Override
-    public List<String> retrieveContent(String url) {
+    public String retrieveContent(String url){
 
         try {
-            return new ContentTask().execute(url).get();
+            return new RetrieveContentTask().execute(url).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    private static class RetrieveContentTask extends AsyncTask<String, String, String> {
+        protected String doInBackground(String... params) {
+
+            try {
+                Document doc = Jsoup.connect(params[0]).get();
+                String content = doc.body().text();
+                return content;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+    }
+
+    @Override
+    public List<String> retrieveTitleAndContent(String url) {
+
+        try {
+            return new RetrieveTitleAndContentTask().execute(url).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -29,7 +62,7 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
         return null;
     }
 
-    private static class ContentTask extends AsyncTask<String, String, List<String>> {
+    private static class RetrieveTitleAndContentTask extends AsyncTask<String, String, List<String>> {
         protected List<String> doInBackground(String... params) {
 
             try {

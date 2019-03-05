@@ -6,7 +6,8 @@ import java.util.regex.Pattern;
 
 public interface WebContentRetrievable {
 
-    List<String> retrieveContent(String url);
+    List<String> retrieveTitleAndContent(String url);
+    String retrieveContent(String url);
 
     static boolean isValidUrl(String urlAddress){
         Pattern p = Pattern.compile("(http)|(https)://(www.)?");
