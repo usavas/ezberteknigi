@@ -1,9 +1,7 @@
 package com.example.savas.ezberteknigi.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
@@ -96,7 +94,7 @@ public class SearchBookAdapter extends Adapter<SearchBookAdapter.SearchBookHolde
                 public void onClick(View v) {
                     int pos = SearchBookHolder.this.getAdapterPosition();
                     if (listener != null && pos != RecyclerView.NO_POSITION){
-                        listener.onBtnAddWordClick(books.get(pos));
+                        listener.onButtonAddBookClick(books.get(pos));
                     }
                 }
             });
@@ -119,7 +117,7 @@ public class SearchBookAdapter extends Adapter<SearchBookAdapter.SearchBookHolde
 
     public interface OnItemClickListener{
         void onItemClick(BookWrapper book);
-        void onBtnAddWordClick(BookWrapper book);
+        void onButtonAddBookClick(BookWrapper book);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){

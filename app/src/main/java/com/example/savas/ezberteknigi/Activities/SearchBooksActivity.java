@@ -37,14 +37,12 @@ public class SearchBooksActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new SearchBookAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BookWrapper book) {
-                Log.d("XXXXXXXXXXXXXxxxxx", "on Cardview Click in Activity on book: " + book.getBook().getTitle());
-
-//                Toast.makeText(SearchBooksActivity.this, "on Cardview Click in Activity on book: " + book.getBook().getTitle(), Toast.LENGTH_LONG).show();
+                //this method's implementation in SearchBookAdapter class overrides this one
             }
 
             @Override
-            public void onBtnAddWordClick(BookWrapper book) {
-                
+            public void onButtonAddBookClick(BookWrapper book) {
+                Toast.makeText(SearchBooksActivity.this, "clicked on button add book ", Toast.LENGTH_LONG).show();
             }
         });
     }
