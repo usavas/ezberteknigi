@@ -35,20 +35,13 @@ import static android.app.Activity.RESULT_OK;
 
 public class WordsFragment extends Fragment {
 
-//    public static final int ADD_WORD_REQUEST = 1;
     private static final String WORD_TYPE_PARAM = "param1";
-
     public static final String EXTRA_WORD_ID = "EXTRA_WORD_ID";
-//    public static final String EXTRA_WORD_WORD = "EXTRA_WORD_WORD";
-//    public static final String EXTRA_WORD_TRANSLATION = "EXTRA_TRANSLATION";
-//    public static final String EXTRA_WORD_EXAMPLE_SENTENCE = "EXTRA_EXAMPLE_SENTENCE";
 
-//    TextView tvItemCount;
     WordViewModel wordViewModel;
+    private OnFragmentInteractionListener mListener;
 
     private int mParam1;
-
-    private OnFragmentInteractionListener mListener;
 
     public WordsFragment() {
     }
@@ -74,7 +67,7 @@ public class WordsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_words, container, false);
-        FloatingActionButton buttonAddNote = view.findViewById(R.id.fab_add_word_learning);
+        FloatingActionButton btnAddNewWord = view.findViewById(R.id.fab_add_word_learning);
 
         final WordAdapter wordAdapter = new WordAdapter();
 
@@ -87,7 +80,7 @@ public class WordsFragment extends Fragment {
 
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
         if (mParam1 == Word.WORD_ALL) {
-            buttonAddNote.setVisibility(View.VISIBLE);
+            btnAddNewWord.setVisibility(View.VISIBLE);
             wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
@@ -96,7 +89,7 @@ public class WordsFragment extends Fragment {
                 }
             });
         } else if (mParam1 == Word.WORD_LEARNING) {
-            buttonAddNote.setVisibility(View.VISIBLE);
+            btnAddNewWord.setVisibility(View.VISIBLE);
             wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, new Observer<List<Word>>() {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
@@ -104,7 +97,7 @@ public class WordsFragment extends Fragment {
                 }
             });
         } else if (mParam1 == Word.WORD_MASTERED) {
-//            buttonAddNote.setVisibility(View.GONE);
+//            btnAddNewWord.setVisibility(View.GONE);
             wordViewModel.getAllWordsBasedOnState(Word.WORD_MASTERED).observe(this, new Observer<List<Word>>() {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
@@ -112,7 +105,7 @@ public class WordsFragment extends Fragment {
                 }
             });
         } else if (mParam1 == Word.WORD_REVISION) {
-            buttonAddNote.setVisibility(View.GONE);
+            btnAddNewWord.setVisibility(View.GONE);
             getActivity().setTitle("Tekrar Edilecek Kelimeler");
             wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
                 @Override
@@ -139,7 +132,7 @@ public class WordsFragment extends Fragment {
         });
 
         if (mParam1 == Word.WORD_ALL || mParam1 == Word.WORD_LEARNING || mParam1 == Word.WORD_MASTERED) {
-            buttonAddNote.setOnClickListener(v -> {
+            btnAddNewWord.setOnClickListener(v -> {
                 AddWordFragment wordDialogFragment = new AddWordFragment();
                 if (mParam1 == Word.WORD_ALL){
                     wordDialogFragment = AddWordFragment.newInstance(Word.WORD_ALL);

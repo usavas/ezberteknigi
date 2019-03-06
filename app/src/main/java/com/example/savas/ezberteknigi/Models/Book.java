@@ -97,71 +97,9 @@ public class Book {
     }
 
     public static List<Book> getAllBooks(){
-        List<Book> allBooks;
-        //TODO: replace with WebContentRetrievable object
+        String apiResponse = new WebContentRetrieverViaHttpRequest().
+                retrieveContent("https://ezberteknigi.firebaseio.com/books.json?print=pretty");
+        return Arrays.asList(new Gson().fromJson(apiResponse, Book[].class));
 
-        String apiRequestAddress = "https://ezberteknigi.firebaseio.com/books.json?print=pretty";
-
-        WebContentRetrievable retrievable = new WebContentRetrieverViaHttpRequest();
-        String apiResponse = retrievable.retrieveContent("https://ezberteknigi.firebaseio.com/books.json?print=pretty");
-
-//        String apiResponse = getWebsiteContent(apiRequestAddress);
-
-        Gson gson = new Gson();
-        Book[] bookArray = gson.fromJson(apiResponse, Book[].class);
-        allBooks = Arrays.asList(bookArray);
-
-        return allBooks;
     }
-
-    // deprecated
-    private static String getWebsiteContent(String urlAddress){
-        HttpURLConnection connection = null;
-        BufferedReader reader = null;
-        String bufferString = "";
-
-        try {
-            URL url = new URL(urlAddress);
-            try {
-                connection = (HttpURLConnection) url.openConnection();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (connection != null) {
-                connection.connect();
-            }
-
-            assert connection != null;
-            InputStream stream = connection.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(stream));
-
-            StringBuffer buffer = new StringBuffer();
-            String line = "";
-
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line+"\n");
-            }
-
-            bufferString = buffer.toString();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return bufferString;
-    }
-
 }

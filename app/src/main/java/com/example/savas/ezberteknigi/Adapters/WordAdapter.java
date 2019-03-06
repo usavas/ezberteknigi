@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi.Adapters;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -88,6 +89,13 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         private void bind(Word word) {
             boolean expanded = word.isExpanded();
             viewSubItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
+
+//            if (expanded){
+//                itemView.setBackgroundColor(Color.GREEN);
+//                itemView.setLayoutParams(new ViewGroup.LayoutParams(
+//                        ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT));
+//            }
 
             tvWord.setText(word.getWord());
             tvTranslation.setText(word.getTranslation());
