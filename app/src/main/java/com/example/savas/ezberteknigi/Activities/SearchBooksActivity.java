@@ -4,11 +4,16 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Adapters.SearchBookAdapter;
@@ -22,6 +27,10 @@ import java.util.List;
 public class SearchBooksActivity extends AppCompatActivity {
 
     final SearchBookAdapter adapter = new SearchBookAdapter(this);
+    private static final String TAG = "SearchBooksActivity";
+    ProgressDialog dialog;
+
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,25 +45,45 @@ public class SearchBooksActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        List<BookWrapper> bookWrappers = BookWrapper.makeBookWrapperList(Book.getAllBooks());
-        adapter.setBooks(bookWrappers);
+        dialog = new ProgressDialog(this);
 
-//        new GetBooksAsyncTask().execute(adapter);
+        dialog.setMessage("Kitap listesi getiriliyor");
+        dialog.show();
 
-        adapter.setOnItemClickListener(new SearchBookAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BookWrapper book) {
-                //this method's implementation in SearchBookAdapter class overrides this one
-            }
-
-            @Override
-            public void onButtonAddBookClick(BookWrapper book) {
-                Toast.makeText(SearchBooksActivity.this, "clicked on button add book ", Toast.LENGTH_LONG).show();
-            }
-        });
-
-
+        Thread t = new Thread(new RetrieveBooksFromFirebase());
+        t.start();
     }
+
+    class RetrieveBooksFromFirebase implements Runnable {
+        @Override
+        public void run() {
+            List<BookWrapper> bookWrappers = BookWrapper.makeBookWrapperList(Book.getAllBooks());
+
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.setBooks(bookWrappers);
+
+                    adapter.setOnItemClickListener(new SearchBookAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(BookWrapper book) {
+                            //this method's implementation in SearchBookAdapter class overrides this one
+                        }
+
+                        @Override
+                        public void onButtonAddBookClick(BookWrapper book) {
+                            Toast.makeText(SearchBooksActivity.this, "clicked on button add book ", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                    if (dialog.isShowing()){
+                        dialog.dismiss();
+                    }
+                }
+            });
+        }
+    }
+
 
     private class GetBooksAsyncTask extends AsyncTask<SearchBookAdapter, Void, Void> {
         List<BookWrapper> bookWrappers = new ArrayList<>();
@@ -87,7 +116,7 @@ public class SearchBooksActivity extends AppCompatActivity {
     }
 
 
-    private static class getBooks extends AsyncTask<Void, Void, List<BookWrapper>>{
+    private static class getBooks extends AsyncTask<Void, Void, List<BookWrapper>> {
         @Override
         protected List<BookWrapper> doInBackground(Void... voids) {
             return null;

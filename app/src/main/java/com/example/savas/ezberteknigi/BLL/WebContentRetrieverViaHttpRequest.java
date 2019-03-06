@@ -1,6 +1,8 @@
 package com.example.savas.ezberteknigi.BLL;
 
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -21,7 +23,6 @@ public class WebContentRetrieverViaHttpRequest implements WebContentRetrievable{
     @Override
     public String retrieveContent(String url) {
         String content = "";
-
         try {
             content = new TitleAndContentTask().execute(url).get();
         } catch (ExecutionException e) {

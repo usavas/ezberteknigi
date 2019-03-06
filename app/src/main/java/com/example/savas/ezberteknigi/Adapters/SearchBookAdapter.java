@@ -27,6 +27,8 @@ public class SearchBookAdapter extends Adapter<SearchBookAdapter.SearchBookHolde
         context = _context;
     }
 
+
+
     @NonNull
     @Override
     public SearchBookAdapter.SearchBookHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
