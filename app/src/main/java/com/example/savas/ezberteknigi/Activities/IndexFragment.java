@@ -10,8 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Adapters.SearchBookAdapter;
+import com.example.savas.ezberteknigi.BLL.InternetConnectivity;
+import com.example.savas.ezberteknigi.BLL.InternetConnectivityChekable;
+import com.example.savas.ezberteknigi.BLL.InternetConnectivityForAPI23;
+import com.example.savas.ezberteknigi.BLL.InternetConnectivityListenerWrapper;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -56,8 +61,14 @@ public class IndexFragment extends Fragment {
         btnSearchBooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), SearchBooksActivity.class);
-                startActivity(i);
+                InternetConnectivityChekable checkConnection = new InternetConnectivity();
+                boolean hasInternetConnection = checkConnection.checkNetworkConnection(getContext());
+                if (hasInternetConnection){
+                    Intent i = new Intent(getContext(), SearchBooksActivity.class);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(getContext(), "İnternet bağlantısı mevcut değil", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
