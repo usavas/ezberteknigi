@@ -62,7 +62,7 @@ public class Word {
 
     @Ignore
     public Word() {
-
+        this.dateSaved = new Date();
     }
 
     @Ignore

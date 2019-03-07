@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.R;
 
@@ -29,12 +30,7 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
     public void onBindViewHolder(@NonNull ReadingTextHolder readingTextHolder, int i) {
         ReadingText currentReadingText = readingTexts.get(i);
         readingTextHolder.header.setText(currentReadingText.getHeader());
-
-        if (currentReadingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_PLAIN || currentReadingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_WEB){
-            readingTextHolder.content.setText(currentReadingText.getContent());
-        } else {
-            //TODO: set content from the storyline of Book
-        }
+        readingTextHolder.content.setText(currentReadingText.getContentForPreview());
     }
 
     @Override

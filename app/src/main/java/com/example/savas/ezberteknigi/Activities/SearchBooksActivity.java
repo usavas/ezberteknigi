@@ -1,35 +1,28 @@
 package com.example.savas.ezberteknigi.Activities;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Adapters.SearchBookAdapter;
 import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.BookWrapper;
+import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.R;
+import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchBooksActivity extends AppCompatActivity {
+    private static final String TAG = "SearchBooksActivity";
 
     final SearchBookAdapter adapter = new SearchBookAdapter(this);
-    private static final String TAG = "SearchBooksActivity";
     ProgressDialog dialog;
-
     private Handler handler = new Handler();
 
     @Override
@@ -68,7 +61,12 @@ public class SearchBooksActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onButtonAddBookClick(BookWrapper book) {
+                        public void onButtonAddBookClick(BookWrapper bookW) {
+                            Book b = bookW.getBook();
+                            ReadingText readingText = new ReadingText(bookW.getLanguage(), b.getTitle(), ReadingText.DOCUMENT_TYPE_BOOK, "");
+                            readingText.setBook(b);
+
+                            new ReadingTextRepository(getApplication()).insert(readingText);
                             Toast.makeText(SearchBooksActivity.this, "clicked on button add book ", Toast.LENGTH_LONG).show();
                         }
                     });
@@ -78,50 +76,6 @@ public class SearchBooksActivity extends AppCompatActivity {
                     }
                 }
             });
-        }
-    }
-
-
-    private class GetBooksAsyncTask extends AsyncTask<SearchBookAdapter, Void, Void> {
-        List<BookWrapper> bookWrappers = new ArrayList<>();
-//        ProgressDialog dialog;
-
-//        public GetBooksAsyncTask(Activity activity){
-//            dialog = new ProgressDialog(activity);
-//        }
-
-//        @Override
-//        protected void onPreExecute() {
-//            dialog.setMessage("test");
-//            dialog.show();
-//        }
-
-        @Override
-        protected Void doInBackground(SearchBookAdapter... adapters) {
-            bookWrappers = BookWrapper.makeBookWrapperList(Book.getAllBooks());
-            adapters[0].setBooks(bookWrappers);
-            return null;
-        }
-
-//        @Override
-//        protected void onPostExecute(Void aVoid) {
-//            adapter.setBooks(bookWrappers);
-//            if (dialog.isShowing()){
-//                dialog.dismiss();
-//            }
-//        }
-    }
-
-
-    private static class getBooks extends AsyncTask<Void, Void, List<BookWrapper>> {
-        @Override
-        protected List<BookWrapper> doInBackground(Void... voids) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List<BookWrapper> bookWrappers) {
-            super.onPostExecute(bookWrappers);
         }
     }
 }

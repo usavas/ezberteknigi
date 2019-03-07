@@ -14,7 +14,7 @@ def makeMultipleNewlinesSingle(string):
 def replaceForJson(string):
     return string.replace("\"", "\\\"").replace("\t", "\\t").replace("\n\n\n", "\\n").replace("\n\n", "\\n").replace("\n", "\\n").replace("\r\r", "\\r").replace("\r", "\\r").replace("\b","\\b").replace("\f", "\\f").replace("'", "\'").replace("’", "\'").replace("‘", "\'")
 
-def makeJson(author, title, genre, level, content, storyline, hardwords):
+def makeJson(author, title, genre, level, chapters, storyline, hardwords):
     json = """{
         "author":"%s",
         "title":"%s",
@@ -22,8 +22,8 @@ def makeJson(author, title, genre, level, content, storyline, hardwords):
         "level": "%s",
         "storyline":"%s",
         "hardwords":%s,
-        "content":%s
-    },""" % (author, title, genre, level, storyline, hardwords, content)
+        "chapters":%s
+    },""" % (author, title, genre, level, storyline, hardwords, chapters)
     return json
 
 def getAuthor(fileName):
@@ -50,8 +50,8 @@ def getHardWordsJson(hardwords):
     wordsJson = wordsJson.strip(",") + "]"
     return wordsJson
 
-def getStorylineContentJson(content):
-        return replaceForJson(content)
+def getStorylineContentJson(chapters):
+        return replaceForJson(chapters)
 
 def getChapters(fileName):
     with open(fileName) as f:
@@ -96,7 +96,7 @@ for f in files:
         corefilename = f[:f.index(".txt")]
         
         corewebname = corefilename.lower().replace("_", "-").replace(",", "-")
-        source = requests.get("https://english-e-reader.net/book/" + corewebname).content
+        source = requests.get("https://english-e-reader.net/book/" + corewebname).chapters
         soup = BeautifulSoup(source, 'html.parser')
         print(corewebname)
         ps = soup.find_all("p")
@@ -110,7 +110,7 @@ for f in files:
         storylineJson = getStorylineContentJson(storyline)
         hardwords = divs[1].string.strip()
         hardwordsJson = getHardWordsJson(hardwords)
-        content = getChapters(f)
+        chapters = getChapters(f)
         print(corefilename)
         title = getTitle(corefilename)
         author = getAuthor(corefilename)
@@ -142,7 +142,7 @@ for f in files:
             makeDirIfNotExists(_UNABRIDGED)
             os.rename(f, _UNABRIDGED + "\\" + f)
         
-        sonuc += makeJson(author, title, genre, level, content, storylineJson, hardwordsJson)
+        sonuc += makeJson(author, title, genre, level, chapters, storylineJson, hardwordsJson)
 
 with open("sonuclar.json", "w") as f:
     sonuc =  "{ \"books\":[" + sonuc.strip().rstrip(",") + "]}"

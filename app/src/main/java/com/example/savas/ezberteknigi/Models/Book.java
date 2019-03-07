@@ -1,16 +1,8 @@
 package com.example.savas.ezberteknigi.Models;
 
-import com.example.savas.ezberteknigi.BLL.WebContentRetrievable;
 import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaHttpRequest;
-import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaJsoup;
 import com.google.gson.Gson;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -20,7 +12,7 @@ import java.util.Map;
 public class Book {
 
     private String author;
-    private List<Hashtable<String, String>> content;
+    private List<Hashtable<String, String>> chapters;
     private String genre;
     private String[] hardwords;
     private String level;
@@ -29,9 +21,9 @@ public class Book {
 
     public Book(){}
 
-    public Book(String author, List<Hashtable<String, String>> content, String genre, String[] hardwords, String level, String storyline, String title) {
+    public Book(String author, List<Hashtable<String, String>> chapters, String genre, String[] hardwords, String level, String storyline, String title) {
         this.author = author;
-        this.content = content;
+        this.chapters = chapters;
         this.genre = genre;
         this.hardwords = hardwords;
         this.level = level;
@@ -43,8 +35,8 @@ public class Book {
         return author;
     }
 
-    public List<Hashtable<String, String>> getContent() {
-        return content;
+    public List<Hashtable<String, String>> getChapters() {
+        return chapters;
     }
 
     public String getGenre() {
@@ -77,7 +69,7 @@ public class Book {
 
     public List<String> getChapterList(){
         List<String> chapterList = new ArrayList<>();
-        for (Hashtable<String,String> chapters: content) {
+        for (Hashtable<String,String> chapters: chapters) {
             for (Map.Entry<String, String> chapter: chapters.entrySet()) {
                 chapterList.add(chapter.getKey());
             }

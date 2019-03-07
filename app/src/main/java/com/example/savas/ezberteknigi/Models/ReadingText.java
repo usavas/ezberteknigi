@@ -4,6 +4,10 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.TypeConverters;
+
+import java.util.Date;
 
 @Entity(tableName = "reading_text_table")
 public class ReadingText {
@@ -31,13 +35,18 @@ public class ReadingText {
     private String content;
     @ColumnInfo(name = "left_offset")
     private int leftOffset;
-
+    @ColumnInfo(name = "time_inserted")
+    @TypeConverters({TimeStampConverter.class})
+    private Date timeInserted;
     @ColumnInfo(name = "book")
-    private String book;
+    @TypeConverters({BookConverter.class})
+    private Book book;
+    @ColumnInfo(name = "left_chapter")
+    private String leftChapter;
 
     @Ignore
     public ReadingText(){
-
+        this.timeInserted = new Date();
     }
 
     public ReadingText(String language, String header, int document_type, String content) {
@@ -45,6 +54,7 @@ public class ReadingText {
         this.header = header;
         this.document_type = document_type;
         this.content = content;
+        this.timeInserted = new Date();
     }
 
     public int getReadingTextId() {
@@ -75,6 +85,10 @@ public class ReadingText {
         return content;
     }
 
+    public Date getTimeInserted(){
+        return timeInserted;
+    }
+
     public int getWordCount() {
         return calculateWordCount();
     }
@@ -98,13 +112,27 @@ public class ReadingText {
         throw new IllegalThreadStateException("Not implemented");
     }
 
+    public String getContentForPreview() {
+        String contentToSetForPreview = "";
+        if (this.document_type == ReadingText.DOCUMENT_TYPE_PLAIN){
+            contentToSetForPreview = this.content;
+        } else if (this.document_type == ReadingText.DOCUMENT_TYPE_WEB) {
+            contentToSetForPreview = this.content;
+        } else if (document_type == ReadingText.DOCUMENT_TYPE_BOOK) {
+            contentToSetForPreview = this.book.getStoryline();
+        }
+        return contentToSetForPreview;
+    }
+
     public int getLeftOffset() {
         return leftOffset;
     }
 
-    public String getBook(){
+    public Book getBook(){
         return book;
     }
+
+    public String getLeftChapter(){ return leftChapter; }
 
     public void setReadingTextId(int id) {
         this.readingTextId = id;
@@ -126,11 +154,19 @@ public class ReadingText {
         this.content = content;
     }
 
+    public void setTimeInserted(Date timeInserted){
+        this.timeInserted = timeInserted;
+    }
+
     public void setLeftOffset(int leftOffset) {
         this.leftOffset = leftOffset;
     }
 
-    public void setBook(String book){
+    public void setBook(Book book){
         this.book = book;
+    }
+
+    public void setLeftChapter(String leftChapter) {
+        this.leftChapter = leftChapter;
     }
 }

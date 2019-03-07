@@ -6,12 +6,19 @@ import java.util.List;
 public class BookWrapper {
 
     Book book;
+    private String language;
     private boolean expanded;
 
     public BookWrapper(Book book) {
         this.book = book;
         this.expanded = false;
+    }
 
+    public String getLanguage(){
+        return language;
+    }
+    public void setLanguage(String _language){
+        this.language = _language;
     }
 
     public Book getBook() {
@@ -21,7 +28,6 @@ public class BookWrapper {
     public boolean isExpanded() {
         return expanded;
     }
-
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
@@ -29,7 +35,9 @@ public class BookWrapper {
     public static List<BookWrapper> makeBookWrapperList(List<Book> bookList){
         List<BookWrapper> bookWrapperList = new ArrayList<>();
         for (Book b: bookList) {
-            bookWrapperList.add(new BookWrapper(b));
+            BookWrapper bw = new BookWrapper(b);
+            bw.setLanguage("en");
+            bookWrapperList.add(bw);
         }
         return bookWrapperList;
     }

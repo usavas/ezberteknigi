@@ -15,9 +15,7 @@ public class TimeStampConverter {
     public static Date fromTimestamp(String value) {
         if (value != null) {
             try {
-                Date d = df.parse(value);
-                Log.wtf("STRING CONVERTED TO DATE: (DATE)", String.valueOf(d));
-                return d;
+                return df.parse(value);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -30,10 +28,7 @@ public class TimeStampConverter {
     @TypeConverter
     public static String fromDate(Date date) {
         if (date != null) {
-            String d = df.format(date);
-            Log.wtf("STRING CONVERTED TO STRING: (STRING)", d);
-
-            return d;
+            return df.format(date);
         } else {
             return null;
         }

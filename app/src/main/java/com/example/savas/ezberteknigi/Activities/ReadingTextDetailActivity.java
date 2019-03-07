@@ -3,26 +3,20 @@ package com.example.savas.ezberteknigi.Activities;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ActionMode;
-import android.view.InputDevice;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
-import android.widget.AbsListView;
-import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.BLL.DummyTranslateProvider;
 import com.example.savas.ezberteknigi.BLL.ExampleSentenceExtractor;
 import com.example.savas.ezberteknigi.BLL.TranslationProvidable;
+import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -52,17 +46,9 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_WEB){
             if (WebContentRetrievable.isValidUrl(readingText.getSource())) {
                 prepareLayoutForWebView();
-//            prepareLayoutForReadingTextView();
             }
         } else {
             prepareLayoutForReadingTextView();
-
-            scrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    scrollView.scrollTo(0, readingText.getLeftOffset());
-                }
-            });
         }
     }
 
@@ -88,7 +74,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                                     if (selectedText.trim() != "") {
 //
 //                                        List<String> selectedSentences = ExampleSentenceExtractor
-//                                                .getSentences(readingText.getContent(), selectedText);
+//                                                .getSentences(readingText.getChapters(), selectedText);
 //
 //                                        String singleSentence = "";
 //                                        if (selectedSentences.size() > 0) {
@@ -133,8 +119,22 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
         tvHeader.setText(readingText.getHeader());
 
-        //TODO: (maybe) if the content is HTML then //tvContent.setText(Html.fromHtml(readingText.getContent()));
-        tvContent.setText(readingText.getContent());
+        //TODO: (maybe) if the content is HTML then //tvContent.setText(Html.fromHtml(readingText.getChapters()));
+        if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_PLAIN){
+            tvContent.setText(readingText.getContent());
+        } else if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_BOOK){
+            Book book = readingText.getBook();
+            String chapter1 = book.getChapters().get(0).get(readingText.getLeftChapter());
+
+            tvContent.setText(chapter1);
+        }
+
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.scrollTo(0, readingText.getLeftOffset());
+            }
+        });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -155,23 +155,21 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
         tvContent.setOnLongClickListener(v -> {
             new Handler().postDelayed(() -> {
-
                 int wordSelectionStart = tvContent.getSelectionStart();
                 int wordSelectionEnd = tvContent.getSelectionEnd();
-
-                if (!verifySelection(wordSelectionStart, wordSelectionEnd)) {
-                    return;
-                }
-
                 String selectedText = tvContent.getText().toString().substring(wordSelectionStart, wordSelectionEnd);
-                String text = tvContent.getText().toString();
-
-                String selectedSentence = ExampleSentenceExtractor
-                        .getSelectedSentence(text, wordSelectionStart, wordSelectionEnd);
+                String selectedSentence = getSelectedSentence(wordSelectionStart, wordSelectionEnd);
                 showWordDialog(selectedText, selectedSentence);
             }, 800);
             return false;
         });
+    }
+
+    @NonNull
+    private String getSelectedSentence(int wordSelectionStart, int wordSelectionEnd) {
+        String text = tvContent.getText().toString();
+        return ExampleSentenceExtractor
+                .getSelectedSentence(text, wordSelectionStart, wordSelectionEnd);
     }
 
     private boolean verifySelection(int wordSelectionStart, int wordSelectionEnd) {
