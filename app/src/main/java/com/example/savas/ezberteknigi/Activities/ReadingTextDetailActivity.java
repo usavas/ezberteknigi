@@ -123,10 +123,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
         if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_PLAIN){
             tvContent.setText(readingText.getContent());
         } else if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_BOOK){
-            Book book = readingText.getBook();
-            String chapter1 = book.getChapters().get(0);
-
-            tvContent.setText(chapter1);
+            tvContent.setText((readingText.getBook()).getChapters().get(readingText.getLeftChapter()));
         }
 
         scrollView.post(new Runnable() {
@@ -226,10 +223,10 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        saveLeftOffset();
+        saveReadingTextCurrentStatus();
     }
 
-    private void saveLeftOffset() {
+    private void saveReadingTextCurrentStatus() {
         readingTextRepository.update(readingText);
     }
 }

@@ -42,7 +42,7 @@ public class ReadingText {
     @TypeConverters({BookConverter.class})
     private Book book;
     @ColumnInfo(name = "left_chapter")
-    private String leftChapter;
+    private int leftChapter;
 
     @Ignore
     public ReadingText(){
@@ -132,7 +132,7 @@ public class ReadingText {
         return book;
     }
 
-    public String getLeftChapter(){ return leftChapter; }
+    public int getLeftChapter(){ return leftChapter; }
 
     public void setReadingTextId(int id) {
         this.readingTextId = id;
@@ -166,7 +166,7 @@ public class ReadingText {
         this.book = book;
     }
 
-    public void setLeftChapter(String leftChapter) {
+    public void setLeftChapter(int leftChapter) {
         this.leftChapter = leftChapter;
     }
 }
