@@ -12,7 +12,7 @@ import java.util.Map;
 public class Book {
 
     private String author;
-    private List<Hashtable<String, String>> chapters;
+    private List<String> chapters;
     private String genre;
     private String[] hardwords;
     private String level;
@@ -21,7 +21,7 @@ public class Book {
 
     public Book(){}
 
-    public Book(String author, List<Hashtable<String, String>> chapters, String genre, String[] hardwords, String level, String storyline, String title) {
+    public Book(String author, List<String> chapters, String genre, String[] hardwords, String level, String storyline, String title) {
         this.author = author;
         this.chapters = chapters;
         this.genre = genre;
@@ -35,7 +35,7 @@ public class Book {
         return author;
     }
 
-    public List<Hashtable<String, String>> getChapters() {
+    public List<String> getChapters() {
         return chapters;
     }
 
@@ -67,20 +67,14 @@ public class Book {
         return title;
     }
 
-    public List<String> getChapterList(){
-        List<String> chapterList = new ArrayList<>();
-        for (Hashtable<String,String> chapters: chapters) {
-            for (Map.Entry<String, String> chapter: chapters.entrySet()) {
-                chapterList.add(chapter.getKey());
-            }
-        }
-        return chapterList;
-    }
+//    public List<String> getChapterList(){
+//        return null;
+//    }
 
     public static Book[] getBookByLevel(String level){
         List<Book> books = new ArrayList<>();
         for (Book b: getAllBooks()) {
-            if (b.level == level){
+            if (b.level.equals(level)){
                 books.add(b);
             }
         }

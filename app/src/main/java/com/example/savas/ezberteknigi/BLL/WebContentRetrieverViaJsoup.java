@@ -73,7 +73,6 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
                 titleAndContent.add(doc.title());
                 //TODO: further html manipulation might be needed
                 titleAndContent.add(doc.body().text());
-//                titleAndContent.add(doc.body().html());
 
                 Log.d(TAG, "doInBackground: " + doc.body().text());
                 Log.d(TAG, "doInBackground: " + doc.body().wholeText());

@@ -80,9 +80,9 @@ public class WebContentRetrieverViaHttpRequest implements WebContentRetrievable{
                 }
 
                 Log.d(TAG, "doInBackground: buffer result: " + bufferHtml.toString());
+                //TODO: get just the inner Texts (html without tags)
                 return bufferHtml.toString();
 
-                //TODO: get just the inner Texts (html without tags)
 
             } catch (IOException e) {
                 e.printStackTrace();

@@ -124,7 +124,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
             tvContent.setText(readingText.getContent());
         } else if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_BOOK){
             Book book = readingText.getBook();
-            String chapter1 = book.getChapters().get(0).get(readingText.getLeftChapter());
+            String chapter1 = book.getChapters().get(0);
 
             tvContent.setText(chapter1);
         }

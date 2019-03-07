@@ -17,7 +17,6 @@ public class InternetConnectionCheckForAPI23 implements InternetConnectionChecka
     public boolean isConnectedToInternet() {
         boolean isConnected = false;
 
-        //TODO: requires API 23 or higher
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
