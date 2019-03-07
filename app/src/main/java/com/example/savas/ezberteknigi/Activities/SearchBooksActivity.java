@@ -37,16 +37,13 @@ public class SearchBooksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_books);
 
-
         RecyclerView recyclerView = findViewById(R.id.recycler_view_books);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-
         recyclerView.setAdapter(adapter);
 
         dialog = new ProgressDialog(this);
-
         dialog.setMessage("Kitap listesi getiriliyor");
         dialog.show();
 

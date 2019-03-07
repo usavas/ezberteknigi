@@ -4,13 +4,10 @@ import android.content.Context;
 
 import java.io.IOException;
 
-public class InternetConnectivity implements InternetConnectivityChekable {
-    @Override
-    public boolean checkNetworkConnection(Context context) {
-        return isOnline();
-    }
+public class InternetConnectivity implements InternetConnectionCheckable {
 
-    public boolean isOnline() {
+    @Override
+    public boolean isConnectedToInternet() {
         Runtime runtime = Runtime.getRuntime();
         try {
             Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");

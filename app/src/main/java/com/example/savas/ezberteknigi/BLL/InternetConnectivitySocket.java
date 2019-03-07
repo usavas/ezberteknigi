@@ -1,27 +1,35 @@
 package com.example.savas.ezberteknigi.BLL;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.concurrent.ExecutionException;
 
-public class InternetConnectivitySocket implements InternetConnectivityChekable {
+public class InternetConnectivitySocket implements InternetConnectionCheckable {
+
     @Override
-    public boolean checkNetworkConnection(Context context) {
-        boolean _hasInternetAccess;
+    public boolean isConnectedToInternet() {
+        try {
+            return new InternetCheck(hasInternetAccess -> {  }).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return false;
-//        return new InternetCheck(hasInternetAccess -> {  });
-
     }
 
-    static class InternetCheck extends AsyncTask<Void,Void,Boolean> {
+    public static class InternetCheck extends AsyncTask<Void,Void,Boolean> {
 
         private Consumer mConsumer;
         public interface Consumer { void accept(Boolean internet); }
 
-        public  InternetCheck(Consumer consumer) { mConsumer = consumer; execute(); }
+        public InternetCheck(Consumer consumer) {
+            mConsumer = consumer;
+            execute();
+        }
 
         @Override protected Boolean doInBackground(Void... voids) { try {
             Socket sock = new Socket();

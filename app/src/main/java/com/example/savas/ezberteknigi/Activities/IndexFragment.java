@@ -12,11 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.savas.ezberteknigi.Adapters.SearchBookAdapter;
-import com.example.savas.ezberteknigi.BLL.InternetConnectivity;
-import com.example.savas.ezberteknigi.BLL.InternetConnectivityChekable;
-import com.example.savas.ezberteknigi.BLL.InternetConnectivityForAPI23;
-import com.example.savas.ezberteknigi.BLL.InternetConnectivityListenerWrapper;
+import com.example.savas.ezberteknigi.BLL.InternetConnectivitySocket;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -28,7 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import static android.content.ContentValues.TAG;
-import static com.example.savas.ezberteknigi.Models.ReadingText.DOCUMENT_TYPE_PLAIN;
 
 public class IndexFragment extends Fragment {
     @Nullable
@@ -61,9 +56,7 @@ public class IndexFragment extends Fragment {
         btnSearchBooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InternetConnectivityChekable checkConnection = new InternetConnectivity();
-                boolean hasInternetConnection = checkConnection.checkNetworkConnection(getContext());
-                if (hasInternetConnection){
+                if (new InternetConnectivitySocket().isConnectedToInternet()){
                     Intent i = new Intent(getContext(), SearchBooksActivity.class);
                     startActivity(i);
                 } else {

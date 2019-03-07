@@ -4,12 +4,17 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.treebo.internetavailabilitychecker.InternetAvailabilityChecker;
-import com.treebo.internetavailabilitychecker.InternetConnectivityListener;
 
-public class InternetConnectivityForAPI23 implements InternetConnectivityChekable {
+public class InternetConnectionCheckForAPI23 implements InternetConnectionCheckable{
 
-    public boolean checkNetworkConnection(Context context){
+    private Context context;
+
+    public InternetConnectionCheckForAPI23(Context _context){
+        context = _context;
+    }
+
+    @Override
+    public boolean isConnectedToInternet() {
         boolean isConnected = false;
 
         //TODO: requires API 23 or higher
