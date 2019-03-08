@@ -110,4 +110,10 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_search_books">SearchBooksActivity</string>
+    <string name="title_activity_book_detail">BookDetailActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
 </resources>

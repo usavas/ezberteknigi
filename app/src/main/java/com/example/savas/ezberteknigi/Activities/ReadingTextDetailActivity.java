@@ -157,7 +157,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                 String selectedText = tvContent.getText().toString().substring(wordSelectionStart, wordSelectionEnd);
                 String selectedSentence = getSelectedSentence(wordSelectionStart, wordSelectionEnd);
                 showWordDialog(selectedText, selectedSentence);
-            }, 800);
+            }, 700);
             return false;
         });
     }
