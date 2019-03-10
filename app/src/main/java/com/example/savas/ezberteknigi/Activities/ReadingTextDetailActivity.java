@@ -136,15 +136,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
             tvHeader.setText(readingText.getHeader());
             navView.setVisibility(View.GONE);
         } else if (documentType == ReadingText.DOCUMENT_TYPE_BOOK){
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
-
             navView.setNavigationItemSelectedListener(this);
 
             book = readingText.getBook();
