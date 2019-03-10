@@ -53,17 +53,17 @@ public class ReadingTextsFragment extends Fragment {
         readingTextAdapter.setOnItemClickListener(new ReadingTextAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(ReadingText readingText) {
-                if (readingText.getBook() != null) {
-                    Intent intent = new Intent(getActivity(), BookDetailActivity.class);
-                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
-                    startActivity(intent);
-                } else {
+//                if (readingText.getBook() != null) {
+//                    Intent intent = new Intent(getActivity(), BookDetailActivity.class);
+//                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
+//                    startActivity(intent);
+//                } else {
                     Intent intent = new Intent(getActivity(), ReadingTextDetailActivity.class);
                     intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
                     intent.putExtra(EXTRA_READING_TEXT_DETAIL_HEADER, readingText.getHeader());
                     intent.putExtra(EXTRA_READING_TEXT_DETAIL_CONTENT, readingText.getContent());
                     startActivity(intent);
-                }
+//                }
             }
         });
 

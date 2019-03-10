@@ -93,10 +93,11 @@ public class BookDetailActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         String title = item.getTitle().toString();
         int clickedChapterNr = Integer.parseInt(title.split(" ")[1]);
-        readingText.setLeftChapter(clickedChapterNr);
-        populateReadingContent(clickedChapterNr);
-
-
+        if (clickedChapterNr != readingText.getLeftChapter()){
+            readingText.setLeftChapter(clickedChapterNr);
+            readingText.setLeftOffset(0);
+            populateReadingContent(clickedChapterNr);
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

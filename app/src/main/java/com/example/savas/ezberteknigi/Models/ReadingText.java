@@ -174,6 +174,5 @@ public class ReadingText {
 
     public void setLeftChapter(int leftChapter) {
         this.leftChapter = leftChapter;
-        this.leftOffset = 0;
     }
 }

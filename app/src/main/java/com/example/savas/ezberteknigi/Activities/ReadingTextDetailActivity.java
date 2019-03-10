@@ -4,8 +4,15 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.ValueCallback;
@@ -16,6 +23,7 @@ import android.widget.TextView;
 import com.example.savas.ezberteknigi.BLL.DummyTranslateProvider;
 import com.example.savas.ezberteknigi.BLL.ExampleSentenceExtractor;
 import com.example.savas.ezberteknigi.BLL.TranslationProvidable;
+import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -24,9 +32,11 @@ import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.BLL.WebContentRetrievable;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-public class ReadingTextDetailActivity extends AppCompatActivity {
+public class ReadingTextDetailActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private ReadingTextRepository readingTextRepository;
     private ReadingText readingText;
@@ -34,6 +44,9 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
     private TextView tvHeader;
     private TextView tvContent;
     private ScrollView scrollView;
+    private NavigationView navView;
+
+    private Book book;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -47,7 +60,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
                 prepareLayoutForWebView();
             }
         } else {
-            prepareLayoutForReadingTextView();
+            prepareLayoutForReadingTextView(readingText.getDocument_type());
         }
     }
 
@@ -110,27 +123,36 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void prepareLayoutForReadingTextView() {
+    private void prepareLayoutForReadingTextView(int documentType) {
         setContentView(R.layout.activity_reading_text_detail);
         tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
         tvContent = findViewById(R.id.text_view_reading_text_detail_content);
         scrollView = findViewById(R.id.scroll_view);
-
-        tvHeader.setText(readingText.getHeader());
+        navView = findViewById(R.id.nav_view);
 
         //TODO: (maybe) if the content is HTML then //tvContent.setText(Html.fromHtml(readingText.getChapters()));
-        if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_PLAIN){
+        if (documentType == ReadingText.DOCUMENT_TYPE_PLAIN){
             tvContent.setText(readingText.getContent());
-        } else if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_BOOK){
-            tvContent.setText((readingText.getBook()).getChapters().get(readingText.getLeftChapter()));
+            tvHeader.setText(readingText.getHeader());
+            navView.setVisibility(View.GONE);
+        } else if (documentType == ReadingText.DOCUMENT_TYPE_BOOK){
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+
+            navView.setNavigationItemSelectedListener(this);
+
+            book = readingText.getBook();
+            populateChapterMenu(navView, book.getChapterCount());
+            populateContentForBook(readingText.getLeftChapter());
         }
 
-        scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.scrollTo(0, readingText.getLeftOffset());
-            }
-        });
+        scrollToPosition();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -159,6 +181,24 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
             }, 700);
             return false;
         });
+    }
+
+    private void scrollToPosition() {
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.scrollTo(0, readingText.getLeftOffset());
+            }
+        });
+    }
+
+    private void populateChapterMenu(NavigationView navigationView, int chapterCount) {
+        Menu menu = navigationView.getMenu();
+        for (int i = 1; i <= chapterCount; i++) {
+            MenuItem mi = menu.add("Chapter " + i);
+            mi.setIcon(R.drawable.ic_book_black_24dp);
+        }
+        navigationView.invalidate();
     }
 
     @NonNull
@@ -227,5 +267,40 @@ public class ReadingTextDetailActivity extends AppCompatActivity {
 
     private void saveReadingTextCurrentStatus() {
         readingTextRepository.update(readingText);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        String title = menuItem.getTitle().toString();
+        int clickedChapterNr = Integer.parseInt(title.split(" ")[1]);
+        if (clickedChapterNr != readingText.getLeftChapter()){
+            readingText.setLeftChapter(clickedChapterNr);
+            readingText.setLeftOffset(0);
+            scrollToPosition();
+            populateContentForBook(clickedChapterNr);
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void populateContentForBook(int currChapter) {
+        tvHeader.setText(String.format(Locale.getDefault(), "Chapter %d", currChapter));
+        tvContent.setText(book.getChapters().get(currChapter - 1));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (readingText.getBook() != null){
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
+        } else{
+            super.onBackPressed();
+        }
     }
 }
