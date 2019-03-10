@@ -53,17 +53,23 @@ public class ReadingTextsFragment extends Fragment {
         readingTextAdapter.setOnItemClickListener(new ReadingTextAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(ReadingText readingText) {
-                Intent intent = new Intent(getActivity(), ReadingTextDetailActivity.class);
-                intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
-                intent.putExtra(EXTRA_READING_TEXT_DETAIL_HEADER, readingText.getHeader());
-                intent.putExtra(EXTRA_READING_TEXT_DETAIL_CONTENT, readingText.getContent());
-                startActivity(intent);
+                if (readingText.getBook() != null) {
+                    Intent intent = new Intent(getActivity(), BookDetailActivity.class);
+                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getActivity(), ReadingTextDetailActivity.class);
+                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
+                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_HEADER, readingText.getHeader());
+                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_CONTENT, readingText.getContent());
+                    startActivity(intent);
+                }
             }
         });
 
         Log.d(TAG, "onCreateView: recyclerView: " + recyclerView.toString());
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT){
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
@@ -72,7 +78,7 @@ public class ReadingTextsFragment extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-                if (i == ItemTouchHelper.LEFT | i == ItemTouchHelper.RIGHT){
+                if (i == ItemTouchHelper.LEFT | i == ItemTouchHelper.RIGHT) {
                     ReadingText rt = readingTextAdapter.getReadingTextAt(viewHolder.getAdapterPosition());
                     ReadingTextViewModel rtViewModel = new ReadingTextViewModel(getActivity().getApplication());
                     rtViewModel.delete(rt);

@@ -39,6 +39,8 @@ public class Book {
         return chapters;
     }
 
+    public int getChapterCount(){return chapters.size();}
+
     public String getGenre() {
         return genre;
     }

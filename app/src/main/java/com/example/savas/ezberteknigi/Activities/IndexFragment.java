@@ -56,15 +56,12 @@ public class IndexFragment extends Fragment {
         btnSearchBooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (new InternetConnectivitySocket().isConnectedToInternet()){
-//                    Intent i = new Intent(getContext(), SearchBooksActivity.class);
-//                    startActivity(i);
-//                } else {
-//                    Toast.makeText(getContext(), "İnternet bağlantısı mevcut değil", Toast.LENGTH_LONG).show();
-//                }
-
-                Intent i = new Intent(getContext(), BookDetailActivity.class);
-                startActivity(i);
+                if (new InternetConnectivitySocket().isConnectedToInternet()){
+                    Intent i = new Intent(getContext(), SearchBooksActivity.class);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(getContext(), "İnternet bağlantısı mevcut değil", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

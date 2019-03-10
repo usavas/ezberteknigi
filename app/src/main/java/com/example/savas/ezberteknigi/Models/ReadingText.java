@@ -132,7 +132,13 @@ public class ReadingText {
         return book;
     }
 
-    public int getLeftChapter(){ return leftChapter; }
+    public int getLeftChapter(){
+        if (this.leftChapter == 0 || this.leftChapter == 1){
+            return 1;
+        } else {
+            return leftChapter;
+        }
+    }
 
     public void setReadingTextId(int id) {
         this.readingTextId = id;
@@ -168,5 +174,6 @@ public class ReadingText {
 
     public void setLeftChapter(int leftChapter) {
         this.leftChapter = leftChapter;
+        this.leftOffset = 0;
     }
 }

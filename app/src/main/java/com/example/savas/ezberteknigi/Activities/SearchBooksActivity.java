@@ -67,7 +67,7 @@ public class SearchBooksActivity extends AppCompatActivity {
                             readingText.setBook(b);
 
                             new ReadingTextRepository(getApplication()).insert(readingText);
-                            Toast.makeText(SearchBooksActivity.this, "clicked on button add book ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SearchBooksActivity.this, "Kitap kütüphaneye eklendi", Toast.LENGTH_LONG).show();
                         }
                     });
 

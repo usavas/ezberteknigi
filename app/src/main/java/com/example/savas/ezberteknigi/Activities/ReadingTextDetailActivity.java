@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.example.savas.ezberteknigi.BLL.DummyTranslateProvider;
 import com.example.savas.ezberteknigi.BLL.ExampleSentenceExtractor;
 import com.example.savas.ezberteknigi.BLL.TranslationProvidable;
-import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;

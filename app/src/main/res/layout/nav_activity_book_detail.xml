@@ -13,7 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:menu="@menu/activity_book_detail_drawer" />
+        android:fitsSystemWindows="true" />
+
+    <include layout="@layout/layout_reading_text_content"/>
 
 </android.support.v4.widget.DrawerLayout>
