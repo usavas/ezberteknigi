@@ -4,6 +4,7 @@
     package="com.example.savas.ezberteknigi">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".AppStarter"
@@ -26,9 +27,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </service>
@@ -36,7 +35,6 @@
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -48,15 +46,17 @@
             android:label="Kelime Ekle">
             <intent-filter android:label="Öğreneceklerime Ekle">
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Activities.TranslationActivity"
             android:label="Alternatif Çeviriler" />
+
+        <service
+            android:name=".WordRevisionScheduler"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <meta-data
             android:name="preloaded_fonts"
