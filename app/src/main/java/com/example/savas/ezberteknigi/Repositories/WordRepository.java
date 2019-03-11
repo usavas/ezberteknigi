@@ -90,6 +90,17 @@ public class WordRepository {
         return new GetWordByIdAsyncTask(wordDao).execute(id).get();
     }
 
+    public List<Word> getAllWordsAsList(){
+        try {
+            return new GetAllWordsAsListAsyncTask(wordDao).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Word getWordByWord(String word) throws ExecutionException, InterruptedException {
         return new GetWordByWordAsyncTask(wordDao).execute(word).get();
     }
@@ -146,6 +157,19 @@ public class WordRepository {
         @Override
         protected Word doInBackground(Integer... ints){
             return wordDao.getWordById(ints[0]);
+        }
+    }
+
+    private static class GetAllWordsAsListAsyncTask extends AsyncTask<Void, Void, List<Word>>{
+        private WordDao wordDao;
+
+        private GetAllWordsAsListAsyncTask(WordDao wordDao) {
+            this.wordDao = wordDao;
+        }
+
+        @Override
+        protected List<Word> doInBackground(Void... voids){
+            return wordDao.getAllWordsAsList();
         }
     }
 

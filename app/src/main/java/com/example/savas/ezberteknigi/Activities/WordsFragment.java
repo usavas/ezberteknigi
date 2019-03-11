@@ -62,7 +62,7 @@ public class WordsFragment extends Fragment {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+//    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -108,6 +108,7 @@ public class WordsFragment extends Fragment {
             btnAddNewWord.setVisibility(View.GONE);
             getActivity().setTitle("Tekrar Edilecek Kelimeler");
             wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
                     wordAdapter.setWordsRevision(words);

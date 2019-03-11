@@ -30,6 +30,9 @@ public interface WordDao extends BaseDao {
     @Query("SELECT * FROM word_table")
     LiveData<List<Word>> getAllWords();
 
+    @Query("SELECT * FROM word_table")
+    List<Word> getAllWordsAsList();
+
     @Query("SELECT * FROM word_table WHERE word_id = :wordId")
     Word getWordById (int wordId);
 
