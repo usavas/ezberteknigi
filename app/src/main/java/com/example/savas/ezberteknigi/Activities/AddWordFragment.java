@@ -3,14 +3,14 @@ package com.example.savas.ezberteknigi.Activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.media.MediaRouter;
 import android.os.Bundle;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -119,7 +119,7 @@ public class AddWordFragment extends AppCompatDialogFragment {
     }
 
     private void showWordTranslationEmptyError() {
-        Toast.makeText(getContext(), "Kelime ve çevirisini giriniz!", Toast.LENGTH_LONG).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), "Kelime ve çevirisini giriniz!", BaseTransientBottomBar.LENGTH_LONG).show();
     }
 
     private void saveWord(String word, String translation, String exampleSentence, int learningMastered){
@@ -127,6 +127,7 @@ public class AddWordFragment extends AppCompatDialogFragment {
         Word w = new Word(word, translation, _readingTextId, exampleSentence);
         w.setWordState(learningMastered);
         repo.insert(w);
+        Snackbar.make(getActivity().findViewById(android.R.id.content), "Kelime eklendi", BaseTransientBottomBar.LENGTH_LONG).show();
         getDialog().dismiss();
     }
 

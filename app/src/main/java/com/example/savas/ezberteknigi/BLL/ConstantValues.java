@@ -10,8 +10,6 @@ import com.treebo.internetavailabilitychecker.InternetConnectivityListener;
 public final class ConstantValues   {
 
     private static ConstantValues instance;
-    private static String MODE = "";
-
 
     private ConstantValues() {
     }
@@ -22,6 +20,7 @@ public final class ConstantValues   {
         }
         return instance;
     }
+
 
 
 

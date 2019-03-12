@@ -1,13 +1,16 @@
 package com.example.savas.ezberteknigi;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
+import com.example.savas.ezberteknigi.Activities.MainActivity;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 
@@ -53,6 +56,10 @@ public class WordRevisionScheduler extends JobService {
     }
 
     private void showNotification(String wordsToDisplayInNotif) {
+
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
         Notification notification = new NotificationCompat.Builder(getApplicationContext(), AppStarter.CHANNEL_WORD_REVISION)
                 .setSmallIcon(R.drawable.button_revision)
@@ -60,6 +67,7 @@ public class WordRevisionScheduler extends JobService {
                 .setContentText(wordsToDisplayInNotif)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(pendingIntent)
                 .build();
 
         notificationManager.notify(1, notification);

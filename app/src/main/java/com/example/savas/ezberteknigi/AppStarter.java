@@ -6,8 +6,15 @@ import android.app.NotificationManager;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
+
+import com.example.savas.ezberteknigi.Activities.MainActivity;
+import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Repositories.WordRepository;
+
+import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -47,7 +54,8 @@ public class AppStarter extends Application {
     }
 
     private void scheduleJob() {
-        ComponentName componentName = new ComponentName(this, WordRevisionScheduler.class);
+
+        ComponentName componentName = new ComponentName(getBaseContext(), WordRevisionScheduler.class);
         JobInfo info = new JobInfo.Builder(123, componentName)
                 .setPersisted(true)
                 .setPeriodic(15 * 60 * 1000)
@@ -60,5 +68,11 @@ public class AppStarter extends Application {
         } else {
             Log.d(TAG, "Job scheduling failed");
         }
+    }
+
+    private List<Word> getWordsToRevise() {
+        WordRepository r = new WordRepository(this);
+        List<Word> words = r.getAllWordsAsList();
+        return Word.getWordsToRevise(words);
     }
 }
