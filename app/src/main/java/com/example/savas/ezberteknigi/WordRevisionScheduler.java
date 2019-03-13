@@ -6,6 +6,7 @@ import android.app.Service;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -42,10 +43,7 @@ public class WordRevisionScheduler extends JobService {
             public void run() {
                 List<Word> wordsToRevise = getWordsToRevise();
                 if (wordsToRevise.size() > 0) {
-
                     showMultipleNotificationsInGroup(wordsToRevise);
-//                    String wordsToDisplayInNotif = getWordListInString(wordsToRevise);
-//                    showNotification(wordsToDisplayInNotif);
                 }
             }
         }).start();
@@ -61,31 +59,9 @@ public class WordRevisionScheduler extends JobService {
     private String getWordListInString(List<Word> wordsToRevise) {
         StringBuilder wordsToDisplay = new StringBuilder();
         for (Word w : wordsToRevise) {
-            wordsToDisplay.append(w.getWord()).append(", ");
+            wordsToDisplay.append(w.getWord()).append(": ").append(w.getTranslation()).append(", ");
         }
         return wordsToDisplay.toString().substring(0, wordsToDisplay.length() - 2);
-    }
-
-    private void showNotification(String wordsToDisplayInNotif) {
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-
-        Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_WORD_REVISION)
-                .setSmallIcon(R.drawable.button_revision)
-                .setContentTitle("Tekrar Edilecek Kelimeler")
-                .setContentText(wordsToDisplayInNotif)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setOnlyAlertOnce(true)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(wordsToDisplayInNotif))
-                .build();
-
-        notificationManager.notify(1, notification);
     }
 
     private void showMultipleNotificationsInGroup(List<Word> wordsToRevise) {
@@ -120,31 +96,39 @@ public class WordRevisionScheduler extends JobService {
             notificationManager.notify(word.getWordId(), notification);
         }
 
-        Locale l = new Locale("tr");
-        Notification summaryNotification = new NotificationCompat.Builder(this, CHANNEL_WORD_REVISION)
-                .setSmallIcon(R.drawable.button_revision)
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .setSummaryText(String.format(l, "%d Tekrar Edilecek Kelime", wordsToRevise.size())))
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setGroup("words")
-                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
-                .setGroupSummary(true)
-                .build();
+        if(Build.VERSION.SDK_INT >= 24){
+            Locale l = new Locale("tr");
+            Notification summaryNotification = new NotificationCompat.Builder(this, CHANNEL_WORD_REVISION)
+                    .setSmallIcon(R.drawable.button_revision)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .setSummaryText(String.format(l, "%d Tekrar Edilecek Kelime", wordsToRevise.size())))
+                    .setPriority(NotificationCompat.PRIORITY_LOW)
+                    .setGroup("words")
+                    .setGroupSummary(true)
+                    .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                    .build();
 
-        notificationManager.notify(-1, summaryNotification);
+            notificationManager.notify(-1, summaryNotification);
+        } else {
+            Locale l = new Locale("tr");
+            Notification summaryNotification = new NotificationCompat.Builder(this, CHANNEL_WORD_REVISION)
+                    .setSmallIcon(R.drawable.button_revision)
 
-    }
+                    .setContentTitle("Tekrar Edilecek Kelimeler")
+                    .setContentText(getWordListInString(wordsToRevise))
 
-    private void testIfThreadRuns() {
-        for (int i = 0; i < 10; i++) {
-            Log.d(TAG, "run: " + i);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .setBigContentTitle("Tekrar Edilecek Kelimeler")
+                            .setSummaryText(String.format(l, "%d Tekrar Edilecek Kelime", wordsToRevise.size()))
+                            .bigText(getWordListInString(wordsToRevise)))
+                    .setPriority(NotificationCompat.PRIORITY_LOW)
+                    .setGroup("words")
+                    .setGroupSummary(true)
+                    .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                    .build();
+
+            notificationManager.notify(-1, summaryNotification);
         }
-        Log.d(TAG, "run: job finished");
     }
 
     @Override

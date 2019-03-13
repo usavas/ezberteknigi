@@ -266,13 +266,21 @@ public class Word {
 
     public static List<Word> getWordsToRevise(List<Word> _words){
         List<Word> resultWords = new ArrayList<>();
-        resultWords.addAll(getWordRevisionList(_words, 0, TimeType.MINUTE, REV_1_MIN));
-        resultWords.addAll(getWordRevisionList(_words, 1, TimeType.HOUR, REV_2_HOUR));
-        resultWords.addAll(getWordRevisionList(_words, 2, TimeType.HOUR, REV_3_HOUR));
-        resultWords.addAll(getWordRevisionList(_words, 3, TimeType.HOUR, REV_4_HOUR));
-        resultWords.addAll(getWordRevisionList(_words, 4, TimeType.HOUR, REV_5_HOUR));
-        resultWords.addAll(getWordRevisionList(_words, 5, TimeType.HOUR, REV_6_HOUR));
-        resultWords.addAll(getWordRevisionList(_words, 6, TimeType.DAY, REV_7_DAY));
+//        resultWords.addAll(getWordRevisionList(_words, 0, TimeType.MINUTE, REV_1_MIN));
+//        resultWords.addAll(getWordRevisionList(_words, 1, TimeType.HOUR, REV_2_HOUR));
+//        resultWords.addAll(getWordRevisionList(_words, 2, TimeType.HOUR, REV_3_HOUR));
+//        resultWords.addAll(getWordRevisionList(_words, 3, TimeType.HOUR, REV_4_HOUR));
+//        resultWords.addAll(getWordRevisionList(_words, 4, TimeType.HOUR, REV_5_HOUR));
+//        resultWords.addAll(getWordRevisionList(_words, 5, TimeType.HOUR, REV_6_HOUR));
+//        resultWords.addAll(getWordRevisionList(_words, 6, TimeType.DAY, REV_7_DAY));
+
+        resultWords.addAll(getWordRevisionList(_words, 0, TimeType.MINUTE, REV_1_MIN_MOCK));
+        resultWords.addAll(getWordRevisionList(_words, 1, TimeType.MINUTE, REV_2_MIN_MOCK));
+        resultWords.addAll(getWordRevisionList(_words, 2, TimeType.MINUTE, REV_3_MIN_MOCK));
+        resultWords.addAll(getWordRevisionList(_words, 3, TimeType.MINUTE, REV_4_MIN_MOCK));
+        resultWords.addAll(getWordRevisionList(_words, 4, TimeType.MINUTE, REV_5_MIN_MOCK));
+        resultWords.addAll(getWordRevisionList(_words, 5, TimeType.MINUTE, REV_6_MIN_MOCK));
+        resultWords.addAll(getWordRevisionList(_words, 6, TimeType.MINUTE, REV_7_MIN_MOCK));
         return resultWords;
     }
 
@@ -303,13 +311,21 @@ public class Word {
         return listToRevise;
     }
 
-    private static int REV_1_MIN = 30;
-    private static int REV_2_HOUR = 1;
-    private static int REV_3_HOUR = 2;
-    private static int REV_4_HOUR = 6;
-    private static int REV_5_HOUR = 12;
-    private static int REV_6_HOUR = 24;
-    private static int REV_7_DAY = 5;
+//    private static int REV_1_MIN = 30;
+//    private static int REV_2_HOUR = 1;
+//    private static int REV_3_HOUR = 2;
+//    private static int REV_4_HOUR = 6;
+//    private static int REV_5_HOUR = 12;
+//    private static int REV_6_HOUR = 24;
+//    private static int REV_7_DAY = 5;
+
+    private static int REV_1_MIN_MOCK = 1;
+    private static int REV_2_MIN_MOCK = 2;
+    private static int REV_3_MIN_MOCK = 3;
+    private static int REV_4_MIN_MOCK = 5;
+    private static int REV_5_MIN_MOCK = 10;
+    private static int REV_6_MIN_MOCK = 15;
+    private static int REV_7_MIN_MOCK = 20;
 
     private enum TimeType{
         MINUTE, HOUR, DAY, SECOND

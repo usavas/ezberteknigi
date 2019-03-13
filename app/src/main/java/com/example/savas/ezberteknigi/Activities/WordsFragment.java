@@ -277,29 +277,6 @@ public class WordsFragment extends Fragment {
         }
     }
 
-    private void clearFromNotificationMenuIfExists(Word word) {
-
-        try{
-            NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.cancel(word.getWordId());
-            notificationManager.cancel(-1);
-        } catch (Exception e){
-            Log.d(TAG, "clearFromNotificationMenuIfExists: " + e.getMessage());
-        }
-
-
-//        StatusBarNotification[] notifications = new StatusBarNotification[0];
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-//            notifications = notificationManager.getActiveNotifications();
-//        }
-//        for (StatusBarNotification notification : notifications) {
-//            if (notification.getId() == 100) {
-//                // Do something.
-//            }
-//        }
-
-    }
-
     private void updateRevision(Word word) {
         word.revisionCompleted();
         wordViewModel.update(word);
@@ -309,6 +286,22 @@ public class WordsFragment extends Fragment {
         word.setDateLastRevision(prevDateToRollBack);
         wordViewModel.update(word);
     }
+    private void clearFromNotificationMenuIfExists(Word word) {
+        try{
+            NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.cancel(word.getWordId());
+
+            //TODO: if this (group notif) is the last notification, then cancel it, else leave it
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                if (notificationManager.getActiveNotifications().length == 1){
+                    notificationManager.cancel(-1);
+                }
+            }
+        } catch (Exception e){
+            Log.d(TAG, "clearFromNotificationMenuIfExists: " + e.getMessage());
+        }
+    }
+
 
 
 //    @Override

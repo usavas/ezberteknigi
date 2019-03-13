@@ -16,13 +16,7 @@
         android:text="Index Fragment"
         android:textSize="20sp"/>
 
-    <Button
-        android:id="@+id/button_index_deneme"
-        android:layout_width="259dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:text="Button"
-        app:layout_anchorGravity="bottom|left" />
+
 
     <Button
         android:id="@+id/button_search_books"
@@ -34,5 +28,17 @@
         android:drawableStart="@drawable/ic_search_black_24dp"
 
         android:text="KİTAP ARA" />
+
+    <Button
+        android:id="@+id/button_index_deneme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:padding="20dp"
+        android:textSize="24sp"
+
+        android:text="DENEME" />
+
+
 
 </android.support.design.widget.CoordinatorLayout>

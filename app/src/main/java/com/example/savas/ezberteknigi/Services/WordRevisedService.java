@@ -38,7 +38,5 @@ public class WordRevisedService extends IntentService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
     }
 }
