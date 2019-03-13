@@ -302,29 +302,6 @@ public class WordsFragment extends Fragment {
         }
     }
 
-
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == ADD_WORD_REQUEST && resultCode == RESULT_OK) {
-//            String wordContent = data.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_WORD);
-//            String wordTranslation = data.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_TRANSLATION);
-//            String exampleSentence = data.getStringExtra(AddSharedWordWordOrWebPageActivity.EXTRA_EXAMPLE_SENTENCE);
-//
-//            Word word = new Word(
-//                    wordContent,
-//                    wordTranslation,
-//                    0,
-//                    exampleSentence);
-//            wordViewModel.insert(word);
-//            Toast.makeText(getActivity(), "Kelime eklendi", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(getActivity(), "Kelime eklenmedi", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void updateActivityVariables(String title) {
         if (mListener != null) {
