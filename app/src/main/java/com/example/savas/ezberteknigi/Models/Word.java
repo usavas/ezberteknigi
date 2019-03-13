@@ -259,6 +259,11 @@ public class Word {
         this.expanded = expanded;
     }
 
+    public void revisionCompleted(){
+        this.revisionPeriodCount += 1;
+        this.setDateLastRevision(new Date());
+    }
+
     public static List<Word> getWordsToRevise(List<Word> _words){
         List<Word> resultWords = new ArrayList<>();
         resultWords.addAll(getWordRevisionList(_words, 0, TimeType.MINUTE, REV_1_MIN));
@@ -308,5 +313,10 @@ public class Word {
 
     private enum TimeType{
         MINUTE, HOUR, DAY, SECOND
+    }
+
+    @Override
+    public String toString(){
+        return String.format("wordId: %d, word: %s, translation: %s", this.wordId, this.word, this.translation);
     }
 }

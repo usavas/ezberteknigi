@@ -14,6 +14,7 @@ import com.example.savas.ezberteknigi.BLL.TranslationProvidable;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.Services.SaveWebpageIntentService;
 
 public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
 

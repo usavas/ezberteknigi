@@ -1,11 +1,13 @@
 package com.example.savas.ezberteknigi.Activities;
 
+import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -16,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +35,8 @@ import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class WordsFragment extends Fragment {
 
@@ -170,6 +175,8 @@ public class WordsFragment extends Fragment {
                         Date prevDateToRollBack = word.getDateLastRevision();
                         updateRevision(word);
 
+                        clearFromNotificationMenuIfExists(word);
+
                         Snackbar snackbar = Snackbar.make(view,
                                 "Kelime tekrar edildi: " + word.getWord(),
                                 Snackbar.LENGTH_LONG);
@@ -269,9 +276,32 @@ public class WordsFragment extends Fragment {
             }).attachToRecyclerView(recyclerView);
         }
     }
+
+    private void clearFromNotificationMenuIfExists(Word word) {
+
+        try{
+            NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.cancel(word.getWordId());
+            notificationManager.cancel(-1);
+        } catch (Exception e){
+            Log.d(TAG, "clearFromNotificationMenuIfExists: " + e.getMessage());
+        }
+
+
+//        StatusBarNotification[] notifications = new StatusBarNotification[0];
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+//            notifications = notificationManager.getActiveNotifications();
+//        }
+//        for (StatusBarNotification notification : notifications) {
+//            if (notification.getId() == 100) {
+//                // Do something.
+//            }
+//        }
+
+    }
+
     private void updateRevision(Word word) {
-        word.setRevisionPeriodCount(word.getRevisionPeriodCount() + 1);
-        word.setDateLastRevision(new Date());
+        word.revisionCompleted();
         wordViewModel.update(word);
     }
     private void rollBackRevision(Word word, Date prevDateToRollBack) {

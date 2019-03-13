@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.BLL.ConstantValues;
@@ -39,6 +40,8 @@ implements WordsFragment.OnFragmentInteractionListener {
         if (getIntent().getBooleanExtra(NavigatorActivity.IS_WORD_FRAGMENT_START, false)){
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
                     new WordRevisionFragment()).commit();
+            View view = navigation.findViewById(R.id.navigation_revision_words);
+            view.performClick();
         } else if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
                     new IndexFragment()).commit();

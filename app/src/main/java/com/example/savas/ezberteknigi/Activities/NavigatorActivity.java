@@ -1,20 +1,18 @@
 package com.example.savas.ezberteknigi.Activities;
 
-import android.app.Notification;
-import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
-import com.example.savas.ezberteknigi.AppStarter;
 import com.example.savas.ezberteknigi.Models.Word;
-import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.WordRevisionScheduler;
 
-import java.util.List;
+import static android.support.constraint.Constraints.TAG;
 
 public class NavigatorActivity extends AppCompatActivity {
 
@@ -24,18 +22,33 @@ public class NavigatorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        scheduleJob();
+
         Intent i = new Intent(this, MainActivity.class);
-
-        if (existsWordsToRevise()) {
-            i.putExtra(IS_WORD_FRAGMENT_START, true);
-        } else {
-            i.putExtra(IS_WORD_FRAGMENT_START, false);
-        }
-
+        boolean existsRevision = existsWordsToRevise();
+        if (existsRevision) i.putExtra(IS_WORD_FRAGMENT_START, true);
+        else i.putExtra(IS_WORD_FRAGMENT_START, false);
         startActivity(i);
+        finish();
+    }
+
+    private void scheduleJob() {
+        ComponentName componentName = new ComponentName(getBaseContext(), WordRevisionScheduler.class);
+        JobInfo info = new JobInfo.Builder(123, componentName)
+                .setPersisted(true)
+                .setPeriodic(15 * 60 * 1000)
+                .build();
+
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        int resultCode = scheduler.schedule(info);
+        if (resultCode == JobScheduler.RESULT_SUCCESS) {
+            Log.d(TAG, "Job scheduled");
+        } else {
+            Log.d(TAG, "Job scheduling failed");
+        }
     }
 
     private boolean existsWordsToRevise(){
-        return new WordRepository(getApplication()).getAllWordsAsList().size() > 0;
+        return Word.getWordsToRevise(new WordRepository(getApplication()).getAllWordsAsList()).size() > 0;
     }
 }

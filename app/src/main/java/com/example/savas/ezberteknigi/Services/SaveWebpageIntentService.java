@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi.Activities;
+package com.example.savas.ezberteknigi.Services;
 
 import android.app.IntentService;
 import android.content.Intent;
