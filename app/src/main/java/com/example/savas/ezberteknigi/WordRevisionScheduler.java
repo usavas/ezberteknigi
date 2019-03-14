@@ -18,10 +18,8 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.Services.WordRevisedService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 import static com.example.savas.ezberteknigi.AppStarter.CHANNEL_WORD_REVISION;
@@ -93,6 +91,7 @@ public class WordRevisionScheduler extends JobService {
                     .setAutoCancel(true)
 //                    .addAction(R.drawable.button_revision, "TEKRAR ETTİM", deletePendingIntent)
                     .setDeleteIntent(deletePendingIntent)
+                    .setLights(0xfdfd96, 300, 1000)
                     .build();
 
             notificationManager.notify(word.getWordId(), notification);
