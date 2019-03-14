@@ -11,8 +11,10 @@ import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.BLL.DummyTranslateProvider;
 import com.example.savas.ezberteknigi.BLL.TranslationProvidable;
+import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
+import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.Services.SaveWebpageIntentService;
 
@@ -32,9 +34,6 @@ public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
     Button btnAddWord;
     Button btnAddWordMastered;
 
-    TextView tvHttpAddress;
-    Button btnSaveHttpContent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +45,8 @@ public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                int selectedTextWordCount = sharedText.split(" ").length;
 
-                //TODO: if valid url check here
                 if (sharedText.startsWith("http")){
 
                     Intent intentService = new Intent();
@@ -59,36 +58,46 @@ public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
                     
                     finish();
 
-                } else {
-                    setContentView(R.layout.activity_add_shared_word_or_webpage);
-                    setTitle("Kelime Ekle");
-
-                    editWord = findViewById(R.id.edit_word_word_fragment);
-                    editWordTranslation = findViewById(R.id.edit_word_translation_fragment);
-                    editExampleSentence = findViewById(R.id.edit_word_example_sentence_fragment);
-                    btnAddWord = findViewById(R.id.button_add_word_fragment);
-                    btnAddWordMastered = findViewById(R.id.button_add_word_mastered_fragment);
-
-                    editWord.setText(sharedText);
-                    TranslationProvidable translatable = new DummyTranslateProvider();
-                    editWordTranslation.setText(translatable.getMeaningOf(sharedText)[0]);
-
-                    btnAddWord.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            saveWord(Word.WORD_LEARNING);
-                        }
-                    });
-
-                    btnAddWordMastered.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            saveWord(Word.WORD_MASTERED);
-                        }
-                    });
+                } else if( selectedTextWordCount == 1 || selectedTextWordCount == 2){
+                    prepareLayoutForAddWord(sharedText);
+                } else if(selectedTextWordCount >= 40){
+                    addAsPlainReadingText(sharedText);
                 }
             }
         }
+    }
+
+    private void addAsPlainReadingText(String sharedText) {
+        ReadingTextRepository repo = new ReadingTextRepository(getApplication());
+        repo.insert(new ReadingText(null, null, ReadingText.DOCUMENT_TYPE_PLAIN, sharedText));
+    }
+
+    private void prepareLayoutForAddWord(String sharedText) {
+        setContentView(R.layout.activity_add_shared_word_or_webpage);
+        setTitle("Kelime Ekle");
+
+        editWord = findViewById(R.id.edit_word_word_fragment);
+        editWordTranslation = findViewById(R.id.edit_word_translation_fragment);
+        editExampleSentence = findViewById(R.id.edit_word_example_sentence_fragment);
+        btnAddWord = findViewById(R.id.button_add_word_fragment);
+        btnAddWordMastered = findViewById(R.id.button_add_word_mastered_fragment);
+
+        editWord.setText(sharedText);
+        TranslationProvidable translatable = new DummyTranslateProvider();
+        editWordTranslation.setText(translatable.getMeaningOf(sharedText)[0]);
+
+        btnAddWord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveWord(Word.WORD_LEARNING);
+            }
+        });
+        btnAddWordMastered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveWord(Word.WORD_MASTERED);
+            }
+        });
     }
 
     private void saveWord(int wordState){

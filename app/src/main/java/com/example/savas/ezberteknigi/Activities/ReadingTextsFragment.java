@@ -22,7 +22,6 @@ import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
 
 import static android.support.constraint.Constraints.TAG;
-import static com.example.savas.ezberteknigi.Activities.WordDetailActivityDeprecated.word;
 
 public class ReadingTextsFragment extends Fragment {
 
