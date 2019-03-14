@@ -30,14 +30,15 @@ public class NavigatorActivity extends AppCompatActivity {
     }
 
     private void scheduleJob() {
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        if (checkIfJobRunning(scheduler)) return;
+
         ComponentName componentName = new ComponentName(getBaseContext(), WordRevisionScheduler.class);
         JobInfo info = new JobInfo.Builder(123, componentName)
                 .setPersisted(true)
                 .setPeriodic(15 * 60 * 1000)
                 .build();
 
-        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        if (checkIfJobRunning(scheduler)) return;
         int resultCode = scheduler.schedule(info);
         printResultIfJobStartedOrNot(resultCode);
     }

@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <!--<color name="colorPrimary">#008577</color>-->
+    <!--<color name="colorPrimaryDark">#00574B</color>-->
+    <!--<color name="colorAccent">#D81B60</color>-->
 
-    <color name="moduleBackColor">#0000FF</color>
+    <color name="blue">#0000FF</color>
     <color name="moduleColor">#FFFFFF</color>
     <color name="white">#FFF</color>
-
-
 
     <color name="vermillon">#DC4A1A</color>
     <color name="sunshine">#F7B733</color>

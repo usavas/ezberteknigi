@@ -79,7 +79,8 @@ public class WordRevisionScheduler extends JobService {
             PendingIntent deletePendingIntent = PendingIntent.getService(getApplicationContext(), word.getWordId(), wordRevisedIntent, 0);
 
             Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_WORD_REVISION)
-                    .setSmallIcon(R.drawable.button_revision)
+                    .setSmallIcon(R.drawable.button_revision_notif)
+                    .setColor(getResources().getColor(R.color.sunshine2))
                     .setContentTitle(word.getWord())
                     .setContentText(String.format("%s :\n %s", word.getTranslation(), word.getExampleSentence()))
                     .setGroup("words")
@@ -101,7 +102,8 @@ public class WordRevisionScheduler extends JobService {
         if(Build.VERSION.SDK_INT >= 24){
 
             Notification summaryNotification = new NotificationCompat.Builder(this, CHANNEL_WORD_REVISION)
-                    .setSmallIcon(R.drawable.button_revision)
+                    .setSmallIcon(R.drawable.button_revision_notif)
+                    .setColor(getResources().getColor(R.color.sunshine2))
                     .setStyle(new NotificationCompat.BigTextStyle()
                             .setSummaryText(String.format(l, "%d Tekrar Edilecek Kelime", wordsToRevise.size())))
                     .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -114,7 +116,8 @@ public class WordRevisionScheduler extends JobService {
             notificationManager.notify(-1, summaryNotification);
         } else {
             Notification summaryNotification = new NotificationCompat.Builder(this, CHANNEL_WORD_REVISION)
-                    .setSmallIcon(R.drawable.button_revision)
+                    .setSmallIcon(R.drawable.button_revision_notif)
+                    .setColor(getResources().getColor(R.color.sunshine2))
 
                     .setContentTitle("Tekrar Edilecek Kelimeler")
                     .setContentText(getWordListInString(wordsToRevise))
