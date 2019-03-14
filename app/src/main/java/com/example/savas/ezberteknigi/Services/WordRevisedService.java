@@ -1,7 +1,9 @@
 package com.example.savas.ezberteknigi.Services;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.example.savas.ezberteknigi.Models.Word;
@@ -32,6 +34,11 @@ public class WordRevisedService extends IntentService {
             Word word = repo.getWordById(wordId);
             word.revisionCompleted();
             repo.update(word);
+
+            Log.d("XXXXXXXXXXXX", "wordRevised: " + word.toString());
+
+//            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+//            notificationManager.cancel(wordId);
 
         } catch (ExecutionException e) {
             e.printStackTrace();

@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.example.savas.ezberteknigi.Activities.MainActivity;
+import com.example.savas.ezberteknigi.Activities.NavigatorActivity;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.Services.WordRevisedService;
@@ -66,7 +67,7 @@ public class WordRevisionScheduler extends JobService {
 
     private void showMultipleNotificationsInGroup(List<Word> wordsToRevise) {
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, NavigatorActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
@@ -90,14 +91,16 @@ public class WordRevisionScheduler extends JobService {
                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
+//                    .addAction(R.drawable.button_revision, "TEKRAR ETTİM", deletePendingIntent)
                     .setDeleteIntent(deletePendingIntent)
                     .build();
 
             notificationManager.notify(word.getWordId(), notification);
         }
 
+        Locale l = new Locale("tr");
         if(Build.VERSION.SDK_INT >= 24){
-            Locale l = new Locale("tr");
+
             Notification summaryNotification = new NotificationCompat.Builder(this, CHANNEL_WORD_REVISION)
                     .setSmallIcon(R.drawable.button_revision)
                     .setStyle(new NotificationCompat.BigTextStyle()
@@ -106,11 +109,11 @@ public class WordRevisionScheduler extends JobService {
                     .setGroup("words")
                     .setGroupSummary(true)
                     .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                    .setContentIntent(pendingIntent)
                     .build();
 
             notificationManager.notify(-1, summaryNotification);
         } else {
-            Locale l = new Locale("tr");
             Notification summaryNotification = new NotificationCompat.Builder(this, CHANNEL_WORD_REVISION)
                     .setSmallIcon(R.drawable.button_revision)
 
@@ -125,6 +128,7 @@ public class WordRevisionScheduler extends JobService {
                     .setGroup("words")
                     .setGroupSummary(true)
                     .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                    .setContentIntent(pendingIntent)
                     .build();
 
             notificationManager.notify(-1, summaryNotification);
