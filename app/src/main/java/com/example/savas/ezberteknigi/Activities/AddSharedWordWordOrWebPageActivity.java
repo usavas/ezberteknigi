@@ -70,6 +70,7 @@ public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
     private void addAsPlainReadingText(String sharedText) {
         ReadingTextRepository repo = new ReadingTextRepository(getApplication());
         repo.insert(new ReadingText(null, null, ReadingText.DOCUMENT_TYPE_PLAIN, sharedText));
+        finish();
     }
 
     private void prepareLayoutForAddWord(String sharedText) {

@@ -8,7 +8,13 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <include layout="@layout/layout_reading_text_content" />
+    <!--<include layout="@layout/layout_nav_app_bar"/>-->
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        layout="@layout/layout_reading_text_content" />
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
