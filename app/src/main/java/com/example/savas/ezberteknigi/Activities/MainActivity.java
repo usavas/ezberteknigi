@@ -13,13 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.savas.ezberteknigi.BLL.ConstantValues;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
-import com.example.savas.ezberteknigi.WordRevisionScheduler;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

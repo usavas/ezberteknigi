@@ -33,14 +33,15 @@ public class WordRevisionScheduler extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "onStartJob: WordRevisionJob started");
-        doBackgroundWork(params);
+        doBackgroundWork();
         return true;
     }
 
-    private void doBackgroundWork(JobParameters params) {
+    private void doBackgroundWork() {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                //TODO: new method to retrieve the words to be revised (SQL code might be a good option)
                 List<Word> wordsToRevise = getWordsToRevise();
                 if (wordsToRevise.size() > 0) {
                     showMultipleNotificationsInGroup(wordsToRevise);
@@ -107,7 +108,8 @@ public class WordRevisionScheduler extends JobService {
                     .setColor(getResources().getColor(R.color.sunshine2))
                     .setStyle(new NotificationCompat.BigTextStyle()
                             .setSummaryText(String.format(l, "%d Tekrar Edilecek Kelime", wordsToRevise.size())))
-                    .setPriority(NotificationCompat.PRIORITY_LOW)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                     .setGroup("words")
                     .setGroupSummary(true)
                     .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
@@ -127,7 +129,8 @@ public class WordRevisionScheduler extends JobService {
                             .setBigContentTitle("Tekrar Edilecek Kelimeler")
                             .setSummaryText(String.format(l, "%d Tekrar Edilecek Kelime", wordsToRevise.size()))
                             .bigText(getWordListInString(wordsToRevise)))
-                    .setPriority(NotificationCompat.PRIORITY_LOW)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                     .setGroup("words")
                     .setGroupSummary(true)
                     .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)

@@ -14,10 +14,12 @@ import java.util.concurrent.ExecutionException;
 
 public class WordRevisedService extends IntentService {
 
+    /**
+     * these 2 methods are required by the system somehow
+     */
     public WordRevisedService(String name) {
         super(name);
     }
-
     public WordRevisedService() {
         super("");
     }

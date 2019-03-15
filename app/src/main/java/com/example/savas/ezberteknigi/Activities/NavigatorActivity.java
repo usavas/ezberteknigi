@@ -13,7 +13,6 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.WordRevisionScheduler;
 
-import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -21,6 +20,9 @@ public class NavigatorActivity extends AppCompatActivity {
 
     public static final String IS_WORD_FRAGMENT_START = "IS_WORD_FRAGMENT_START";
 
+    /**
+     *
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +35,8 @@ public class NavigatorActivity extends AppCompatActivity {
         JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
         if (checkIfJobRunning(scheduler)) return;
 
-        ComponentName componentName = new ComponentName(getBaseContext(), WordRevisionScheduler.class);
-        JobInfo info = new JobInfo.Builder(123, componentName)
+        ComponentName componentName = new ComponentName(getApplicationContext(), WordRevisionScheduler.class);
+        JobInfo info = new JobInfo.Builder(12345, componentName)
                 .setPersisted(true)
                 .setPeriodic(15 * 60 * 1000)
                 .build();
@@ -45,13 +47,13 @@ public class NavigatorActivity extends AppCompatActivity {
 
     private boolean checkIfJobRunning(JobScheduler scheduler) {
         if (Build.VERSION.SDK_INT >= 24){
-            JobInfo job = scheduler.getPendingJob(123);
+            JobInfo job = scheduler.getPendingJob(12345);
             if (job != null){
                 return true;
             }
         } else {
             for (JobInfo job : scheduler.getAllPendingJobs()) {
-                if (job.getId() == 123){
+                if (job.getId() == 12345){
                     return true;
                 }
             }

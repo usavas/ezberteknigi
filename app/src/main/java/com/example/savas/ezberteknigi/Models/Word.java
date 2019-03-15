@@ -320,12 +320,12 @@ public class Word {
 //    private static int REV_7_DAY = 5;
 
     private static int REV_1_MIN_MOCK = 1;
-    private static int REV_2_MIN_MOCK = 2;
-    private static int REV_3_MIN_MOCK = 3;
-    private static int REV_4_MIN_MOCK = 5;
-    private static int REV_5_MIN_MOCK = 10;
-    private static int REV_6_MIN_MOCK = 15;
-    private static int REV_7_MIN_MOCK = 20;
+    private static int REV_2_MIN_MOCK = 1;
+    private static int REV_3_MIN_MOCK = 1;
+    private static int REV_4_MIN_MOCK = 1;
+    private static int REV_5_MIN_MOCK = 1;
+    private static int REV_6_MIN_MOCK = 1;
+    private static int REV_7_MIN_MOCK = 3;
 
     private enum TimeType{
         MINUTE, HOUR, DAY, SECOND
