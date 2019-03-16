@@ -102,7 +102,6 @@ public class WordRevisionScheduler extends JobService {
 
         Locale l = new Locale("tr");
         if(Build.VERSION.SDK_INT >= 24){
-
             Notification summaryNotification = new NotificationCompat.Builder(this, CHANNEL_WORD_REVISION)
                     .setSmallIcon(R.drawable.button_revision_notif)
                     .setColor(getResources().getColor(R.color.sunshine2))
@@ -118,26 +117,29 @@ public class WordRevisionScheduler extends JobService {
 
             notificationManager.notify(-1, summaryNotification);
         } else {
-            Notification summaryNotification = new NotificationCompat.Builder(this, CHANNEL_WORD_REVISION)
-                    .setSmallIcon(R.drawable.button_revision_notif)
-                    .setColor(getResources().getColor(R.color.sunshine2))
+            if (wordsToRevise.size() > 1){
+                Notification summaryNotification = new NotificationCompat.Builder(this, CHANNEL_WORD_REVISION)
+                        .setSmallIcon(R.drawable.button_revision_notif)
+                        .setColor(getResources().getColor(R.color.sunshine2))
 
-                    .setContentTitle("Tekrar Edilecek Kelimeler")
-                    .setContentText(getWordListInString(wordsToRevise))
+                        .setContentTitle("Tekrar Edilecek Kelimeler")
+                        .setContentText(getWordListInString(wordsToRevise))
 
-                    .setStyle(new NotificationCompat.BigTextStyle()
-                            .setBigContentTitle("Tekrar Edilecek Kelimeler")
-                            .setSummaryText(String.format(l, "%d Tekrar Edilecek Kelime", wordsToRevise.size()))
-                            .bigText(getWordListInString(wordsToRevise)))
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .setGroup("words")
-                    .setGroupSummary(true)
-                    .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
-                    .setContentIntent(pendingIntent)
-                    .build();
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .setBigContentTitle("Tekrar Edilecek Kelimeler")
+                                .setSummaryText(String.format(l, "%d Tekrar Edilecek Kelime", wordsToRevise.size()))
+                                .bigText(getWordListInString(wordsToRevise)))
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                        .setGroup("words")
+                        .setGroupSummary(true)
+                        .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                        .setContentIntent(pendingIntent)
+                        .build();
 
-            notificationManager.notify(-1, summaryNotification);
+                notificationManager.notify(-1, summaryNotification);
+            }
+
         }
     }
 

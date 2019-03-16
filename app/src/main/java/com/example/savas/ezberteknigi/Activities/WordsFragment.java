@@ -67,7 +67,6 @@ public class WordsFragment extends Fragment {
         }
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -150,7 +149,6 @@ public class WordsFragment extends Fragment {
                 }
                 wordDialogFragment.show(getFragmentManager(), "Kelime Ekle");
             });
-
         }
 
         ImplementOnSwipedOnWords(view, wordAdapter, recyclerView);

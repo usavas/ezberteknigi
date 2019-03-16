@@ -54,7 +54,7 @@ public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
                     intentService.putExtra(SaveWebpageIntentService.WEB_ADDRESS_TO_SAVE, sharedText);
                     startService(intentService);
 
-                    Toast.makeText(this, "Kelime Öğren Programına Eklendi", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Kelime Öğrenilecek", Toast.LENGTH_LONG).show();
                     
                     finish();
 
@@ -69,7 +69,7 @@ public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
 
     private void addAsPlainReadingText(String sharedText) {
         ReadingTextRepository repo = new ReadingTextRepository(getApplication());
-        repo.insert(new ReadingText(null, null, ReadingText.DOCUMENT_TYPE_PLAIN, sharedText));
+        repo.insert(new ReadingText(null, "Başlıksız", ReadingText.DOCUMENT_TYPE_PLAIN, sharedText));
         finish();
     }
 
