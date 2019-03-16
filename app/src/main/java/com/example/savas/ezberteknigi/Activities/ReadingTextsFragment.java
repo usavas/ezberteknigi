@@ -35,7 +35,7 @@ public class ReadingTextsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_main_reading_texts, container, false);
-        getActivity().setTitle("Kayıtlı Hikayeler");
+        getActivity().setTitle("Kitaplık");
 
         final ReadingTextAdapter readingTextAdapter = new ReadingTextAdapter();
 

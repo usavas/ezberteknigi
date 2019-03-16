@@ -7,9 +7,11 @@
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginEnd="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp">
+    android:layout_marginEnd="@dimen/recylcer_view_margin_end"
+    android:layout_marginStart="@dimen/recylcer_view_margin_start"
+    android:layout_marginTop="@dimen/recylcer_view_margin_top"
+    android:layout_marginBottom="@dimen/recycler_view_margin_bottom"
+    >
 
 
     <RelativeLayout
@@ -34,7 +36,8 @@
             android:id="@+id/sub_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_below="@id/tvItemWord"
             android:orientation="vertical">
 
@@ -68,7 +71,6 @@
                 android:layout_height="70dp"
                 android:layout_marginTop="@dimen/textViewMargin"
                 android:layout_marginStart="@dimen/textViewMargin"
-                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="@dimen/textViewMargin"
                 android:padding="@dimen/textViewPadding"
                 android:text="MARK AS MASTERED/LEARNING"

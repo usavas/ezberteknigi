@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Database(entities = {ReadingText.class, Word.class}, version = 15)
+@Database(entities = {ReadingText.class, Word.class}, version = 16)
 public abstract class EzberTeknigiDatabase extends RoomDatabase {
 
     private static EzberTeknigiDatabase instance;

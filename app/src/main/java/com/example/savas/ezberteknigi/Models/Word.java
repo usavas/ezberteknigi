@@ -36,7 +36,8 @@ public class Word {
     private String translation;
     @ColumnInfo(name = "reading_text_id")
     private int readingTextId;
-
+    @ColumnInfo(name = "language")
+    private String language;
     //TODO: either make this another class or add logic to store multiple sentences
     @ColumnInfo(name = "example_sentence")
     private String exampleSentence;
@@ -159,6 +160,8 @@ public class Word {
         return readingTextId;
     }
 
+    public String getLanguage(){return language;}
+
     public String getExampleSentence() {
         return exampleSentence;
     }
@@ -211,6 +214,8 @@ public class Word {
     public void setReadingTextId(int readingTextId) {
         this.readingTextId = readingTextId;
     }
+
+    public void setLanguage(String language) {this.language = language;}
 
     public void setExampleSentence(String exampleSentence) {
         this.exampleSentence = exampleSentence;
