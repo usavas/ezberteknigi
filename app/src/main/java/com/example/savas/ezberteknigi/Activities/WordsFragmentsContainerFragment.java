@@ -51,12 +51,13 @@ public class WordsFragmentsContainerFragment extends Fragment
         @Override
         public Fragment getItem(int position) {
             if (position == 0){
-                return WordsFragment.newInstance(Word.WORD_ALL);
-            } else if (position == 1){
                 return WordsFragment.newInstance(Word.WORD_LEARNING);
-            } else if (position == 2){
+            } else if (position == 1){
                 return WordsFragment.newInstance(Word.WORD_MASTERED);
             }
+//            else if (position == 2){
+//                return WordsFragment.newInstance(Word.WORD_ALL);
+//            }
             return null;
         }
 
@@ -64,18 +65,19 @@ public class WordsFragmentsContainerFragment extends Fragment
         @Override
         public CharSequence getPageTitle(int position) {
             if (position == 0){
-                return "Tüm Kelimeler";
-            } else if (position == 1){
                 return "Öğreneceklerim";
-            } else if (position == 2){
+            } else if (position == 1){
                 return "Öğrendiklerim";
             }
+//            else if (position == 2){
+//                return "Tüm Kelimeler";
+//            }
             return null;
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
     }
 }

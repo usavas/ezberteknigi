@@ -4,10 +4,8 @@ import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -22,39 +20,34 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Adapters.WordAdapter;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
-import com.google.android.gms.dynamic.ObjectWrapper;
 
 import java.util.Date;
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class WordsFragment extends Fragment {
 
-    private static final String WORD_TYPE_PARAM = "param1";
-    public static final String EXTRA_WORD_ID = "EXTRA_WORD_ID";
+    private static final String WORD_LIST_TYPE_PARAM = "param1";
 
     WordViewModel wordViewModel;
     private OnFragmentInteractionListener mListener;
 
-    private int mParam1;
+    private int WORD_LIST_TYPE;
 
     public WordsFragment() {
     }
 
-    public static WordsFragment newInstance(int param1) {
+    public static WordsFragment newInstance(int wordListType) {
         WordsFragment fragment = new WordsFragment();
         Bundle args = new Bundle();
-        args.putInt(WORD_TYPE_PARAM, param1);
+        args.putInt(WORD_LIST_TYPE_PARAM, wordListType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,7 +56,7 @@ public class WordsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(WORD_TYPE_PARAM);
+            WORD_LIST_TYPE = getArguments().getInt(WORD_LIST_TYPE_PARAM);
         }
     }
 
@@ -83,16 +76,17 @@ public class WordsFragment extends Fragment {
         recyclerView.setAdapter(wordAdapter);
 
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
-        if (mParam1 == Word.WORD_ALL) {
-            btnAddNewWord.setVisibility(View.VISIBLE);
-            wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
-                @Override
-                public void onChanged(@Nullable List<Word> words) {
-                    wordAdapter.setWords(words);
-//                    tvItemCount.setText(String.valueOf(words.size() + " words listed"));
-                }
-            });
-        } else if (mParam1 == Word.WORD_LEARNING) {
+//        if (WORD_LIST_TYPE == Word.WORD_ALL) {
+//            btnAddNewWord.setVisibility(View.VISIBLE);
+//            wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
+//                @Override
+//                public void onChanged(@Nullable List<Word> words) {
+//                    wordAdapter.setWords(words);
+////                    tvItemCount.setText(String.valueOf(words.size() + " words listed"));
+//                }
+//            });
+//        }
+        if (WORD_LIST_TYPE == 0) {
             btnAddNewWord.setVisibility(View.VISIBLE);
             wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, new Observer<List<Word>>() {
                 @Override
@@ -100,7 +94,7 @@ public class WordsFragment extends Fragment {
                     wordAdapter.setWords(words);
                 }
             });
-        } else if (mParam1 == Word.WORD_MASTERED) {
+        } else if (WORD_LIST_TYPE == 1) {
 //            btnAddNewWord.setVisibility(View.GONE);
             wordViewModel.getAllWordsBasedOnState(Word.WORD_MASTERED).observe(this, new Observer<List<Word>>() {
                 @Override
@@ -108,7 +102,7 @@ public class WordsFragment extends Fragment {
                     wordAdapter.setWords(words);
                 }
             });
-        } else if (mParam1 == Word.WORD_REVISION) {
+        } else if (WORD_LIST_TYPE == Word.WORD_REVISION) {
             btnAddNewWord.setVisibility(View.GONE);
             getActivity().setTitle("Tekrar Edilecek Kelimeler");
             wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
@@ -136,15 +130,15 @@ public class WordsFragment extends Fragment {
             }
         });
 
-        if (mParam1 == Word.WORD_ALL || mParam1 == Word.WORD_LEARNING || mParam1 == Word.WORD_MASTERED) {
+        if (WORD_LIST_TYPE == Word.WORD_ALL || WORD_LIST_TYPE == Word.WORD_LEARNING || WORD_LIST_TYPE == Word.WORD_MASTERED) {
             btnAddNewWord.setOnClickListener(v -> {
                 AddWordFragment wordDialogFragment = new AddWordFragment();
-                if (mParam1 == Word.WORD_ALL){
+                if (WORD_LIST_TYPE == Word.WORD_ALL){
                     wordDialogFragment = AddWordFragment.newInstance(Word.WORD_ALL);
-                } else if(mParam1 == Word.WORD_LEARNING){
+                } else if(WORD_LIST_TYPE == Word.WORD_LEARNING){
                     wordDialogFragment = AddWordFragment.newInstance(Word.WORD_LEARNING);
                 }
-                else if (mParam1 == Word.WORD_MASTERED){
+                else if (WORD_LIST_TYPE == Word.WORD_MASTERED){
                     wordDialogFragment = AddWordFragment.newInstance(Word.WORD_MASTERED);
                 }
                 wordDialogFragment.show(getFragmentManager(), "Kelime Ekle");
@@ -157,7 +151,7 @@ public class WordsFragment extends Fragment {
     }
 
     private void ImplementOnSwipedOnWords(View view, WordAdapter wordAdapter, RecyclerView recyclerView) {
-        if (mParam1 == Word.WORD_REVISION) {
+        if (WORD_LIST_TYPE == Word.WORD_REVISION) {
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                     ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
                 @Override
@@ -188,7 +182,7 @@ public class WordsFragment extends Fragment {
                     }
                 }
             }).attachToRecyclerView(recyclerView);
-        } else if (mParam1 == Word.WORD_ALL){
+        } else if (WORD_LIST_TYPE == Word.WORD_ALL){
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                     ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
                 @Override
@@ -216,7 +210,7 @@ public class WordsFragment extends Fragment {
                     }
                 }
             }).attachToRecyclerView(recyclerView);
-        } else if (mParam1 == Word.WORD_LEARNING) {
+        } else if (WORD_LIST_TYPE == Word.WORD_LEARNING) {
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                     ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
                 @Override
@@ -244,7 +238,7 @@ public class WordsFragment extends Fragment {
                     }
                 }
             }).attachToRecyclerView(recyclerView);
-        } else if (mParam1 == Word.WORD_MASTERED) {
+        } else if (WORD_LIST_TYPE == Word.WORD_MASTERED) {
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                     ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
                 @Override
