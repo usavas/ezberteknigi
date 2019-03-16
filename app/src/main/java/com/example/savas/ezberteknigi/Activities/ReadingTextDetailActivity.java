@@ -1,6 +1,7 @@
 package com.example.savas.ezberteknigi.Activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -188,7 +189,12 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         scrollView.post(new Runnable() {
             @Override
             public void run() {
-                scrollView.scrollTo(0, readingText.getLeftOffset());
+//                scrollView.scrollTo(0, readingText.getLeftOffset());
+                tvContent.scrollTo(0, readingText.getLeftOffset());
+
+                if (readingText.getLeftOffset() <= tvContent.getMaxHeight()){
+                    tvContent.scrollTo(0, readingText.getLeftOffset());
+                }
             }
         });
     }
