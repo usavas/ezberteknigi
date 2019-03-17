@@ -11,6 +11,7 @@
     android:layout_marginStart="@dimen/recylcer_view_margin_start"
     android:layout_marginTop="@dimen/recylcer_view_margin_top"
     android:layout_marginBottom="@dimen/recycler_view_margin_bottom"
+    android:layout_gravity="center_vertical"
     >
 
 

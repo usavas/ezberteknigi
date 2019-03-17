@@ -16,9 +16,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Activities.WordRevisionActivity">
+        </activity>
         <activity android:name=".Activities.NavigatorActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -27,8 +30,7 @@
         <service
             android:name=".Services.SaveWebpageIntentService"
             android:exported="true" />
-        <service android:name=".Services.WordRevisedService"/>
-
+        <service android:name=".Services.WordRevisedService" />
         <service
             android:name=".Services.WordAndTextService"
             android:enabled="true"
@@ -43,11 +45,13 @@
         </service>
 
         <activity android:name=".Activities.MainActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".Activities.ReadingTextDetailActivity"

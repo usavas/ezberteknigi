@@ -67,6 +67,9 @@ implements WordsFragment.OnFragmentInteractionListener {
                 case R.id.navigation_revision_words:
                     selectedFragment = new WordRevisionFragment();
                     break;
+                case R.id.navigation_settings:
+                    selectedFragment = new SettingsFragment();
+                    break;
             }
             if (selectedFragment != null){
                 getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
