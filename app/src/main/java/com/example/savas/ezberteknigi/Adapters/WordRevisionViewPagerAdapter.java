@@ -3,7 +3,6 @@ package com.example.savas.ezberteknigi.Adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WordRevisionViewPagerAdapter extends PagerAdapter {
@@ -45,8 +43,6 @@ public class WordRevisionViewPagerAdapter extends PagerAdapter {
         layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.item_word_revision, container, false);
 
-
-
         TextView tvWord = view.findViewById(R.id.tvItemWord);
         View subItem = view.findViewById(R.id.sub_item);
         TextView tvTranslation = view.findViewById(R.id.sub_item_translation);
@@ -56,7 +52,8 @@ public class WordRevisionViewPagerAdapter extends PagerAdapter {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "gözden geçirildi, TO BE IMPLEMENTED", Toast.LENGTH_SHORT).show();
+                //TODO: implement on word revised and clear from notifications and delete from the list
             }
         });
 

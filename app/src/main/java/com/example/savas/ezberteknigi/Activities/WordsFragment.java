@@ -13,8 +13,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,9 +68,17 @@ public class WordsFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_words, container, false);
         FloatingActionButton btnAddNewWord = view.findViewById(R.id.fab_add_word_learning);
 
-        final WordAdapter wordAdapter = new WordAdapter();
-
+        WordAdapter wordAdapter;
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_word);
+
+        if (WORD_LIST_TYPE == Word.WORD_REVISION){
+            wordAdapter = new WordAdapter(true);
+            SnapHelper snapHelper = new PagerSnapHelper();
+            snapHelper.attachToRecyclerView(recyclerView);
+        } else {
+            wordAdapter = new WordAdapter();
+        }
+
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);

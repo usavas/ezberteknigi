@@ -19,12 +19,27 @@ import java.util.List;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     private List<Word> words = new ArrayList<>();
+    private boolean isRevision = false;
+
+    public WordAdapter(){
+
+    }
+
+    public WordAdapter(boolean isRevision){
+        this.isRevision = isRevision;
+    }
 
     @NonNull
     @Override
     public WordHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_word, viewGroup, false);
+        View itemView;
+        if (isRevision){
+            itemView = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.item_word_revision, viewGroup, false);
+        } else {
+            itemView = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.item_word, viewGroup, false);
+        }
         return new WordHolder(itemView);
     }
 
@@ -36,8 +51,10 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         wordHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentWord.setExpanded(!currentWord.isExpanded());
-                notifyItemChanged(i);
+                if (!isRevision){
+                    currentWord.setExpanded(!currentWord.isExpanded());
+                    notifyItemChanged(i);
+                }
             }
         });
     }
@@ -46,7 +63,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     public int getItemCount() {
         return words.size();
     }
-
 
     private OnItemClickListener listener;
 
@@ -97,14 +113,9 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 
         private void bind(Word word) {
             boolean expanded = word.isExpanded();
-            viewSubItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
-
-//            if (expanded){
-//                itemView.setBackgroundColor(Color.GREEN);
-//                itemView.setLayoutParams(new ViewGroup.LayoutParams(
-//                        ViewGroup.LayoutParams.MATCH_PARENT,
-//                        ViewGroup.LayoutParams.MATCH_PARENT));
-//            }
+            if (!isRevision){
+                viewSubItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
+            }
 
             tvWord.setText(word.getWord());
             tvTranslation.setText(word.getTranslation());
