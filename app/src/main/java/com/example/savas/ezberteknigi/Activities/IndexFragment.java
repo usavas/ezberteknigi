@@ -26,8 +26,11 @@ import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.Services.WordAndTextService;
 import com.example.savas.ezberteknigi.Services.WordRevisedService;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,74 +93,93 @@ public class IndexFragment extends Fragment {
         btnDeneme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getActivity().getApplicationContext());
-
-                List<Word> wordsToReviseMock = new ArrayList<>();
-                wordsToReviseMock.add(new Word("deneme", "trial", 0, "example sentence 1"));
-                wordsToReviseMock.add(new Word("deneme 2", "trial 2", 0, "example sentence 2"));
-                wordsToReviseMock.add(new Word("deneme 3", "trial 3", 0, "example sentence 3"));
-                wordsToReviseMock.add(new Word("deneme 4", "trial 4", 0, "example sentence 4"));
-                wordsToReviseMock.add(new Word("deneme 5", "trial 5", 0, "example sentence 5"));
-                wordsToReviseMock.add(new Word("deneme 6", "trial 6", 0, "example sentence 6"));
-                wordsToReviseMock.add(new Word("deneme 7", "trial 7", 0, "example sentence 7"));
-                wordsToReviseMock.add(new Word("deneme 8", "trial 8", 0, "example sentence 8"));
-
-                for (int i = 0; i < wordsToReviseMock.size(); i++) {
-
-                    Word word = wordsToReviseMock.get(i);
-                    Log.d(TAG, "showMultipleNotificationsInGroup: word: " + word.toString());
-                    Intent wordRevisedIntent = new Intent(getActivity(), WordRevisedService.class);
-                    wordRevisedIntent.putExtra(EXTRA_WORD_TO_SAVE_REVISED, word.getWordId());
-                    PendingIntent deletePendingIntent = PendingIntent.getService(getActivity().getApplicationContext(), word.getWordId(), wordRevisedIntent, 0);
-
-                    Notification notification = new NotificationCompat.Builder(getActivity().getApplicationContext(), CHANNEL_WORD_REVISION)
-                            .setSmallIcon(R.drawable.button_revision)
-                            .setContentTitle(word.getWord())
-                            .setContentText(String.format("%s :\n %s", word.getTranslation(), word.getExampleSentence()))
-                            .setGroup("words")
-                            .setPriority(NotificationCompat.PRIORITY_HIGH)
-                            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                            .setOnlyAlertOnce(true)
-                            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                            .setContentIntent(pendingIntent)
-                            .setAutoCancel(true)
-                            .setDeleteIntent(deletePendingIntent)
-                            .build();
-
-                    notificationManager.notify(i, notification);
-                }
-
-                if(Build.VERSION.SDK_INT >= 24){
-
-                } else {
-
-                    Locale l = new Locale("tr");
-                    Notification summaryNotification = new NotificationCompat.Builder(getActivity(), CHANNEL_WORD_REVISION)
-                            .setSmallIcon(R.drawable.button_revision)
-
-                            .setContentTitle("Tekrar Edilecek Kelimeler")
-                            .setContentText(getWordListInString(wordsToReviseMock))
-
-                            .setStyle(new NotificationCompat.BigTextStyle()
-                                    .setBigContentTitle("Tekrar Edilecek Kelimeler")
-                                    .setSummaryText(String.format(l, "%d Tekrar Edilecek Kelime", wordsToReviseMock.size()))
-                                    .bigText(getWordListInString(wordsToReviseMock)))
-                            .setPriority(NotificationCompat.PRIORITY_LOW)
-                            .setGroup("words")
-                            .setGroupSummary(true)
-                            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
-                            .build();
-
-                    notificationManager.notify(-1, summaryNotification);
-
-                }
-
-
+                getSampleFirebaseData();
             }
         });
+    }
+
+    private void getSampleFirebaseData() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        String child = "";
+
+        ref.child("books").child("0").child("author").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Toast.makeText(getContext(), snapshot.getValue().toString(), Toast.LENGTH_LONG).show(); ;
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getContext(), "cancelled", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void showSampleNotification() {
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getActivity().getApplicationContext());
+
+        List<Word> wordsToReviseMock = new ArrayList<>();
+        wordsToReviseMock.add(new Word("deneme", "trial", 0, "example sentence 1"));
+        wordsToReviseMock.add(new Word("deneme 2", "trial 2", 0, "example sentence 2"));
+        wordsToReviseMock.add(new Word("deneme 3", "trial 3", 0, "example sentence 3"));
+        wordsToReviseMock.add(new Word("deneme 4", "trial 4", 0, "example sentence 4"));
+        wordsToReviseMock.add(new Word("deneme 5", "trial 5", 0, "example sentence 5"));
+        wordsToReviseMock.add(new Word("deneme 6", "trial 6", 0, "example sentence 6"));
+        wordsToReviseMock.add(new Word("deneme 7", "trial 7", 0, "example sentence 7"));
+        wordsToReviseMock.add(new Word("deneme 8", "trial 8", 0, "example sentence 8"));
+
+        for (int i = 0; i < wordsToReviseMock.size(); i++) {
+
+            Word word = wordsToReviseMock.get(i);
+            Log.d(TAG, "showMultipleNotificationsInGroup: word: " + word.toString());
+            Intent wordRevisedIntent = new Intent(getActivity(), WordRevisedService.class);
+            wordRevisedIntent.putExtra(EXTRA_WORD_TO_SAVE_REVISED, word.getWordId());
+            PendingIntent deletePendingIntent = PendingIntent.getService(getActivity().getApplicationContext(), word.getWordId(), wordRevisedIntent, 0);
+
+            Notification notification = new NotificationCompat.Builder(getActivity().getApplicationContext(), CHANNEL_WORD_REVISION)
+                    .setSmallIcon(R.drawable.button_revision)
+                    .setContentTitle(word.getWord())
+                    .setContentText(String.format("%s :\n %s", word.getTranslation(), word.getExampleSentence()))
+                    .setGroup("words")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setOnlyAlertOnce(true)
+                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+                    .setDeleteIntent(deletePendingIntent)
+                    .build();
+
+            notificationManager.notify(i, notification);
+        }
+
+        if(Build.VERSION.SDK_INT >= 24){
+
+        } else {
+
+            Locale l = new Locale("tr");
+            Notification summaryNotification = new NotificationCompat.Builder(getActivity(), CHANNEL_WORD_REVISION)
+                    .setSmallIcon(R.drawable.button_revision)
+
+                    .setContentTitle("Tekrar Edilecek Kelimeler")
+                    .setContentText(getWordListInString(wordsToReviseMock))
+
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .setBigContentTitle("Tekrar Edilecek Kelimeler")
+                            .setSummaryText(String.format(l, "%d Tekrar Edilecek Kelime", wordsToReviseMock.size()))
+                            .bigText(getWordListInString(wordsToReviseMock)))
+                    .setPriority(NotificationCompat.PRIORITY_LOW)
+                    .setGroup("words")
+                    .setGroupSummary(true)
+                    .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                    .build();
+
+            notificationManager.notify(-1, summaryNotification);
+
+        }
     }
 
     @NonNull
