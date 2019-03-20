@@ -135,7 +135,8 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         if (documentType == ReadingText.DOCUMENT_TYPE_PLAIN){
             tvContent.setText(readingText.getContent());
             tvHeader.setText(readingText.getHeader());
-            navView.setVisibility(View.GONE);
+//            navView.setVisibility(View.GONE);
+            navView.setVisibility(View.INVISIBLE);
         } else if (documentType == ReadingText.DOCUMENT_TYPE_BOOK){
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             Toolbar toolbar = findViewById(R.id.toolbar);

@@ -24,6 +24,10 @@ import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
 import java.util.List;
 
+/**
+ * this activity is used for horizontal navigation through words-to-revise with viewPager
+ * CAN BE DELETED - IS NOT IN USE - CREATED AS ALTERNATIVE
+ **/
 public class WordRevisionActivity extends AppCompatActivity {
 
 //    WordViewModel wordViewModel;

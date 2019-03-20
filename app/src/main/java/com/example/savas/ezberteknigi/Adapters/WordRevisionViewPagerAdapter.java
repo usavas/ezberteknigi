@@ -47,15 +47,14 @@ public class WordRevisionViewPagerAdapter extends PagerAdapter {
         View subItem = view.findViewById(R.id.sub_item);
         TextView tvTranslation = view.findViewById(R.id.sub_item_translation);
         TextView tvExampleSentence = view.findViewById(R.id.sub_item_example_sentence);
-        Button btn = view.findViewById(R.id.button_sub_item_item_learn_mastered);
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "gözden geçirildi, TO BE IMPLEMENTED", Toast.LENGTH_SHORT).show();
-                //TODO: implement on word revised and clear from notifications and delete from the list
-            }
-        });
+//        Button btn = view.findViewById(R.id.button_sub_item_item_learn_mastered);
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(context, "gözden geçirildi, TO BE IMPLEMENTED", Toast.LENGTH_SHORT).show();
+//                //TODO: implement on word revised and clear from notifications and delete from the list
+//            }
+//        });
 
         tvWord.setText(word.getWord());
         tvTranslation.setText(word.getTranslation());

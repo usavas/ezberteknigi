@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Adapters.WordAdapter;
 import com.example.savas.ezberteknigi.Models.Word;
@@ -72,11 +73,10 @@ public class WordsFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_word);
 
         if (WORD_LIST_TYPE == Word.WORD_REVISION){
-            wordAdapter = new WordAdapter(true);
-            SnapHelper snapHelper = new PagerSnapHelper();
-            snapHelper.attachToRecyclerView(recyclerView);
+            wordAdapter = new WordAdapter(getContext(), true);
+            makeRecyclerViewSingleItemAtATime(recyclerView);
         } else {
-            wordAdapter = new WordAdapter();
+            wordAdapter = new WordAdapter(getContext());
         }
 
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
@@ -96,7 +96,7 @@ public class WordsFragment extends Fragment {
 //                }
 //            });
 //        }
-        if (WORD_LIST_TYPE == 0) {
+        if (WORD_LIST_TYPE == 0) { //if learning
             btnAddNewWord.setVisibility(View.VISIBLE);
             wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, new Observer<List<Word>>() {
                 @Override
@@ -104,7 +104,7 @@ public class WordsFragment extends Fragment {
                     wordAdapter.setWords(words);
                 }
             });
-        } else if (WORD_LIST_TYPE == 1) {
+        } else if (WORD_LIST_TYPE == 1) { // if mastered
 //            btnAddNewWord.setVisibility(View.GONE);
             wordViewModel.getAllWordsBasedOnState(Word.WORD_MASTERED).observe(this, new Observer<List<Word>>() {
                 @Override
@@ -112,7 +112,7 @@ public class WordsFragment extends Fragment {
                     wordAdapter.setWords(words);
                 }
             });
-        } else if (WORD_LIST_TYPE == Word.WORD_REVISION) {
+        } else if (WORD_LIST_TYPE == Word.WORD_REVISION) { //if word revision
             btnAddNewWord.setVisibility(View.GONE);
             getActivity().setTitle("Tekrar Edilecek Kelimeler");
             wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
@@ -127,7 +127,7 @@ public class WordsFragment extends Fragment {
         wordAdapter.setOnItemClickListener(new WordAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Word word) {
-
+                Toast.makeText(getActivity(), "if this works, it means overrides the adapter in act.", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onMarkClick(Word word) {
@@ -140,7 +140,7 @@ public class WordsFragment extends Fragment {
             }
         });
 
-        if (WORD_LIST_TYPE == Word.WORD_ALL || WORD_LIST_TYPE == Word.WORD_LEARNING || WORD_LIST_TYPE == Word.WORD_MASTERED) {
+        if (WORD_LIST_TYPE == 0 || WORD_LIST_TYPE == 1) { // if word is learning or mastered = not revised
             btnAddNewWord.setOnClickListener(v -> {
                 AddWordFragment wordDialogFragment = new AddWordFragment();
                 if (WORD_LIST_TYPE == Word.WORD_ALL){
@@ -160,6 +160,15 @@ public class WordsFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Makes the given recyclerView item to show one item at a time
+     * @param recyclerView
+     */
+    private void makeRecyclerViewSingleItemAtATime(RecyclerView recyclerView) {
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
+    }
+
     private void ImplementOnSwipedOnWords(View view, WordAdapter wordAdapter, RecyclerView recyclerView) {
         if (WORD_LIST_TYPE == Word.WORD_REVISION) {
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
@@ -177,7 +186,7 @@ public class WordsFragment extends Fragment {
                         Date prevDateToRollBack = word.getDateLastRevision();
                         updateRevision(word);
 
-                        clearFromNotificationMenuIfExists(word);
+                        clearWordFromNotificationMenuIfExists(word);
 
                         Snackbar snackbar = Snackbar.make(view,
                                 "Kelime tekrar edildi: " + word.getWord(),
@@ -288,7 +297,12 @@ public class WordsFragment extends Fragment {
         word.setDateLastRevision(prevDateToRollBack);
         wordViewModel.update(word);
     }
-    private void clearFromNotificationMenuIfExists(Word word) {
+
+    /**
+     * Checks whether there is any notification currently showing up related to a given word and clears the notification with the given word's id
+     * @param word the word which might be shown in the notification
+     */
+    private void clearWordFromNotificationMenuIfExists(Word word) {
         try{
             NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
             notificationManager.cancel(word.getWordId());
@@ -300,7 +314,7 @@ public class WordsFragment extends Fragment {
                 }
             }
         } catch (Exception e){
-            Log.d(TAG, "clearFromNotificationMenuIfExists: " + e.getMessage());
+            Log.d(TAG, "clearWordFromNotificationMenuIfExists: " + e.getMessage());
         }
     }
 

@@ -1,6 +1,6 @@
 package com.example.savas.ezberteknigi.Adapters;
 
-import android.graphics.Color;
+import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -20,13 +22,15 @@ import java.util.List;
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     private List<Word> words = new ArrayList<>();
     private boolean isRevision = false;
+    private Context context;
 
-    public WordAdapter(){
-
+    public WordAdapter(Context context){
+        this.context = context;
     }
 
-    public WordAdapter(boolean isRevision){
+    public WordAdapter(Context context, boolean isRevision){
         this.isRevision = isRevision;
+        this.context = context;
     }
 
     @NonNull
@@ -48,15 +52,24 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         Word currentWord = words.get(i);
         wordHolder.bind(currentWord);
 
+        //if onClickListener set here it overrides the listener instance of this
         wordHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isRevision){
                     currentWord.setExpanded(!currentWord.isExpanded());
                     notifyItemChanged(i);
+                } else {
+                    wordHolder.wordFlipper.showNext();
                 }
             }
         });
+
+//        wordHolder.wordFlipper.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//            }
+//        });
     }
 
     @Override
@@ -82,13 +95,35 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         private View viewSubItem;
         private Button btnMark;
 
+        private View viewFront;
+        private View viewBack;
+
+        private ViewFlipper wordFlipper;
+
         WordHolder(@NonNull View itemView) {
             super(itemView);
+
             tvWord = itemView.findViewById(R.id.tvItemWord);
             tvTranslation = itemView.findViewById(R.id.sub_item_translation);
             tvExampleSentence = itemView.findViewById(R.id.sub_item_example_sentence);
             viewSubItem = itemView.findViewById(R.id.sub_item);
-            btnMark = itemView.findViewById(R.id.button_sub_item_item_learn_mastered);
+
+            if (isRevision){
+                wordFlipper = itemView.findViewById(R.id.word_flipper);
+
+
+            } else {
+//                btnMark = itemView.findViewById(R.id.button_sub_item_item_learn_mastered);
+//                btnMark.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        int pos = getAdapterPosition();
+//                        if (listener != null && pos != RecyclerView.NO_POSITION){
+//                            listener.onMarkClick(words.get(pos));
+//                        }
+//                    }
+//                });
+            }
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -99,31 +134,22 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
                     }
                 }
             });
-
-            btnMark.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    if (listener != null && pos != RecyclerView.NO_POSITION){
-                        listener.onMarkClick(words.get(pos));
-                    }
-                }
-            });
         }
 
         private void bind(Word word) {
             boolean expanded = word.isExpanded();
-            if (!isRevision){
-                viewSubItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
-            }
 
             tvWord.setText(word.getWord());
             tvTranslation.setText(word.getTranslation());
             tvExampleSentence.setText(word.getExampleSentence());
-            if (word.getWordState() == Word.WORD_LEARNING){
-                btnMark.setText("ÖĞRENDİM");
-            } else if (word.getWordState() == Word.WORD_MASTERED) {
-                btnMark.setText("KELİMEYİ HATIRLAYAMADIM");
+
+            if (!isRevision){
+                viewSubItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
+                if (word.getWordState() == Word.WORD_LEARNING){
+//                    btnMark.setText("ÖĞRENDİM");
+                } else if (word.getWordState() == Word.WORD_MASTERED) {
+//                    btnMark.setText("HATIRLAMIYORUM");
+                }
             }
         }
     }
@@ -134,7 +160,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 
     public void removeItem(int position){
         words.remove(words.get(position));
-        notifyDataSetChanged();
+        notifyItemChanged(position);
+//        notifyDataSetChanged();
     }
 
     public void setWords(List<Word> words){

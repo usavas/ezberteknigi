@@ -66,17 +66,22 @@
                 android:layout_below="@+id/sub_item_translation"
                 android:text="example sentence" />
             
-            <Button
-                android:id="@+id/button_sub_item_item_learn_mastered"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginTop="@dimen/textViewMargin"
-                android:layout_marginStart="@dimen/textViewMargin"
-                android:layout_marginEnd="@dimen/textViewMargin"
-                android:padding="@dimen/textViewPadding"
-                android:text="MARK AS MASTERED/LEARNING"
-                android:layout_below="@+id/sub_item_example_sentence"
-                />
+            <!--<Button-->
+                <!--android:id="@+id/button_sub_item_item_learn_mastered"-->
+                <!--android:background="@color/sunshine"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_marginTop="@dimen/textViewMargin"-->
+                <!--android:layout_marginStart="@dimen/textViewMargin"-->
+                <!--android:layout_marginEnd="@dimen/textViewMargin"-->
+                <!--android:paddingStart="25dp"-->
+                <!--android:layout_height="70dp"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="20dp"-->
+                <!--android:text="MARK"-->
+                <!--android:drawableStart="@drawable/ic_thumb_up_white_24dp"-->
+                <!--android:layout_below="@+id/sub_item_example_sentence"-->
+                <!--/>-->
+
         </RelativeLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

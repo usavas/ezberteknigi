@@ -8,6 +8,8 @@
     <color name="moduleColor">#FFFFFF</color>
     <color name="white">#FFF</color>
 
+    <color name="black">#000000</color>
+    <color name="lightGrey">#EEEEEE</color>
     <color name="vermillon">#DC4A1A</color>
     <color name="sunshine">#F7B733</color>
     <color name="sunshine2">#E7A723</color>
