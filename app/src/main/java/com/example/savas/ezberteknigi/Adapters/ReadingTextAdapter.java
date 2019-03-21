@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.R;
 
@@ -22,7 +21,7 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
     @Override
     public ReadingTextHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_reading_text, viewGroup, false);
+                .inflate(R.layout.item_rt, viewGroup, false);
         return new ReadingTextHolder(itemView);
     }
 

@@ -1,7 +1,6 @@
 package com.example.savas.ezberteknigi.Activities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -125,7 +124,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
 
     @SuppressLint("ClickableViewAccessibility")
     private void prepareLayoutForReadingTextView(int documentType) {
-        setContentView(R.layout.activity_reading_text_detail);
+        setContentView(R.layout.activity_rt_detail);
         tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
         tvContent = findViewById(R.id.text_view_reading_text_detail_content);
         scrollView = findViewById(R.id.scroll_view);
