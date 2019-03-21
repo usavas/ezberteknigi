@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -72,12 +73,8 @@ public class AddWordFragment extends AppCompatDialogFragment {
             editWord.setText(getArguments().getString("WORD"));
             editTranslation.setText(getArguments().getString("TRANSLATION"));
             editExampleSentence.setText(getArguments().getString("EXAMPLE_SENTENCE"));
-
-
         } else if (getArguments().getString(STARTING_ACTIVITY_TO_ADD_WORD) == STARTING_ACTIVITY_FROM_WORDS) {
-            if (getArguments().getInt(STARTING_WORD_LEARNING_MASTERED) == Word.WORD_ALL){
-                // DO NOTHING
-            } else if (getArguments().getInt(STARTING_WORD_LEARNING_MASTERED) == Word.WORD_LEARNING){
+            if (getArguments().getInt(STARTING_WORD_LEARNING_MASTERED) == Word.WORD_LEARNING){
                 btnAddMastered.setVisibility(View.GONE);
             }
             else if (getArguments().getInt(STARTING_WORD_LEARNING_MASTERED) == Word.WORD_MASTERED){
@@ -92,7 +89,7 @@ public class AddWordFragment extends AppCompatDialogFragment {
                 String translation = editTranslation.getText().toString();
                 String exampleSentence = editExampleSentence.getText().toString();
 
-                if (word.trim() != "" && translation.trim() != ""){
+                if (checkIfFilledFields(word, translation)){
                     saveWord(word, translation, exampleSentence, Word.WORD_LEARNING);
                 } else {
                     showWordTranslationEmptyError();
@@ -107,7 +104,7 @@ public class AddWordFragment extends AppCompatDialogFragment {
                 String translation = editTranslation.getText().toString();
                 String exampleSentence = editExampleSentence.getText().toString();
 
-                if (word.trim() != "" && translation.trim() != ""){
+                if (checkIfFilledFields(word, translation)){
                     saveWord(word, translation, exampleSentence, Word.WORD_MASTERED);
                 } else {
                     showWordTranslationEmptyError();
@@ -118,8 +115,13 @@ public class AddWordFragment extends AppCompatDialogFragment {
         return builder.create();
     }
 
+    private boolean checkIfFilledFields(String word, String translation) {
+        return !word.trim().equals("") && !translation.trim().equals("");
+    }
+
     private void showWordTranslationEmptyError() {
-        Snackbar.make(getActivity().findViewById(android.R.id.content), "Kelime ve çevirisini giriniz!", BaseTransientBottomBar.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Kelime ve çevirisi boş bırakılamaz", Toast.LENGTH_SHORT).show();
+//        Snackbar.make(getActivity().findViewById(android.R.id.content), "Kelime ve çevirisi boş bırakılamaz", BaseTransientBottomBar.LENGTH_LONG).show();
     }
 
     private void saveWord(String word, String translation, String exampleSentence, int learningMastered){
