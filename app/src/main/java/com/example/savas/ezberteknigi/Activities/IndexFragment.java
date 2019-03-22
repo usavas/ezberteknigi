@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.Constraints;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -18,6 +19,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.BLL.InternetConnectivitySocket;
+import com.example.savas.ezberteknigi.Models.Book;
+import com.example.savas.ezberteknigi.Models.BookWrapper;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -89,19 +92,30 @@ public class IndexFragment extends Fragment {
     }
 
     private void getSampleFirebaseData() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        String child = "";
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        db.setPersistenceEnabled(true);
+        DatabaseReference ref = db.getReference("books");
 
-        ref.child("books").child("0").child("author").addValueEventListener(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Toast.makeText(getContext(), snapshot.getValue().toString(), Toast.LENGTH_LONG).show(); ;
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<BookWrapper> bookWrappers = retrieveData(dataSnapshot);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getContext(), "cancelled", Toast.LENGTH_SHORT).show();
+                Log.d(Constraints.TAG, "onCancelled: " + "The read failed: " + databaseError.getCode());
             }
         });
+    }
+
+    private List<BookWrapper> retrieveData(DataSnapshot dataSnapshot) {
+        Book[] books = dataSnapshot.getValue(Book[].class);
+        List<Book> bookList = new ArrayList<>();
+        for (Book book : books) {
+            bookList.add(book);
+        }
+        return BookWrapper.makeBookWrapperList(bookList);
     }
 
     private void showSampleNotification() {

@@ -1,6 +1,13 @@
 package com.example.savas.ezberteknigi.Models;
 
+import android.util.Log;
+
 import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaHttpRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -8,20 +15,23 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BinaryOperator;
 
-public class Book {
+import static android.support.constraint.Constraints.TAG;
+
+public class    Book {
 
     private String author;
     private List<String> chapters;
     private String genre;
-    private String[] hardwords;
+    private List<String> hardwords;
     private String level;
     private String storyline;
     private String title;
 
     public Book(){}
 
-    public Book(String author, List<String> chapters, String genre, String[] hardwords, String level, String storyline, String title) {
+    public Book(String author, List<String> chapters, String genre, List<String> hardwords, String level, String storyline, String title) {
         this.author = author;
         this.chapters = chapters;
         this.genre = genre;
@@ -45,7 +55,7 @@ public class Book {
         return genre;
     }
 
-    public String[] getHardwords() {
+    public List<String> getHardwords() {
         return hardwords;
     }
 
@@ -75,6 +85,11 @@ public class Book {
 
     public static Book[] getBookByLevel(String level){
         List<Book> books = new ArrayList<>();
+
+        //TODO: get datasnapshot ref and retrieve values
+
+
+
         for (Book b: getAllBooks()) {
             if (b.level.equals(level)){
                 books.add(b);

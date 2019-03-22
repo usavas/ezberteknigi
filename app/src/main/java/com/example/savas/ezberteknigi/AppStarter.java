@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 
 import android.os.Build;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 
 public class AppStarter extends Application {
 
@@ -17,6 +19,8 @@ public class AppStarter extends Application {
         super.onCreate();
 
         createNotificationChannels();
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
     private void createNotificationChannels() {
