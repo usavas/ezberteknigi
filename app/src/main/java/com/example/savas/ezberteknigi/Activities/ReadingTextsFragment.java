@@ -27,8 +27,6 @@ public class ReadingTextsFragment extends Fragment {
 
     ReadingTextViewModel readingTextViewModel;
 
-    public static String EXTRA_READING_TEXT_DETAIL_HEADER = "EXTRA_READING_TEXT_DETAIL_HEADER";
-    public static String EXTRA_READING_TEXT_DETAIL_CONTENT = "EXTRA_READING_TEXT_DETAIL_CONTENT";
     public static String EXTRA_READING_TEXT_DETAIL_ID = "EXTRA_READING_TEXT_DETAIL_ID";
 
     @Nullable
@@ -54,14 +52,10 @@ public class ReadingTextsFragment extends Fragment {
             public void onItemClick(ReadingText readingText) {
                     Intent intent = new Intent(getActivity(), ReadingTextDetailActivity.class);
                     intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
-                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_HEADER, readingText.getHeader());
-                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_CONTENT, readingText.getContent());
                     startActivity(intent);
 
 //                Intent intent = new Intent(getActivity(), ReadingTextDetailActivity2.class);
 //                intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
-//                intent.putExtra(EXTRA_READING_TEXT_DETAIL_HEADER, readingText.getHeader());
-//                intent.putExtra(EXTRA_READING_TEXT_DETAIL_CONTENT, readingText.getContent());
 //                startActivity(intent);
 
             }
