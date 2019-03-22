@@ -39,6 +39,4 @@
         android:text="START REVISION ACTIVITY"
         android:textSize="24sp" />
 
-
-
 </android.support.design.widget.CoordinatorLayout>
