@@ -145,11 +145,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 
             if (!isRevision){
                 viewSubItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
-                if (word.getWordState() == Word.WORD_LEARNING){
-//                    btnMark.setText("ÖĞRENDİM");
-                } else if (word.getWordState() == Word.WORD_MASTERED) {
-//                    btnMark.setText("HATIRLAMIYORUM");
-                }
+
+//                if (word.getWordState() == Word.WORD_LEARNING){
+////                    btnMark.setText("ÖĞRENDİM");
+//                } else if (word.getWordState() == Word.WORD_MASTERED) {
+////                    btnMark.setText("HATIRLAMIYORUM");
+//                }
             }
         }
     }
@@ -161,7 +162,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     public void removeItem(int position){
         words.remove(words.get(position));
         notifyItemChanged(position);
-//        notifyDataSetChanged();
     }
 
     public void setWords(List<Word> words){

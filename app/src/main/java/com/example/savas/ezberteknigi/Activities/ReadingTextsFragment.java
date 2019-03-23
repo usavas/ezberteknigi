@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.Constraints;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,9 +18,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.savas.ezberteknigi.Adapters.ReadingTextAdapter;
+import com.example.savas.ezberteknigi.Models.Book;
+import com.example.savas.ezberteknigi.Models.BookWrapper;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -27,8 +38,6 @@ public class ReadingTextsFragment extends Fragment {
 
     ReadingTextViewModel readingTextViewModel;
 
-    public static String EXTRA_READING_TEXT_DETAIL_HEADER = "EXTRA_READING_TEXT_DETAIL_HEADER";
-    public static String EXTRA_READING_TEXT_DETAIL_CONTENT = "EXTRA_READING_TEXT_DETAIL_CONTENT";
     public static String EXTRA_READING_TEXT_DETAIL_ID = "EXTRA_READING_TEXT_DETAIL_ID";
 
     @Nullable
@@ -52,17 +61,13 @@ public class ReadingTextsFragment extends Fragment {
         readingTextAdapter.setOnItemClickListener(new ReadingTextAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(ReadingText readingText) {
-//                if (readingText.getBook() != null) {
-//                    Intent intent = new Intent(getActivity(), BookDetailActivity.class);
-//                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
-//                    startActivity(intent);
-//                } else {
                     Intent intent = new Intent(getActivity(), ReadingTextDetailActivity.class);
                     intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
-                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_HEADER, readingText.getHeader());
-                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_CONTENT, readingText.getContent());
                     startActivity(intent);
-//                }
+
+//                Intent intent = new Intent(getActivity(), ReadingTextDetailActivity2.class);
+//                intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
+//                startActivity(intent);
             }
         });
 
@@ -102,4 +107,6 @@ public class ReadingTextsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
+
+
 }

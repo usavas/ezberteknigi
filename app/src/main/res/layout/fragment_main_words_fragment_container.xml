@@ -31,12 +31,6 @@
                 android:layout_height="wrap_content"
                 android:text="Öğrendiklerim" />
 
-            <!--<android.support.design.widget.TabItem-->
-                <!--android:id="@+id/tabItem3"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Tüm Kelimeler" />-->
-
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -45,7 +39,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@+id/appbar"
-        android:layout_marginTop="?attr/actionBarSize"
-        />
+        android:layout_marginTop="?attr/actionBarSize"/>
 
 </android.support.design.widget.CoordinatorLayout>

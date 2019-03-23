@@ -1,13 +1,13 @@
 package com.example.savas.ezberteknigi.Activities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -42,9 +43,9 @@ public class ReadingTextDetailActivity extends AppCompatActivity
     private ReadingTextRepository readingTextRepository;
     private ReadingText readingText;
 
-    private TextView tvHeader;
+//    private TextView tvHeader;
     private TextView tvContent;
-    private ScrollView scrollView;
+    private NestedScrollView nestedScrollView;
     private NavigationView navView;
 
     private Book book;
@@ -67,8 +68,10 @@ public class ReadingTextDetailActivity extends AppCompatActivity
 
     private void prepareLayoutForWebView() {
         setContentView(R.layout.activity_http_viewer);
-        tvHeader = findViewById(R.id.tv_header_url_address);
-        tvHeader.setText(readingText.getHeader());
+//        tvHeader = findViewById(R.id.tv_header_url_address);
+//        tvHeader.setText(readingText.getHeader());
+
+        setTitle(readingText.getHeader());
 
         WebView wv = findViewById(R.id.web_view_reading_text);
         wv.loadUrl(readingText.getSource());
@@ -125,53 +128,65 @@ public class ReadingTextDetailActivity extends AppCompatActivity
 
     @SuppressLint("ClickableViewAccessibility")
     private void prepareLayoutForReadingTextView(int documentType) {
-        setContentView(R.layout.activity_reading_text_detail);
-        tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
-        tvContent = findViewById(R.id.text_view_reading_text_detail_content);
-        scrollView = findViewById(R.id.scroll_view);
-        navView = findViewById(R.id.nav_view);
 
-        //TODO: (maybe) if the content is HTML then //tvContent.setText(Html.fromHtml(readingText.getChapters()));
+        //TODO: (maybe) if the content is HTML then -> tvContent.setText(Html.fromHtml(readingText.getChapters()));
         if (documentType == ReadingText.DOCUMENT_TYPE_PLAIN){
+            setContentView(R.layout.activity_rt_detail);
+            setTitle(readingText.getHeader());
+
+            tvContent = findViewById(R.id.text_view_reading_text_detail_content);
             tvContent.setText(readingText.getContent());
+
+            TextView tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
             tvHeader.setText(readingText.getHeader());
-//            navView.setVisibility(View.GONE);
-            navView.setVisibility(View.INVISIBLE);
-        } else if (documentType == ReadingText.DOCUMENT_TYPE_BOOK){
-            DrawerLayout drawer = findViewById(R.id.drawer_layout);
-            Toolbar toolbar = findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open,
-                    R.string.navigation_drawer_close);
-            if (drawer != null) {
-                drawer.addDrawerListener(toggle);
+
+            ScrollView scrollView = findViewById(R.id.scroll_view);
+            scrollToPosition(scrollView);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                        readingText.setLeftOffset(scrollY);
+                    }
+                });
+            } else {
+                scrollView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        readingText.setLeftOffset(scrollView.getScrollY());
+                        return false;
+                    }
+                });
             }
-            toggle.syncState();
+
+        } else if (documentType == ReadingText.DOCUMENT_TYPE_BOOK){
+            setContentView(R.layout.activity_rt_detail_2);
+            setNavigationDrawerForBook();
+            tvContent = findViewById(R.id.text_view_reading_text_detail_content);
+            navView = findViewById(R.id.nav_view);
+            nestedScrollView = findViewById(R.id.nested_scroll_view);
             navView.setNavigationItemSelectedListener(this);
 
             book = readingText.getBook();
             populateChapterMenu(navView, book.getChapterCount());
             populateContentForBook(readingText.getLeftChapter());
-        }
 
-        scrollToPosition();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    readingText.setLeftOffset(scrollY);
-                }
-            });
-        } else {
-            scrollView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    readingText.setLeftOffset(scrollView.getScrollY());
-                    return false;
-                }
-            });
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                        readingText.setLeftOffset(scrollY);
+                    }
+                });
+            } else {
+                nestedScrollView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        readingText.setLeftOffset(nestedScrollView.getScrollY());
+                        return false;
+                    }
+                });
+            }
         }
 
         tvContent.setOnLongClickListener(v -> {
@@ -186,15 +201,29 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         });
     }
 
-    private void scrollToPosition() {
+    private void setNavigationDrawerForBook() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        Toolbar toolbar = findViewById(R.id.rt_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        if (drawer != null) {
+            drawer.addDrawerListener(toggle);
+        }
+        toggle.syncState();
+    }
+
+    private void scrollToPosition(FrameLayout scrollView) {
         scrollView.post(new Runnable() {
             @Override
             public void run() {
-//                scrollView.scrollTo(0, readingText.getLeftOffset());
-                tvContent.scrollTo(0, readingText.getLeftOffset());
+                scrollView.scrollTo(0, readingText.getLeftOffset());
+//                tvContent.scrollTo(0, readingText.getLeftOffset());
 
                 if (readingText.getLeftOffset() <= tvContent.getMaxHeight()){
-                    tvContent.scrollTo(0, readingText.getLeftOffset());
+                    scrollView.scrollTo(0, readingText.getLeftOffset());
+//                    tvContent.scrollTo(0, readingText.getLeftOffset());
                 }
             }
         });
@@ -284,7 +313,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         if (clickedChapterNr != readingText.getLeftChapter()){
             readingText.setLeftChapter(clickedChapterNr);
             readingText.setLeftOffset(0);
-            scrollToPosition();
+            scrollToPosition(nestedScrollView);
             populateContentForBook(clickedChapterNr);
         }
 
@@ -294,7 +323,9 @@ public class ReadingTextDetailActivity extends AppCompatActivity
     }
 
     private void populateContentForBook(int currChapter) {
-        tvHeader.setText(String.format(Locale.getDefault(), "Chapter %d", currChapter));
+        Toolbar toolbar = findViewById(R.id.rt_toolbar);
+        toolbar.setTitle(String.format(Locale.getDefault(), "Chapter %d", currChapter));
+
         tvContent.setText(book.getChapters().get(currChapter - 1));
     }
 

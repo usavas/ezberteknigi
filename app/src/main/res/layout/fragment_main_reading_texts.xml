@@ -11,6 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="8dp"
-        tools:listitem="@layout/item_reading_text" />
+        tools:listitem="@layout/item_rt" />
 
 </android.support.design.widget.CoordinatorLayout>
