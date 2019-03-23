@@ -48,7 +48,7 @@ public class SearchBookAdapter extends Adapter<SearchBookAdapter.SearchBookHolde
                 Toast.makeText(context,
                         "on Cardview Click in Adapter on book: " +
                                 bookItem.getBook().getTitle(), Toast.LENGTH_SHORT).show();
-                bookItem.setExpanded(!bookItem.isExpanded());
+//                bookItem.setExpanded(!bookItem.isExpanded());
                 notifyItemChanged(i);
 
             }
@@ -76,10 +76,10 @@ public class SearchBookAdapter extends Adapter<SearchBookAdapter.SearchBookHolde
             tvAuthor = itemView.findViewById(R.id.tv_book_author);
             tvGenre = itemView.findViewById(R.id.tv_book_genre);
             tvLevel = itemView.findViewById(R.id.tv_book_level);
-            vSubItemContainer = itemView.findViewById(R.id.book_sub_item);
-            tvStoryline = itemView.findViewById(R.id.tv_book_storyline);
-            tvHardwords = itemView.findViewById(R.id.tv_book_hardwords);
-            btnAddBookToLib = itemView.findViewById(R.id.button_add_book_to_library);
+//            vSubItemContainer = itemView.findViewById(R.id.book_sub_item);
+//            tvStoryline = itemView.findViewById(R.id.tv_book_storyline);
+//            tvHardwords = itemView.findViewById(R.id.tv_book_hardwords);
+//            btnAddBookToLib = itemView.findViewById(R.id.button_add_book_to_library);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,29 +91,29 @@ public class SearchBookAdapter extends Adapter<SearchBookAdapter.SearchBookHolde
                 }
             });
 
-            btnAddBookToLib.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = SearchBookHolder.this.getAdapterPosition();
-                    if (listener != null && pos != RecyclerView.NO_POSITION){
-                        listener.onButtonAddBookClick(books.get(pos));
-                    }
-                }
-            });
+//            btnAddBookToLib.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    int pos = SearchBookHolder.this.getAdapterPosition();
+//                    if (listener != null && pos != RecyclerView.NO_POSITION){
+//                        listener.onButtonAddBookClick(books.get(pos));
+//                    }
+//                }
+//            });
 
         }
 
         private void bind(BookWrapper bookWrapper){
             boolean expanded = bookWrapper.isExpanded();
-            vSubItemContainer.setVisibility(expanded ? View.VISIBLE : View.GONE);
+//            vSubItemContainer.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
             Book book = bookWrapper.getBook();
             tvTitle.setText(book.getTitle());
             tvAuthor.setText(book.getAuthor());
             tvLevel.setText(book.getLevel());
             tvGenre.setText(book.getGenre());
-            tvStoryline.setText(book.getStoryline());
-            tvHardwords.setText(book.getHardWordsInString());
+//            tvStoryline.setText(book.getStoryline());
+//            tvHardwords.setText(book.getHardWordsInString());
         }
     }
 
