@@ -8,7 +8,8 @@
     android:layout_marginEnd="@dimen/recylcer_view_margin_end"
     android:layout_marginBottom="@dimen/recycler_view_margin_bottom"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:transitionName="show_book_detail">
 
     <LinearLayout
         android:id="@+id/book_main_item"
@@ -19,6 +20,9 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            android:layout_margin="8dp"
+            android:id="@+id/image_book_detail"
+            android:transitionName="show_book_detail"
             android:background="@color/lightGrey"
             android:src="@drawable/ic_book_black_24dp"
             android:scaleType="fitCenter"/>

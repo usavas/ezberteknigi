@@ -16,6 +16,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Activities.BookDetailActivity"></activity>
         <activity android:name=".Activities.NavigatorActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

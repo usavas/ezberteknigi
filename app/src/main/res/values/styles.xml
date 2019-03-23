@@ -5,6 +5,8 @@
         <item name="colorPrimary">@color/sunshine</item>
         <item name="colorPrimaryDark">@color/sunshine2</item>
         <item name="colorAccent">@color/vermillon</item>
+
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

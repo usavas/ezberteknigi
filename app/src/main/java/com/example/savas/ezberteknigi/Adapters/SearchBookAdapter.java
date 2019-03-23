@@ -7,9 +7,8 @@ import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.BookWrapper;
@@ -42,17 +41,17 @@ public class SearchBookAdapter extends Adapter<SearchBookAdapter.SearchBookHolde
         BookWrapper bookItem = books.get(i);
         searchBookHolder.bind(bookItem);
 
-        searchBookHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context,
-                        "on Cardview Click in Adapter on book: " +
-                                bookItem.getBook().getTitle(), Toast.LENGTH_SHORT).show();
-//                bookItem.setExpanded(!bookItem.isExpanded());
-                notifyItemChanged(i);
-
-            }
-        });
+//        searchBookHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(context,
+//                        "on Cardview Click in Adapter on book: " +
+//                                bookItem.getBook().getTitle(), Toast.LENGTH_SHORT).show();
+////                bookItem.setExpanded(!bookItem.isExpanded());
+//                notifyItemChanged(i);
+//
+//            }
+//        });
     }
 
     @Override
@@ -60,22 +59,24 @@ public class SearchBookAdapter extends Adapter<SearchBookAdapter.SearchBookHolde
         return books.size();
     }
 
-    public class SearchBookHolder extends RecyclerView.ViewHolder{
+    class SearchBookHolder extends RecyclerView.ViewHolder{
         private TextView tvTitle;
         private TextView tvAuthor;
         private TextView tvGenre;
         private TextView tvLevel;
-        private View vSubItemContainer;
-        private TextView tvStoryline;
-        private TextView tvHardwords;
-        private Button btnAddBookToLib;
+        private ImageView imageView;
+//        private View vSubItemContainer;
+//        private TextView tvStoryline;
+//        private TextView tvHardwords;
+//        private Button btnAddBookToLib;
 
-        public SearchBookHolder(@NonNull View itemView) {
+        SearchBookHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_book_title);
             tvAuthor = itemView.findViewById(R.id.tv_book_author);
             tvGenre = itemView.findViewById(R.id.tv_book_genre);
             tvLevel = itemView.findViewById(R.id.tv_book_level);
+            imageView = itemView.findViewById(R.id.image_book_detail);
 //            vSubItemContainer = itemView.findViewById(R.id.book_sub_item);
 //            tvStoryline = itemView.findViewById(R.id.tv_book_storyline);
 //            tvHardwords = itemView.findViewById(R.id.tv_book_hardwords);
@@ -86,7 +87,7 @@ public class SearchBookAdapter extends Adapter<SearchBookAdapter.SearchBookHolde
                 public void onClick(View v) {
                     int pos = SearchBookHolder.this.getAdapterPosition();
                     if (listener != null && pos != RecyclerView.NO_POSITION){
-                        listener.onItemClick(books.get(pos));
+                        listener.onItemClick(books.get(pos), imageView);
                     }
                 }
             });
@@ -100,26 +101,19 @@ public class SearchBookAdapter extends Adapter<SearchBookAdapter.SearchBookHolde
 //                    }
 //                }
 //            });
-
         }
 
         private void bind(BookWrapper bookWrapper){
-            boolean expanded = bookWrapper.isExpanded();
-//            vSubItemContainer.setVisibility(expanded ? View.VISIBLE : View.GONE);
-
             Book book = bookWrapper.getBook();
             tvTitle.setText(book.getTitle());
             tvAuthor.setText(book.getAuthor());
             tvLevel.setText(book.getLevel());
             tvGenre.setText(book.getGenre());
-//            tvStoryline.setText(book.getStoryline());
-//            tvHardwords.setText(book.getHardWordsInString());
         }
     }
 
     public interface OnItemClickListener{
-        void onItemClick(BookWrapper book);
-        void onButtonAddBookClick(BookWrapper book);
+        void onItemClick(BookWrapper book, ImageView imageView);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){

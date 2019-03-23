@@ -1,9 +1,12 @@
 package com.example.savas.ezberteknigi.Activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.Constraints;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Adapters.SearchBookAdapter;
@@ -28,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SearchBooksActivity extends AppCompatActivity {
     private static final String TAG = "SearchBooksActivity";
@@ -41,8 +46,10 @@ public class SearchBooksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_books);
 
+        getWindow().setExitTransition(null);
+
         RecyclerView recyclerView = findViewById(R.id.recycler_view_books);
-        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((SimpleItemAnimator) Objects.requireNonNull(recyclerView.getItemAnimator())).setSupportsChangeAnimations(false);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
@@ -57,6 +64,15 @@ public class SearchBooksActivity extends AppCompatActivity {
                 getSampleFirebaseData();
             }
         }).start();
+
+        adapter.setOnItemClickListener(new SearchBookAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BookWrapper book, ImageView imageView) {
+                Intent intent = new Intent(SearchBooksActivity.this, BookDetailActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(SearchBooksActivity.this, imageView, ViewCompat.getTransitionName(imageView));
+                startActivity(intent, options.toBundle());
+            }
+        });
     }
 
     class RetrieveBooksFromFirebase implements Runnable {
@@ -81,22 +97,22 @@ public class SearchBooksActivity extends AppCompatActivity {
 
                 adapter.setBooks(bookWrappers);
 
-                adapter.setOnItemClickListener(new SearchBookAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(BookWrapper book) {
-                        //this method's implementation in SearchBookAdapter class overrides this one
-                    }
-
-                    @Override
-                    public void onButtonAddBookClick(BookWrapper bookW) {
-                        Book b = bookW.getBook();
-                        ReadingText readingText = new ReadingText(bookW.getLanguage(), b.getTitle(), ReadingText.DOCUMENT_TYPE_BOOK, "");
-                        readingText.setBook(b);
-
-                        new ReadingTextRepository(getApplication()).insert(readingText);
-                        Toast.makeText(SearchBooksActivity.this, "Kitap kütüphaneye eklendi", Toast.LENGTH_LONG).show();
-                    }
-                });
+//                adapter.setOnItemClickListener(new SearchBookAdapter.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(BookWrapper book) {
+//
+//                    }
+//
+////                    @Override
+////                    public void onButtonAddBookClick(BookWrapper bookW) {
+////                        Book b = bookW.getBook();
+////                        ReadingText readingText = new ReadingText(bookW.getLanguage(), b.getTitle(), ReadingText.DOCUMENT_TYPE_BOOK, "");
+////                        readingText.setBook(b);
+////
+////                        new ReadingTextRepository(getApplication()).insert(readingText);
+////                        Toast.makeText(SearchBooksActivity.this, "Kitap kütüphaneye eklendi", Toast.LENGTH_LONG).show();
+////                    }
+//                });
 
                 if (dialog.isShowing()){
                     dialog.dismiss();
