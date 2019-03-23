@@ -28,17 +28,4 @@
         android:text="DENEME"
         android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/button_index_word_revision"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:layout_anchor="@id/button_index_deneme"
-        app:layout_anchorGravity="bottom"
-        android:padding="20dp"
-        android:text="START REVISION ACTIVITY"
-        android:textSize="24sp" />
-
-
-
 </android.support.design.widget.CoordinatorLayout>

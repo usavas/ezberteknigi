@@ -76,16 +76,7 @@ public class IndexFragment extends Fragment {
                 }
             }
         });
-
-        Button btnStartWordRev = getActivity().findViewById(R.id.button_index_word_revision);
-        btnStartWordRev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getContext(), WordRevisionActivity.class);
-                startActivity(i);
-            }
-        });
-
+        
         Button btnDeneme = getActivity().findViewById(R.id.button_index_deneme);
         btnDeneme.setOnClickListener(new View.OnClickListener() {
             @Override

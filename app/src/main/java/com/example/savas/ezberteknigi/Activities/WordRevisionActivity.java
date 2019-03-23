@@ -66,18 +66,6 @@ public class WordRevisionActivity extends AppCompatActivity {
             }
         });
 
-//        viewPager.setOnTouchListener(new OnSwipeTouchListener(WordRevisionActivity.this){
-//            public void onSwipeTop() {
-//                Toast.makeText(WordRevisionActivity.this, "swiped up", Toast.LENGTH_LONG).show();
-//            }
-//            public void onSwipeRight() {
-//            }
-//            public void onSwipeLeft() {
-//            }
-//            public void onSwipeBottom() {
-//            }
-//        });
-
         viewPager.setOnDragListener(new View.OnDragListener() {
             @Override
             public boolean onDrag(View v, DragEvent event) {
