@@ -9,7 +9,9 @@
     android:layout_marginBottom="@dimen/recycler_view_margin_bottom"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:transitionName="show_book_detail">
+    android:transitionName="show_book_detail"
+    app:cardCornerRadius="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@+id/book_main_item"
@@ -32,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="title"
             android:textSize="12sp" />
 
@@ -41,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="author"
             android:textSize="12sp" />
 
@@ -50,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="genre"
             android:textSize="14sp" />
 
@@ -59,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="level"
             android:textSize="14sp"
             android:layout_marginBottom="8dp"/>

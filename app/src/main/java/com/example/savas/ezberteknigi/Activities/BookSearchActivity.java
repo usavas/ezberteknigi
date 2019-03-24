@@ -3,8 +3,8 @@ package com.example.savas.ezberteknigi.Activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
-import android.os.Message;
 import android.support.constraint.Constraints;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,37 +14,35 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.savas.ezberteknigi.Adapters.SearchBookAdapter;
+import com.example.savas.ezberteknigi.Adapters.BookSearchAdapter;
+import com.example.savas.ezberteknigi.BLL.InternetConnectivitySocket;
 import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.BookWrapper;
-import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SearchBooksActivity extends AppCompatActivity {
-    private static final String TAG = "SearchBooksActivity";
+public class BookSearchActivity extends AppCompatActivity {
+    private static final String TAG = "BookSearchActivity";
 
-    final SearchBookAdapter adapter = new SearchBookAdapter(this);
+    final BookSearchAdapter adapter = new BookSearchAdapter(this);
     ProgressDialog dialog;
     private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_books);
+        setContentView(R.layout.activity_book_search);
 
         getWindow().setExitTransition(null);
 
@@ -65,12 +63,25 @@ public class SearchBooksActivity extends AppCompatActivity {
             }
         }).start();
 
-        adapter.setOnItemClickListener(new SearchBookAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new BookSearchAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BookWrapper book, ImageView imageView) {
-                Intent intent = new Intent(SearchBooksActivity.this, BookDetailActivity.class);
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(SearchBooksActivity.this, imageView, ViewCompat.getTransitionName(imageView));
+                Intent intent = new Intent(BookSearchActivity.this, BookDetailActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(BookSearchActivity.this, imageView, ViewCompat.getTransitionName(imageView));
                 startActivity(intent, options.toBundle());
+            }
+        });
+
+        final FloatingActionButton fab = findViewById(R.id.add_new_book);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (new InternetConnectivitySocket().isConnectedToInternet()){
+                    Intent i = new Intent(getBaseContext(), BookSearchActivity.class);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(getBaseContext(), "İnternet bağlantısı mevcut değil", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -97,7 +108,7 @@ public class SearchBooksActivity extends AppCompatActivity {
 
                 adapter.setBooks(bookWrappers);
 
-//                adapter.setOnItemClickListener(new SearchBookAdapter.OnItemClickListener() {
+//                adapter.setOnItemClickListener(new BookSearchAdapter.OnItemClickListener() {
 //                    @Override
 //                    public void onItemClick(BookWrapper book) {
 //
@@ -110,7 +121,7 @@ public class SearchBooksActivity extends AppCompatActivity {
 ////                        readingText.setBook(b);
 ////
 ////                        new ReadingTextRepository(getApplication()).insert(readingText);
-////                        Toast.makeText(SearchBooksActivity.this, "Kitap kütüphaneye eklendi", Toast.LENGTH_LONG).show();
+////                        Toast.makeText(BookSearchActivity.this, "Kitap kütüphaneye eklendi", Toast.LENGTH_LONG).show();
 ////                    }
 //                });
 

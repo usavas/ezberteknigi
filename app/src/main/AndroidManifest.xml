@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.SearchBooksActivity" />
+        <activity android:name=".Activities.BookSearchActivity" />
 
         <service
             android:name=".Services.SaveWebpageIntentService"

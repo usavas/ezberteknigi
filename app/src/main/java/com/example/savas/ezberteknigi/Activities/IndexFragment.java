@@ -65,7 +65,7 @@ public class IndexFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (new InternetConnectivitySocket().isConnectedToInternet()){
-                    Intent i = new Intent(getContext(), SearchBooksActivity.class);
+                    Intent i = new Intent(getContext(), BookSearchActivity.class);
                     startActivity(i);
                 } else {
                     Toast.makeText(getContext(), "İnternet bağlantısı mevcut değil", Toast.LENGTH_LONG).show();

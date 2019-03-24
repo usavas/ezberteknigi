@@ -1,26 +1,19 @@
 package com.example.savas.ezberteknigi.Models;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaHttpRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BinaryOperator;
 
-import static android.support.constraint.Constraints.TAG;
 
-public class    Book {
+public class Book {
 
+    private String lang;
     private String author;
     private List<String> chapters;
     private String genre;
@@ -28,10 +21,12 @@ public class    Book {
     private String level;
     private String storyline;
     private String title;
+    private Bitmap image;
 
     public Book(){}
 
-    public Book(String author, List<String> chapters, String genre, List<String> hardwords, String level, String storyline, String title) {
+    public Book(String lang, String author, List<String> chapters, String genre, List<String> hardwords, String level, String storyline, String title) {
+        this.lang = lang;
         this.author = author;
         this.chapters = chapters;
         this.genre = genre;
@@ -55,9 +50,34 @@ public class    Book {
         return genre;
     }
 
+    public String getLang() {
+        return lang;
+    }
+
+    public Bitmap getImage(){
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
     public List<String> getHardwords() {
         return hardwords;
     }
+
+    /**
+     * Concatenates the title and author of the book and hyphenates the whitespaces and adds .jpg file extension
+     * @return the name of the image file located in firebase storage
+     */
+    public String getImageUrlName() {
+        return this.title.replace(" ", "-").toLowerCase()
+                + "-"
+                + this.author.replace(" ", "-").toLowerCase()
+                + ".jpg";
+    }
+
+
 
     public String getHardWordsInString(){
         StringBuilder builder = new StringBuilder();
@@ -85,11 +105,6 @@ public class    Book {
 
     public static Book[] getBookByLevel(String level){
         List<Book> books = new ArrayList<>();
-
-        //TODO: get datasnapshot ref and retrieve values
-
-
-
         for (Book b: getAllBooks()) {
             if (b.level.equals(level)){
                 books.add(b);
