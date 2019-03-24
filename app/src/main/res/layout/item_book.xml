@@ -13,7 +13,7 @@
     app:cardCornerRadius="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/book_main_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,6 +31,7 @@
 
         <TextView
             android:id="@+id/tv_book_title"
+            android:layout_below="@+id/image_book_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -40,31 +41,42 @@
 
         <TextView
             android:id="@+id/tv_book_author"
+            android:layout_below="@+id/tv_book_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
             android:text="author"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/tv_book_genre"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_book_level"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:text="genre"
-            android:textSize="14sp" />
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:text="level"
+            android:textSize="12sp"
+            android:padding="2sp"
+            android:background="@android:color/holo_green_light"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            />
 
         <TextView
-            android:id="@+id/tv_book_level"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_book_genre"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_below="@id/tv_book_level"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="4dp"
-            android:text="level"
-            android:textSize="14sp"
-            android:layout_marginBottom="8dp"/>
+            android:text="genre"
+            android:textSize="12sp"
+            android:padding="2sp"
+            android:background="@android:color/holo_blue_dark"
+            android:gravity="center"
+            android:textColor="#FFFFFF"/>
 
         <!--<LinearLayout-->
             <!--android:id="@+id/book_sub_item"-->
@@ -101,7 +113,7 @@
                 <!--android:text="KİTAPlIĞA EKLE"/>-->
 
         <!--</LinearLayout>-->
-    </LinearLayout>
+    </RelativeLayout>
 
 </android.support.v7.widget.CardView>
 <!--<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
