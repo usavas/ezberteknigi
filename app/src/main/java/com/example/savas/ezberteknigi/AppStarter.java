@@ -4,6 +4,7 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 
+import android.content.Context;
 import android.os.Build;
 
 import com.google.firebase.database.FirebaseDatabase;
@@ -13,14 +14,20 @@ public class AppStarter extends Application {
 
     public static final String CHANNEL_WORD_REVISION = "CHANNEL_WORD_REVISION";
     public static final String CHANNEL_WORD_OF_THE_DAY = "CHANNEL_WORD_OF_THE_DAY";
+    private static Context mContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mContext = this;
 
         createNotificationChannels();
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+    }
+
+    public static Context getContext(){
+        return mContext;
     }
 
     private void createNotificationChannels() {

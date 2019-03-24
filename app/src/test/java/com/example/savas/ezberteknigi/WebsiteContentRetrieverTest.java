@@ -32,12 +32,12 @@ public class WebsiteContentRetrieverTest {
 
     @Test
     public void getAllBooks_checkIfRestResponseCanConvertToBookObjects(){
-        List<Book> allBooks = Book.getAllBooks();
-        for (int i = 0; i < 1; i++){
-            System.out.println("book title: " + allBooks.get(i).getTitle());
-            for (String chapter: allBooks.get(i).getChapterList()) {
-                System.out.println(chapter);
-            }
-        }
+//        List<Book> allBooks = Book.getAllBooks();
+//        for (int i = 0; i < 1; i++){
+//            System.out.println("book title: " + allBooks.get(i).getTitle());
+//            for (String chapter: allBooks.get(i).getChapters()) {
+//                System.out.println(chapter);
+//            }
+//        }
     }
 }
