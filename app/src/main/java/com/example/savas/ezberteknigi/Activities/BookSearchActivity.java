@@ -71,19 +71,6 @@ public class BookSearchActivity extends AppCompatActivity {
                 startActivity(intent, options.toBundle());
             }
         });
-
-        final FloatingActionButton fab = findViewById(R.id.add_new_book);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (new InternetConnectivitySocket().isConnectedToInternet()){
-                    Intent i = new Intent(getBaseContext(), BookSearchActivity.class);
-                    startActivity(i);
-                } else {
-                    Toast.makeText(getBaseContext(), "İnternet bağlantısı mevcut değil", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
     }
 
     class RetrieveBooksFromFirebase implements Runnable {

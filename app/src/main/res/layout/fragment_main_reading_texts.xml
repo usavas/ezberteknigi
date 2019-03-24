@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/moduleColor"
     tools:context=".Activities.ReadingTextsFragment">
 
@@ -12,5 +13,16 @@
         android:layout_height="match_parent"
         android:paddingTop="8dp"
         tools:listitem="@layout/item_rt" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_new_book"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_add_black_24dp"
+        app:layout_anchor="@+id/recycler_view_reading_text"
+        app:layout_anchorGravity="right|bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.design.widget.CoordinatorLayout>

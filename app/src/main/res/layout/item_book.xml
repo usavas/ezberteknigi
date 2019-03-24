@@ -21,11 +21,10 @@
 
         <ImageView
             android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
             android:layout_height="250dp"
-            android:layout_margin="8dp"
             android:id="@+id/image_book_detail"
             android:transitionName="show_book_detail"
-            android:background="@color/lightGrey"
             android:src="@drawable/ic_book_black_24dp"
             android:scaleType="fitCenter"/>
 

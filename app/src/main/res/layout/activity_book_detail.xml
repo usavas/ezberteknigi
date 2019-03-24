@@ -19,4 +19,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_book_black_24dp"
         android:transitionName="show_book_detail"/>
+
 </android.support.constraint.ConstraintLayout>

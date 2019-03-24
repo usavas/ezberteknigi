@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.Constraints;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,8 +17,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Adapters.ReadingTextAdapter;
+import com.example.savas.ezberteknigi.BLL.InternetConnectivitySocket;
 import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.BookWrapper;
 import com.example.savas.ezberteknigi.Models.ReadingText;
@@ -70,6 +73,19 @@ public class ReadingTextsFragment extends Fragment {
 //                startActivity(intent);
             }
         });
+
+//        final FloatingActionButton fab = getActivity().findViewById(R.id.add_new_book);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (new InternetConnectivitySocket().isConnectedToInternet()){
+//                    Intent i = new Intent(getContext(), BookSearchActivity.class);
+//                    startActivity(i);
+//                } else {
+//                    Toast.makeText(getContext(), "İnternet bağlantısı mevcut değil", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
 
         Log.d(TAG, "onCreateView: recyclerView: " + recyclerView.toString());
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
