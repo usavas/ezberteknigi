@@ -1,8 +1,6 @@
 package com.example.savas.ezberteknigi;
 
-import com.example.savas.ezberteknigi.BLL.ApacheOpenNLPSentenceExtractor;
 import com.example.savas.ezberteknigi.BLL.ExampleSentenceExtractor;
-import com.example.savas.ezberteknigi.BLL.ExampleSentenceProvidable;
 
 import org.junit.Test;
 
@@ -12,7 +10,7 @@ public class ExampleSentenceExtractorTest {
 
     @Test
     public void extractSentencesFromText(){
-        List<String> sentences = ExampleSentenceExtractor.getSentences("This is another not containing sentence.        " +
+        List<String> sentences = ExampleSentenceExtractor.getContainerSentences("This is another not containing sentence.        " +
                 "This is too with spaces.    Another example sample contain word. " +
                 "Example word sample containing sentence\".\"\ntwo separate sentences, separate by sample dot." +
                 "Not ending there because of word without spaces. \n\n\nBut this sample line.", "sample");
@@ -26,7 +24,7 @@ public class ExampleSentenceExtractorTest {
 
     @Test
     public void extractSentencesFromText_notContainsNewLineChar(){
-        List<String> sentences = ExampleSentenceExtractor.getSentences("Another example contain word. " +
+        List<String> sentences = ExampleSentenceExtractor.getContainerSentences("Another example contain word. " +
                 "Example word sample containing sentence.\ntwo separate sentences, separate by sample dot.", "sample");
         boolean notContainsSpecialChar = true;
         for (String s: sentences) {
@@ -37,24 +35,6 @@ public class ExampleSentenceExtractorTest {
         assert notContainsSpecialChar;
     }
 
-    @Test
-    public void apacheOpenNLPExtractSentences(){
-        ExampleSentenceProvidable apacheNLP = new ApacheOpenNLPSentenceExtractor();
-        String[] sentences = apacheNLP.getSentences("This is another not containing sentence.        " +
-                "This is too with spaces.    Another example sample contain word. " +
-                "Example word sample containing sentence\".\"\ntwo separate sentences, separate by sample dot." +
-                "Not ending there because of word without spaces. \n\n\nBut this sample line.");
 
-        for (String sentence : sentences) {
-            System.out.println(sentence);
-        }
-    }
-
-    @Test
-    public void apacheOpenNLPL_getWordLemmatized(){
-        ExampleSentenceProvidable apacheNLP = new ApacheOpenNLPSentenceExtractor();
-        String lemma = ((ApacheOpenNLPSentenceExtractor) apacheNLP).getLemmaOfWord("proliferatedg");
-        System.out.println(lemma);
-    }
 
 }

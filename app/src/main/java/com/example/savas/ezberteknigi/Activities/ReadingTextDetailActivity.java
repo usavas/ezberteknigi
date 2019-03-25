@@ -22,28 +22,29 @@ import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.savas.ezberteknigi.BLL.ApacheOpenNLPHelper;
 import com.example.savas.ezberteknigi.BLL.DummyTranslateProvider;
 import com.example.savas.ezberteknigi.BLL.ExampleSentenceExtractor;
-import com.example.savas.ezberteknigi.BLL.TranslationProvidable;
+import com.example.savas.ezberteknigi.BLL.Interfaces.TranslationProvidable;
 import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
-import com.example.savas.ezberteknigi.BLL.WebContentRetrievable;
+import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class ReadingTextDetailActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private ReadingTextRepository readingTextRepository;
     private ReadingText readingText;
 
-//    private TextView tvHeader;
+    //    private TextView tvHeader;
     private TextView tvContent;
     private NestedScrollView nestedScrollView;
     private NavigationView navView;
@@ -57,7 +58,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         readingTextRepository = new ReadingTextRepository(getApplication());
         readingText = readingTextRepository.getReadingTextById(getIntent().getIntExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_ID, 0));
 
-        if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_WEB){
+        if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_WEB) {
             if (WebContentRetrievable.isValidUrl(readingText.getSource())) {
                 prepareLayoutForWebView();
             }
@@ -90,7 +91,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
                                     if (selectedText.trim() != "") {
 //
 //                                        List<String> selectedSentences = ExampleSentenceExtractor
-//                                                .getSentences(readingText.getChapters(), selectedText);
+//                                                .getContainerSentences(readingText.getChapters(), selectedText);
 //
 //                                        String singleSentence = "";
 //                                        if (selectedSentences.size() > 0) {
@@ -105,10 +106,10 @@ public class ReadingTextDetailActivity extends AppCompatActivity
                                                     public void onReceiveValue(String text) {
                                                         if (text.trim() != "") {
                                                             List<String> selectedSentences = ExampleSentenceExtractor
-                                                                    .getSentences(text, selectedText);
+                                                                    .getContainerSentences(text, selectedText);
 
                                                             String singleSentence = "";
-                                                            if (selectedSentences.size() > 0){
+                                                            if (selectedSentences.size() > 0) {
                                                                 singleSentence = selectedSentences.get(0);
                                                             }
 
@@ -130,7 +131,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
     private void prepareLayoutForReadingTextView(int documentType) {
 
         //TODO: (maybe) if the content is HTML then -> tvContent.setText(Html.fromHtml(readingText.getChapters()));
-        if (documentType == ReadingText.DOCUMENT_TYPE_PLAIN){
+        if (documentType == ReadingText.DOCUMENT_TYPE_PLAIN) {
             setContentView(R.layout.activity_rt_detail);
             setTitle(readingText.getHeader());
 
@@ -159,7 +160,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
                 });
             }
 
-        } else if (documentType == ReadingText.DOCUMENT_TYPE_BOOK){
+        } else if (documentType == ReadingText.DOCUMENT_TYPE_BOOK) {
             setContentView(R.layout.activity_rt_detail_2);
             setNavigationDrawerForBook();
             tvContent = findViewById(R.id.text_view_reading_text_detail_content);
@@ -193,8 +194,11 @@ public class ReadingTextDetailActivity extends AppCompatActivity
             new Handler().postDelayed(() -> {
                 int wordSelectionStart = tvContent.getSelectionStart();
                 int wordSelectionEnd = tvContent.getSelectionEnd();
+
                 String selectedText = tvContent.getText().toString().substring(wordSelectionStart, wordSelectionEnd);
-                String selectedSentence = getSelectedSentence(wordSelectionStart, wordSelectionEnd);
+                String selectedSentence = ExampleSentenceExtractor
+                        .getSelectedSentence(tvContent.getText().toString(), wordSelectionStart, wordSelectionEnd);
+
                 showWordDialog(selectedText, selectedSentence);
             }, 700);
             return false;
@@ -221,7 +225,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
                 scrollView.scrollTo(0, readingText.getLeftOffset());
 //                tvContent.scrollTo(0, readingText.getLeftOffset());
 
-                if (readingText.getLeftOffset() <= tvContent.getMaxHeight()){
+                if (readingText.getLeftOffset() <= tvContent.getMaxHeight()) {
                     scrollView.scrollTo(0, readingText.getLeftOffset());
 //                    tvContent.scrollTo(0, readingText.getLeftOffset());
                 }
@@ -238,13 +242,6 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         navigationView.invalidate();
     }
 
-    @NonNull
-    private String getSelectedSentence(int wordSelectionStart, int wordSelectionEnd) {
-        String text = tvContent.getText().toString();
-        return ExampleSentenceExtractor
-                .getSelectedSentence(text, wordSelectionStart, wordSelectionEnd);
-    }
-
     private boolean verifySelection(int wordSelectionStart, int wordSelectionEnd) {
         if ((wordSelectionEnd - wordSelectionStart) > 0) {
             return true;
@@ -253,11 +250,18 @@ public class ReadingTextDetailActivity extends AppCompatActivity
     }
 
     private void showWordDialog(String wordString, String exampleSentence) {
-        if (wordString.trim() != "" && wordString.trim().split(" ").length == 1) {
-            Word word = returnWordIfExists(wordString);
+        if (!wordString.trim().equals("") && wordString.trim().split(" ").length == 1) {
 
+            String wordStrToPass = wordString;
+
+            String wordFromApache = ApacheOpenNLPHelper.getLemmaOfWord(wordString.trim());
+            if (wordFromApache != null && !wordFromApache.equals("")){
+                wordStrToPass = wordFromApache;
+            }
+
+            Word word = returnWordIfExists(wordStrToPass);
             if (word == null) {
-                openAddWordDialog(wordString, getTranslation(wordString), exampleSentence);
+                openAddWordDialog(wordStrToPass, getTranslation(wordStrToPass), exampleSentence);
             } else {
                 openWordDetailsDialog(word.getWordId());
             }
@@ -310,7 +314,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         String title = menuItem.getTitle().toString();
         int clickedChapterNr = Integer.parseInt(title.split(" ")[1]);
-        if (clickedChapterNr != readingText.getLeftChapter()){
+        if (clickedChapterNr != readingText.getLeftChapter()) {
             readingText.setLeftChapter(clickedChapterNr);
             readingText.setLeftOffset(0);
             scrollToPosition(nestedScrollView);
@@ -331,14 +335,14 @@ public class ReadingTextDetailActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (readingText.getBook() != null){
+        if (readingText.getBook() != null) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
             } else {
                 super.onBackPressed();
             }
-        } else{
+        } else {
             super.onBackPressed();
         }
     }

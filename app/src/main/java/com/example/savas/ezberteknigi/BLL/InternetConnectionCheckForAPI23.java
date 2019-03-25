@@ -4,8 +4,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.example.savas.ezberteknigi.BLL.Interfaces.InternetConnectionCheckable;
 
-public class InternetConnectionCheckForAPI23 implements InternetConnectionCheckable{
+
+public class InternetConnectionCheckForAPI23 implements InternetConnectionCheckable {
 
     private Context context;
 

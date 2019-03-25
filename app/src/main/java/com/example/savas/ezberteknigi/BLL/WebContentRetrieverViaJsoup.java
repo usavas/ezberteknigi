@@ -3,6 +3,8 @@ package com.example.savas.ezberteknigi.BLL;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 

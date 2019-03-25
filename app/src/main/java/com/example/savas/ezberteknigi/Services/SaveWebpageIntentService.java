@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
-import com.example.savas.ezberteknigi.BLL.WebContentRetrievable;
+import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
 import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaJsoup;
 
 import java.util.List;

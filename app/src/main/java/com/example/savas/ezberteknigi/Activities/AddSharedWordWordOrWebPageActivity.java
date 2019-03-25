@@ -6,11 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.BLL.DummyTranslateProvider;
-import com.example.savas.ezberteknigi.BLL.TranslationProvidable;
+import com.example.savas.ezberteknigi.BLL.Interfaces.TranslationProvidable;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;

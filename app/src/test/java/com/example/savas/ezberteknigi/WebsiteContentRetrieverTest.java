@@ -1,13 +1,10 @@
 package com.example.savas.ezberteknigi;
 
-import com.example.savas.ezberteknigi.BLL.WebContentRetrievable;
+import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
 import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaHttpRequest;
 import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaJsoup;
-import com.example.savas.ezberteknigi.Models.Book;
 
 import org.junit.Test;
-
-import java.util.List;
 
 public class WebsiteContentRetrieverTest {
     @Test

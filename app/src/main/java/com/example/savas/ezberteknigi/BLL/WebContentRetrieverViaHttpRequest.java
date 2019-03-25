@@ -1,9 +1,9 @@
 package com.example.savas.ezberteknigi.BLL;
 
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
+
+import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 import static android.content.ContentValues.TAG;
 
 
-public class WebContentRetrieverViaHttpRequest implements WebContentRetrievable{
+public class WebContentRetrieverViaHttpRequest implements WebContentRetrievable {
 
     @Override
     public String retrieveContent(String url) {

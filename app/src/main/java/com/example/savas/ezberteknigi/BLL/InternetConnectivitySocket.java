@@ -2,6 +2,8 @@ package com.example.savas.ezberteknigi.BLL;
 
 import android.os.AsyncTask;
 
+import com.example.savas.ezberteknigi.BLL.Interfaces.InternetConnectionCheckable;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;

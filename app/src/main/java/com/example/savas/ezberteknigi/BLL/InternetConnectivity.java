@@ -1,6 +1,6 @@
 package com.example.savas.ezberteknigi.BLL;
 
-import android.content.Context;
+import com.example.savas.ezberteknigi.BLL.Interfaces.InternetConnectionCheckable;
 
 import java.io.IOException;
 
