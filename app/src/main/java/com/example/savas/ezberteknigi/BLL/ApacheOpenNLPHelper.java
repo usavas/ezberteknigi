@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi.BLL;
 
+import com.example.savas.ezberteknigi.AppStarter;
 import com.example.savas.ezberteknigi.BLL.Interfaces.SentenceSplittable;
 
 import java.io.FileInputStream;
@@ -19,6 +20,7 @@ public class ApacheOpenNLPHelper implements SentenceSplittable {
     public String[] getSentences(String text) {
 
         //TODO have to replace this with resource files
+        // AppStarter.getContext().getResources().
         try (InputStream modelIn = new FileInputStream("/home/savas/AndroidStudioProjects/ezberteknigi/app/src/main/res/raw/en_sent.bin")) {
             SentenceModel model = new SentenceModel(modelIn);
 

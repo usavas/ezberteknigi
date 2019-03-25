@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<color name="colorPrimary">#008577</color>-->
-    <!--<color name="colorPrimaryDark">#00574B</color>-->
-    <!--<color name="colorAccent">#D81B60</color>-->
+    <color name="colorPrimary">@color/orangePrimary</color>
+    <color name="colorPrimaryDark">@color/orangePrimaryDark</color>
+    <color name="colorAccent">@color/orangeAccent</color>
+
+
+
+    <!--amber material design-->
+    <color name="amberPrimary">#ffc107</color>
+    <color name="ambebrPrimaryDark">#ffa000</color>
+    <color name="amberAccent">#FFD740</color>
+
+    <!--indigo material design-->
+    <color name="indigoPrimary">#3f51b5</color>
+    <color name="indigoPrimaryDark">#303f9f</color>
+    <color name="indigoAccent">#7c4dff</color>
+
+    <!--orange material design-->
+    <color name="orangePrimary">#ff9800</color>
+    <color name="orangePrimaryDark">#f57c00</color>
+    <color name="orangeAccent">#ffab40</color>
+
+
 
     <color name="blue">#0000FF</color>
     <color name="moduleColor">#FFFFFF</color>
@@ -22,6 +41,8 @@
     <color name="powder">#8FD8D2</color>
     <color name="orange">#E27D60</color>
     <color name="pastelBlue">#779ecb</color>
+
+
 
 
 </resources>

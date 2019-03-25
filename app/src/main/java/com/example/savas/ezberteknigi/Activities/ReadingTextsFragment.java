@@ -67,10 +67,6 @@ public class ReadingTextsFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), ReadingTextDetailActivity.class);
                     intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
                     startActivity(intent);
-
-//                Intent intent = new Intent(getActivity(), ReadingTextDetailActivity2.class);
-//                intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
-//                startActivity(intent);
             }
         });
 

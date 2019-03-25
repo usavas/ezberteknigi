@@ -319,6 +319,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
             readingText.setLeftOffset(0);
             scrollToPosition(nestedScrollView);
             populateContentForBook(clickedChapterNr);
+            menuItem.setChecked(true);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
