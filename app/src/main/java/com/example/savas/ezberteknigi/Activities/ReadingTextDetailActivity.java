@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresPermission;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,9 +13,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
@@ -39,38 +40,33 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class ReadingTextDetailActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+    implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ReadingTextRepository readingTextRepository;
-    private ReadingText readingText;
-
-    //    private TextView tvHeader;
     private TextView tvContent;
     private NestedScrollView nestedScrollView;
-    private NavigationView navView;
+    private ReadingText _readingText;
+    private NavigationView _navView;
 
-    private Book book;
+    private Book _book;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        readingTextRepository = new ReadingTextRepository(getApplication());
-        readingText = readingTextRepository.getReadingTextById(getIntent().getIntExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_ID, 0));
+        _readingText = new ReadingTextRepository(getApplication())
+                .getReadingTextById(getIntent().getIntExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_ID, 0));
 
-        if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_WEB) {
-            if (WebContentRetrievable.isValidUrl(readingText.getSource())) {
-                prepareLayoutForWebView();
+        if (_readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_WEB) {
+            if (WebContentRetrievable.isValidUrl(_readingText.getSource())) {
+                prepareLayoutForWebView(_readingText);
             }
         } else {
-            prepareLayoutForReadingTextView(readingText.getDocument_type());
+            prepareLayoutForReadingTextView(_readingText);
         }
     }
 
-    private void prepareLayoutForWebView() {
+    private void prepareLayoutForWebView(ReadingText readingText) {
         setContentView(R.layout.activity_http_viewer);
-//        tvHeader = findViewById(R.id.tv_header_url_address);
-//        tvHeader.setText(readingText.getHeader());
 
         setTitle(readingText.getHeader());
 
@@ -113,7 +109,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
                                                                 singleSentence = selectedSentences.get(0);
                                                             }
 
-                                                            showWordDialog(selectedText, singleSentence);
+                                                            showWordDialog(selectedText, singleSentence, readingText.getReadingTextId());
                                                         }
                                                     }
                                                 });
@@ -127,67 +123,12 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         });
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private void prepareLayoutForReadingTextView(int documentType) {
-
+    private void prepareLayoutForReadingTextView(ReadingText readingText) {
         //TODO: (maybe) if the content is HTML then -> tvContent.setText(Html.fromHtml(readingText.getChapters()));
-        if (documentType == ReadingText.DOCUMENT_TYPE_PLAIN) {
-            setContentView(R.layout.activity_rt_detail);
-            setTitle(readingText.getHeader());
-
-            tvContent = findViewById(R.id.text_view_reading_text_detail_content);
-            tvContent.setText(readingText.getContent());
-
-            TextView tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
-            tvHeader.setText(readingText.getHeader());
-
-            ScrollView scrollView = findViewById(R.id.scroll_view);
-            scrollToPosition(scrollView);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        readingText.setLeftOffset(scrollY);
-                    }
-                });
-            } else {
-                scrollView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        readingText.setLeftOffset(scrollView.getScrollY());
-                        return false;
-                    }
-                });
-            }
-
-        } else if (documentType == ReadingText.DOCUMENT_TYPE_BOOK) {
-            setContentView(R.layout.activity_rt_detail_2);
-            setNavigationDrawerForBook();
-            tvContent = findViewById(R.id.text_view_reading_text_detail_content);
-            navView = findViewById(R.id.nav_view);
-            nestedScrollView = findViewById(R.id.nested_scroll_view);
-            navView.setNavigationItemSelectedListener(this);
-
-            book = readingText.getBook();
-            populateChapterMenu(navView, book.getChapterCount());
-            populateContentForBook(readingText.getLeftChapter());
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        readingText.setLeftOffset(scrollY);
-                    }
-                });
-            } else {
-                nestedScrollView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        readingText.setLeftOffset(nestedScrollView.getScrollY());
-                        return false;
-                    }
-                });
-            }
+        if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_PLAIN) {
+            prepareLayoutForPlainText(readingText);
+        } else if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_BOOK) {
+            prepareLayoutForBook(readingText);
         }
 
         tvContent.setOnLongClickListener(v -> {
@@ -199,36 +140,106 @@ public class ReadingTextDetailActivity extends AppCompatActivity
                 String selectedSentence = ExampleSentenceExtractor
                         .getSelectedSentence(tvContent.getText().toString(), wordSelectionStart, wordSelectionEnd);
 
-                showWordDialog(selectedText, selectedSentence);
+                showWordDialog(selectedText, selectedSentence, readingText.getReadingTextId());
             }, 700);
             return false;
         });
     }
 
+    private void prepareLayoutForPlainText(ReadingText readingText) {
+        setContentView(R.layout.activity_rt_detail);
+        setTitle(readingText.getHeader());
+
+        tvContent = findViewById(R.id.text_view_reading_text_detail_content);
+        tvContent.setText(readingText.getContent());
+
+        TextView tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
+        tvHeader.setText(readingText.getHeader());
+
+        ScrollView scrollView = findViewById(R.id.scroll_view);
+        scrollToPosition(scrollView, readingText.getLeftOffset());
+
+        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                readingText.setLeftOffset(scrollY);
+            }
+        });
+    }
+
+    private void prepareLayoutForBook(ReadingText readingText) {
+        setContentView(R.layout.activity_rt_detail_2);
+        tvContent = findViewById(R.id.text_view_reading_text_detail_content);
+        _navView = findViewById(R.id.nav_view);
+        _navView.setNavigationItemSelectedListener(this);
+        nestedScrollView = findViewById(R.id.nested_scroll_view);
+        _book = readingText.getBook();
+
+        setNavigationDrawerForBook();
+        scrollToPosition(nestedScrollView, readingText.getLeftOffset());
+
+        populateChapterMenu(_navView, _book.getChapterCount());
+        populateContentForBook(_book, readingText.getLeftChapter());
+
+        nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                readingText.setLeftOffset(scrollY);
+            }
+        });
+    }
+
     private void setNavigationDrawerForBook() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout navDrawer = findViewById(R.id.drawer_layout);
         Toolbar toolbar = findViewById(R.id.rt_toolbar);
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open,
+                this, navDrawer, toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
-        if (drawer != null) {
-            drawer.addDrawerListener(toggle);
+        if (navDrawer != null) {
+            navDrawer.addDrawerListener(toggle);
         }
         toggle.syncState();
     }
 
-    private void scrollToPosition(FrameLayout scrollView) {
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        menuItem.setChecked(true);
+
+        String title = menuItem.getTitle().toString();
+        int clickedChapterNr = Integer.parseInt(title.split(" ")[1]);
+        Log.d("XXXX", "onNavigationItemSelected: clicked chapter nr: " + clickedChapterNr);
+
+        if (clickedChapterNr == _readingText.getLeftChapter())
+            return false;
+
+        scrollToPosition(nestedScrollView, 0);
+        populateContentForBook(_book, clickedChapterNr);
+
+        _readingText.setLeftChapter(clickedChapterNr);
+        Log.d("XXXX", "onNavigationItemSelected: left chapter set: " + _readingText.getLeftChapter());
+        _readingText.setLeftOffset(0);
+
+        closeNavDrawer();
+        return true;
+    }
+
+    private void closeNavDrawer() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private void scrollToPosition(FrameLayout scrollView, int i) {
         scrollView.post(new Runnable() {
             @Override
             public void run() {
-                scrollView.scrollTo(0, readingText.getLeftOffset());
+                scrollView.scrollTo(0, i);
+                Log.d("XXXX SCROLL:", "scrollToPosition: " + i);
 //                tvContent.scrollTo(0, readingText.getLeftOffset());
 
-                if (readingText.getLeftOffset() <= tvContent.getMaxHeight()) {
-                    scrollView.scrollTo(0, readingText.getLeftOffset());
-//                    tvContent.scrollTo(0, readingText.getLeftOffset());
-                }
+//                if (i <= tvContent.getMaxHeight()) {
+//                    scrollView.scrollTo(0, i);
+//                }
             }
         });
     }
@@ -242,6 +253,20 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         navigationView.invalidate();
     }
 
+    private void populateContentForBook(Book book, int currChapter) {
+        Toolbar toolbar = findViewById(R.id.rt_toolbar);
+        String title = "Chapter " + currChapter;
+
+        toolbar.setTitle(title);
+        this.setTitle(title);
+        getSupportActionBar().setTitle(title);
+        setTitle(title);
+        Log.d("XXXX", "populateContentForBook: setTitle: " + title);
+
+        tvContent.setText(book.getChapters().get(currChapter - 1));
+    }
+
+
     private boolean verifySelection(int wordSelectionStart, int wordSelectionEnd) {
         if ((wordSelectionEnd - wordSelectionStart) > 0) {
             return true;
@@ -249,21 +274,21 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         return false;
     }
 
-    private void showWordDialog(String wordString, String exampleSentence) {
+    private void showWordDialog(String wordString, String exampleSentence, int readingTextId) {
         if (!wordString.trim().equals("") && wordString.trim().split(" ").length == 1) {
 
             String wordStrToPass = wordString;
 
             String wordFromApache = ApacheOpenNLPHelper.getLemmaOfWord(wordString.trim());
-            if (wordFromApache != null && !wordFromApache.equals("")){
+            if (wordFromApache != null && !wordFromApache.equals("")) {
                 wordStrToPass = wordFromApache;
             }
 
             Word word = returnWordIfExists(wordStrToPass);
             if (word == null) {
-                openAddWordDialog(wordStrToPass, getTranslation(wordStrToPass), exampleSentence);
+                openAddWordDialog(wordStrToPass, getTranslation(wordStrToPass), exampleSentence, readingTextId);
             } else {
-                openWordDetailsDialog(word.getWordId());
+                openWordDetailsDialog(word.getWordId(), readingTextId);
             }
         }
     }
@@ -275,6 +300,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
             if (word == null) {
                 return null;
             } else {
+                Log.d("XXXX", "returnWordIfExists: true");
                 return word;
             }
         } catch (ExecutionException e) {
@@ -290,53 +316,30 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         return translatable.getMeaningOf(word)[0];
     }
 
-    private void openAddWordDialog(String word, String translation, String exampleSentence) {
-        AddWordFragment wordDialogFragment = AddWordFragment.newInstance(word, translation, exampleSentence, readingText.getReadingTextId());
+    private void openAddWordDialog(String word, String translation, String exampleSentence, int readingTextId) {
+        AddWordFragment wordDialogFragment = AddWordFragment.newInstance(word, translation, exampleSentence, readingTextId);
         wordDialogFragment.show(getSupportFragmentManager(), "add word");
     }
 
-    private void openWordDetailsDialog(int wordId) {
-        WordDetailFragment wordDetailFragment = WordDetailFragment.newInstance(wordId, readingText.getReadingTextId());
+    private void openWordDetailsDialog(int wordId, int readingTextId) {
+        WordDetailFragment wordDetailFragment = WordDetailFragment.newInstance(wordId, readingTextId);
         wordDetailFragment.show(getSupportFragmentManager(), "see word details");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        saveReadingTextCurrentStatus();
+        saveReadingTextCurrentStatus(_readingText);
     }
 
-    private void saveReadingTextCurrentStatus() {
-        readingTextRepository.update(readingText);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        String title = menuItem.getTitle().toString();
-        int clickedChapterNr = Integer.parseInt(title.split(" ")[1]);
-        if (clickedChapterNr != readingText.getLeftChapter()) {
-            readingText.setLeftChapter(clickedChapterNr);
-            readingText.setLeftOffset(0);
-            scrollToPosition(nestedScrollView);
-            populateContentForBook(clickedChapterNr);
-            menuItem.setChecked(true);
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    private void populateContentForBook(int currChapter) {
-        Toolbar toolbar = findViewById(R.id.rt_toolbar);
-        toolbar.setTitle(String.format(Locale.getDefault(), "Chapter %d", currChapter));
-
-        tvContent.setText(book.getChapters().get(currChapter - 1));
+    private void saveReadingTextCurrentStatus(ReadingText readingText) {
+        new ReadingTextRepository(getApplication()).update(readingText);
+        Log.d("XXXX", "saveReadingTextCurrentStatus: readingText updated, new rt: leftOffset: " + readingText.getLeftOffset() + ", leftChapter: " + readingText.getLeftChapter());
     }
 
     @Override
     public void onBackPressed() {
-        if (readingText.getBook() != null) {
+        if (_readingText.getBook() != null) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
@@ -347,4 +350,6 @@ public class ReadingTextDetailActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
+
 }
