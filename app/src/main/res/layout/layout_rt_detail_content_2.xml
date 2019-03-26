@@ -14,6 +14,7 @@
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/book_collapsing_tool_bar"
             android:layout_width="match_parent"
             android:layout_height="350dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"

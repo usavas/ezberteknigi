@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -224,6 +225,32 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         return true;
     }
 
+    private void populateChapterMenu(NavigationView navigationView, int chapterCount) {
+        Menu menu = navigationView.getMenu();
+        for (int i = 1; i <= chapterCount; i++) {
+            MenuItem mi = menu.add("Chapter " + i);
+            mi.setIcon(R.drawable.ic_book_black_24dp);
+        }
+        navigationView.invalidate();
+    }
+
+    private void populateContentForBook(Book book, int currChapter) {
+        String title = "Chapter " + currChapter;
+
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.book_collapsing_tool_bar);
+        collapsingToolbarLayout.setTitleEnabled(true);
+        collapsingToolbarLayout.setTitle(title);
+        Log.d("XXXX", "populateContentForBook: setTitle: " + title);
+
+//        Toolbar toolbar = findViewById(R.id.rt_toolbar);
+//        toolbar.setTitle(title);
+//        this.setTitle(title);
+//        getSupportActionBar().setTitle(title);
+//        setTitle(title);
+
+        tvContent.setText(book.getChapters().get(currChapter - 1));
+    }
+
     private void closeNavDrawer() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -243,29 +270,6 @@ public class ReadingTextDetailActivity extends AppCompatActivity
             }
         });
     }
-
-    private void populateChapterMenu(NavigationView navigationView, int chapterCount) {
-        Menu menu = navigationView.getMenu();
-        for (int i = 1; i <= chapterCount; i++) {
-            MenuItem mi = menu.add("Chapter " + i);
-            mi.setIcon(R.drawable.ic_book_black_24dp);
-        }
-        navigationView.invalidate();
-    }
-
-    private void populateContentForBook(Book book, int currChapter) {
-        Toolbar toolbar = findViewById(R.id.rt_toolbar);
-        String title = "Chapter " + currChapter;
-
-        toolbar.setTitle(title);
-        this.setTitle(title);
-        getSupportActionBar().setTitle(title);
-        setTitle(title);
-        Log.d("XXXX", "populateContentForBook: setTitle: " + title);
-
-        tvContent.setText(book.getChapters().get(currChapter - 1));
-    }
-
 
     private boolean verifySelection(int wordSelectionStart, int wordSelectionEnd) {
         if ((wordSelectionEnd - wordSelectionStart) > 0) {
