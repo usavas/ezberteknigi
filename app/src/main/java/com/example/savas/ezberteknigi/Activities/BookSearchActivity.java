@@ -2,6 +2,7 @@ package com.example.savas.ezberteknigi.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -36,6 +37,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +47,8 @@ import java.util.Objects;
 public class BookSearchActivity extends AppCompatActivity {
     private static final String TAG = "BookSearchActivity";
     private EndlessRecyclerViewScrollListener scrollListener;
+    public static final String READING_TEXT_ID = "READING_TEXT_ID";
+    public static final String READING_TEXT_IMAGE = "READING_TEXT_IMAGE";
 
     final BookSearchAdapter adapter = new BookSearchAdapter(this);
     ProgressDialog dialog;
@@ -94,6 +98,8 @@ public class BookSearchActivity extends AppCompatActivity {
             public void onItemClick(BookWrapper book, ImageView imageView) {
                 Intent intent = new Intent(BookSearchActivity.this, BookDetailActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(BookSearchActivity.this, imageView, Objects.requireNonNull(ViewCompat.getTransitionName(imageView)));
+                intent.putExtra(READING_TEXT_ID, book.getBook().getId());
+                intent.putExtra(READING_TEXT_IMAGE, book.getBook().getImage());
                 startActivity(intent, options.toBundle());
             }
         });
@@ -145,9 +151,5 @@ public class BookSearchActivity extends AppCompatActivity {
             books.add(child.getValue(Book.class));
         }
         return BookWrapper.makeBookWrapperList(books);
-//
-//        GenericTypeIndicator<List<Book>> t = new GenericTypeIndicator<List<Book>>() {};
-//        List<Book> books = dataSnapshot.getValue(t);
-//        return BookWrapper.makeBookWrapperList(books);
     }
 }

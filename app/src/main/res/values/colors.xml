@@ -13,7 +13,6 @@
     <color name="seaGreenDark">#2B98AC</color>
     <color name="flamingo">#E2A3B5</color>
     
-    
 
     <!--sunshine material design-->
     <color name="sunPrimary">@color/sunshine</color>

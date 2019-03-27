@@ -13,6 +13,7 @@ import java.util.List;
 
 public class Book {
 
+    private int id;
     private String lang;
     private String author;
     private List<String> chapters;
@@ -34,6 +35,14 @@ public class Book {
         this.level = level;
         this.storyline = storyline;
         this.title = title;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getAuthor() {

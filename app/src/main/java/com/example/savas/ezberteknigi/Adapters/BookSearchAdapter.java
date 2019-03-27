@@ -102,27 +102,8 @@ public class BookSearchAdapter extends Adapter<BookSearchAdapter.SearchBookHolde
         }
 
         private void bindImage(Book book) {
-            //TODO: THIS ONE //does not retrieve some images and loads images rather late
             imageView.setImageBitmap(book.getImage());
 
-            //TODO: OR THIS ONE // on hyper scrolling mixes the images. (assigns wrong images to imageViews) // preferring this one at least it retrieves the images
-//            FirebaseStorage storage = FirebaseStorage.getInstance();
-//
-//            try {
-//                StorageReference storageReference = storage.getReferenceFromUrl("gs://ezberteknigi.appspot.com").child(book.getImageUrlName());
-//                final File localFile = File.createTempFile("images", "jpg");
-//                storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                        imageView.setImageBitmap(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//                    }
-//                });
-//            } catch (IOException e) {
-//            }
 
         }
     }
