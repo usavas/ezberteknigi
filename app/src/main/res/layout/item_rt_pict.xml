@@ -24,7 +24,7 @@
             android:layout_weight="0.3"
             android:layout_height="120dp"
             android:layout_margin="8dp"
-            app:srcCompat="@color/amberAccent" />
+            app:srcCompat="@color/tempImageBg" />
 
         <LinearLayout
             android:layout_width="0dp"

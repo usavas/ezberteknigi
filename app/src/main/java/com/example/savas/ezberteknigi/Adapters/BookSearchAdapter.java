@@ -141,27 +141,27 @@ public class BookSearchAdapter extends Adapter<BookSearchAdapter.SearchBookHolde
 
     public void setBooks(List<BookWrapper> books) {
         this.books = books;
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        for (BookWrapper book : books) {
-            try {
-                StorageReference storageReference = storage.getReferenceFromUrl("gs://ezberteknigi.appspot.com").child(book.getBook().getImageUrlName());
-                final File localFile = File.createTempFile("images", "jpg");
-                storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        book.getBook().setImage(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
-                        notifyItemChanged(books.indexOf(book));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                    }
-                });
-            } catch (IOException e) {
-            }
-        }
+//        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        for (BookWrapper book : books) {
+//            try {
+//                StorageReference storageReference = storage.getReferenceFromUrl("gs://ezberteknigi.appspot.com").child(book.getBook().getImageUrlName());
+//                final File localFile = File.createTempFile("images", "jpg");
+//                storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                        book.getBook().setImage(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
+//                        notifyItemChanged(books.indexOf(book));
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception exception) {
+//                    }
+//                });
+//            } catch (IOException e) {
+//            }
+//        }
 
 
     }
