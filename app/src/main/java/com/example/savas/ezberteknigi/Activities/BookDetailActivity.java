@@ -13,5 +13,7 @@ public class BookDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_book_detail);
 
         getWindow().setEnterTransition(null);
+
+
     }
 }

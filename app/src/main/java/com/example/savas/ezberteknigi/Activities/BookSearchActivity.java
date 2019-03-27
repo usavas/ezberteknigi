@@ -93,7 +93,7 @@ public class BookSearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(BookWrapper book, ImageView imageView) {
                 Intent intent = new Intent(BookSearchActivity.this, BookDetailActivity.class);
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(BookSearchActivity.this, imageView, ViewCompat.getTransitionName(imageView));
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(BookSearchActivity.this, imageView, Objects.requireNonNull(ViewCompat.getTransitionName(imageView)));
                 startActivity(intent, options.toBundle());
             }
         });

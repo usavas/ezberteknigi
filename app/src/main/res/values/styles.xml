@@ -7,9 +7,18 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/clean</item>
         <item name="android:textColor">#232323</item>
+        <item name="android:colorSecondary">@color/sunshine</item>
         <item name="android:colorButtonNormal">@color/flamingo</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:buttonCornerRadius">4dp</item>
+    </style>
+
+
+
+    <style name="SunshineTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/sunshine</item>
+        <item name="colorPrimaryDark">@color/sunshine2</item>
+        <item name="colorAccent">@color/vermillon</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
