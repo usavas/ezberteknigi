@@ -211,8 +211,10 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         int clickedChapterNr = Integer.parseInt(title.split(" ")[1]);
         Log.d("XXXX", "onNavigationItemSelected: clicked chapter nr: " + clickedChapterNr);
 
-        if (clickedChapterNr == _readingText.getLeftChapter())
+        if (clickedChapterNr == _readingText.getLeftChapter()){
+            closeNavDrawer();
             return false;
+        }
 
         scrollToPosition(nestedScrollView, 0);
         populateContentForBook(_book, clickedChapterNr);
@@ -241,12 +243,6 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         collapsingToolbarLayout.setTitleEnabled(true);
         collapsingToolbarLayout.setTitle(title);
         Log.d("XXXX", "populateContentForBook: setTitle: " + title);
-
-//        Toolbar toolbar = findViewById(R.id.rt_toolbar);
-//        toolbar.setTitle(title);
-//        this.setTitle(title);
-//        getSupportActionBar().setTitle(title);
-//        setTitle(title);
 
         tvContent.setText(book.getChapters().get(currChapter - 1));
     }
