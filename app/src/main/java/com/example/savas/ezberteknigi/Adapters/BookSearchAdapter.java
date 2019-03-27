@@ -1,7 +1,6 @@
 package com.example.savas.ezberteknigi.Adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.savas.ezberteknigi.Models.Book;
@@ -48,6 +46,7 @@ public class BookSearchAdapter extends Adapter<BookSearchAdapter.SearchBookHolde
     public void onBindViewHolder(@NonNull BookSearchAdapter.SearchBookHolder searchBookHolder, int i) {
         BookWrapper bookItem = books.get(i);
         searchBookHolder.bind(bookItem);
+        searchBookHolder.bindImage(bookItem.getBook());
 
 //        searchBookHolder.itemView.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -92,7 +91,6 @@ public class BookSearchAdapter extends Adapter<BookSearchAdapter.SearchBookHolde
                     }
                 }
             });
-
         }
 
         private void bind(BookWrapper bookWrapper) {
@@ -101,28 +99,30 @@ public class BookSearchAdapter extends Adapter<BookSearchAdapter.SearchBookHolde
             tvAuthor.setText(book.getAuthor());
             tvLevel.setText(book.getLevel());
             tvGenre.setText(book.getGenre());
+        }
 
+        private void bindImage(Book book) {
             //TODO: THIS ONE //does not retrieve some images and loads images rather late
-//            imageView.setImageBitmap(book.getImage());
+            imageView.setImageBitmap(book.getImage());
 
             //TODO: OR THIS ONE // on hyper scrolling mixes the images. (assigns wrong images to imageViews) // preferring this one at least it retrieves the images
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-
-            try {
-                StorageReference storageReference = storage.getReferenceFromUrl("gs://ezberteknigi.appspot.com").child(book.getImageUrlName());
-                final File localFile = File.createTempFile("images", "jpg");
-                storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        imageView.setImageBitmap(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                    }
-                });
-            } catch (IOException e) {
-            }
+//            FirebaseStorage storage = FirebaseStorage.getInstance();
+//
+//            try {
+//                StorageReference storageReference = storage.getReferenceFromUrl("gs://ezberteknigi.appspot.com").child(book.getImageUrlName());
+//                final File localFile = File.createTempFile("images", "jpg");
+//                storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                        imageView.setImageBitmap(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception exception) {
+//                    }
+//                });
+//            } catch (IOException e) {
+//            }
 
         }
     }
@@ -141,28 +141,29 @@ public class BookSearchAdapter extends Adapter<BookSearchAdapter.SearchBookHolde
 
     public void setBooks(List<BookWrapper> books) {
         this.books = books;
-
-//        FirebaseStorage storage = FirebaseStorage.getInstance();
-//        for (BookWrapper book : books) {
-//            try {
-//                StorageReference storageReference = storage.getReferenceFromUrl("gs://ezberteknigi.appspot.com").child(book.getBook().getImageUrlName());
-//                final File localFile = File.createTempFile("images", "jpg");
-//                storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                        book.getBook().setImage(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//                    }
-//                });
-//            } catch (IOException e) {
-//            }
-//        }
-
-
         notifyDataSetChanged();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        for (BookWrapper book : books) {
+            try {
+                StorageReference storageReference = storage.getReferenceFromUrl("gs://ezberteknigi.appspot.com").child(book.getBook().getImageUrlName());
+                final File localFile = File.createTempFile("images", "jpg");
+                storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        book.getBook().setImage(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
+                        notifyItemChanged(books.indexOf(book));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                    }
+                });
+            } catch (IOException e) {
+            }
+        }
+
+
     }
 
 }

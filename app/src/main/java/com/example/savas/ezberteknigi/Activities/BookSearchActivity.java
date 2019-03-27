@@ -95,23 +95,6 @@ public class BookSearchActivity extends AppCompatActivity {
 
                 adapter.setBooks(bookWrappers);
 
-//                adapter.setOnItemClickListener(new BookSearchAdapter.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(BookWrapper book) {
-//
-//                    }
-//
-////                    @Override
-////                    public void onButtonAddBookClick(BookWrapper bookW) {
-////                        Book b = bookW.getBook();
-////                        ReadingText readingText = new ReadingText(bookW.getLanguage(), b.getTitle(), ReadingText.DOCUMENT_TYPE_BOOK, "");
-////                        readingText.setBook(b);
-////
-////                        new ReadingTextRepository(getApplication()).insert(readingText);
-////                        Toast.makeText(BookSearchActivity.this, "Kitap kütüphaneye eklendi", Toast.LENGTH_LONG).show();
-////                    }
-//                });
-
                 if (dialog.isShowing()){
                     dialog.dismiss();
                 }
