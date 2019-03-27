@@ -2,18 +2,16 @@
 <resources>
     <color name="colorPrimary">@color/seaGreen</color>
     <color name="colorPrimaryDark">@color/seaGreenDark</color>
-    <color name="colorAccent">@color/flamingo</color>
+    <color name="colorAccent">@color/tealAccent</color>
     <color name="windowBackground">@color/lightGrey</color>
     <color name="tempImageBg">@color/seaGreen</color>
     <color name="bottomNavigationColor">@color/moduleColor</color>
 
 
-
     <color name="seaGreen2">#ABC4AF</color>
-
     <color name="seaGreen">#5DBCD2</color>
     <color name="seaGreenDark">#2B98AC</color>
-    <color name="flamingo">#D57694</color>
+    <color name="flamingo">#E2A3B5</color>
     
     
 
