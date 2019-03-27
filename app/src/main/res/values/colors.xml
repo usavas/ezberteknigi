@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/tealPrimary</color>
-    <color name="colorPrimaryDark">@color/tealPrimaryDark</color>
-    <color name="colorAccent">@color/tealAccent</color>
-    <color name="windowBackground">@color/clean</color>
-
+    <color name="colorPrimary">@color/seaGreen</color>
+    <color name="colorPrimaryDark">@color/seaGreenDark</color>
+    <color name="colorAccent">@color/flamingo</color>
+    <color name="windowBackground">@color/lightGrey</color>
     <color name="tempImageBg">@color/seaGreen</color>
-    <color name="bottomNavigationColor">@color/colorPrimary</color>
+    <color name="bottomNavigationColor">@color/moduleColor</color>
 
 
 
