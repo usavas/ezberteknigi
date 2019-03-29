@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi.BLL;
 
+import android.content.res.AssetFileDescriptor;
 import android.util.Log;
 
 import com.example.savas.ezberteknigi.AppStarter;
@@ -52,11 +53,24 @@ public class ApacheOpenNLPHelper implements SentenceSplittable {
     }
 
     private static String[] getPosOfWords(String[] words) {
-        try (InputStream modelIn = (FileInputStream) AppStarter.getContext().getAssets().open("en-pos-maxent.bin")) {
-            POSModel model = new POSModel(modelIn);
-            POSTaggerME tagger = new POSTaggerME(model);
+        //TODO: below solution works too slow
+        System.setProperty("org.xml.sax.driver", "org.xmlpull.v1.sax2.Driver");
+        try {
+            AssetFileDescriptor fileDescriptor = AppStarter.getContext().getAssets().openFd("en_pos_maxent.bin");
+            FileInputStream inputStream = fileDescriptor.createInputStream();
+            POSModel posModel = new POSModel(inputStream);
+            POSTaggerME posTaggerME = new POSTaggerME(posModel);
 
-            return tagger.tag(words);
+            return posTaggerME.tag(words);
+
+//        try (InputStream modelIn = (FileInputStream) AppStarter.getContext().getAssets().open("en_pos_maxent.bin")) {
+//            POSModel model = new POSModel(modelIn);
+//            POSTaggerME tagger = new POSTaggerME(model);
+//
+//            return tagger.tag(words);
+//
+//
+//            } catch (Exception e) {}
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

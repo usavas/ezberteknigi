@@ -34,7 +34,7 @@ public class AppStarter extends Application {
         try {
             Log.d("XXXXXXXXXXXXXXX", "pos content: "
                     + BufferedReaderHelper.readFromInputStream(AppStarter.getContext().getAssets()
-                    .open("en-pos-maxent.bin.dict")));
+                    .open("en_pos_maxent.bin.dict")));
         } catch (IOException e) {
             e.printStackTrace();
         }
