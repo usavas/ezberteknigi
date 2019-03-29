@@ -2,6 +2,8 @@
   <dictionary name="savas">
     <words>
       <w>firebase</w>
+      <w>lemmatized</w>
+      <w>lemmatizer</w>
     </words>
   </dictionary>
 </component>

@@ -6,9 +6,12 @@ import android.app.NotificationManager;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
+import com.example.savas.ezberteknigi.Helpers.BufferedReaderHelper;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
 
 public class AppStarter extends Application {
 
@@ -24,7 +27,21 @@ public class AppStarter extends Application {
         createNotificationChannels();
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        Log.d("XXXXXXXXXXXXXXX", "source dir: " + AppStarter.getContext().getApplicationInfo().sourceDir);
+//        Log.d("XXXXXXXXXXXXXXX", "filesDir: " + AppStarter.getContext().getFilesDir());
+//        Log.d("XXXXXXXXXXXXXXX", "assets: " + AppStarter.getContext().getAssets());
+        try {
+            Log.d("XXXXXXXXXXXXXXX", "pos content: "
+                    + BufferedReaderHelper.readFromInputStream(AppStarter.getContext().getAssets()
+                    .open("en-pos-maxent.bin.dict")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
+
 
     public static Context getContext(){
         return mContext;
