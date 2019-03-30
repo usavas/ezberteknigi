@@ -17,34 +17,33 @@ public class AppStarter extends Application {
 
     public static final String CHANNEL_WORD_REVISION = "CHANNEL_WORD_REVISION";
     public static final String CHANNEL_WORD_OF_THE_DAY = "CHANNEL_WORD_OF_THE_DAY";
-    private static Context mContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext = this;
 
         createNotificationChannels();
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
-        Log.d("XXXXXXXXXXXXXXX", "source dir: " + AppStarter.getContext().getApplicationInfo().sourceDir);
+//        Log.d("XXXXXXXXXXXXXXX", "source dir: " + getApplicationInfo().sourceDir);
 //        Log.d("XXXXXXXXXXXXXXX", "filesDir: " + AppStarter.getContext().getFilesDir());
 //        Log.d("XXXXXXXXXXXXXXX", "assets: " + AppStarter.getContext().getAssets());
-        try {
-            Log.d("XXXXXXXXXXXXXXX", "pos content: "
-                    + BufferedReaderHelper.readFromInputStream(AppStarter.getContext().getAssets()
-                    .open("en_pos_maxent.bin.dict")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Log.d("XXXXXXXXXXXXXXX", "pos content: "
+//                    + BufferedReaderHelper.readFromInputStream(AppStarter.getContext().getAssets()
+//                    .open("raw/en_pos_maxent.bin")));
+//
+//            Log.d("XXXXXXXXXXXXXXX", "sent content: "
+//                    + BufferedReaderHelper.readFromInputStream(AppStarter.getContext().getAssets()
+//                    .open("raw/en_sent.bin")));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
-
-
-
-    public static Context getContext(){
-        return mContext;
+    public Context getmContext(){
+        return getBaseContext();
     }
 
     private void createNotificationChannels() {

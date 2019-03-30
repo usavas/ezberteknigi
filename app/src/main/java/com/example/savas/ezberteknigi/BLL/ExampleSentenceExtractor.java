@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi.BLL;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.savas.ezberteknigi.BLL.Interfaces.SentenceSplittable;
@@ -13,17 +14,23 @@ public class ExampleSentenceExtractor {
             "? ", ". ", "! ", "... ", ".. ", ".\n", "\n", ".\t", ".\"", "\"."
     };
 
+    Context mContext = null;
+
+    public ExampleSentenceExtractor(Context context){
+        mContext = context;
+    }
+
     /**
      * returns the list of sentences in a String which contains the given word
      * @param text the String object of the whole text
      * @param word the word String to check against the given text
      * @return the list of sentences
      */
-    public static List<String> getContainerSentences(String text, String word) {
+    public List<String> getContainerSentences(String text, String word) {
 //        final Pattern END_OF_SENTENCE = Pattern.compile("(?<=[.?!(...)])[\"”]?[\\s\\n\\t]+");
 //        String[] sentences = END_OF_SENTENCE.split(text);
 
-        SentenceSplittable splitter = new ApacheOpenNLPHelper();
+        SentenceSplittable splitter = new ApacheOpenNLPHelper(mContext);
         String[] sentences = splitter.getSentences(text);
 
         List<String> sentencesContaining = new ArrayList<>();
