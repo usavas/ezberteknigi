@@ -2,21 +2,15 @@ package com.example.savas.ezberteknigi.BLL;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
-import android.util.Log;
 
 import com.example.savas.ezberteknigi.AppStarter;
 import com.example.savas.ezberteknigi.BLL.Interfaces.SentenceSplittable;
-import com.example.savas.ezberteknigi.R;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.AlgorithmParameterGenerator;
-import java.util.Objects;
 
-import opennlp.tools.lemmatizer.DictionaryLemmatizer;
-import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
@@ -31,7 +25,7 @@ public class ApacheOpenNLPHelper implements SentenceSplittable {
 
     @Override
     public String[] getSentences(String text) {
-        try (InputStream modelIn = new AppStarter().getmContext().getAssets().open("en_sent.bin")) {
+        try (InputStream modelIn = new AppStarter().getContext().getAssets().open("en_sent.bin")) {
             SentenceModel model = new SentenceModel(modelIn);
 
             SentenceDetectorME sentenceDetector = new SentenceDetectorME(model);
@@ -54,39 +48,12 @@ public class ApacheOpenNLPHelper implements SentenceSplittable {
     }
 
     private String getLemmaOfWord(String word) {
-        try (InputStream modelIn = getFileInputFromRaw(R.raw.en_lemmatizer)) {
-            DictionaryLemmatizer lemmatizer = new DictionaryLemmatizer(modelIn);
-
-            String[] pos = getPosOfWords(new String[]{word});
-
-
-            String[] lemmas = lemmatizer.lemmatize(new String[]{word}, pos);
-            return lemmas[0];
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        String[] lemmas = AppStarter.getDictionaryLemmatizer().lemmatize(new String[]{word}, getPosOfWords(new String[]{word}));
+        return lemmas[0];
     }
 
     private String[] getPosOfWords(String[] words) {
-        try {
-            POSModel posModel = new POSModel(Objects.requireNonNull(getFileInputFromRawWithSettings(R.raw.en_pos_maxent)));
-            POSTaggerME posTaggerME = new POSTaggerME(posModel);
-
-            return posTaggerME.tag(words);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.d("XXXXXXXXXXX", "getPosOfWords: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        return null;
+        return AppStarter.getPosTaggerMe().tag(words);
     }
 
     private static String[] possiblePostags = new String[]{

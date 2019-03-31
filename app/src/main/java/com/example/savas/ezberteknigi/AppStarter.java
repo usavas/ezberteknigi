@@ -5,18 +5,28 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.os.Build;
-import android.util.Log;
 
-import com.example.savas.ezberteknigi.Helpers.BufferedReaderHelper;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+
+import opennlp.tools.lemmatizer.DictionaryLemmatizer;
+import opennlp.tools.postag.POSModel;
+import opennlp.tools.postag.POSTaggerME;
+
 
 public class AppStarter extends Application {
 
     public static final String CHANNEL_WORD_REVISION = "CHANNEL_WORD_REVISION";
     public static final String CHANNEL_WORD_OF_THE_DAY = "CHANNEL_WORD_OF_THE_DAY";
+
+//    public static InputStream dictionaryLemmatizer = null;
+//    public static InputStream posTaggerMe = null;
+
+    public static POSTaggerME posTaggerMe = null;
+    public static DictionaryLemmatizer dictionaryLemmatizer = null;
 
     @Override
     public void onCreate() {
@@ -24,26 +34,43 @@ public class AppStarter extends Application {
 
         createNotificationChannels();
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        //TODO: re-activate these lines on production //move them to the opening of the reading text detail activity
+//        dictionaryLemmatizer = inflateLemmatizerModel();
+//        posTaggerMe = inflatePosModel();
 
-//        Log.d("XXXXXXXXXXXXXXX", "source dir: " + getApplicationInfo().sourceDir);
-//        Log.d("XXXXXXXXXXXXXXX", "filesDir: " + AppStarter.getContext().getFilesDir());
-//        Log.d("XXXXXXXXXXXXXXX", "assets: " + AppStarter.getContext().getAssets());
-//        try {
-//            Log.d("XXXXXXXXXXXXXXX", "pos content: "
-//                    + BufferedReaderHelper.readFromInputStream(AppStarter.getContext().getAssets()
-//                    .open("raw/en_pos_maxent.bin")));
-//
-//            Log.d("XXXXXXXXXXXXXXX", "sent content: "
-//                    + BufferedReaderHelper.readFromInputStream(AppStarter.getContext().getAssets()
-//                    .open("raw/en_sent.bin")));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
-    public Context getmContext(){
+    public Context getContext() {
         return getBaseContext();
+    }
+
+    public static POSTaggerME getPosTaggerMe() {
+        return posTaggerMe;
+    }
+
+    public static DictionaryLemmatizer getDictionaryLemmatizer() {
+        return dictionaryLemmatizer;
+    }
+
+    private DictionaryLemmatizer inflateLemmatizerModel() {
+        try {
+            return new DictionaryLemmatizer(getBaseContext().getResources().openRawResource(R.raw.en_lemmatizer));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private POSTaggerME inflatePosModel() {
+        System.setProperty("org.xml.sax.driver", "org.xmlpull.v1.sax2.Driver");
+        AssetFileDescriptor fd = getBaseContext().getResources().openRawResourceFd(R.raw.en_pos_maxent);
+        try {
+            return new POSTaggerME(new POSModel(fd.createInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void createNotificationChannels() {
