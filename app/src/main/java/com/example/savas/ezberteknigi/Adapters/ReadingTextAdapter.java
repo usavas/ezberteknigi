@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.ReadingTextHolder> {
-    private List<ReadingText> readingTexts = new ArrayList();
+    private List<ReadingText> readingTexts = new ArrayList<>();
     private OnItemClickListener listener;
 
     @NonNull
@@ -36,7 +36,6 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
     public int getItemCount() {
         return readingTexts.size();
     }
-
 
 
     class ReadingTextHolder extends RecyclerView.ViewHolder{
@@ -77,8 +76,4 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
         this.readingTexts = readingTexts;
         notifyDataSetChanged();
     }
-
-
-
-
 }

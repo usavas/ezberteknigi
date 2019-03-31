@@ -30,7 +30,7 @@ public class ExampleSentenceExtractor {
 //        final Pattern END_OF_SENTENCE = Pattern.compile("(?<=[.?!(...)])[\"”]?[\\s\\n\\t]+");
 //        String[] sentences = END_OF_SENTENCE.split(text);
 
-        SentenceSplittable splitter = new ApacheOpenNLPHelper(mContext);
+        SentenceSplittable splitter = new ApacheOpenNLPHelper();
         String[] sentences = splitter.getSentences(text);
 
         List<String> sentencesContaining = new ArrayList<>();

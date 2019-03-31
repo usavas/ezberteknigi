@@ -279,7 +279,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
 
             String wordStrToPass = wordString;
 
-            String wordFromApache = new ApacheOpenNLPHelper(getApplicationContext()).getLemma(wordString.trim());
+            String wordFromApache = new ApacheOpenNLPHelper().getLemma(wordString.trim());
             if (wordFromApache != null && !wordFromApache.equals("")) {
                 wordStrToPass = wordFromApache;
             }
