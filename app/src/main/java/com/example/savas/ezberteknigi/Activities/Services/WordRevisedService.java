@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutionException;
 public class WordRevisedService extends IntentService {
 
     /**
-     * these 2 methods are required by the system somehow
+     * these 2 methods are required by the system
      */
     public WordRevisedService(String name) {
         super(name);
@@ -31,14 +31,12 @@ public class WordRevisedService extends IntentService {
         WordRepository repo = new WordRepository(getApplication());
         try {
             Word word = repo.getWordById(wordId);
-            word.revisionCompleted();
-            repo.update(word);
+            if (word != null){
+                word.revisionCompleted();
+                repo.update(word);
 
-            Log.d("XXXXXXXXXXXX", "wordRevised: " + word.toString());
-
-//            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-//            notificationManager.cancel(wordId);
-
+                Log.d("XXXXXXXXXXXX", "wordRevised: " + word.toString());
+            }
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

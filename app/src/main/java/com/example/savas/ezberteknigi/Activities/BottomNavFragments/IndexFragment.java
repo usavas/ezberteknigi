@@ -38,8 +38,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 import static com.example.savas.ezberteknigi.AppStarter.CHANNEL_WORD_REVISION;
@@ -55,7 +57,7 @@ public class IndexFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Index");
+        Objects.requireNonNull(getActivity()).setTitle("Index");
     }
 
     @Override
@@ -91,12 +93,12 @@ public class IndexFragment extends Fragment {
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<BookWrapper> bookWrappers = retrieveData(dataSnapshot);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d(Constraints.TAG, "onCancelled: " + "The read failed: " + databaseError.getCode());
             }
         });
@@ -105,9 +107,7 @@ public class IndexFragment extends Fragment {
     private List<BookWrapper> retrieveData(DataSnapshot dataSnapshot) {
         Book[] books = dataSnapshot.getValue(Book[].class);
         List<Book> bookList = new ArrayList<>();
-        for (Book book : books) {
-            bookList.add(book);
-        }
+        Collections.addAll(bookList, books);
         return BookWrapper.makeBookWrapperList(bookList);
     }
 
@@ -198,7 +198,7 @@ public class IndexFragment extends Fragment {
     }
 
     private void sendDataToFirebase() {
-        FirebaseApp.initializeApp(getActivity().getApplicationContext());
+        FirebaseApp.initializeApp(Objects.requireNonNull(getActivity()).getApplicationContext());
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("message");
 
         myRef.setValue("Hello, World!");

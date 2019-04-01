@@ -15,7 +15,6 @@ import com.example.savas.ezberteknigi.Activities.NavigatorActivity;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
-import com.example.savas.ezberteknigi.Activities.Services.WordRevisedService;
 
 import java.util.List;
 import java.util.Locale;
