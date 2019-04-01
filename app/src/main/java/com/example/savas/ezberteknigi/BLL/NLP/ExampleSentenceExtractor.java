@@ -13,11 +13,11 @@ public class ExampleSentenceExtractor {
             "? ", ". ", "! ", "... ", ".. ", ".\n", "\n", ".\t", ".\"", "\"."
     };
 
-    Context mContext = null;
-
-    public ExampleSentenceExtractor(Context context){
-        mContext = context;
-    }
+//    Context mContext = null;
+//
+//    public ExampleSentenceExtractor(Context context){
+//        mContext = context;
+//    }
 
     /**
      * returns the list of sentences in a String which contains the given word

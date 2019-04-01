@@ -9,28 +9,23 @@ import java.util.Date;
 
 public class TimeStampConverter {
 
-    public static DateFormat df = DateFormat.getDateTimeInstance();
+//    public static DateFormat df = DateFormat.getDateTimeInstance();
 
     @TypeConverter
-    public static Date fromTimestamp(String value) {
-        if (value != null) {
-            try {
-                return df.parse(value);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            return null;
+    public static Date fromTimestamp(long value) {
+        if (value != 0L) {
+            return new Date(value);
         } else {
             return null;
         }
     }
 
     @TypeConverter
-    public static String fromDate(Date date) {
+    public static long fromDate(Date date) {
         if (date != null) {
-            return df.format(date);
+            return date.getTime();
         } else {
-            return null;
+            return 0L;
         }
     }
 }

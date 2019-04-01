@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi;
 
+import com.example.savas.ezberteknigi.BLL.Interfaces.WordLemmatizable;
 import com.example.savas.ezberteknigi.BLL.NLP.ApacheOpenNLPHelper;
 import com.example.savas.ezberteknigi.BLL.Interfaces.SentenceSplittable;
 
@@ -22,7 +23,8 @@ public class ApacheOpenNLPTest {
 
     @Test
     public void apacheOpenNLPL_getWordLemmatized(){
-        String lemma = ApacheOpenNLPHelper.getLemmaOfWord("things");
+        WordLemmatizable lemmatizable = new ApacheOpenNLPHelper();
+        String lemma = lemmatizable.getLemmaOfWord("things");
         System.out.println(lemma);
     }
 }

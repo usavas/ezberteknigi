@@ -10,7 +10,8 @@ public class ExampleSentenceExtractorTest {
 
     @Test
     public void extractSentencesFromText(){
-        List<String> sentences = ExampleSentenceExtractor.getContainerSentences("This is another not containing sentence.        " +
+        ExampleSentenceExtractor extractor = new ExampleSentenceExtractor();
+        List<String> sentences = extractor.getContainerSentences("This is another not containing sentence.        " +
                 "This is too with spaces.    Another example sample contain word. " +
                 "Example word sample containing sentence\".\"\ntwo separate sentences, separate by sample dot." +
                 "Not ending there because of word without spaces. \n\n\nBut this sample line.", "sample");
@@ -24,7 +25,8 @@ public class ExampleSentenceExtractorTest {
 
     @Test
     public void extractSentencesFromText_notContainsNewLineChar(){
-        List<String> sentences = ExampleSentenceExtractor.getContainerSentences("Another example contain word. " +
+        ExampleSentenceExtractor extractor = new ExampleSentenceExtractor();
+        List<String> sentences = extractor.getContainerSentences("Another example contain word. " +
                 "Example word sample containing sentence.\ntwo separate sentences, separate by sample dot.", "sample");
         boolean notContainsSpecialChar = true;
         for (String s: sentences) {

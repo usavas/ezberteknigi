@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Database(entities = {ReadingText.class, Word.class},
-        version = 16,
+        version = 17,
         exportSchema = false)
 public abstract class EzberTeknigiDatabase extends RoomDatabase {
 

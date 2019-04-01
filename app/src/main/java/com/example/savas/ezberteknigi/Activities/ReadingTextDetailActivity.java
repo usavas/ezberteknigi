@@ -103,7 +103,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
                                                     @Override
                                                     public void onReceiveValue(String text) {
                                                         if (text.trim() != "") {
-                                                            List<String> selectedSentences = new ExampleSentenceExtractor(getApplicationContext())
+                                                            List<String> selectedSentences = new ExampleSentenceExtractor()
                                                                     .getContainerSentences(text, selectedText);
 
                                                             String singleSentence = "";
@@ -292,14 +292,10 @@ public class ReadingTextDetailActivity extends AppCompatActivity
 
     @NonNull
     private String getLemmaOfWord(String wordString) {
-        String wordStrToPass = wordString;
-
         WordLemmatizable lemmatizable = new ApacheOpenNLPHelper();
         String lemma = lemmatizable.getLemmaOfWord(wordString.trim());
-        if (lemma != null && !lemma.equals("")) {
-            wordStrToPass = lemma;
-        }
-        return wordStrToPass;
+
+        return (lemma == null) ? wordString : lemma;
     }
 
     private Word returnWordIfExists(String wordString) {

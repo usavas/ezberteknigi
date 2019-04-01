@@ -22,9 +22,13 @@ public class ApacheOpenNLPHelper
 
     @Override
     public String getLemmaOfWord(String word) {
-        String[] lemmas = AppStarter.getDictionaryLemmatizer()
-                .lemmatize(new String[]{word}, getPosOfWords(new String[]{word}));
-        return lemmas[0];
+        String lemma = AppStarter.getDictionaryLemmatizer()
+                .lemmatize(new String[]{word}, getPosOfWords(new String[]{word}))[0];
+        if (lemma.equals("O")){
+            return null;
+        } else {
+            return lemma;
+        }
     }
 
     private String[] getPosOfWords(String[] words) {
