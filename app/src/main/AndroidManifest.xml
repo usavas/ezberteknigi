@@ -30,11 +30,11 @@
         <activity android:name=".Activities.BookSearchActivity" />
 
         <service
-            android:name=".Services.SaveWebpageIntentService"
+            android:name=".Activities.Services.SaveWebpageIntentService"
             android:exported="true" />
-        <service android:name=".Services.WordRevisedService" />
+        <service android:name=".Activities.Services.WordRevisedService" />
         <service
-            android:name=".Services.WordAndTextService"
+            android:name=".Activities.Services.WordAndTextService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -59,7 +59,7 @@
             android:name=".Activities.ReadingTextDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.AddSharedWordWordOrWebPageActivity"
+            android:name=".Activities.HelperActivities.AddSharedWordWordOrWebPageActivity"
             android:label="Kelime Ekle">
             <intent-filter android:label="Öğreneceklerime Ekle">
                 <action android:name="android.intent.action.SEND" />
@@ -74,7 +74,7 @@
             android:label="Alternatif Çeviriler" />
 
         <service
-            android:name=".WordRevisionScheduler"
+            android:name=".Activities.Services.WordRevisionScheduler"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <meta-data

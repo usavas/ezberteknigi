@@ -1,6 +1,6 @@
 package com.example.savas.ezberteknigi;
 
-import com.example.savas.ezberteknigi.BLL.ApacheOpenNLPHelper;
+import com.example.savas.ezberteknigi.BLL.NLP.ApacheOpenNLPHelper;
 import com.example.savas.ezberteknigi.BLL.Interfaces.SentenceSplittable;
 
 import org.junit.Test;

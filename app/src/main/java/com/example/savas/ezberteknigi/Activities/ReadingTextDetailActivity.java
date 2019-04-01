@@ -1,10 +1,8 @@
 package com.example.savas.ezberteknigi.Activities;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresPermission;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,9 +22,13 @@ import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.example.savas.ezberteknigi.BLL.ApacheOpenNLPHelper;
-import com.example.savas.ezberteknigi.BLL.DummyTranslateProvider;
-import com.example.savas.ezberteknigi.BLL.ExampleSentenceExtractor;
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ReadingTextsFragment;
+import com.example.savas.ezberteknigi.Activities.DialogFragments.AddWordFragment;
+import com.example.savas.ezberteknigi.Activities.DialogFragments.WordDetailFragment;
+import com.example.savas.ezberteknigi.BLL.Interfaces.WordLemmatizable;
+import com.example.savas.ezberteknigi.BLL.NLP.ApacheOpenNLPHelper;
+import com.example.savas.ezberteknigi.BLL.Translation.DummyTranslateProvider;
+import com.example.savas.ezberteknigi.BLL.NLP.ExampleSentenceExtractor;
 import com.example.savas.ezberteknigi.BLL.Interfaces.TranslationProvidable;
 import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.ReadingText;
@@ -37,7 +39,6 @@ import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class ReadingTextDetailActivity extends AppCompatActivity
@@ -277,20 +278,28 @@ public class ReadingTextDetailActivity extends AppCompatActivity
     private void showWordDialog(String wordString, String exampleSentence, int readingTextId) {
         if (!wordString.trim().equals("") && wordString.trim().split(" ").length == 1) {
 
-            String wordStrToPass = wordString;
-
-            String wordFromApache = new ApacheOpenNLPHelper().getLemma(wordString.trim());
-            if (wordFromApache != null && !wordFromApache.equals("")) {
-                wordStrToPass = wordFromApache;
-            }
+            String wordStrToPass = getLemmaOfWord(wordString);
 
             Word word = returnWordIfExists(wordStrToPass);
+
             if (word == null) {
                 openAddWordDialog(wordStrToPass, getTranslation(wordStrToPass), exampleSentence, readingTextId);
             } else {
                 openWordDetailsDialog(word.getWordId(), readingTextId);
             }
         }
+    }
+
+    @NonNull
+    private String getLemmaOfWord(String wordString) {
+        String wordStrToPass = wordString;
+
+        WordLemmatizable lemmatizable = new ApacheOpenNLPHelper();
+        String lemma = lemmatizable.getLemmaOfWord(wordString.trim());
+        if (lemma != null && !lemma.equals("")) {
+            wordStrToPass = lemma;
+        }
+        return wordStrToPass;
     }
 
     private Word returnWordIfExists(String wordString) {
@@ -300,7 +309,6 @@ public class ReadingTextDetailActivity extends AppCompatActivity
             if (word == null) {
                 return null;
             } else {
-                Log.d("XXXX", "returnWordIfExists: true");
                 return word;
             }
         } catch (ExecutionException e) {

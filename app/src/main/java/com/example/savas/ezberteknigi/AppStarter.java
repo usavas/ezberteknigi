@@ -11,10 +11,13 @@ import android.os.Build;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import opennlp.tools.lemmatizer.DictionaryLemmatizer;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
+import opennlp.tools.sentdetect.SentenceDetectorME;
+import opennlp.tools.sentdetect.SentenceModel;
 
 
 public class AppStarter extends Application {
@@ -22,35 +25,64 @@ public class AppStarter extends Application {
     public static final String CHANNEL_WORD_REVISION = "CHANNEL_WORD_REVISION";
     public static final String CHANNEL_WORD_OF_THE_DAY = "CHANNEL_WORD_OF_THE_DAY";
 
-//    public static InputStream dictionaryLemmatizer = null;
-//    public static InputStream posTaggerMe = null;
-
-    public static POSTaggerME posTaggerMe = null;
-    public static DictionaryLemmatizer dictionaryLemmatizer = null;
+    private static POSTaggerME mPosTaggerMe = null;
+    private static DictionaryLemmatizer mDictionaryLemmatizer = null;
+    private static SentenceDetectorME mSentenceDetectorME = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        createNotificationChannels();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                createNotificationChannels();
+            }
+        }).start();
 
-        //TODO: re-activate these lines on production //move them to the opening of the reading text detail activity
-//        dictionaryLemmatizer = inflateLemmatizerModel();
-//        posTaggerMe = inflatePosModel();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mSentenceDetectorME = inflateSentenceDetectorME();
+                mDictionaryLemmatizer = inflateLemmatizerModel();
+                mPosTaggerMe = inflatePosModel();
+            }
+        }).start();
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            }
+        }).start();
     }
 
     public Context getContext() {
         return getBaseContext();
     }
 
+    public static SentenceDetectorME getSentenceDetectorME(){
+        return mSentenceDetectorME;
+    }
+
     public static POSTaggerME getPosTaggerMe() {
-        return posTaggerMe;
+        return mPosTaggerMe;
     }
 
     public static DictionaryLemmatizer getDictionaryLemmatizer() {
-        return dictionaryLemmatizer;
+        return mDictionaryLemmatizer;
+    }
+
+
+    private SentenceDetectorME inflateSentenceDetectorME() {
+        InputStream modelIn = getBaseContext().getResources().openRawResource(R.raw.en_sent);
+        try {
+            SentenceModel model = new SentenceModel(modelIn);
+            return new SentenceDetectorME(model);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private DictionaryLemmatizer inflateLemmatizerModel() {

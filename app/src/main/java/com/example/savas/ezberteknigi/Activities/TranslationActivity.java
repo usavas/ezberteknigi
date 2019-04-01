@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.savas.ezberteknigi.Activities.HelperActivities.AddSharedWordWordOrWebPageActivity;
 import com.example.savas.ezberteknigi.Adapters.TranslationAdapter;
 import com.example.savas.ezberteknigi.R;
 

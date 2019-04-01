@@ -1,6 +1,6 @@
 package com.example.savas.ezberteknigi;
 
-import com.example.savas.ezberteknigi.BLL.ExampleSentenceExtractor;
+import com.example.savas.ezberteknigi.BLL.NLP.ExampleSentenceExtractor;
 
 import org.junit.Test;
 

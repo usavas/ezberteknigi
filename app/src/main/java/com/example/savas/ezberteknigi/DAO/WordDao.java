@@ -8,7 +8,6 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.example.savas.ezberteknigi.Models.Word;
-import com.example.savas.ezberteknigi.Models.WordMinimal;
 
 import java.util.List;
 
@@ -41,9 +40,6 @@ public interface WordDao extends BaseDao {
 
     @Query("SELECT * FROM word_table WHERE word_state = :wordState")
     LiveData<List<Word>> getWordsByWordState(int wordState);
-
-    @Query("SELECT word_id, word, translation, reading_text_id, example_sentence, date_saved, word_state FROM word_table")
-    List<WordMinimal> getAllWordsMinimal();
 
     @Query("SELECT EXISTS(SELECT 1 FROM word_table WHERE word = :word)")
     boolean wordExists(String word);

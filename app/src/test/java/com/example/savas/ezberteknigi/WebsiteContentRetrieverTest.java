@@ -1,8 +1,8 @@
 package com.example.savas.ezberteknigi;
 
 import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
-import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaHttpRequest;
-import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaJsoup;
+import com.example.savas.ezberteknigi.BLL.WebCrawler.WebContentRetrieverViaHttpRequest;
+import com.example.savas.ezberteknigi.BLL.WebCrawler.WebContentRetrieverViaJsoup;
 
 import org.junit.Test;
 

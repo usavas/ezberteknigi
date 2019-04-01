@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
-import com.example.savas.ezberteknigi.WordRevisionScheduler;
+import com.example.savas.ezberteknigi.Activities.Services.WordRevisionScheduler;
 
 
 import static android.support.constraint.Constraints.TAG;

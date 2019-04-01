@@ -11,7 +11,6 @@ import java.util.concurrent.ExecutionException;
 import com.example.savas.ezberteknigi.DAO.WordDao;
 import com.example.savas.ezberteknigi.Models.EzberTeknigiDatabase;
 import com.example.savas.ezberteknigi.Models.Word;
-import com.example.savas.ezberteknigi.Models.WordMinimal;
 
 
 public class WordRepository {
@@ -19,7 +18,6 @@ public class WordRepository {
     private LiveData<List<Word>> allWords;
     private LiveData<List<Word>> allWordsLearning;
     private LiveData<List<Word>> allWordsMastered;
-    private List<WordMinimal> wordsMinimal;
 
     public WordRepository(Application application) {
         EzberTeknigiDatabase ezberTeknigiDatabase = EzberTeknigiDatabase.getInstance(application);
@@ -27,14 +25,6 @@ public class WordRepository {
         allWords = wordDao.getAllWords();
         allWordsLearning = wordDao.getWordsByWordState(Word.WORD_LEARNING);
         allWordsMastered = wordDao.getWordsByWordState(Word.WORD_MASTERED);
-
-        try {
-            wordsMinimal = getWordsMinimal();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public LiveData<List<Word>> getAllWords(){
@@ -48,23 +38,6 @@ public class WordRepository {
             return allWordsMastered;
         } else {
             return null;
-        }
-    }
-
-    public List<WordMinimal> getWordsMinimal() throws ExecutionException, InterruptedException {
-        return new GetWordsMinimalAsyncTask(wordDao).execute().get();
-    }
-
-    private static class GetWordsMinimalAsyncTask extends AsyncTask<Word, Void, List<WordMinimal>> {
-        private WordDao wordDao;
-
-        private GetWordsMinimalAsyncTask(WordDao wordDao) {
-            this.wordDao = wordDao;
-        }
-
-        @Override
-        protected List<WordMinimal> doInBackground(Word... words) {
-            return wordDao.getAllWordsMinimal();
         }
     }
 

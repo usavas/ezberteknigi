@@ -1,9 +1,8 @@
 package com.example.savas.ezberteknigi.Models;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
-import com.example.savas.ezberteknigi.BLL.WebContentRetrieverViaHttpRequest;
+import com.example.savas.ezberteknigi.BLL.WebCrawler.WebContentRetrieverViaHttpRequest;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

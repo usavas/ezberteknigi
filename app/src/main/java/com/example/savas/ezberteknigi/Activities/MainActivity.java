@@ -1,18 +1,20 @@
 package com.example.savas.ezberteknigi.Activities;
 
-import android.content.ComponentName;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.IndexFragment;
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ReadingTextsFragment;
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.SettingsFragment;
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordRevisionFragment;
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragmentsContainerFragment;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -21,8 +23,6 @@ import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import static com.example.savas.ezberteknigi.Models.ReadingText.DOCUMENT_TYPE_PLAIN;
 
 public class MainActivity extends AppCompatActivity
 implements WordsFragment.OnFragmentInteractionListener {
