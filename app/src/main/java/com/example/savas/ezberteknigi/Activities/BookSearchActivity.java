@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.example.savas.ezberteknigi.Adapters.BookSearchAdapter;
@@ -70,22 +71,11 @@ public class BookSearchActivity extends AppCompatActivity {
 
             }
         };
-
         recyclerView.addOnScrollListener(scrollListener);
 
-//        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
-        dialog = new ProgressDialog(this);
-        dialog.setMessage("Kitap listesi getiriliyor");
-        dialog.show();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getSampleFirebaseData();
-            }
-        }).start();
+        populateBooksAndCoversFromFireBase();
 
         adapter.setOnItemClickListener(new BookSearchAdapter.OnItemClickListener() {
             @Override
@@ -99,7 +89,7 @@ public class BookSearchActivity extends AppCompatActivity {
         });
     }
 
-    private void getSampleFirebaseData() {
+    private void populateBooksAndCoversFromFireBase() {
         FirebaseDatabase.getInstance().getReference("books").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -117,6 +107,9 @@ public class BookSearchActivity extends AppCompatActivity {
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                 book.getBook().setImage(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
                                 adapter.notifyItemChanged(bookWrappers.indexOf(book));
+
+                                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                                findViewById(R.id.recycler_view_books).setVisibility(View.VISIBLE);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -124,11 +117,8 @@ public class BookSearchActivity extends AppCompatActivity {
                             }
                         });
                     } catch (IOException e) {
-                    }
-                }
 
-                if (dialog.isShowing()){
-                    dialog.dismiss();
+                    }
                 }
             }
 

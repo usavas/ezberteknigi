@@ -44,6 +44,10 @@ implements WordsFragment.OnFragmentInteractionListener {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
                     new IndexFragment()).commit();
         }
+
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+        findViewById(R.id.bottom_navigation_fragment_container).setVisibility(View.VISIBLE);
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

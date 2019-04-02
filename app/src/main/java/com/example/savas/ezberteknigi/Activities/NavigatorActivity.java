@@ -27,7 +27,13 @@ public class NavigatorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        scheduleJob();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                scheduleJob();
+            }
+        }).start();
+
         StartMainActivityBasedOnRevision();
     }
 
