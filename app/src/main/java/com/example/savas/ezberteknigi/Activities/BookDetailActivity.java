@@ -122,7 +122,7 @@ public class BookDetailActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle(book.getTitle());
 
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
-        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);;
+        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
     }
 
     private List<BookWrapper> retrieveData(DataSnapshot dataSnapshot) {

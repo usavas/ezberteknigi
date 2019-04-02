@@ -155,10 +155,13 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         tvContent = findViewById(R.id.text_view_reading_text_detail_content);
         tvContent.setText(readingText.getContent());
 
-        TextView tvHeader = findViewById(R.id.text_view_reading_text_detail_header);
-        tvHeader.setText(readingText.getHeader());
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.rt_collapsing_toolbar_layout);
+        collapsingToolbarLayout.setTitleEnabled(true);
+        collapsingToolbarLayout.setTitle(readingText.getHeader());
+        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
-        ScrollView scrollView = findViewById(R.id.scroll_view);
+        NestedScrollView scrollView = findViewById(R.id.scroll_view);
         scrollToPosition(scrollView, readingText.getLeftOffset());
 
         scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
