@@ -42,7 +42,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
                     .inflate(R.layout.item_word_revision, viewGroup, false);
         } else {
             itemView = LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.item_word, viewGroup, false);
+                    .inflate(R.layout.item_word_2, viewGroup, false);
         }
         return new WordHolder(itemView);
     }
@@ -57,8 +57,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
             @Override
             public void onClick(View v) {
                 if (!isRevision){
-                    currentWord.setExpanded(!currentWord.isExpanded());
-                    notifyItemChanged(i);
+//                    currentWord.setExpanded(!currentWord.isExpanded());
+//                    notifyItemChanged(i);
                 } else {
                     wordHolder.wordFlipper.showNext();
                 }
@@ -92,7 +92,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         private TextView tvWord;
         private TextView tvTranslation;
         private TextView tvExampleSentence;
-        private View viewSubItem;
+//        private View viewSubItem;
         private Button btnMark;
 
         private View viewFront;
@@ -106,7 +106,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
             tvWord = itemView.findViewById(R.id.tvItemWord);
             tvTranslation = itemView.findViewById(R.id.sub_item_translation);
             tvExampleSentence = itemView.findViewById(R.id.sub_item_example_sentence);
-            viewSubItem = itemView.findViewById(R.id.sub_item);
+//            viewSubItem = itemView.findViewById(R.id.sub_item);
 
             if (isRevision){
                 wordFlipper = itemView.findViewById(R.id.word_flipper);
@@ -144,7 +144,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
             tvExampleSentence.setText(word.getExampleSentence());
 
             if (!isRevision){
-                viewSubItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
+//                viewSubItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
 //                if (word.getWordState() == Word.WORD_LEARNING){
 ////                    btnMark.setText("ÖĞRENDİM");

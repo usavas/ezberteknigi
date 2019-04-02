@@ -202,37 +202,7 @@ public class WordsFragment extends Fragment {
                     }
                 }
             }).attachToRecyclerView(recyclerView);
-        }
-//        else if (WORD_LIST_TYPE == Word.WORD_ALL){
-//            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-//                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//                @Override
-//                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-//                    return false;
-//                }
-//
-//                @Override
-//                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-//                    if (i == ItemTouchHelper.LEFT || i == ItemTouchHelper.RIGHT) {
-//
-//                        Word word = wordAdapter.getWordAt(viewHolder.getAdapterPosition());
-//                        wordViewModel.delete(word);
-//
-//                        Snackbar snackbar = Snackbar.make(view,
-//                                "Kelime silindi: " + word.getWord(),
-//                                Snackbar.LENGTH_LONG);
-//                        snackbar.setAction("GERİ AL", new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                wordViewModel.insert(word);
-//                            }
-//                        });
-//                        snackbar.show();
-//                    }
-//                }
-//            }).attachToRecyclerView(recyclerView);
-//        }
-        else if (WORD_LIST_TYPE == Word.WORD_LEARNING) {
+        } else if (WORD_LIST_TYPE == Word.WORD_LEARNING) {
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                 @Override
                 public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {

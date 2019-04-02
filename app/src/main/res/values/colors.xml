@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/seaGreen</color>
-    <color name="colorPrimaryDark">@color/seaGreenDark</color>
-    <color name="colorAccent">@color/tealAccent</color>
+    <color name="colorPrimary">@color/deeporangePrimary</color>
+    <color name="colorPrimaryDark">@color/deeporangePrimaryDark</color>
+    <color name="colorAccent">@color/sunshine3</color>
+
     <color name="windowBackground">@color/lightGrey</color>
-    <color name="tempImageBg">@color/seaGreen</color>
+    <color name="tempImageBg">@color/pastelBlue</color>
     <color name="bottomNavigationColor">@color/moduleColor</color>
 
 
@@ -12,7 +13,8 @@
     <color name="seaGreen">#5DBCD2</color>
     <color name="seaGreenDark">#2B98AC</color>
     <color name="flamingo">#E2A3B5</color>
-    
+    <color name="flamingoDark">#A07083</color>
+
 
     <!--sunshine material design-->
     <color name="sunPrimary">@color/sunshine</color>

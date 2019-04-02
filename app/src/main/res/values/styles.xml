@@ -5,7 +5,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/clean</item>
+        <item name="android:colorForeground">#FFFFFF</item>
+        <item name="android:fontFamily">@font/actor</item>
+        <item name="android:windowBackground">@color/lightGrey</item>
         <item name="android:colorSecondary">@color/sunshine</item>
         <item name="android:colorButtonNormal">@color/flamingo</item>
 
