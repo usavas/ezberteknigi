@@ -23,7 +23,7 @@
 
     <!--amber material design-->
     <color name="amberPrimary">#ffc107</color>
-    <color name="ambebrPrimaryDark">#ffa000</color>
+    <color name="amberPrimaryDark">#ffa000</color>
     <color name="amberAccent">#FFD740</color>
     
     <!--green material design-->

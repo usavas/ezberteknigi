@@ -32,7 +32,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="0.7"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:orientation="vertical">
@@ -54,10 +54,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:textColor="#434343"
                 android:ellipsize="end"
-                android:maxLines="6"
-                android:text="İçerik görüntülenemiyor..."
+                android:maxLines="4"
+                android:text="@string/large_text"
                 android:textSize="15sp" />
 
         </LinearLayout>
