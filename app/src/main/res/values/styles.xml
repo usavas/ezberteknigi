@@ -7,8 +7,7 @@
         <item name="colorAccent">#E040FB</item>
         <item name="android:windowBackground">@color/lightGrey</item>
         <item name="android:colorForeground">#FFFFFF</item>
-        <item name="editTextColor">@color/black</item>
-        <item name="android:textColorTertiary">@color/black</item>
+        <item name="android:editTextColor">@color/black</item>
         <item name="colorButtonNormal">@color/indigoPrimary</item>
         <!--<item name="android:colorSecondary">@color/amberPrimaryDark</item>-->
 
