@@ -17,27 +17,33 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".Activities.BookDetailActivity">
-            <!--android:theme="@style/AppTheme.NoActionBar">-->
+        <activity android:name=".Activities.BookDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator">
 
         </activity>
-        <activity android:name=".Activities.NavigatorActivity">
+        <activity android:name=".Activities.NavigatorActivity"
+            tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.BookSearchActivity" />
+        <activity android:name=".Activities.BookSearchActivity"
+            tools:ignore="InnerclassSeparator" />
 
         <service
             android:name=".Activities.Services.SaveWebpageIntentService"
-            android:exported="true" />
-        <service android:name=".Activities.Services.WordRevisedService" />
+            android:exported="true"
+            tools:ignore="InnerclassSeparator" />
+        <service android:name=".Activities.Services.WordRevisedService"
+            tools:ignore="InnerclassSeparator" />
         <service
             android:name=".Activities.Services.WordAndTextService"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -47,7 +53,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".Activities.MainActivity"
+            tools:ignore="InnerclassSeparator">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -58,10 +65,12 @@
         </activity>
         <activity
             android:name=".Activities.ReadingTextDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activities.HelperActivities.AddSharedWordWordOrWebPageActivity"
-            android:label="Kelime Ekle">
+            android:label="Kelime Ekle"
+            tools:ignore="InnerclassSeparator">
             <intent-filter android:label="Öğreneceklerime Ekle">
                 <action android:name="android.intent.action.SEND" />
 
@@ -72,11 +81,13 @@
         </activity>
         <activity
             android:name=".Activities.TranslationActivity"
-            android:label="Alternatif Çeviriler" />
+            android:label="Alternatif Çeviriler"
+            tools:ignore="InnerclassSeparator" />
 
         <service
             android:name=".Activities.Services.WordRevisionScheduler"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            tools:ignore="InnerclassSeparator" />
 
         <meta-data
             android:name="preloaded_fonts"

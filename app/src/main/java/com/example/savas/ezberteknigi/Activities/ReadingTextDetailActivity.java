@@ -19,7 +19,6 @@ import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ReadingTextsFragment;
@@ -31,7 +30,7 @@ import com.example.savas.ezberteknigi.BLL.Translation.DummyTranslateProvider;
 import com.example.savas.ezberteknigi.BLL.NLP.ExampleSentenceExtractor;
 import com.example.savas.ezberteknigi.BLL.Interfaces.TranslationProvidable;
 import com.example.savas.ezberteknigi.Models.Book;
-import com.example.savas.ezberteknigi.Models.ReadingText;
+import com.example.savas.ezberteknigi.Models.Reading;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
@@ -46,7 +45,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
 
     private TextView tvContent;
     private NestedScrollView nestedScrollView;
-    private ReadingText _readingText;
+    private Reading _reading;
     private NavigationView _navView;
 
     private Book _book;
@@ -55,25 +54,25 @@ public class ReadingTextDetailActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _readingText = new ReadingTextRepository(getApplication())
+        _reading = new ReadingTextRepository(getApplication())
                 .getReadingTextById(getIntent().getIntExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_ID, 0));
 
-        if (_readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_WEB) {
-            if (WebContentRetrievable.isValidUrl(_readingText.getSource())) {
-                prepareLayoutForWebView(_readingText);
+        if (_reading.getDocumentType() == Reading.DOCUMENT_TYPE_WEB) {
+            if (WebContentRetrievable.isValidUrl(_reading.getWebArticle().getSource())) {
+                prepareLayoutForWebView(_reading);
             }
         } else {
-            prepareLayoutForReadingTextView(_readingText);
+            prepareLayoutForReadingTextView(_reading);
         }
     }
 
-    private void prepareLayoutForWebView(ReadingText readingText) {
+    private void prepareLayoutForWebView(Reading reading) {
         setContentView(R.layout.activity_http_viewer);
 
-        setTitle(readingText.getHeader());
+        setTitle(reading.getWebArticle().getTitle());
 
         WebView wv = findViewById(R.id.web_view_reading_text);
-        wv.loadUrl(readingText.getSource());
+        wv.loadUrl(reading.getWebArticle().getSource());
         wv.getSettings().setJavaScriptEnabled(true);
 
         wv.setOnLongClickListener(new View.OnLongClickListener() {
@@ -89,7 +88,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
                                     if (selectedText.trim() != "") {
 //
 //                                        List<String> selectedSentences = ExampleSentenceExtractor
-//                                                .getContainerSentences(readingText.getChapters(), selectedText);
+//                                                .getContainerSentences(reading.getChapters(), selectedText);
 //
 //                                        String singleSentence = "";
 //                                        if (selectedSentences.size() > 0) {
@@ -111,7 +110,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
                                                                 singleSentence = selectedSentences.get(0);
                                                             }
 
-                                                            showWordDialog(selectedText, singleSentence, readingText.getReadingTextId());
+                                                            showWordDialog(selectedText, singleSentence, reading.getReadingId());
                                                         }
                                                     }
                                                 });
@@ -125,12 +124,12 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         });
     }
 
-    private void prepareLayoutForReadingTextView(ReadingText readingText) {
-        //TODO: (maybe) if the content is HTML then -> tvContent.setText(Html.fromHtml(readingText.getChapters()));
-        if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_PLAIN) {
-            prepareLayoutForPlainText(readingText);
-        } else if (readingText.getDocument_type() == ReadingText.DOCUMENT_TYPE_BOOK) {
-            prepareLayoutForBook(readingText);
+    private void prepareLayoutForReadingTextView(Reading reading) {
+        //TODO: (maybe) if the content is HTML then -> tvContent.setText(Html.fromHtml(reading.getChapters()));
+        if (reading.getDocumentType() == Reading.DOCUMENT_TYPE_PLAIN) {
+            prepareLayoutForPlainText(reading);
+        } else if (reading.getDocumentType() == Reading.DOCUMENT_TYPE_BOOK) {
+            prepareLayoutForBook(reading);
         }
 
         tvContent.setOnLongClickListener(v -> {
@@ -142,54 +141,54 @@ public class ReadingTextDetailActivity extends AppCompatActivity
                 String selectedSentence = ExampleSentenceExtractor
                         .getSelectedSentence(tvContent.getText().toString(), wordSelectionStart, wordSelectionEnd);
 
-                showWordDialog(selectedText, selectedSentence, readingText.getReadingTextId());
+                showWordDialog(selectedText, selectedSentence, reading.getReadingId());
             }, 700);
             return false;
         });
     }
 
-    private void prepareLayoutForPlainText(ReadingText readingText) {
+    private void prepareLayoutForPlainText(Reading reading) {
         setContentView(R.layout.activity_rt_detail);
-        setTitle(readingText.getHeader());
+        setTitle(reading.getSimpleArticle().getTitle());
 
         tvContent = findViewById(R.id.text_view_reading_text_detail_content);
-        tvContent.setText(readingText.getContent());
+        tvContent.setText(reading.getSimpleArticle().getContent());
 
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.rt_collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitleEnabled(true);
-        collapsingToolbarLayout.setTitle(readingText.getHeader());
+        collapsingToolbarLayout.setTitle(reading.getSimpleArticle().getTitle());
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
         NestedScrollView scrollView = findViewById(R.id.scroll_view);
-        scrollToPosition(scrollView, readingText.getLeftOffset());
+        scrollToPosition(scrollView, reading.getSimpleArticle().getLeftOffSet());
 
         scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                readingText.setLeftOffset(scrollY);
+                reading.getSimpleArticle().setLeftOffSet(scrollY);
             }
         });
     }
 
-    private void prepareLayoutForBook(ReadingText readingText) {
+    private void prepareLayoutForBook(Reading reading) {
         setContentView(R.layout.activity_rt_detail_2);
         tvContent = findViewById(R.id.text_view_reading_text_detail_content);
         _navView = findViewById(R.id.nav_view);
         _navView.setNavigationItemSelectedListener(this);
         nestedScrollView = findViewById(R.id.nested_scroll_view);
-        _book = readingText.getBook();
+        _book = reading.getBook();
 
         setNavigationDrawerForBook();
-        scrollToPosition(nestedScrollView, readingText.getLeftOffset());
+        scrollToPosition(nestedScrollView, reading.getBook().getLeftOffSet());
 
         populateChapterMenu(_navView, _book.getChapterCount());
-        populateContentForBook(_book, readingText.getLeftChapter());
+        populateContentForBook(_book, _book.getLeftChapter());
 
         nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                readingText.setLeftOffset(scrollY);
+                reading.getBook().setLeftOffSet(scrollY);
             }
         });
     }
@@ -215,7 +214,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         int clickedChapterNr = Integer.parseInt(title.split(" ")[1]);
         Log.d("XXXX", "onNavigationItemSelected: clicked chapter nr: " + clickedChapterNr);
 
-        if (clickedChapterNr == _readingText.getLeftChapter()){
+        if (clickedChapterNr == _book.getLeftChapter()){
             closeNavDrawer();
             return false;
         }
@@ -223,9 +222,9 @@ public class ReadingTextDetailActivity extends AppCompatActivity
         scrollToPosition(nestedScrollView, 0);
         populateContentForBook(_book, clickedChapterNr);
 
-        _readingText.setLeftChapter(clickedChapterNr);
-        Log.d("XXXX", "onNavigationItemSelected: left chapter set: " + _readingText.getLeftChapter());
-        _readingText.setLeftOffset(0);
+        _book.setLeftChapter(clickedChapterNr);
+        Log.d("XXXX", "onNavigationItemSelected: left chapter set: " + _book.getLeftChapter());
+        _reading.getBook().setLeftOffSet(0);
 
         closeNavDrawer();
         return true;
@@ -336,17 +335,16 @@ public class ReadingTextDetailActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        saveReadingTextCurrentStatus(_readingText);
+        saveReadingTextCurrentStatus(_reading);
     }
 
-    private void saveReadingTextCurrentStatus(ReadingText readingText) {
-        new ReadingTextRepository(getApplication()).update(readingText);
-        Log.d("XXXX", "saveReadingTextCurrentStatus: readingText updated, new rt: leftOffset: " + readingText.getLeftOffset() + ", leftChapter: " + readingText.getLeftChapter());
+    private void saveReadingTextCurrentStatus(Reading reading) {
+        new ReadingTextRepository(getApplication()).update(reading);
     }
 
     @Override
     public void onBackPressed() {
-        if (_readingText.getBook() != null) {
+        if (_reading.getBook() != null) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);

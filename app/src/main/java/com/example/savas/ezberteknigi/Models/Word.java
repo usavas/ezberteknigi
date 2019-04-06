@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 @Entity(tableName = "word_table"
 //        ,foreignKeys = @ForeignKey(
-//                entity = ReadingText.class,
+//                entity = Reading.class,
 //                parentColumns = "wordId",
 //                childColumns = "reading_text_id",
 //                onUpdate = CASCADE)

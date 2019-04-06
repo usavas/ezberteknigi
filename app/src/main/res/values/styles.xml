@@ -2,9 +2,10 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">#673AB7</item>
-        <item name="colorPrimaryDark">#512DA8</item>
-        <item name="colorAccent">#E040FB</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/indigoPrimaryDark</item>
+        <item name="colorAccent">@color/indigoAccent</item>
+
         <item name="android:windowBackground">@color/lightGrey</item>
         <item name="android:colorForeground">#FFFFFF</item>
         <item name="android:editTextColor">@color/black</item>

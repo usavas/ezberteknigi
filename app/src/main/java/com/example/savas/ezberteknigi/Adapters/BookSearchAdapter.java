@@ -103,8 +103,6 @@ public class BookSearchAdapter extends Adapter<BookSearchAdapter.SearchBookHolde
 
         private void bindImage(Book book) {
             imageView.setImageBitmap(book.getImage());
-
-
         }
     }
 

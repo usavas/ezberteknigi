@@ -3,12 +3,15 @@ package com.example.savas.ezberteknigi.Activities.Services;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.example.savas.ezberteknigi.Models.ReadingText;
+import com.example.savas.ezberteknigi.Models.WebArticle;
+import com.example.savas.ezberteknigi.Models.Reading;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
 import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
 import com.example.savas.ezberteknigi.BLL.WebCrawler.WebContentRetrieverViaJsoup;
 
 import java.util.List;
+
+import static com.example.savas.ezberteknigi.Models.Reading.DOCUMENT_TYPE_WEB;
 
 public class SaveWebpageIntentService extends IntentService {
 
@@ -33,8 +36,12 @@ public class SaveWebpageIntentService extends IntentService {
 
     private void saveHttpContent(String httpAddress, String title, String httpContent){
         ReadingTextViewModel vm = new ReadingTextViewModel(getApplication());
-        ReadingText webContent = new ReadingText("en", title, ReadingText.DOCUMENT_TYPE_WEB, httpContent);
-        webContent.setSource(httpAddress);
-        vm.insert(webContent);
+
+        Reading r = new Reading();
+        r.setLanguage("en");
+        r.setDocumentType(DOCUMENT_TYPE_WEB);
+        r.setWebArticle(new WebArticle(title, httpContent, httpAddress));
+
+        vm.insert(r);
     }
 }

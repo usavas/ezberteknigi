@@ -7,14 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.savas.ezberteknigi.Models.Article;
+import com.example.savas.ezberteknigi.Models.Reading;
 import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.R;
+import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.ReadingTextHolder> {
-    private List<ReadingText> readingTexts = new ArrayList<>();
+    private List<Reading> readings = new ArrayList<>();
     private OnItemClickListener listener;
 
     @NonNull
@@ -27,14 +30,20 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ReadingTextHolder readingTextHolder, int i) {
-        ReadingText currentReadingText = readingTexts.get(i);
-        readingTextHolder.header.setText(currentReadingText.getHeader());
-        readingTextHolder.content.setText(currentReadingText.getContentForPreview());
+        Reading currentReading = readings.get(i);
+
+        Article article = (currentReading.getDocumentType() == Reading.DOCUMENT_TYPE_PLAIN)
+                ? currentReading.getSimpleArticle()
+                : currentReading.getWebArticle();
+
+        readingTextHolder.header.setText(article.getTitle());
+        readingTextHolder.content.setText(article.getContent());
+
     }
 
     @Override
     public int getItemCount() {
-        return readingTexts.size();
+        return readings.size();
     }
 
 
@@ -52,7 +61,7 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
                     if (listener != null && pos != RecyclerView.NO_POSITION){
-                        listener.onItemClick(readingTexts.get(pos));
+                        listener.onItemClick(readings.get(pos));
                     }
                 }
             });
@@ -60,20 +69,20 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
     }
 
     public interface OnItemClickListener{
-        void onItemClick(ReadingText readingText);
+        void onItemClick(Reading reading);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
         this.listener = listener;
     }
 
-    public ReadingText getReadingTextAt(int position){
-        ReadingText rt = readingTexts.get(position);
+    public Reading getReadingTextAt(int position){
+        Reading rt = readings.get(position);
         return rt;
     }
 
-    public void setReadingTexts(List<ReadingText> readingTexts){
-        this.readingTexts = readingTexts;
+    public void setReadings(List<Reading> readings){
+        this.readings = readings;
         notifyDataSetChanged();
     }
 }

@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 
 import com.example.savas.ezberteknigi.Activities.ReadingTextDetailActivity;
 import com.example.savas.ezberteknigi.Adapters.ReadingTextAdapter;
-import com.example.savas.ezberteknigi.Models.ReadingText;
+import com.example.savas.ezberteknigi.Models.Reading;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
 
@@ -46,13 +46,13 @@ public class ReadingTextsFragment extends Fragment {
         recyclerView.setAdapter(readingTextAdapter);
 
         readingTextViewModel = ViewModelProviders.of(this).get(ReadingTextViewModel.class);
-        readingTextViewModel.getAllReadingTexts().observe(this, readingTexts -> readingTextAdapter.setReadingTexts(readingTexts));
+        readingTextViewModel.getAllReadingTexts().observe(this, readingTexts -> readingTextAdapter.setReadings(readingTexts));
 
         readingTextAdapter.setOnItemClickListener(new ReadingTextAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(ReadingText readingText) {
+            public void onItemClick(Reading reading) {
                     Intent intent = new Intent(getActivity(), ReadingTextDetailActivity.class);
-                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, readingText.getReadingTextId());
+                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, reading.getReadingId());
                     startActivity(intent);
             }
         });
@@ -82,7 +82,7 @@ public class ReadingTextsFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 if (i == ItemTouchHelper.LEFT | i == ItemTouchHelper.RIGHT) {
-                    ReadingText rt = readingTextAdapter.getReadingTextAt(viewHolder.getAdapterPosition());
+                    Reading rt = readingTextAdapter.getReadingTextAt(viewHolder.getAdapterPosition());
                     ReadingTextViewModel rtViewModel = new ReadingTextViewModel(getActivity().getApplication());
                     rtViewModel.delete(rt);
 

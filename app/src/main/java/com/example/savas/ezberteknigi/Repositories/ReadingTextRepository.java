@@ -3,39 +3,38 @@ package com.example.savas.ezberteknigi.Repositories;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
-import android.support.annotation.RequiresPermission;
 
-import com.example.savas.ezberteknigi.DAO.ReadingTextDao;
+import com.example.savas.ezberteknigi.DAO.ReadingDao;
 import com.example.savas.ezberteknigi.Models.EzberTeknigiDatabase;
-import com.example.savas.ezberteknigi.Models.ReadingText;
+import com.example.savas.ezberteknigi.Models.Reading;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class ReadingTextRepository {
-    private ReadingTextDao readingTextDao;
-    private LiveData<List<ReadingText>> allReadingTexts;
+    private ReadingDao readingDao;
+    private LiveData<List<Reading>> allReadingTexts;
 
     public ReadingTextRepository(Application application) {
         EzberTeknigiDatabase database = EzberTeknigiDatabase.getInstance(application);
-        readingTextDao = database.readingTextDao();
-        allReadingTexts = readingTextDao.getAllReadingTexts();
+        readingDao = database.readingTextDao();
+        allReadingTexts = readingDao.getAllReadingTexts();
     }
 
-    public void insert(ReadingText readingText) {
-        new InsertReadingTextAsyncTask(readingTextDao).execute(readingText);
+    public void insert(Reading reading) {
+        new InsertReadingTextAsyncTask(readingDao).execute(reading);
     }
 
-    public void update(ReadingText readingText) {
-        new UpdateReadingTextAsyncTask(readingTextDao).execute(readingText);
+    public void update(Reading reading) {
+        new UpdateReadingTextAsyncTask(readingDao).execute(reading);
     }
 
-    public void delete(ReadingText readingText) {
-        new DeleteReadingTextAsyncTask(readingTextDao).execute(readingText);
+    public void delete(Reading reading) {
+        new DeleteReadingTextAsyncTask(readingDao).execute(reading);
     }
 
-    public ReadingText getReadingTextById(int readingTextId){
+    public Reading getReadingTextById(int readingTextId){
         try {
-            return new GetReadingTextById(readingTextDao).execute(readingTextId).get();
+            return new GetReadingTextById(readingDao).execute(readingTextId).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -45,78 +44,78 @@ public class ReadingTextRepository {
     }
 
     public void deleteAllReadingTexts() {
-        new DeleteAllReadingTextsAsyncTask(readingTextDao).execute();
+        new DeleteAllReadingTextsAsyncTask(readingDao).execute();
     }
 
-    public LiveData<List<ReadingText>> getAllReadingTexts() {
+    public LiveData<List<Reading>> getAllReadingTexts() {
         return allReadingTexts;
     }
 
-    private static class InsertReadingTextAsyncTask extends AsyncTask<ReadingText, Void, Void> {
-        private ReadingTextDao readingTextDao;
+    private static class InsertReadingTextAsyncTask extends AsyncTask<Reading, Void, Void> {
+        private ReadingDao readingDao;
 
-        private InsertReadingTextAsyncTask(ReadingTextDao readingTextDao) {
-            this.readingTextDao = readingTextDao;
+        private InsertReadingTextAsyncTask(ReadingDao readingDao) {
+            this.readingDao = readingDao;
         }
 
         @Override
-        protected Void doInBackground(ReadingText... readingTexts) {
-            readingTextDao.insert(readingTexts[0]);
+        protected Void doInBackground(Reading... readings) {
+            readingDao.insert(readings[0]);
             return null;
         }
     }
 
-    private static class GetReadingTextById extends AsyncTask<Integer, Void, ReadingText> {
-        private ReadingTextDao readingTextDao;
+    private static class GetReadingTextById extends AsyncTask<Integer, Void, Reading> {
+        private ReadingDao readingDao;
 
-        private GetReadingTextById(ReadingTextDao readingTextDao) {
-            this.readingTextDao = readingTextDao;
+        private GetReadingTextById(ReadingDao readingDao) {
+            this.readingDao = readingDao;
         }
 
         @Override
-        protected ReadingText doInBackground(Integer... ints) {
-            return readingTextDao.getReadingTextById(ints[0]);
+        protected Reading doInBackground(Integer... ints) {
+            return readingDao.getReadingTextById(ints[0]);
         }
     }
 
-    private static class UpdateReadingTextAsyncTask extends AsyncTask<ReadingText, Void, Void> {
-        private ReadingTextDao readingTextDao;
+    private static class UpdateReadingTextAsyncTask extends AsyncTask<Reading, Void, Void> {
+        private ReadingDao readingDao;
 
-        private UpdateReadingTextAsyncTask(ReadingTextDao readingTextDao) {
-            this.readingTextDao = readingTextDao;
+        private UpdateReadingTextAsyncTask(ReadingDao readingDao) {
+            this.readingDao = readingDao;
         }
 
         @Override
-        protected Void doInBackground(ReadingText... readingTexts) {
-            readingTextDao.update(readingTexts[0]);
+        protected Void doInBackground(Reading... readings) {
+            readingDao.update(readings[0]);
             return null;
         }
     }
 
-    private static class DeleteReadingTextAsyncTask extends AsyncTask<ReadingText, Void, Void> {
-        private ReadingTextDao readingTextDao;
+    private static class DeleteReadingTextAsyncTask extends AsyncTask<Reading, Void, Void> {
+        private ReadingDao readingDao;
 
-        private DeleteReadingTextAsyncTask(ReadingTextDao readingTextDao) {
-            this.readingTextDao = readingTextDao;
+        private DeleteReadingTextAsyncTask(ReadingDao readingDao) {
+            this.readingDao = readingDao;
         }
 
         @Override
-        protected Void doInBackground(ReadingText... readingTexts) {
-            readingTextDao.delete(readingTexts[0]);
+        protected Void doInBackground(Reading... readings) {
+            readingDao.delete(readings[0]);
             return null;
         }
     }
 
     private static class DeleteAllReadingTextsAsyncTask extends AsyncTask<Void, Void, Void> {
-        private ReadingTextDao readingTextDao;
+        private ReadingDao readingDao;
 
-        private DeleteAllReadingTextsAsyncTask(ReadingTextDao readingTextDao) {
-            this.readingTextDao = readingTextDao;
+        private DeleteAllReadingTextsAsyncTask(ReadingDao readingDao) {
+            this.readingDao = readingDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            readingTextDao.deleteAllReadingTexts();
+            readingDao.deleteAllReadingTexts();
             return null;
         }
     }

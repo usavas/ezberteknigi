@@ -18,7 +18,6 @@
             android:indeterminate="true" />
     </RelativeLayout>
 
-
     <FrameLayout
         android:visibility="gone"
         android:id="@+id/bottom_navigation_fragment_container"

@@ -23,7 +23,8 @@ import com.example.savas.ezberteknigi.Activities.MainActivity;
 import com.example.savas.ezberteknigi.BLL.InternetConnectivity.InternetConnectivitySocket;
 import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.BookWrapper;
-import com.example.savas.ezberteknigi.Models.ReadingText;
+import com.example.savas.ezberteknigi.Models.Reading;
+import com.example.savas.ezberteknigi.Models.SimpleArticle;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
@@ -207,7 +208,7 @@ public class IndexFragment extends Fragment {
     private void addSampleNews() {
         ReadingTextRepository repository = new ReadingTextRepository(getActivity().getApplication());
         String newsContent = "this is the content of a BBC news pagethis is the content of a BBC news pagethis is the content of a BBC news pagethis is the content of a BBC news page";
-        repository.insert(new ReadingText("en", "BBC", ReadingText.DOCUMENT_TYPE_PLAIN, newsContent));
+        repository.insert(new Reading(Reading.DOCUMENT_TYPE_PLAIN, "en", new SimpleArticle(newsContent)));
     }
 
     private void addSampleWord(){

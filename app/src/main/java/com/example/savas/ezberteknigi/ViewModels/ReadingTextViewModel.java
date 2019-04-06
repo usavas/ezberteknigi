@@ -5,7 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
-import com.example.savas.ezberteknigi.Models.ReadingText;
+import com.example.savas.ezberteknigi.Models.Reading;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 public class ReadingTextViewModel extends AndroidViewModel {
 
     ReadingTextRepository repository;
-    private LiveData<List<ReadingText>> allReadingTexts;
+    private LiveData<List<Reading>> allReadingTexts;
 
     public ReadingTextViewModel(@NonNull Application application) {
         super(application);
@@ -21,19 +21,19 @@ public class ReadingTextViewModel extends AndroidViewModel {
         allReadingTexts = repository.getAllReadingTexts();
     }
 
-    public void insert(ReadingText readingText){
-        repository.insert(readingText);
+    public void insert(Reading reading){
+        repository.insert(reading);
     }
 
-    public void update(ReadingText readingText){
-        repository.update(readingText);
+    public void update(Reading reading){
+        repository.update(reading);
     }
 
-    public void delete(ReadingText readingText){
-        repository.delete(readingText);
+    public void delete(Reading reading){
+        repository.delete(reading);
     }
 
-    public LiveData<List<ReadingText>> getAllReadingTexts(){
+    public LiveData<List<Reading>> getAllReadingTexts(){
         return allReadingTexts;
     }
 }

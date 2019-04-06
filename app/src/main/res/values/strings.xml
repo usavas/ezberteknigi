@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Kelime Öğren</string>
-    <string name="readingTexts">Reading Texts</string>
+    <string name="readings">Reading Texts</string>
     <string name="words">Words</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_search_books">SearchBooksActivity</string>
@@ -10,6 +10,30 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
+
+    <string name="lorem_ipsum">
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Aliquam nulla facilisi cras fermentum odio eu feugiat pretium. Sagittis purus sit amet volutpat consequat mauris nunc congue nisi.
+        Eget felis eget nunc lobortis mattis. Duis tristique sollicitudin nibh sit amet commodo nulla. Morbi enim nunc faucibus a pellentesque sit.
+        Enim sed faucibus turpis in eu mi bibendum neque egestas. Mauris cursus mattis molestie a iaculis.
+        Dignissim convallis aenean et tortor at risus viverra adipiscing. Urna cursus eget nunc scelerisque viverra.
+        Eu sem integer vitae justo eget magna fermentum iaculis. Auctor eu augue ut lectus arcu bibendum at.
+        Fermentum iaculis eu non diam. Tellus orci ac auctor augue mauris augue neque gravida in.
+        Ullamcorper sit amet risus nullam eget. Sodales ut etiam sit amet nisl purus in mollis.
+        Amet consectetur adipiscing elit ut aliquam. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa.\n"
+        "\n"
+        "Laoreet id donec ultrices tincidunt.
+        Commodo odio aenean sed adipiscing diam.
+        Nunc vel risus commodo viverra maecenas accumsan lacus. Ultrices gravida dictum fusce ut placerat.
+        Sed viverra tellus in hac. Vitae ultricies leo integer malesuada nunc. Turpis egestas integer eget aliquet.
+        Feugiat nisl pretium fusce id. Elementum eu facilisis sed odio morbi quis commodo odio.
+        Fames ac turpis egestas integer eget aliquet nibh. Cras tincidunt lobortis feugiat vivamus at augue eget arcu.
+        Sed euismod nisi porta lorem mollis aliquam. Aliquet porttitor lacus luctus accumsan tortor posuere ac.
+        Elementum curabitur vitae nunc sed. Vel quam elementum pulvinar etiam non quam lacus suspendisse faucibus.
+        Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Id aliquet risus feugiat in.
+        Tellus cras adipiscing enim eu turpis egestas. Ut enim blandit volutpat maecenas volutpat."
+
+    </string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"

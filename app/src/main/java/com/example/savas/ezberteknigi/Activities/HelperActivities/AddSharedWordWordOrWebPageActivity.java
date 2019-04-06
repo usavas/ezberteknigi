@@ -10,7 +10,9 @@ import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.BLL.Translation.DummyTranslateProvider;
 import com.example.savas.ezberteknigi.BLL.Interfaces.TranslationProvidable;
-import com.example.savas.ezberteknigi.Models.ReadingText;
+import com.example.savas.ezberteknigi.Models.SimpleArticle;
+import com.example.savas.ezberteknigi.Models.WebArticle;
+import com.example.savas.ezberteknigi.Models.Reading;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
@@ -18,12 +20,6 @@ import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.Activities.Services.SaveWebpageIntentService;
 
 public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
-
-    public static final int GET_TRANSLATIONS_CODE = 3;
-
-    public static final String EXTRA_WORD = "com.example.savas.ezberteknigi.EXTRA_WORD";
-    public static final String EXTRA_TRANSLATION = "com.example.savas.ezberteknigi.EXTRA_TRANSLATION";
-    public static final String EXTRA_EXAMPLE_SENTENCE = "com.example.savas.ezberteknigi.EXTRA_EXAMPLE_SENTENCE";
 
     public static final String EXTRA_WORD_TO_GET_TRANSLATION = "com.example.savas.ezberteknigi.EXTRA_WORD_TO_GET_TRANSLATION";
 
@@ -70,7 +66,12 @@ public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
 
     private void addAsPlainReadingText(String sharedText) {
         ReadingTextRepository repo = new ReadingTextRepository(getApplication());
-        repo.insert(new ReadingText(null, "Başlıksız", ReadingText.DOCUMENT_TYPE_PLAIN, sharedText));
+
+        Reading r = new Reading();
+        r.setDocumentType(Reading.DOCUMENT_TYPE_PLAIN);
+        r.setSimpleArticle(new SimpleArticle(sharedText));
+
+        repo.insert(r);
         finish();
     }
 
