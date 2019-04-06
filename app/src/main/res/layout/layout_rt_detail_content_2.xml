@@ -25,6 +25,7 @@
             android:fitsSystemWindows="true">
 
             <ImageView
+                android:id="@+id/rt_detail_book_image"
                 app:layout_collapseMode="parallax"
                 android:src="@drawable/ic_book_grey_12dp"
                 android:contentDescription="@string/app_name"

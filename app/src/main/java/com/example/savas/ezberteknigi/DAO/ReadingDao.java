@@ -24,7 +24,13 @@ public interface ReadingDao extends BaseDao {
     void delete(Reading reading);
 
     @Query("SELECT * FROM reading_table")
-    LiveData<List<Reading>> getAllReadingTexts();
+    LiveData<List<Reading>> getReadingTexts();
+
+    @Query("SELECT * FROM reading_table WHERE document_type = :docType")
+    LiveData<List<Reading>> getReadingTexts(int docType);
+
+    @Query("SELECT * FROM reading_table WHERE document_type = :docType OR document_type = :docType2")
+    LiveData<List<Reading>> getReadingTexts(int docType, int docType2);
 
     @Query("DELETE FROM reading_table")
     void deleteAllReadingTexts();

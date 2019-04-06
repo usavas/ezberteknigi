@@ -7,7 +7,8 @@ import java.io.InputStreamReader;
 
 public class BufferedReaderHelper {
 
-    public static String readFromInputStream(InputStream fis) throws IOException {
+    public static String readFromInputStream(InputStream fis)
+            throws IOException {
 
         InputStreamReader reader = new InputStreamReader(fis);
         BufferedReader bis = new BufferedReader(reader);

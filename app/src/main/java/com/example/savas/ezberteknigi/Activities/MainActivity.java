@@ -3,7 +3,6 @@ package com.example.savas.ezberteknigi.Activities;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresPermission;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -11,18 +10,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.savas.ezberteknigi.Activities.BottomNavFragments.IndexFragment;
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.BooksFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ReadingTextsFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.SettingsFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordRevisionFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragmentsContainerFragment;
-import com.example.savas.ezberteknigi.Models.Converters.StringListConverter;
 import com.example.savas.ezberteknigi.Models.Reading;
 import com.example.savas.ezberteknigi.Models.SimpleArticle;
-import com.example.savas.ezberteknigi.Models.WebArticle;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
+import com.example.savas.ezberteknigi.Repositories.ReadingRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
@@ -46,7 +43,7 @@ implements WordsFragment.OnFragmentInteractionListener {
             view.performClick();
         } else if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
-                    new IndexFragment()).commit();
+                    new WordsFragmentsContainerFragment()).commit();
         }
 
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
@@ -63,17 +60,17 @@ implements WordsFragment.OnFragmentInteractionListener {
             Fragment selectedFragment = null;
 
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    selectedFragment = new IndexFragment();
-                    break;
-                case R.id.navigation_documents:
-                    selectedFragment = new ReadingTextsFragment();
-                    break;
                 case R.id.navigation_words:
                     selectedFragment = new WordsFragmentsContainerFragment();
                     break;
                 case R.id.navigation_revision_words:
                     selectedFragment = new WordRevisionFragment();
+                    break;
+                case R.id.navigation_articles:
+                    selectedFragment = new ReadingTextsFragment();
+                    break;
+                case R.id.navigation_books:
+                    selectedFragment = new BooksFragment();
                     break;
                 case R.id.navigation_settings:
                     selectedFragment = new SettingsFragment();
@@ -130,10 +127,10 @@ implements WordsFragment.OnFragmentInteractionListener {
     }
 
     private void addSampleNews() {
-        ReadingTextRepository repository = new ReadingTextRepository(getApplication());
+        ReadingRepository repository = new ReadingRepository(getApplication(), Reading.DOCUMENT_TYPE_PLAIN);
         String newsContent = "this is the content of a BBC news pagethis is the content of a BBC news pagethis is the content of a BBC news pagethis is the content of a BBC news page";
 
-        Reading r = new Reading(Reading.DOCUMENT_TYPE_WEB, "en", new SimpleArticle(newsContent));
+        Reading r = new Reading(Reading.DOCUMENT_TYPE_PLAIN, "en", new SimpleArticle(newsContent));
 
         repository.insert(r);
     }

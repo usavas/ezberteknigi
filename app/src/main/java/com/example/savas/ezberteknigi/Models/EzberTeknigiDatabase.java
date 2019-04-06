@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Database(entities = {Reading.class, Word.class},
-        version = 20,
+        version = 22,
         exportSchema = false)
 public abstract class EzberTeknigiDatabase extends RoomDatabase {
 

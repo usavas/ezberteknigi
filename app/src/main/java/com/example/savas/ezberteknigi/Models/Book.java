@@ -6,6 +6,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.graphics.Bitmap;
 
 import com.example.savas.ezberteknigi.BLL.WebCrawler.WebContentRetrieverViaHttpRequest;
+import com.example.savas.ezberteknigi.Models.Converters.ImageConverter;
 import com.example.savas.ezberteknigi.Models.Converters.StringListConverter;
 import com.google.gson.Gson;
 
@@ -16,19 +17,25 @@ import java.util.List;
 
 public class Book extends ReadingText{
 
-    @ColumnInfo(name = "id")
+    @Ignore
     private int id;
 
-
-    @Ignore
+    @TypeConverters({ImageConverter.class})
+    @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB)
     private Bitmap image;
 
-    @Ignore
+//    public byte[] getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(byte[] image) {
+//        this.image = image;
+//    }
+
+
     public Bitmap getImage() {
         return image;
     }
-
-    @Ignore
     public void setImage(Bitmap image) {
         this.image = image;
     }
@@ -164,7 +171,7 @@ public class Book extends ReadingText{
      * Concatenates the title and author of the book and hyphenates the whitespaces and adds .jpg file extension
      * @return the name of the image file located in firebase storage
      */
-    public String getImageUrlName() {
+    public String getImageUrlByName() {
         return this.title.replace(" ", "-").toLowerCase()
                 + "-"
                 + this.author.replace(" ", "-").toLowerCase()

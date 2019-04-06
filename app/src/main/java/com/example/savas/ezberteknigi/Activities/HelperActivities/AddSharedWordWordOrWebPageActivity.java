@@ -11,11 +11,10 @@ import android.widget.Toast;
 import com.example.savas.ezberteknigi.BLL.Translation.DummyTranslateProvider;
 import com.example.savas.ezberteknigi.BLL.Interfaces.TranslationProvidable;
 import com.example.savas.ezberteknigi.Models.SimpleArticle;
-import com.example.savas.ezberteknigi.Models.WebArticle;
 import com.example.savas.ezberteknigi.Models.Reading;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
+import com.example.savas.ezberteknigi.Repositories.ReadingRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.Activities.Services.SaveWebpageIntentService;
 
@@ -65,7 +64,7 @@ public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
     }
 
     private void addAsPlainReadingText(String sharedText) {
-        ReadingTextRepository repo = new ReadingTextRepository(getApplication());
+        ReadingRepository repo = new ReadingRepository(getApplication(), Reading.DOCUMENT_TYPE_PLAIN);
 
         Reading r = new Reading();
         r.setDocumentType(Reading.DOCUMENT_TYPE_PLAIN);

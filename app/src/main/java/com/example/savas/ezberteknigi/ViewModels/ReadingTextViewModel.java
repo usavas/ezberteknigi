@@ -6,18 +6,18 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.example.savas.ezberteknigi.Models.Reading;
-import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
+import com.example.savas.ezberteknigi.Repositories.ReadingRepository;
 
 import java.util.List;
 
 public class ReadingTextViewModel extends AndroidViewModel {
 
-    ReadingTextRepository repository;
+    ReadingRepository repository;
     private LiveData<List<Reading>> allReadingTexts;
 
     public ReadingTextViewModel(@NonNull Application application) {
         super(application);
-        repository = new ReadingTextRepository(application);
+        repository = new ReadingRepository(application);
         allReadingTexts = repository.getAllReadingTexts();
     }
 

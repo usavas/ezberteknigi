@@ -1,18 +1,27 @@
 package com.example.savas.ezberteknigi.Activities;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.savas.ezberteknigi.BLL.Helper.SaveFileHelper;
 import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.BookWrapper;
+import com.example.savas.ezberteknigi.Models.Converters.ImageConverter;
+import com.example.savas.ezberteknigi.Models.Reading;
 import com.example.savas.ezberteknigi.R;
+import com.example.savas.ezberteknigi.Repositories.ReadingRepository;
+import com.google.android.gms.dynamic.ObjectWrapper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +41,8 @@ import java.util.Objects;
 
 public class BookDetailActivity extends AppCompatActivity {
 
+    Bitmap mImage = null;
+    Book mBook = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +51,11 @@ public class BookDetailActivity extends AppCompatActivity {
 
         getWindow().setEnterTransition(null);
 
+        mImage = getIntent().getParcelableExtra(BookSearchActivity.READING_TEXT_IMAGE);
         ((ImageView) findViewById(R.id.image_book_detail))
-                .setImageBitmap(getIntent().getParcelableExtra(BookSearchActivity.READING_TEXT_IMAGE));
+                .setImageBitmap(mImage);
+
+
 
         // populate the views on this page
         FirebaseDatabase.getInstance().getReference("books").addValueEventListener(new ValueEventListener() {
@@ -48,9 +63,9 @@ public class BookDetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<BookWrapper> bookWrappers = retrieveData(dataSnapshot);
 
-                Book book = null;
+//                Book book = null;
                 if (Build.VERSION.SDK_INT >= 24){
-                    book = Objects.requireNonNull(bookWrappers.stream()
+                    mBook = Objects.requireNonNull(bookWrappers.stream()
                             .filter(b -> b.getBook().getId() == getIntent().getIntExtra(BookSearchActivity.READING_TEXT_ID, 0))
                             .findFirst()
                             .orElse(null)).getBook();
@@ -58,26 +73,34 @@ public class BookDetailActivity extends AppCompatActivity {
                 } else {
                     for (BookWrapper bookWrapper : bookWrappers) {
                         if (bookWrapper.getBook().getId() == getIntent().getIntExtra(BookSearchActivity.READING_TEXT_ID, 0))
-                            book = bookWrapper.getBook();
+                            mBook = bookWrapper.getBook();
                     }
                 }
 
-                if (book == null){
+                if (mBook == null){
                     Toast.makeText(BookDetailActivity.this, "Kitap bulunamadı", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
 
                 if (getIntent().getParcelableExtra(BookSearchActivity.READING_TEXT_IMAGE) == null){
-                    setPageImage(book.getImageUrlName());
+                    setPageImage(mBook.getImageUrlByName());
                 }
 
-                setPageTitle(book);
+                setPageTitle(mBook);
 
                 ((TextView)findViewById(R.id.book_story_line))
-                        .setText(book.getStoryline());
+                        .setText(mBook.getStoryline());
                 ((TextView)findViewById(R.id.book_hard_words))
-                        .setText(book.getHardWordsInString());
+                        .setText(mBook.getHardWordsInString());
+
+                Book finalBook = mBook;
+                ((Button) findViewById(R.id.button_add_book)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addToLibrary(finalBook);
+                    }
+                });
             }
 
             @Override
@@ -85,15 +108,13 @@ public class BookDetailActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void setPageImage(String imageUrl) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl("gs://ezberteknigi.appspot.com").child(imageUrl);
         try {
-            File localFile = File.createTempFile("images", "jpg");
+            File localFile = File.createTempFile("bookCover", "jpg");
 
             storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
@@ -101,6 +122,14 @@ public class BookDetailActivity extends AppCompatActivity {
                     //TODO: imageView set image
                     ((ImageView) findViewById(R.id.image_book_detail))
                             .setImageBitmap(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
+                    mBook.setImage(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
+
+//                    mBook.setImageUri(mBook.getImageUrlByName());
+//                    SaveFileHelper.saveImageToLocalFile(getBaseContext(), imageUrl,
+//                            ImageConverter.toByteArray(
+//                                    BitmapFactory.decodeFile(
+//                                            localFile.getAbsolutePath())));
+
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -113,6 +142,7 @@ public class BookDetailActivity extends AppCompatActivity {
         }
     }
 
+
     private void setPageTitle(Book book) {
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.book_collapsing_tool_bar);
         collapsingToolbarLayout.setTitleEnabled(true);
@@ -120,6 +150,11 @@ public class BookDetailActivity extends AppCompatActivity {
 
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
+    }
+
+    private void addToLibrary(Book book){
+        ReadingRepository repo = new ReadingRepository(getApplication(), Reading.DOCUMENT_TYPE_BOOK);
+        repo.insert(new Reading(Reading.DOCUMENT_TYPE_BOOK, "en", book));
     }
 
     private List<BookWrapper> retrieveData(DataSnapshot dataSnapshot) {

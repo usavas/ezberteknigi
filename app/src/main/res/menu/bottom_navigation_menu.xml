@@ -1,18 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Başlangıç" />
-
-    <item
-        android:id="@+id/navigation_documents"
-        android:icon="@drawable/ic_book_black_24dp"
-        android:title="Okumalar" />
-
-    <!--android:icon="@drawable/button_documents"-->
-
     <item
         android:id="@+id/navigation_words"
         android:icon="@drawable/button_hello_speech_word"
@@ -24,9 +11,18 @@
         android:title="Kelime Tekrarı" />
 
     <item
+        android:id="@+id/navigation_books"
+        android:icon="@drawable/ic_book_black_24dp"
+        android:title="Kitaplar" />
+
+    <item
+        android:id="@+id/navigation_articles"
+        android:icon="@drawable/button_documents"
+        android:title="Makaleler" />
+
+    <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_settings_applications_black_24dp"
         android:title="Ayarlar" />
-
 
 </menu>

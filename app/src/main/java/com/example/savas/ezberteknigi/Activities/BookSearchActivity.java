@@ -22,6 +22,7 @@ import com.example.savas.ezberteknigi.Adapters.BookSearchAdapter;
 import com.example.savas.ezberteknigi.BLL.Helper.EndlessRecyclerViewScrollListener;
 import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.BookWrapper;
+import com.example.savas.ezberteknigi.Models.Converters.ImageConverter;
 import com.example.savas.ezberteknigi.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,8 +43,8 @@ import java.util.Objects;
 public class BookSearchActivity extends AppCompatActivity {
     private static final String TAG = "BookSearchActivity";
     private EndlessRecyclerViewScrollListener scrollListener;
-    public static final String READING_TEXT_ID = "READING_TEXT_ID";
-    public static final String READING_TEXT_IMAGE = "READING_TEXT_IMAGE";
+    public static final String READING_TEXT_ID = "BookSearchActivity.READING_TEXT_ID";
+    public static final String READING_TEXT_IMAGE = "BookSearchActivity.READING_TEXT_IMAGE";
 
     final BookSearchAdapter adapter = new BookSearchAdapter(this);
     ProgressDialog dialog;
@@ -83,7 +84,7 @@ public class BookSearchActivity extends AppCompatActivity {
                 Intent intent = new Intent(BookSearchActivity.this, BookDetailActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(BookSearchActivity.this, imageView, Objects.requireNonNull(ViewCompat.getTransitionName(imageView)));
                 intent.putExtra(READING_TEXT_ID, book.getBook().getId());
-                intent.putExtra(READING_TEXT_IMAGE, book.getBook().getImage());
+                intent.putExtra(READING_TEXT_IMAGE, ImageConverter.toByteArray(book.getBook().getImage()));
                 startActivity(intent, options.toBundle());
             }
         });
@@ -100,7 +101,7 @@ public class BookSearchActivity extends AppCompatActivity {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 for (BookWrapper book : bookWrappers) {
                     try {
-                        StorageReference storageReference = storage.getReferenceFromUrl("gs://ezberteknigi.appspot.com").child(book.getBook().getImageUrlName());
+                        StorageReference storageReference = storage.getReferenceFromUrl("gs://ezberteknigi.appspot.com").child(book.getBook().getImageUrlByName());
                         final File localFile = File.createTempFile("images", "jpg");
                         storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override

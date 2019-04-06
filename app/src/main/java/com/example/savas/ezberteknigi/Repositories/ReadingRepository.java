@@ -10,14 +10,26 @@ import com.example.savas.ezberteknigi.Models.Reading;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class ReadingTextRepository {
+public class ReadingRepository {
     private ReadingDao readingDao;
     private LiveData<List<Reading>> allReadingTexts;
 
-    public ReadingTextRepository(Application application) {
+    public ReadingRepository(Application application) {
         EzberTeknigiDatabase database = EzberTeknigiDatabase.getInstance(application);
         readingDao = database.readingTextDao();
-        allReadingTexts = readingDao.getAllReadingTexts();
+        allReadingTexts = readingDao.getReadingTexts();
+    }
+
+    public ReadingRepository(Application application, int docType) {
+        EzberTeknigiDatabase database = EzberTeknigiDatabase.getInstance(application);
+        readingDao = database.readingTextDao();
+        allReadingTexts = readingDao.getReadingTexts(docType);
+    }
+
+    public ReadingRepository(Application application, int docType, int docType2) {
+        EzberTeknigiDatabase database = EzberTeknigiDatabase.getInstance(application);
+        readingDao = database.readingTextDao();
+        allReadingTexts = readingDao.getReadingTexts(docType, docType2);
     }
 
     public void insert(Reading reading) {

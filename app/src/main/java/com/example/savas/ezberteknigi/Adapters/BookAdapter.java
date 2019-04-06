@@ -1,22 +1,24 @@
 package com.example.savas.ezberteknigi.Adapters;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresPermission;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.savas.ezberteknigi.Models.Article;
+import com.example.savas.ezberteknigi.Models.Book;
+import com.example.savas.ezberteknigi.Models.BookWrapper;
 import com.example.savas.ezberteknigi.Models.Reading;
-import com.example.savas.ezberteknigi.Models.ReadingText;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.ReadingTextHolder> {
+public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ReadingTextHolder> {
     private List<Reading> readings = new ArrayList<>();
     private OnItemClickListener listener;
 
@@ -24,7 +26,7 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
     @Override
     public ReadingTextHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_rt_pict, viewGroup, false);
+                .inflate(R.layout.item_book, viewGroup, false);
         return new ReadingTextHolder(itemView);
     }
 
@@ -32,12 +34,16 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
     public void onBindViewHolder(@NonNull ReadingTextHolder readingTextHolder, int i) {
         Reading currentReading = readings.get(i);
 
-        Article article = (currentReading.getDocumentType() == Reading.DOCUMENT_TYPE_PLAIN)
-                ? currentReading.getSimpleArticle()
-                : currentReading.getWebArticle();
+        Book book = null;
 
-        readingTextHolder.header.setText(article.getTitle());
-        readingTextHolder.content.setText(article.getContent());
+        if (currentReading.getDocumentType() == Reading.DOCUMENT_TYPE_BOOK){
+            book = currentReading.getBook();
+        } else {
+            return;
+        }
+
+        readingTextHolder.bind(currentReading);
+        readingTextHolder.bindImage(currentReading.getBook());
 
     }
 
@@ -48,13 +54,20 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
 
 
     class ReadingTextHolder extends RecyclerView.ViewHolder{
-        private TextView header;
-        private TextView content;
+        private TextView tvTitle;
+        private TextView tvAuthor;
+        private TextView tvGenre;
+        private TextView tvLevel;
+        private ImageView imageView;
 
         ReadingTextHolder(@NonNull View itemView) {
             super(itemView);
-            header = itemView.findViewById(R.id.tvItemHeader);
-            content = itemView.findViewById(R.id.tvItemContent);
+
+            tvTitle = itemView.findViewById(R.id.tv_book_title);
+            tvAuthor = itemView.findViewById(R.id.tv_book_author);
+            tvGenre = itemView.findViewById(R.id.tv_book_genre);
+            tvLevel = itemView.findViewById(R.id.tv_book_level);
+            imageView = itemView.findViewById(R.id.image_book_detail);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -65,6 +78,20 @@ public class ReadingTextAdapter extends RecyclerView.Adapter<ReadingTextAdapter.
                     }
                 }
             });
+        }
+
+        private void bind(Reading reading) {
+            Book book = reading.getBook();
+            tvTitle.setText(book.getTitle());
+            tvAuthor.setText(book.getAuthor());
+            tvLevel.setText(book.getLevel());
+            tvGenre.setText(book.getGenre());
+        }
+
+        private void bindImage(Book book){
+            if (book.getImage() != null){
+                imageView.setImageBitmap(book.getImage());
+            }
         }
     }
 

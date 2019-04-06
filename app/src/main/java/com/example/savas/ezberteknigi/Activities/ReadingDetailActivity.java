@@ -19,6 +19,7 @@ import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ReadingTextsFragment;
@@ -33,20 +34,22 @@ import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.Reading;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.ReadingTextRepository;
+import com.example.savas.ezberteknigi.Repositories.ReadingRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class ReadingTextDetailActivity extends AppCompatActivity
+public class ReadingDetailActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static final String EXTRA_READING_TEXT_DETAIL_ID = "EXTRA_READING_TEXT_DETAIL_ID";
+    public static final String EXTRA_BOOK_IMAGE = "ReadingDetailActivity.EXTRA_BOOK_IMAGE";
 
     private TextView tvContent;
     private NestedScrollView nestedScrollView;
     private Reading _reading;
-    private NavigationView _navView;
 
     private Book _book;
 
@@ -54,8 +57,8 @@ public class ReadingTextDetailActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _reading = new ReadingTextRepository(getApplication())
-                .getReadingTextById(getIntent().getIntExtra(ReadingTextsFragment.EXTRA_READING_TEXT_DETAIL_ID, 0));
+        _reading = new ReadingRepository(getApplication())
+                .getReadingTextById(getIntent().getIntExtra(EXTRA_READING_TEXT_DETAIL_ID, 0));
 
         if (_reading.getDocumentType() == Reading.DOCUMENT_TYPE_WEB) {
             if (WebContentRetrievable.isValidUrl(_reading.getWebArticle().getSource())) {
@@ -174,10 +177,11 @@ public class ReadingTextDetailActivity extends AppCompatActivity
     private void prepareLayoutForBook(Reading reading) {
         setContentView(R.layout.activity_rt_detail_2);
         tvContent = findViewById(R.id.text_view_reading_text_detail_content);
-        _navView = findViewById(R.id.nav_view);
+        NavigationView _navView = findViewById(R.id.nav_view);
         _navView.setNavigationItemSelectedListener(this);
         nestedScrollView = findViewById(R.id.nested_scroll_view);
         _book = reading.getBook();
+        ((ImageView)findViewById(R.id.rt_detail_book_image)).setImageBitmap(_book.getImage());
 
         setNavigationDrawerForBook();
         scrollToPosition(nestedScrollView, reading.getBook().getLeftOffSet());
@@ -242,7 +246,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
     private void populateContentForBook(Book book, int currChapter) {
         String title = "Chapter " + currChapter;
 
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.book_collapsing_tool_bar);
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.rt_collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitleEnabled(true);
         collapsingToolbarLayout.setTitle(title);
         Log.d("XXXX", "populateContentForBook: setTitle: " + title);
@@ -339,7 +343,7 @@ public class ReadingTextDetailActivity extends AppCompatActivity
     }
 
     private void saveReadingTextCurrentStatus(Reading reading) {
-        new ReadingTextRepository(getApplication()).update(reading);
+        new ReadingRepository(getApplication(), Reading.DOCUMENT_TYPE_PLAIN, Reading.DOCUMENT_TYPE_WEB).update(reading);
     }
 
     @Override

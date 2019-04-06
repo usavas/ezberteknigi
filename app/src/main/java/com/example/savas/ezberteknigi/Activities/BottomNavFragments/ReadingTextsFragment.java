@@ -16,11 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.savas.ezberteknigi.Activities.ReadingTextDetailActivity;
-import com.example.savas.ezberteknigi.Adapters.ReadingTextAdapter;
+import com.example.savas.ezberteknigi.Activities.ReadingDetailActivity;
+import com.example.savas.ezberteknigi.Adapters.ArticleAdapter;
 import com.example.savas.ezberteknigi.Models.Reading;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -28,47 +31,46 @@ public class ReadingTextsFragment extends Fragment {
 
     ReadingTextViewModel readingTextViewModel;
 
-    public static String EXTRA_READING_TEXT_DETAIL_ID = "EXTRA_READING_TEXT_DETAIL_ID";
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_main_reading_texts, container, false);
-        getActivity().setTitle("Kitaplık");
+        getActivity().setTitle("Makaleler");
 
-        final ReadingTextAdapter readingTextAdapter = new ReadingTextAdapter();
+        final ArticleAdapter articleAdapter = new ArticleAdapter();
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_reading_text);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setAdapter(readingTextAdapter);
+        recyclerView.setAdapter(articleAdapter);
 
         readingTextViewModel = ViewModelProviders.of(this).get(ReadingTextViewModel.class);
-        readingTextViewModel.getAllReadingTexts().observe(this, readingTexts -> readingTextAdapter.setReadings(readingTexts));
+        readingTextViewModel.getAllReadingTexts().observe(this, readingTexts -> {
 
-        readingTextAdapter.setOnItemClickListener(new ReadingTextAdapter.OnItemClickListener() {
+            List<Reading> articles = new ArrayList<>();
+
+            for (Reading readingText : readingTexts) {
+                if(readingText.getDocumentType() == Reading.DOCUMENT_TYPE_PLAIN
+                        || readingText.getDocumentType() == Reading.DOCUMENT_TYPE_WEB){
+                    articles.add(readingText);
+                }
+            }
+
+            articleAdapter.setReadings(articles);
+        });
+
+        articleAdapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Reading reading) {
-                    Intent intent = new Intent(getActivity(), ReadingTextDetailActivity.class);
-                    intent.putExtra(EXTRA_READING_TEXT_DETAIL_ID, reading.getReadingId());
+                    Intent intent = new Intent(getActivity(), ReadingDetailActivity.class);
+                    intent.putExtra(ReadingDetailActivity.EXTRA_READING_TEXT_DETAIL_ID, reading.getReadingId());
                     startActivity(intent);
             }
         });
 
-//        final FloatingActionButton fab = getActivity().findViewById(R.id.add_new_book);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (new InternetConnectivitySocket().isConnectedToInternet()){
-//                    Intent i = new Intent(getContext(), BookSearchActivity.class);
-//                    startActivity(i);
-//                } else {
-//                    Toast.makeText(getContext(), "İnternet bağlantısı mevcut değil", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
+
 
         Log.d(TAG, "onCreateView: recyclerView: " + recyclerView.toString());
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
@@ -82,7 +84,7 @@ public class ReadingTextsFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 if (i == ItemTouchHelper.LEFT | i == ItemTouchHelper.RIGHT) {
-                    Reading rt = readingTextAdapter.getReadingTextAt(viewHolder.getAdapterPosition());
+                    Reading rt = articleAdapter.getReadingTextAt(viewHolder.getAdapterPosition());
                     ReadingTextViewModel rtViewModel = new ReadingTextViewModel(getActivity().getApplication());
                     rtViewModel.delete(rt);
 
