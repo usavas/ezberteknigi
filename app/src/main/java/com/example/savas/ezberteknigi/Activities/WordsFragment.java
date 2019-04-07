@@ -128,8 +128,10 @@ public class WordsFragment extends Fragment {
         wordAdapter.setOnItemClickListener(new WordAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Word word) {
-                Toast.makeText(getActivity(), "if this works, it means overrides the adapter in act.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "if this works, it means overrides the adapter in act.", Toast.LENGTH_SHORT).show();
             }
+
+            //this functionality is provided with onSwipe method now
             @Override
             public void onMarkClick(Word word) {
                 if (word.getWordState() == Word.WORD_LEARNING){

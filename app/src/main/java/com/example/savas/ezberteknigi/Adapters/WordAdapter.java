@@ -24,11 +24,11 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     private boolean isRevision = false;
     private Context context;
 
-    public WordAdapter(Context context){
+    public WordAdapter(Context context) {
         this.context = context;
     }
 
-    public WordAdapter(Context context, boolean isRevision){
+    public WordAdapter(Context context, boolean isRevision) {
         this.isRevision = isRevision;
         this.context = context;
     }
@@ -37,7 +37,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     @Override
     public WordHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView;
-        if (isRevision){
+        if (isRevision) {
             itemView = LayoutInflater.from(viewGroup.getContext())
                     .inflate(R.layout.item_word_revision, viewGroup, false);
         } else {
@@ -49,27 +49,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull WordAdapter.WordHolder wordHolder, int i) {
-        Word currentWord = words.get(i);
-        wordHolder.bind(currentWord);
-
-        //if onClickListener set here it overrides the listener instance of this
-        wordHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isRevision){
-//                    currentWord.setExpanded(!currentWord.isExpanded());
-//                    notifyItemChanged(i);
-                } else {
-                    wordHolder.wordFlipper.showNext();
-                }
-            }
-        });
-
-//        wordHolder.wordFlipper.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//            }
-//        });
+        wordHolder.bind(words.get(i), wordHolder.itemView);
     }
 
     @Override
@@ -79,24 +59,21 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 
     private OnItemClickListener listener;
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(Word word);
+
         void onMarkClick(Word word);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
-    class WordHolder extends RecyclerView.ViewHolder{
+    class WordHolder extends RecyclerView.ViewHolder {
         private TextView tvWord;
         private TextView tvTranslation;
         private TextView tvExampleSentence;
-//        private View viewSubItem;
         private Button btnMark;
-
-        private View viewFront;
-        private View viewBack;
 
         private ViewFlipper wordFlipper;
 
@@ -106,11 +83,19 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
             tvWord = itemView.findViewById(R.id.tvItemWord);
             tvTranslation = itemView.findViewById(R.id.sub_item_translation);
             tvExampleSentence = itemView.findViewById(R.id.sub_item_example_sentence);
-//            viewSubItem = itemView.findViewById(R.id.sub_item);
 
-            if (isRevision){
+            if (isRevision) {
                 wordFlipper = itemView.findViewById(R.id.word_flipper);
 
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int pos = WordHolder.this.getAdapterPosition();
+                        if (listener != null && pos != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(words.get(pos));
+                        }
+                    }
+                });
 
             } else {
 //                btnMark = itemView.findViewById(R.id.button_sub_item_item_learn_mastered);
@@ -124,47 +109,36 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 //                    }
 //                });
             }
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = WordHolder.this.getAdapterPosition();
-                    if (listener != null && pos != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(words.get(pos));
-                    }
-                }
-            });
         }
 
-        private void bind(Word word) {
-            boolean expanded = word.isExpanded();
-
+        private void bind(Word word, View view) {
             tvWord.setText(word.getWord());
             tvTranslation.setText(word.getTranslation());
             tvExampleSentence.setText(word.getExampleSentence());
 
-            if (!isRevision){
-//                viewSubItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
+            wordFlipper.setDisplayedChild(wordFlipper.indexOfChild(tvWord));
 
-//                if (word.getWordState() == Word.WORD_LEARNING){
-////                    btnMark.setText("ÖĞRENDİM");
-//                } else if (word.getWordState() == Word.WORD_MASTERED) {
-////                    btnMark.setText("HATIRLAMIYORUM");
-//                }
-            }
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isRevision) {
+                        wordFlipper.showNext();
+                    }
+                }
+            });
         }
     }
 
-    public Word getWordAt(int position){
+    public Word getWordAt(int position) {
         return words.get(position);
     }
 
-    public void removeItem(int position){
+    public void removeItem(int position) {
         words.remove(words.get(position));
         notifyItemChanged(position);
     }
 
-    public void setWords(List<Word> words){
+    public void setWords(List<Word> words) {
         this.words = words;
         notifyDataSetChanged();
     }
