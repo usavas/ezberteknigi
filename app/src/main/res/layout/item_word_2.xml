@@ -44,7 +44,7 @@
             android:layout_marginEnd="2dp"
             android:layout_width="1dp" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_marginTop="8dp"
             android:layout_width="0dp"
             android:layout_weight="0.7"
@@ -52,6 +52,9 @@
             android:orientation="vertical">
 
             <TextView
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+
                 android:id="@+id/sub_item_translation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,6 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
+                android:layout_below="@+id/sub_item_translation"
                 android:text="this is an example sentence text just to fill the content"
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="2dp"
@@ -76,7 +80,17 @@
                 android:padding="@dimen/textViewPadding"
                 android:textSize="14sp"/>
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/imageView_speaker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+
+                app:srcCompat="@drawable/ic_volume_up_black_24dp" />
+
+        </RelativeLayout>
 
 
 
