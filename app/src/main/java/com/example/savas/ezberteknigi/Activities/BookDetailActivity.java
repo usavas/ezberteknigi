@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.savas.ezberteknigi.BLL.Helper.SaveFileHelper;
 import com.example.savas.ezberteknigi.Models.Book;
@@ -123,13 +126,6 @@ public class BookDetailActivity extends AppCompatActivity {
                     ((ImageView) findViewById(R.id.image_book_detail))
                             .setImageBitmap(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
                     mBook.setImage(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
-
-//                    mBook.setImageUri(mBook.getImageUrlByName());
-//                    SaveFileHelper.saveImageToLocalFile(getBaseContext(), imageUrl,
-//                            ImageConverter.toByteArray(
-//                                    BitmapFactory.decodeFile(
-//                                            localFile.getAbsolutePath())));
-
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -155,6 +151,10 @@ public class BookDetailActivity extends AppCompatActivity {
     private void addToLibrary(Book book){
         ReadingRepository repo = new ReadingRepository(getApplication(), Reading.DOCUMENT_TYPE_BOOK);
         repo.insert(new Reading(Reading.DOCUMENT_TYPE_BOOK, "en", book));
+
+        Toast.makeText(this, "Kitaplığa eklendi", Toast.LENGTH_SHORT).show();
+
+        finish();
     }
 
     private List<BookWrapper> retrieveData(DataSnapshot dataSnapshot) {
