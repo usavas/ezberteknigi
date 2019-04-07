@@ -80,7 +80,7 @@ public class WordsFragment extends Fragment {
             wordAdapter = new WordAdapter(getContext());
         }
 
-        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
@@ -140,6 +140,11 @@ public class WordsFragment extends Fragment {
                     word.setWordState(Word.WORD_LEARNING);
                 }
                 wordViewModel.update(word);
+            }
+
+            @Override
+            public void onItemLongClick(Word word) {
+
             }
         });
 
