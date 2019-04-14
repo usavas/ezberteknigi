@@ -4,13 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Activities.ReadingTextsFragment">
+    tools:context=".Activities.BottomNavFragments.ReadingsFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_reading_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="8dp"
         android:paddingBottom="8dp"
         tools:listitem="@layout/item_rt_pict" />
 

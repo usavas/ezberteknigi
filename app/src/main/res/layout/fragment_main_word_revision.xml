@@ -4,4 +4,4 @@
     android:id="@+id/word_revision_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.WordRevisionFragment" />
+    tools:context=".Activities.BottomNavFragments.WordRevisionFragment" />

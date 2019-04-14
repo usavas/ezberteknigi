@@ -34,7 +34,7 @@ public class ReadingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_main_reading_texts, container, false);
+        final View view = inflater.inflate(R.layout.fragment_main_readings, container, false);
         getActivity().setTitle("Makaleler");
 
         final ArticleAdapter articleAdapter = new ArticleAdapter();
