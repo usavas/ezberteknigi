@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.example.savas.ezberteknigi.Models.Article;
 import com.example.savas.ezberteknigi.Models.Reading;
@@ -51,11 +53,21 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ReadingT
     class ReadingTextHolder extends RecyclerView.ViewHolder{
         private TextView header;
         private TextView content;
+        private ImageView imageView;
+
+        private ViewFlipper viewFlipper;
+        private View articleConteiner;
+        private View optionsContainer;
 
         ReadingTextHolder(@NonNull View itemView) {
             super(itemView);
             header = itemView.findViewById(R.id.tvItemHeader);
             content = itemView.findViewById(R.id.tvItemContent);
+
+            viewFlipper = itemView.findViewById(R.id.view_flipper_reading_options);
+            articleConteiner = itemView.findViewById(R.id.article_container);
+            optionsContainer = itemView.findViewById(R.id.options_container);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,11 +78,23 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ReadingT
                     }
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    viewFlipper.showNext();
+
+                    return true;
+                }
+            });
         }
     }
 
     public interface OnItemClickListener{
         void onItemClick(Reading reading);
+
+        void onItemLongClick(Reading reading);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){

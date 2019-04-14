@@ -27,7 +27,7 @@ import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
 
-public class ReadingTextsFragment extends Fragment {
+public class ReadingsFragment extends Fragment {
 
     ReadingTextViewModel readingTextViewModel;
 
@@ -67,6 +67,11 @@ public class ReadingTextsFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), ReadingDetailActivity.class);
                     intent.putExtra(ReadingDetailActivity.EXTRA_READING_TEXT_DETAIL_ID, reading.getReadingId());
                     startActivity(intent);
+            }
+
+            @Override
+            public void onItemLongClick(Reading reading) {
+
             }
         });
 

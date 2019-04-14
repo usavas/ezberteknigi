@@ -18,6 +18,7 @@ import com.example.savas.ezberteknigi.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     private List<Word> words = new ArrayList<>();
@@ -29,8 +30,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     }
 
     public WordAdapter(Context context, boolean isRevision) {
-        this.isRevision = isRevision;
         this.context = context;
+        this.isRevision = isRevision;
     }
 
     @NonNull
@@ -63,6 +64,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         void onItemClick(Word word);
 
         void onMarkClick(Word word);
+
+        void onItemLongClick(Word word);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -76,6 +79,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         private Button btnMark;
 
         private ViewFlipper wordFlipper;
+        private View wordFlipper2ndView;
+
+        private ViewFlipper wordDetailFlipper;
+        private View wordFlipperDetail1stView;
+        private View wordFlipperDetail2ndView;
+        private View wordFlipperDetailOptions;
 
         WordHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,20 +93,33 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
             tvTranslation = itemView.findViewById(R.id.sub_item_translation);
             tvExampleSentence = itemView.findViewById(R.id.sub_item_example_sentence);
 
+
             if (isRevision) {
                 wordFlipper = itemView.findViewById(R.id.word_flipper);
+                wordFlipper2ndView = itemView.findViewById(R.id.sub_item);
 
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int pos = WordHolder.this.getAdapterPosition();
-                        if (listener != null && pos != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(words.get(pos));
-                        }
+                itemView.setOnClickListener(v -> {
+                    int pos = WordHolder.this.getAdapterPosition();
+                    if (listener != null && pos != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(words.get(pos));
                     }
                 });
 
+
             } else {
+
+                wordDetailFlipper = itemView.findViewById(R.id.word_detail_flipper);
+                wordFlipperDetail1stView = itemView.findViewById(R.id.flip_to_word);
+                wordFlipperDetail2ndView = itemView.findViewById(R.id.flip_to_translation);
+                wordFlipperDetailOptions = itemView.findViewById(R.id.flip_to_options);
+
+                itemView.setOnLongClickListener(v -> {
+                    if (listener != null & getAdapterPosition() != RecyclerView.NO_POSITION) {
+                        listener.onItemLongClick(words.get(getAdapterPosition()));
+                    }
+                    return true;
+                });
+
 //                btnMark = itemView.findViewById(R.id.button_sub_item_item_learn_mastered);
 //                btnMark.setOnClickListener(new View.OnClickListener() {
 //                    @Override
@@ -116,16 +138,40 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
             tvTranslation.setText(word.getTranslation());
             tvExampleSentence.setText(word.getExampleSentence());
 
-            wordFlipper.setDisplayedChild(wordFlipper.indexOfChild(tvWord));
+            if (isRevision) {
+                wordFlipper.setDisplayedChild(wordFlipper.indexOfChild(tvWord));
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isRevision) {
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         wordFlipper.showNext();
                     }
-                }
-            });
+                });
+            } else {
+                view.setOnClickListener(v -> {
+                    int displayedChild = wordDetailFlipper.getDisplayedChild();
+                    if (displayedChild == wordDetailFlipper.indexOfChild(wordFlipperDetail1stView)) {
+                        wordDetailFlipper.setDisplayedChild(wordDetailFlipper.indexOfChild(wordFlipperDetail2ndView));
+                    } else {
+                        wordDetailFlipper.setDisplayedChild(wordDetailFlipper.indexOfChild(wordFlipperDetail1stView));
+                    }
+                });
+
+
+                view.setLongClickable(true);
+                view.setOnLongClickListener(v -> {
+                    Toast.makeText(context, "working", Toast.LENGTH_LONG).show();
+
+                    //TODO: show other side -> save delete archive
+                    if (wordDetailFlipper.getDisplayedChild() == wordDetailFlipper.indexOfChild(wordFlipperDetailOptions)){
+                        wordDetailFlipper.setDisplayedChild(wordDetailFlipper.indexOfChild(wordFlipperDetail1stView));
+                    } else {
+                        wordDetailFlipper.setDisplayedChild(wordDetailFlipper.indexOfChild(wordFlipperDetailOptions));
+                    }
+
+                    return true;
+                });
+            }
         }
     }
 

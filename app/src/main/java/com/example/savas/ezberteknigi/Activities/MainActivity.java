@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.BooksFragment;
-import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ReadingTextsFragment;
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ReadingsFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.SettingsFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordRevisionFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragmentsContainerFragment;
@@ -67,7 +67,7 @@ implements WordsFragment.OnFragmentInteractionListener {
                     selectedFragment = new WordRevisionFragment();
                     break;
                 case R.id.navigation_articles:
-                    selectedFragment = new ReadingTextsFragment();
+                    selectedFragment = new ReadingsFragment();
                     break;
                 case R.id.navigation_books:
                     selectedFragment = new BooksFragment();

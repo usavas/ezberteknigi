@@ -22,7 +22,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ReadingTextsFragment;
 import com.example.savas.ezberteknigi.Activities.DialogFragments.AddWordFragment;
 import com.example.savas.ezberteknigi.Activities.DialogFragments.WordDetailFragment;
 import com.example.savas.ezberteknigi.BLL.Interfaces.WordLemmatizable;
