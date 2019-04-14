@@ -45,7 +45,7 @@
                 android:padding="2dp"
                 android:text="word"
                 android:textColor="@color/black"
-                android:textSize="17sp" />
+                android:textSize="18sp" />
 
         </RelativeLayout>
 
@@ -71,7 +71,7 @@
                 android:text="translation"
                 android:textAppearance="@style/CollapsedAppBar"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/sub_item_example_sentence"
@@ -86,7 +86,7 @@
                 android:padding="@dimen/textViewPadding"
                 android:text="this is an example sentence text just to fill the content"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/imageView_speaker"

@@ -2,6 +2,8 @@ package com.example.savas.ezberteknigi.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 
+import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
+import com.example.savas.ezberteknigi.BLL.WebCrawler.WebContentRetrieverViaJsoup;
 import com.example.savas.ezberteknigi.Models.Converters.StringListConverter;
 
 public class WebArticle extends Article {
@@ -23,6 +25,11 @@ public class WebArticle extends Article {
         this.source = source;
     }
 
+//    @Override
+//    public String getContent(){
+//        WebContentRetrievable retrievable = new WebContentRetrieverViaJsoup();
+//        return retrievable.retrieveContent(this.getSource());
+//    }
 
     @Override
     public int getWordCount() {

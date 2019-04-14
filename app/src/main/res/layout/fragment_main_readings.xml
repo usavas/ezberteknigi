@@ -10,7 +10,8 @@
         android:id="@+id/recycler_view_reading_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         tools:listitem="@layout/item_rt_pict" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
+import com.example.savas.ezberteknigi.Models.Converters.StringListConverter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,9 +36,7 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
         protected String doInBackground(String... params) {
 
             try {
-                Document doc = Jsoup.connect(params[0]).get();
-                String content = doc.body().text();
-                return content;
+                return getBody(Jsoup.connect(params[0]).get());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -74,10 +73,7 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
 
                 titleAndContent.add(doc.title());
                 //TODO: further html manipulation might be needed
-                titleAndContent.add(doc.body().text());
-
-                Log.d(TAG, "doInBackground: " + doc.body().text());
-                Log.d(TAG, "doInBackground: " + doc.body().wholeText());
+                titleAndContent.add(getBody(doc));
 
                 return titleAndContent;
             } catch (IOException e) {
@@ -91,5 +87,9 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
         protected void onPostExecute(List<String> s) {
             super.onPostExecute(s);
         }
+    }
+
+    private static String getBody(Document document){
+        return document.body().html();
     }
 }

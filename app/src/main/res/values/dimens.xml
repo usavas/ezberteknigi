@@ -5,10 +5,10 @@
     <dimen name="buttonPadding">10dp</dimen>
     <dimen name="marginStandard">8dp</dimen>
 
-    <dimen name="recylcer_view_margin_top">2dp</dimen>
-    <dimen name="recycler_view_margin_bottom">4dp</dimen>
-    <dimen name="recylcer_view_margin_start">4dp</dimen>
-    <dimen name="recylcer_view_margin_end">2dp</dimen>
+    <dimen name="recylcer_view_margin_top">4dp</dimen>
+    <dimen name="recycler_view_margin_bottom">6dp</dimen>
+    <dimen name="recylcer_view_margin_start">6dp</dimen>
+    <dimen name="recylcer_view_margin_end">4dp</dimen>
 
     <dimen name="textViewStandardTextSize">20sp</dimen>
     <dimen name="textViewContentStandardTextSize">20sp</dimen>

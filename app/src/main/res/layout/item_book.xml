@@ -7,6 +7,7 @@
     android:layout_marginStart="@dimen/recylcer_view_margin_start"
     android:layout_marginEnd="@dimen/recylcer_view_margin_end"
     android:layout_marginBottom="@dimen/recycler_view_margin_bottom"
+    android:elevation="4dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:transitionName="show_book_detail"

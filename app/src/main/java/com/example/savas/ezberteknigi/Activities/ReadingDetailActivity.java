@@ -3,8 +3,10 @@ package com.example.savas.ezberteknigi.Activities;
 import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresPermission;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.text.HtmlCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -12,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,8 +32,11 @@ import com.example.savas.ezberteknigi.BLL.NLP.ApacheOpenNLPHelper;
 import com.example.savas.ezberteknigi.BLL.Translation.DummyTranslateProvider;
 import com.example.savas.ezberteknigi.BLL.NLP.ExampleSentenceExtractor;
 import com.example.savas.ezberteknigi.BLL.Interfaces.TranslationProvidable;
+import com.example.savas.ezberteknigi.BLL.WebCrawler.WebContentRetrieverViaJsoup;
+import com.example.savas.ezberteknigi.Models.Article;
 import com.example.savas.ezberteknigi.Models.Book;
 import com.example.savas.ezberteknigi.Models.Reading;
+import com.example.savas.ezberteknigi.Models.WebArticle;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.ReadingRepository;
@@ -59,13 +65,8 @@ public class ReadingDetailActivity extends AppCompatActivity
         _reading = new ReadingRepository(getApplication())
                 .getReadingTextById(getIntent().getIntExtra(EXTRA_READING_TEXT_DETAIL_ID, 0));
 
-        if (_reading.getDocumentType() == Reading.DOCUMENT_TYPE_WEB) {
-            if (WebContentRetrievable.isValidUrl(_reading.getWebArticle().getSource())) {
-                prepareLayoutForWebView(_reading);
-            }
-        } else {
-            prepareLayoutForReadingTextView(_reading);
-        }
+        prepareLayoutForReadingTextView(_reading);
+
     }
 
     private void prepareLayoutForWebView(Reading reading) {
@@ -128,7 +129,12 @@ public class ReadingDetailActivity extends AppCompatActivity
 
     private void prepareLayoutForReadingTextView(Reading reading) {
         //TODO: (maybe) if the content is HTML then -> tvContent.setText(Html.fromHtml(reading.getChapters()));
-        if (reading.getDocumentType() == Reading.DOCUMENT_TYPE_PLAIN) {
+        if (reading.getDocumentType() == Reading.DOCUMENT_TYPE_WEB){
+            if (WebContentRetrievable.isValidUrl(_reading.getWebArticle().getSource())) {
+                prepareLayoutForPlainText(_reading);
+            }
+        }
+        else if (reading.getDocumentType() == Reading.DOCUMENT_TYPE_PLAIN) {
             prepareLayoutForPlainText(reading);
         } else if (reading.getDocumentType() == Reading.DOCUMENT_TYPE_BOOK) {
             prepareLayoutForBook(reading);
@@ -149,26 +155,66 @@ public class ReadingDetailActivity extends AppCompatActivity
         });
     }
 
+//    private void prepareLayoutForWebText(Reading reading){
+//        setContentView(R.layout.activity_rt_detail);
+//
+//        Article article = (reading.getDocumentType() == Reading.DOCUMENT_TYPE_WEB) ? reading.getWebArticle() : reading.getSimpleArticle();
+//
+//        setTitle(article.getTitle());
+//
+//        tvContent = findViewById(R.id.text_view_reading_text_detail_content);
+//        tvContent.setText(article.getContent());
+//
+//        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.rt_collapsing_toolbar_layout);
+//        collapsingToolbarLayout.setTitleEnabled(true);
+//        collapsingToolbarLayout.setTitle(article.getTitle());
+//        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+//        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
+//
+//        NestedScrollView scrollView = findViewById(R.id.scroll_view);
+//        scrollToPosition(scrollView, article.getLeftOffSet());
+//
+//
+//    }
+
     private void prepareLayoutForPlainText(Reading reading) {
         setContentView(R.layout.activity_rt_detail);
-        setTitle(reading.getSimpleArticle().getTitle());
+
+        Article article =
+                (reading.getDocumentType() == Reading.DOCUMENT_TYPE_WEB)
+                        ? reading.getWebArticle()
+                        : reading.getSimpleArticle();
+
+        setTitle(article.getTitle());
 
         tvContent = findViewById(R.id.text_view_reading_text_detail_content);
-        tvContent.setText(reading.getSimpleArticle().getContent());
+
+        if (article instanceof WebArticle){
+            //TODO: from html
+
+            WebContentRetrievable retrievable = new WebContentRetrieverViaJsoup();
+            String htmlContent = retrievable.retrieveContent(((WebArticle) article).getSource());
+
+            Spanned spanned = HtmlCompat.fromHtml(htmlContent, HtmlCompat.FROM_HTML_MODE_COMPACT);
+            tvContent.setText(spanned);
+
+        } else {
+            tvContent.setText(article.getContent());
+        }
 
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.rt_collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitleEnabled(true);
-        collapsingToolbarLayout.setTitle(reading.getSimpleArticle().getTitle());
+        collapsingToolbarLayout.setTitle(article.getTitle());
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
         NestedScrollView scrollView = findViewById(R.id.scroll_view);
-        scrollToPosition(scrollView, reading.getSimpleArticle().getLeftOffSet());
+        scrollToPosition(scrollView, article.getLeftOffSet());
 
         scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                reading.getSimpleArticle().setLeftOffSet(scrollY);
+                article.setLeftOffSet(scrollY);
             }
         });
     }
