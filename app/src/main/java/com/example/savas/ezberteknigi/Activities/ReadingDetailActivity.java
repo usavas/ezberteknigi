@@ -3,7 +3,6 @@ package com.example.savas.ezberteknigi.Activities;
 import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresPermission;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.text.HtmlCompat;
@@ -283,7 +282,7 @@ public class ReadingDetailActivity extends AppCompatActivity
         Menu menu = navigationView.getMenu();
         for (int i = 1; i <= chapterCount; i++) {
             MenuItem mi = menu.add("Chapter " + i);
-            mi.setIcon(R.drawable.ic_book_black_24dp);
+            mi.setIcon(R.drawable.ic_nav_book);
         }
         navigationView.invalidate();
     }

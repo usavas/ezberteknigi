@@ -30,7 +30,7 @@
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
-                app:srcCompat="@drawable/ic_book_black_24dp"
+                app:srcCompat="@drawable/ic_nav_book"
                 android:transitionName="show_book_detail"/>
 
             <android.support.v7.widget.Toolbar

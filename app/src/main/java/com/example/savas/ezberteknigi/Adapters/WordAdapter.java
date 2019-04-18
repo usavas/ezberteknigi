@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -108,6 +109,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 
             } else {
 
+                ImageButton btnDetail = itemView.findViewById(R.id.button_details_word);
+                ImageButton btnEdit = itemView.findViewById(R.id.button_edit_word);
+                ImageButton btnShare = itemView.findViewById(R.id.button_share_word);
+                ImageButton delete = itemView.findViewById(R.id.button_delete_word);
+                ImageButton archive = itemView.findViewById(R.id.button_archive_word);
+
                 wordDetailFlipper = itemView.findViewById(R.id.word_detail_flipper);
                 wordFlipperDetail1stView = itemView.findViewById(R.id.flip_to_word);
                 wordFlipperDetail2ndView = itemView.findViewById(R.id.flip_to_translation);
@@ -119,6 +126,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
                     }
                     return true;
                 });
+
+
 
 //                btnMark = itemView.findViewById(R.id.button_sub_item_item_learn_mastered);
 //                btnMark.setOnClickListener(new View.OnClickListener() {

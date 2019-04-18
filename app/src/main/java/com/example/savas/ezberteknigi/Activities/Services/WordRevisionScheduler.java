@@ -88,7 +88,7 @@ public class WordRevisionScheduler extends JobService {
                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
-//                    .addAction(R.drawable.button_revision, "TEKRAR ETTİM", deletePendingIntent)
+//                    .addAction(R.drawable.ic_nav_revision, "TEKRAR ETTİM", deletePendingIntent)
                     .setDeleteIntent(deletePendingIntent)
                     .setLights(0xfdfd96, 300, 1000)
                     .build();

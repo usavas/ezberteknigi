@@ -101,7 +101,7 @@
             android:layout_alignParentBottom="true"
 
             android:layout_margin="12dp"
-            app:srcCompat="@drawable/ic_volume_up_black_24dp" />
+            app:srcCompat="@drawable/ic_word_speaker" />
 
     </RelativeLayout>
 
