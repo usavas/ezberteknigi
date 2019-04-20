@@ -73,12 +73,7 @@ public class WordsFragment extends Fragment {
         WordAdapter wordAdapter;
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_word);
 
-        if (WORD_LIST_TYPE == Word.WORD_REVISION){
-            wordAdapter = new WordAdapter(getContext(), true);
-            makeRecyclerViewSingleItemAtATime(recyclerView);
-        } else {
-            wordAdapter = new WordAdapter(getContext());
-        }
+        wordAdapter = new WordAdapter(getContext());
 
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -87,18 +82,7 @@ public class WordsFragment extends Fragment {
         recyclerView.setAdapter(wordAdapter);
 
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
-//        if (WORD_LIST_TYPE == Word.WORD_ALL) {
-//            btnAddNewWord.setVisibility(View.VISIBLE);
-//            wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
-//                @Override
-//                public void onChanged(@Nullable List<Word> words) {
-//                    wordAdapter.setWords(words);
-////                    tvItemCount.setText(String.valueOf(words.size() + " words listed"));
-//                }
-//            });
-//        }
         if (WORD_LIST_TYPE == 0) { //if learning
-            btnAddNewWord.setVisibility(View.VISIBLE);
             wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, new Observer<List<Word>>() {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
@@ -106,21 +90,10 @@ public class WordsFragment extends Fragment {
                 }
             });
         } else if (WORD_LIST_TYPE == 1) { // if mastered
-//            btnAddNewWord.setVisibility(View.GONE);
             wordViewModel.getAllWordsBasedOnState(Word.WORD_MASTERED).observe(this, new Observer<List<Word>>() {
                 @Override
                 public void onChanged(@Nullable List<Word> words) {
                     wordAdapter.setWords(words);
-                }
-            });
-        } else if (WORD_LIST_TYPE == Word.WORD_REVISION) { //if word revision
-            btnAddNewWord.setVisibility(View.GONE);
-            getActivity().setTitle("Tekrar Edilecek Kelimeler");
-            wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
-                @Override
-                public void onChanged(@Nullable List<Word> words) {
-                    wordAdapter.setWordsRevision(words);
                 }
             });
         }
@@ -131,85 +104,58 @@ public class WordsFragment extends Fragment {
                 Toast.makeText(getContext(), "if this works, it means overrides the adapter in act.", Toast.LENGTH_SHORT).show();
             }
 
-            //this functionality is provided with onSwipe method now
-            @Override
-            public void onMarkClick(Word word) {
-                if (word.getWordState() == Word.WORD_LEARNING){
-                    word.setWordState(Word.WORD_MASTERED);
-                } else if (word.getWordState() == Word.WORD_MASTERED){
-                    word.setWordState(Word.WORD_LEARNING);
-                }
-                wordViewModel.update(word);
-            }
-
             @Override
             public void onItemLongClick(Word word) {
 
             }
         });
 
-        if (WORD_LIST_TYPE == 0 || WORD_LIST_TYPE == 1) { // if word is learning or mastered = not revised
-            btnAddNewWord.setOnClickListener(v -> {
-                AddWordFragment wordDialogFragment = new AddWordFragment();
-                if (WORD_LIST_TYPE == Word.WORD_ALL){
-                    wordDialogFragment = AddWordFragment.newInstance(Word.WORD_ALL);
-                } else if(WORD_LIST_TYPE == Word.WORD_LEARNING){
-                    wordDialogFragment = AddWordFragment.newInstance(Word.WORD_LEARNING);
-                }
-                else if (WORD_LIST_TYPE == Word.WORD_MASTERED){
-                    wordDialogFragment = AddWordFragment.newInstance(Word.WORD_MASTERED);
-                }
-                wordDialogFragment.show(getFragmentManager(), "Kelime Ekle");
-            });
-        }
+        wordAdapter.setOnOptionsClickListener(new WordAdapter.OnOptionsClickListener() {
+            @Override
+            public void onDetailClick(Word word) {
+
+            }
+
+            @Override
+            public void onArchiveClick(Word word) {
+
+            }
+
+            @Override
+            public void onDeleteClick(Word word) {
+
+            }
+
+            @Override
+            public void onShareClick(Word word) {
+
+            }
+
+            @Override
+            public void onEditClick(Word word) {
+
+            }
+        });
+
+        btnAddNewWord.setOnClickListener(v -> {
+            AddWordFragment wordDialogFragment = new AddWordFragment();
+            if (WORD_LIST_TYPE == Word.WORD_LEARNING) {
+                wordDialogFragment = AddWordFragment.newInstance(Word.WORD_LEARNING);
+            } else if (WORD_LIST_TYPE == Word.WORD_MASTERED) {
+                wordDialogFragment = AddWordFragment.newInstance(Word.WORD_MASTERED);
+            }
+            wordDialogFragment.show(getFragmentManager(), "Kelime Ekle");
+        });
 
         ImplementOnSwipedOnWords(view, wordAdapter, recyclerView);
 
         return view;
     }
 
-    /**
-     * Makes the given recyclerView item to show one item at a time
-     * @param recyclerView
-     */
-    private void makeRecyclerViewSingleItemAtATime(RecyclerView recyclerView) {
-        SnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(recyclerView);
-    }
-
-    private void ImplementOnSwipedOnWords(View view, WordAdapter wordAdapter, RecyclerView recyclerView) {
-        if (WORD_LIST_TYPE == Word.WORD_REVISION) {
-            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-                @Override
-                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                    return false;
-                }
-
-                @Override
-                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-                    if (i == ItemTouchHelper.LEFT || i == ItemTouchHelper.RIGHT) {
-
-                        Word word = wordAdapter.getWordAt(viewHolder.getAdapterPosition());
-                        Date prevDateToRollBack = word.getDateLastRevision();
-                        updateRevision(word);
-
-                        clearWordFromNotificationMenuIfExists(word);
-
-                        Snackbar snackbar = Snackbar.make(view,
-                                "Kelime tekrar edildi: " + word.getWord(),
-                                Snackbar.LENGTH_LONG);
-                        snackbar.setAction("İPTAL ET", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                rollBackRevision(word, prevDateToRollBack);
-                            }
-                        });
-                        snackbar.show();
-                    }
-                }
-            }).attachToRecyclerView(recyclerView);
-        } else if (WORD_LIST_TYPE == Word.WORD_LEARNING) {
+    private void ImplementOnSwipedOnWords(View view,
+                                          WordAdapter wordAdapter,
+                                          RecyclerView recyclerView) {
+        if (WORD_LIST_TYPE == Word.WORD_LEARNING) {
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                 @Override
                 public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
@@ -237,7 +183,7 @@ public class WordsFragment extends Fragment {
                 }
             }).attachToRecyclerView(recyclerView);
         } else if (WORD_LIST_TYPE == Word.WORD_MASTERED) {
-            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
                 @Override
                 public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
                     return false;
@@ -266,35 +212,6 @@ public class WordsFragment extends Fragment {
         }
     }
 
-    private void updateRevision(Word word) {
-        word.revisionCompleted();
-        wordViewModel.update(word);
-    }
-    private void rollBackRevision(Word word, Date prevDateToRollBack) {
-        word.setRevisionPeriodCount(word.getRevisionPeriodCount() - 1);
-        word.setDateLastRevision(prevDateToRollBack);
-        wordViewModel.update(word);
-    }
-
-    /**
-     * Checks whether there is any notification currently showing up related to a given word and clears the notification with the given word's id
-     * @param word the word which might be shown in the notification
-     */
-    private void clearWordFromNotificationMenuIfExists(Word word) {
-        try{
-            NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.cancel(word.getWordId());
-
-            //TODO: if this (group notif) is the last notification, then cancel it, else leave it
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                if (notificationManager.getActiveNotifications().length == 1){
-                    notificationManager.cancel(-1);
-                }
-            }
-        } catch (Exception e){
-            Log.d(TAG, "clearWordFromNotificationMenuIfExists: " + e.getMessage());
-        }
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void updateActivityVariables(String title) {

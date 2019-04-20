@@ -21,7 +21,9 @@ public class WordsFragmentsContainerFragment extends Fragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main_words_fragment_container, container, false);
+        return inflater.inflate(R.layout.fragment_main_words_fragment_container,
+                container,
+                false);
     }
 
     @Override
@@ -29,13 +31,18 @@ public class WordsFragmentsContainerFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle("Kelimeler");
 
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
-        TabLayout tabLayout = getActivity().findViewById(R.id.fragment_word_activity_tabs);
-        ViewPager mViewPager = getActivity().findViewById(R.id.fragment_word_activity_container);
+        ViewPager mViewPager = getActivity().findViewById(
+                R.id.fragment_word_activity_container);
+        mViewPager.setAdapter(
+                new SectionsPagerAdapter(getFragmentManager()));
 
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        TabLayout tabLayout = getActivity().findViewById(
+                R.id.fragment_word_activity_tabs);
+        tabLayout.addOnTabSelectedListener(
+                new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        mViewPager.addOnPageChangeListener(
+                new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
     @Override
@@ -56,9 +63,6 @@ public class WordsFragmentsContainerFragment extends Fragment
             } else if (position == 1){
                 return WordsFragment.newInstance(Word.WORD_MASTERED);
             }
-//            else if (position == 2){
-//                return WordsFragment.newInstance(Word.WORD_ALL);
-//            }
             return null;
         }
 
@@ -70,9 +74,6 @@ public class WordsFragmentsContainerFragment extends Fragment
             } else if (position == 1){
                 return "Öğrendiklerim";
             }
-//            else if (position == 2){
-//                return "Tüm Kelimeler";
-//            }
             return null;
         }
 

@@ -37,8 +37,11 @@ implements WordsFragment.OnFragmentInteractionListener {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         if (getIntent().getBooleanExtra(NavigatorActivity.IS_WORD_FRAGMENT_START, false)){
-            getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
-                    new WordRevisionFragment()).commit();
+            getSupportFragmentManager()
+                    .beginTransaction().replace(
+                            R.id.bottom_navigation_fragment_container,
+                            new WordRevisionFragment())
+                    .commit();
             View view = navigation.findViewById(R.id.navigation_revision_words);
             view.performClick();
         } else if (savedInstanceState == null) {

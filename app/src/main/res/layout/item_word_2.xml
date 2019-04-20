@@ -20,34 +20,27 @@
         android:id="@+id/word_detail_flipper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="2dp"
         android:layout_marginBottom="10dp">
 
-        <RelativeLayout
-            android:id="@+id/flip_to_word"
+
+        <TextView
+            android:id="@+id/tvItemWord"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:padding="2dp"
+            android:text="word"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/tvItemWord"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="6dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:padding="2dp"
-                android:text="word"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-
-        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/flip_to_translation"
@@ -64,14 +57,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="6dp"
                 android:layout_marginEnd="4dp"
                 android:gravity="center_horizontal"
                 android:padding="2dp"
                 android:text="translation"
                 android:textAppearance="@style/CollapsedAppBar"
                 android:textColor="@color/black"
-                android:textSize="17sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/sub_item_example_sentence"

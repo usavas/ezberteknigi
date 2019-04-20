@@ -4,10 +4,15 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.os.Build;
+import android.util.Log;
 
+import com.example.savas.ezberteknigi.Activities.Services.WordRevisionScheduler;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
@@ -18,6 +23,8 @@ import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
+
+import static android.support.constraint.Constraints.TAG;
 
 
 public class AppStarter extends Application {
@@ -55,6 +62,14 @@ public class AppStarter extends Application {
                 FirebaseDatabase.getInstance().setPersistenceEnabled(true);
             }
         }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                scheduleJob();
+            }
+        }).start();
+
     }
 
     public Context getContext() {
@@ -124,6 +139,44 @@ public class AppStarter extends Application {
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channelWordRevision);
             manager.createNotificationChannel(channelWordOftheDay);
+        }
+    }
+
+    private void scheduleJob() {
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        if (checkIfJobRunning(scheduler)) return;
+
+        ComponentName componentName = new ComponentName(getApplicationContext(), WordRevisionScheduler.class);
+        JobInfo info = new JobInfo.Builder(12345, componentName)
+                .setPersisted(true)
+                .setPeriodic(15 * 60 * 1000)
+                .build();
+
+        int resultCode = scheduler.schedule(info);
+        printResultIfJobStartedOrNot(resultCode);
+    }
+
+    private boolean checkIfJobRunning(JobScheduler scheduler) {
+        if (Build.VERSION.SDK_INT >= 24){
+            JobInfo job = scheduler.getPendingJob(12345);
+            if (job != null){
+                return true;
+            }
+        } else {
+            for (JobInfo job : scheduler.getAllPendingJobs()) {
+                if (job.getId() == 12345){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void printResultIfJobStartedOrNot(int resultCode) {
+        if (resultCode == JobScheduler.RESULT_SUCCESS) {
+            Log.d(TAG, "Job scheduled");
+        } else {
+            Log.d(TAG, "Job scheduling failed");
         }
     }
 

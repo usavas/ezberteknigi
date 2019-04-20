@@ -27,52 +27,7 @@ public class NavigatorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                scheduleJob();
-            }
-        }).start();
-
         StartMainActivityBasedOnRevision();
-    }
-
-    private void scheduleJob() {
-        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        if (checkIfJobRunning(scheduler)) return;
-
-        ComponentName componentName = new ComponentName(getApplicationContext(), WordRevisionScheduler.class);
-        JobInfo info = new JobInfo.Builder(12345, componentName)
-                .setPersisted(true)
-                .setPeriodic(15 * 60 * 1000)
-                .build();
-
-        int resultCode = scheduler.schedule(info);
-        printResultIfJobStartedOrNot(resultCode);
-    }
-
-    private boolean checkIfJobRunning(JobScheduler scheduler) {
-        if (Build.VERSION.SDK_INT >= 24){
-            JobInfo job = scheduler.getPendingJob(12345);
-            if (job != null){
-                return true;
-            }
-        } else {
-            for (JobInfo job : scheduler.getAllPendingJobs()) {
-                if (job.getId() == 12345){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private void printResultIfJobStartedOrNot(int resultCode) {
-        if (resultCode == JobScheduler.RESULT_SUCCESS) {
-            Log.d(TAG, "Job scheduled");
-        } else {
-            Log.d(TAG, "Job scheduling failed");
-        }
     }
 
     private void StartMainActivityBasedOnRevision() {
