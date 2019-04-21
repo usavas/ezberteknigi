@@ -42,8 +42,11 @@ public class Reading {
     @Embedded(prefix = "webarticle_")
     private WebArticle webArticle;
 
-    @Embedded(prefix = "simplearticle__")
+    @Embedded(prefix = "simplearticle_")
     private SimpleArticle simpleArticle;
+
+    @ColumnInfo(name = "is_archived")
+    private boolean isArchived;
 
 
     public Reading(){
@@ -97,6 +100,14 @@ public class Reading {
 
     public Date getTimeInserted() {
         return timeInserted;
+    }
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
     }
 
     public void setTimeInserted(Date timeInserted) {

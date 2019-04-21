@@ -29,7 +29,7 @@ import static android.support.constraint.Constraints.TAG;
 
 public class ReadingsFragment extends Fragment {
 
-    ReadingTextViewModel readingTextViewModel;
+    ReadingTextViewModel readingViewModel;
 
     @Nullable
     @Override
@@ -46,8 +46,8 @@ public class ReadingsFragment extends Fragment {
 
         recyclerView.setAdapter(articleAdapter);
 
-        readingTextViewModel = ViewModelProviders.of(this).get(ReadingTextViewModel.class);
-        readingTextViewModel.getAllReadingTexts().observe(this, readingTexts -> {
+        readingViewModel = ViewModelProviders.of(this).get(ReadingTextViewModel.class);
+        readingViewModel.getAllReadingTexts().observe(this, readingTexts -> {
 
             List<Reading> articles = new ArrayList<>();
 
@@ -71,6 +71,38 @@ public class ReadingsFragment extends Fragment {
 
             @Override
             public void onItemLongClick(Reading reading) {
+
+            }
+        });
+
+        articleAdapter.setOnOptionsClickListener(new ArticleAdapter.OnOptionsClickListener() {
+            @Override
+            public void onDeleteClick(Reading reading) {
+                readingViewModel.delete(reading);
+
+                Snackbar snackbar = Snackbar.make(view,
+                        "Makale silindi", Snackbar.LENGTH_LONG);
+                snackbar.setAction("GERİ AL", f-> readingViewModel.insert(reading));
+                snackbar.show();
+            }
+
+            @Override
+            public void onArchiveClick(Reading reading, int position) {
+                reading.setArchived(true);
+                readingViewModel.update(reading);
+                articleAdapter.notifyItemRemoved(position);
+
+                Snackbar mySnackbar = Snackbar.make(view,
+                        "Kelime arşivlendi", Snackbar.LENGTH_LONG);
+                mySnackbar.setAction("GERİ AL", f -> {
+                    reading.setArchived(false);
+                    readingViewModel.update(reading);
+                });
+                mySnackbar.show();
+            }
+
+            @Override
+            public void onShareClick(Reading reading) {
 
             }
         });

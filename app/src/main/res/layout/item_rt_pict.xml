@@ -79,6 +79,7 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/delete_reading"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_margin="8dp"
@@ -88,6 +89,7 @@
                 android:src="@drawable/ic_item_delete"/>
 
             <ImageButton
+                android:id="@+id/archive_reading"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_margin="8dp"
@@ -98,6 +100,7 @@
                 android:src="@drawable/ic_item_archive"/>
 
             <ImageButton
+                android:id="@+id/share_reading"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_margin="8dp"

@@ -124,6 +124,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
         private View flipperItemTranslation;
         private View flipperItemOptions;
 
+        private ImageButton btnDetail;
+        private ImageButton btnEdit;
+        private ImageButton btnShare;
+        private ImageButton btnDelete;
+        private ImageButton btnArchive;
+
         WordHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -131,11 +137,11 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
             tvTranslation = itemView.findViewById(R.id.sub_item_translation);
             tvExampleSentence = itemView.findViewById(R.id.sub_item_example_sentence);
 
-            ImageButton btnDetail = itemView.findViewById(R.id.button_details_word);
-            ImageButton btnEdit = itemView.findViewById(R.id.button_edit_word);
-            ImageButton btnShare = itemView.findViewById(R.id.button_share_word);
-            ImageButton btnDelete = itemView.findViewById(R.id.button_delete_word);
-            ImageButton btnArchive = itemView.findViewById(R.id.button_archive_word);
+            btnDetail = itemView.findViewById(R.id.button_details_word);
+            btnEdit = itemView.findViewById(R.id.button_edit_word);
+            btnShare = itemView.findViewById(R.id.button_share_word);
+            btnDelete = itemView.findViewById(R.id.button_delete_word);
+            btnArchive = itemView.findViewById(R.id.button_archive_word);
 
             flipper = itemView.findViewById(R.id.word_detail_flipper);
             flipperItemWord = itemView.findViewById(R.id.flip_to_word);
@@ -149,27 +155,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
                 return true;
             });
 
-            for (ImageButton imageButton
-                    : new ImageButton[]{btnDelete, btnDetail, btnShare, btnArchive, btnEdit}) {
-                imageButton.setOnClickListener(v -> {
-                    if (optionsClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-
-                        Word word = words.get(getAdapterPosition());
-                        if (imageButton.equals(btnDelete))
-                            optionsClickListener.onDeleteClick(word);
-                        else if (imageButton.equals(btnDetail))
-                            optionsClickListener.onDetailClick(word);
-                        else if (imageButton.equals(btnShare))
-                            optionsClickListener.onShareClick(word);
-                        else if (imageButton.equals(btnEdit))
-                            optionsClickListener.onEditClick(word);
-                        else if (imageButton.equals(btnArchive)) {
-                            optionsClickListener.onArchiveClick(word, getAdapterPosition());
-                        }
-
-                    }
-                });
-            }
 //            btnDetail.setOnClickListener(v -> {
 //                if (optionsClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
 //                    optionsClickListener.onDetailClick(words.get(getAdapterPosition()));
@@ -261,6 +246,27 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
                     }
                 }
             });
+
+            for (ImageButton imageButton
+                    : new ImageButton[]{btnDelete, btnDetail, btnShare, btnArchive, btnEdit}) {
+                imageButton.setOnClickListener(v -> {
+                    if (optionsClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+
+                        if (imageButton.equals(btnDelete))
+                            optionsClickListener.onDeleteClick(word);
+                        else if (imageButton.equals(btnDetail))
+                            optionsClickListener.onDetailClick(word);
+                        else if (imageButton.equals(btnShare))
+                            optionsClickListener.onShareClick(word);
+                        else if (imageButton.equals(btnEdit))
+                            optionsClickListener.onEditClick(word);
+                        else if (imageButton.equals(btnArchive)) {
+                            optionsClickListener.onArchiveClick(word, getAdapterPosition());
+                        }
+
+                    }
+                });
+            }
 
         }
     }
