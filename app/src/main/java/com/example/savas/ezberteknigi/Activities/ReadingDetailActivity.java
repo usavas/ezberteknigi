@@ -319,10 +319,7 @@ public class ReadingDetailActivity extends AppCompatActivity
     }
 
     private boolean verifySelection(int wordSelectionStart, int wordSelectionEnd) {
-        if ((wordSelectionEnd - wordSelectionStart) > 0) {
-            return true;
-        }
-        return false;
+        return (wordSelectionEnd - wordSelectionStart) > 0;
     }
 
     private void showWordDialog(String wordString, String exampleSentence, int readingTextId) {

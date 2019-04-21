@@ -9,9 +9,9 @@
     <application
         android:name=".AppStarter"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher_k"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_k_legacy_round"
+        android:icon="@drawable/langfella_legacy"
+        android:roundIcon="@drawable/langfella_legacy"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"

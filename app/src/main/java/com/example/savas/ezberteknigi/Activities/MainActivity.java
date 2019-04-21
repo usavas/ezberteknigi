@@ -14,6 +14,7 @@ import com.example.savas.ezberteknigi.Activities.BottomNavFragments.BooksFragmen
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ReadingsFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.SettingsFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordRevisionFragment;
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragmentsContainerFragment;
 import com.example.savas.ezberteknigi.Models.Reading;
 import com.example.savas.ezberteknigi.Models.SimpleArticle;

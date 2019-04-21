@@ -3,9 +3,12 @@ package com.example.savas.ezberteknigi.Activities.DialogFragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -13,6 +16,7 @@ import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 
@@ -27,19 +31,26 @@ public class WordDetailFragment extends DialogFragment {
         return f;
     }
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    public static WordDetailFragment newInstance(int wordId) {
+        WordDetailFragment f = new WordDetailFragment();
+        _wordId = wordId;
+        return f;
+    }
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_dialog_word_detail, null);
-        builder.setView(view);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_dialog_word_detail, container);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         WordRepository repo = new WordRepository(getActivity().getApplication());
         Word word = null;
 
         try {
-            //TODO: may not work right
             word = repo.getWordById(_wordId);
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -76,6 +87,18 @@ public class WordDetailFragment extends DialogFragment {
             }
         });
 
-        return builder.create();
     }
+
+//    @NonNull
+//    @Override
+//    public Dialog onCreateDialog(Bundle savedInstanceState) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//
+//        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+//        View view = inflater.inflate(R.layout.fragment_dialog_word_detail, null);
+//        builder.setView(view);
+//
+//        return builder.create();
+//
+//    }
 }

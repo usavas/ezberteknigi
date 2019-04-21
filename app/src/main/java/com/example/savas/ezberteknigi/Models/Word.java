@@ -21,13 +21,19 @@ import java.util.concurrent.TimeUnit;
 //                onUpdate = CASCADE)
 )
 public class Word {
+
+    /*
+    * global variables */
+
     public final static int WORD_LEARNING = 0;
     public final static int WORD_MASTERED = 1;
-    public final static int WORD_REVISION = 2;
-    public final static int WORD_ALL = 3;
 
     public final static String EXAMPLE_SENTENCE_DELIMITER_REGEX = "##";
-    public final static int READING_TEXT_ID_DEFAULT = 0;
+    public final static int READING_TEXT_ID_DEFAULT = -1;
+
+
+    /*
+    * fields */
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "word_id")
@@ -63,7 +69,13 @@ public class Word {
     @ColumnInfo(name = "details_seen_count")
     private int detailsSeenCount;
 
-    @Ignore
+    @ColumnInfo(name = "is_archived")
+    private boolean isArchived;
+
+
+    /*
+    * constructors */
+
     public Word() {
         this.dateSaved = new Date();
     }
@@ -89,48 +101,88 @@ public class Word {
         this.detailsSeenCount = 0;
     }
 
-    public Word(String word,
-                String translation,
-                int readingTextId,
-                String exampleSentence,
-                int wordState,
-                int revisionPeriodCount,
-                int errorCount,
-                int correctCount,
-                int screeningCount,
-                int detailsSeenCount) {
-        this.word = word;
-        this.translation = translation;
-        this.readingTextId = readingTextId;
-        this.exampleSentence = exampleSentence;
-        this.wordState = wordState;
-        this.revisionPeriodCount = revisionPeriodCount;
-        this.errorCount = errorCount;
-        this.correctCount = correctCount;
-        this.screeningCount = screeningCount;
-        this.detailsSeenCount = detailsSeenCount;
 
-        this.dateSaved = new Date();
-        this.dateLastRevision = new Date();
+    /*
+     * Custom helper methods and vars*/
+
+    @Override
+    public String toString() {
+        return String.format("wordId: %d, word: %s, translation: %s", this.wordId, this.word, this.translation);
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
+    }
+
+    public void revisionCompleted() {
+        this.revisionPeriodCount += 1;
+        this.setDateLastRevision(new Date());
+    }
+
+    public static List<Word> getWordsToRevise(List<Word> _words) {
+        List<Word> resultWords = new ArrayList<>();
+//        resultWords.addAll(getWordRevisionList(_words, 0, TimeType.MINUTE, REV_1_MIN));
+//        resultWords.addAll(getWordRevisionList(_words, 1, TimeType.HOUR, REV_2_HOUR));
+//        resultWords.addAll(getWordRevisionList(_words, 2, TimeType.HOUR, REV_3_HOUR));
+//        resultWords.addAll(getWordRevisionList(_words, 3, TimeType.HOUR, REV_4_HOUR));
+//        resultWords.addAll(getWordRevisionList(_words, 4, TimeType.HOUR, REV_5_HOUR));
+//        resultWords.addAll(getWordRevisionList(_words, 5, TimeType.HOUR, REV_6_HOUR));
+//        resultWords.addAll(getWordRevisionList(_words, 6, TimeType.DAY, REV_7_DAY));
+
+        resultWords.addAll(getWordRevisionList(_words, 0, TimeType.MINUTE, REV_1_MIN_MOCK));
+        resultWords.addAll(getWordRevisionList(_words, 1, TimeType.MINUTE, REV_2_MIN_MOCK));
+        resultWords.addAll(getWordRevisionList(_words, 2, TimeType.MINUTE, REV_3_MIN_MOCK));
+        resultWords.addAll(getWordRevisionList(_words, 3, TimeType.MINUTE, REV_4_MIN_MOCK));
+        resultWords.addAll(getWordRevisionList(_words, 4, TimeType.MINUTE, REV_5_MIN_MOCK));
+        resultWords.addAll(getWordRevisionList(_words, 5, TimeType.MINUTE, REV_6_MIN_MOCK));
+        resultWords.addAll(getWordRevisionList(_words, 6, TimeType.MINUTE, REV_7_MIN_MOCK));
+        return resultWords;
+    }
+
+    private static List<Word> getWordRevisionList(List<Word> _words, int _periodCount, TimeType timeType, int _timeAmount) {
+        List<Word> listToRevise = new ArrayList<>();
+        long elapsedTime = 0;
+
+        for (Word word : _words) {
+            switch (timeType) {
+                case SECOND:
+                    elapsedTime = word.getTimeElapsedInSeconds();
+                    break;
+                case MINUTE:
+                    elapsedTime = word.getTimeElapsedInMinutes();
+                    break;
+                case HOUR:
+                    elapsedTime = word.getTimeElapsedInHours();
+                    break;
+                case DAY:
+                    elapsedTime = word.getTimeElapsedInDays();
+                    break;
+            }
+
+            if (word.getRevisionPeriodCount() == _periodCount && elapsedTime >= _timeAmount) {
+                listToRevise.add(word);
+            }
+        }
+        return listToRevise;
     }
 
     @Ignore
-    public long getTimeElapsedInSeconds() {
+    private long getTimeElapsedInSeconds() {
         return getDateDiff(TimeUnit.SECONDS);
     }
 
     @Ignore
-    public long getTimeElapsedInMinutes() {
+    private long getTimeElapsedInMinutes() {
         return getDateDiff(TimeUnit.MINUTES);
     }
 
     @Ignore
-    public long getTimeElapsedInHours() {
+    private long getTimeElapsedInHours() {
         return getDateDiff(TimeUnit.HOURS);
     }
 
     @Ignore
-    public long getTimeElapsedInDays() {
+    private long getTimeElapsedInDays() {
         return getDateDiff(TimeUnit.DAYS);
     }
 
@@ -143,6 +195,31 @@ public class Word {
         long diffInMilliSeconds = currTime - updateTime;
         return timeUnit.convert(diffInMilliSeconds, TimeUnit.MILLISECONDS);
     }
+
+//    private static int REV_1_MIN = 30;
+//    private static int REV_2_HOUR = 1;
+//    private static int REV_3_HOUR = 2;
+//    private static int REV_4_HOUR = 6;
+//    private static int REV_5_HOUR = 12;
+//    private static int REV_6_HOUR = 24;
+//    private static int REV_7_DAY = 5;
+
+    private static int REV_1_MIN_MOCK = 1;
+    private static int REV_2_MIN_MOCK = 1;
+    private static int REV_3_MIN_MOCK = 1;
+    private static int REV_4_MIN_MOCK = 1;
+    private static int REV_5_MIN_MOCK = 1;
+    private static int REV_6_MIN_MOCK = 1;
+    private static int REV_7_MIN_MOCK = 3;
+
+    private enum TimeType {
+        MINUTE, HOUR, DAY, SECOND
+    }
+
+
+
+    /*
+    * getters */
 
     public int getWordId() {
         return wordId;
@@ -160,7 +237,9 @@ public class Word {
         return readingTextId;
     }
 
-    public String getLanguage(){return language;}
+    public String getLanguage() {
+        return language;
+    }
 
     public String getExampleSentence() {
         return exampleSentence;
@@ -198,6 +277,13 @@ public class Word {
         return detailsSeenCount;
     }
 
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+
+    /*
+    * setters */
 
     public void setWordId(int id) {
         this.wordId = id;
@@ -215,7 +301,9 @@ public class Word {
         this.readingTextId = readingTextId;
     }
 
-    public void setLanguage(String language) {this.language = language;}
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
     public void setExampleSentence(String exampleSentence) {
         this.exampleSentence = exampleSentence;
@@ -253,91 +341,4 @@ public class Word {
         this.detailsSeenCount = detailsSeenCount;
     }
 
-    @Ignore
-    private boolean expanded;
-
-    public boolean isExpanded() {
-        return expanded;
-    }
-
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
-    }
-
-    public void revisionCompleted(){
-        this.revisionPeriodCount += 1;
-        this.setDateLastRevision(new Date());
-    }
-
-    public static List<Word> getWordsToRevise(List<Word> _words){
-        List<Word> resultWords = new ArrayList<>();
-//        resultWords.addAll(getWordRevisionList(_words, 0, TimeType.MINUTE, REV_1_MIN));
-//        resultWords.addAll(getWordRevisionList(_words, 1, TimeType.HOUR, REV_2_HOUR));
-//        resultWords.addAll(getWordRevisionList(_words, 2, TimeType.HOUR, REV_3_HOUR));
-//        resultWords.addAll(getWordRevisionList(_words, 3, TimeType.HOUR, REV_4_HOUR));
-//        resultWords.addAll(getWordRevisionList(_words, 4, TimeType.HOUR, REV_5_HOUR));
-//        resultWords.addAll(getWordRevisionList(_words, 5, TimeType.HOUR, REV_6_HOUR));
-//        resultWords.addAll(getWordRevisionList(_words, 6, TimeType.DAY, REV_7_DAY));
-
-        resultWords.addAll(getWordRevisionList(_words, 0, TimeType.MINUTE, REV_1_MIN_MOCK));
-        resultWords.addAll(getWordRevisionList(_words, 1, TimeType.MINUTE, REV_2_MIN_MOCK));
-        resultWords.addAll(getWordRevisionList(_words, 2, TimeType.MINUTE, REV_3_MIN_MOCK));
-        resultWords.addAll(getWordRevisionList(_words, 3, TimeType.MINUTE, REV_4_MIN_MOCK));
-        resultWords.addAll(getWordRevisionList(_words, 4, TimeType.MINUTE, REV_5_MIN_MOCK));
-        resultWords.addAll(getWordRevisionList(_words, 5, TimeType.MINUTE, REV_6_MIN_MOCK));
-        resultWords.addAll(getWordRevisionList(_words, 6, TimeType.MINUTE, REV_7_MIN_MOCK));
-        return resultWords;
-    }
-
-    private static List<Word> getWordRevisionList(List<Word> _words, int _periodCount, TimeType timeType, int _timeAmount){
-        List<Word> listToRevise = new ArrayList<>();
-        long elapsedTime = 0;
-
-        for (Word word: _words) {
-            switch (timeType){
-                case SECOND:
-                    elapsedTime = word.getTimeElapsedInSeconds();
-                    break;
-                case MINUTE:
-                    elapsedTime = word.getTimeElapsedInMinutes();
-                    break;
-                case HOUR:
-                    elapsedTime = word.getTimeElapsedInHours();
-                    break;
-                case DAY:
-                    elapsedTime = word.getTimeElapsedInDays();
-                    break;
-            }
-
-            if (word.getRevisionPeriodCount() == _periodCount && elapsedTime >= _timeAmount){
-                listToRevise.add(word);
-            }
-        }
-        return listToRevise;
-    }
-
-//    private static int REV_1_MIN = 30;
-//    private static int REV_2_HOUR = 1;
-//    private static int REV_3_HOUR = 2;
-//    private static int REV_4_HOUR = 6;
-//    private static int REV_5_HOUR = 12;
-//    private static int REV_6_HOUR = 24;
-//    private static int REV_7_DAY = 5;
-
-    private static int REV_1_MIN_MOCK = 1;
-    private static int REV_2_MIN_MOCK = 1;
-    private static int REV_3_MIN_MOCK = 1;
-    private static int REV_4_MIN_MOCK = 1;
-    private static int REV_5_MIN_MOCK = 1;
-    private static int REV_6_MIN_MOCK = 1;
-    private static int REV_7_MIN_MOCK = 3;
-
-    private enum TimeType{
-        MINUTE, HOUR, DAY, SECOND
-    }
-
-    @Override
-    public String toString(){
-        return String.format("wordId: %d, word: %s, translation: %s", this.wordId, this.word, this.translation);
-    }
 }

@@ -49,7 +49,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
     public interface OnOptionsClickListener {
         void onDetailClick(Word word);
 
-        void onArchiveClick(Word word);
+        void onArchiveClick(Word word, int position);
 
         void onDeleteClick(Word word);
 
@@ -138,7 +138,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
             ImageButton btnArchive = itemView.findViewById(R.id.button_archive_word);
 
             flipper = itemView.findViewById(R.id.word_detail_flipper);
-//            flipperItemWord = itemView.findViewById(R.id.flip_to_word);
+            flipperItemWord = itemView.findViewById(R.id.flip_to_word);
             flipperItemTranslation = itemView.findViewById(R.id.flip_to_translation);
             flipperItemOptions = itemView.findViewById(R.id.flip_to_options);
 
@@ -163,8 +163,9 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
                             optionsClickListener.onShareClick(word);
                         else if (imageButton.equals(btnEdit))
                             optionsClickListener.onEditClick(word);
-                        else if (imageButton.equals(btnArchive))
-                            optionsClickListener.onArchiveClick(word);
+                        else if (imageButton.equals(btnArchive)) {
+                            optionsClickListener.onArchiveClick(word, getAdapterPosition());
+                        }
 
                     }
                 });
@@ -220,12 +221,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 
                 int displayedChild = flipper.getDisplayedChild();
                 if (displayedChild
-                        == flipper.indexOfChild(tvWord)) {
+                        == flipper.indexOfChild(flipperItemWord)) {
                     flipper.setDisplayedChild(
                             flipper.indexOfChild(flipperItemTranslation));
                 } else {
                     flipper.setDisplayedChild(
-                            flipper.indexOfChild(tvWord));
+                            flipper.indexOfChild(flipperItemWord));
                 }
             });
 

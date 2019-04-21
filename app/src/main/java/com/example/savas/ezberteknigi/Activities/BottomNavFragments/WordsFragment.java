@@ -1,40 +1,33 @@
-package com.example.savas.ezberteknigi.Activities;
+package com.example.savas.ezberteknigi.Activities.BottomNavFragments;
 
-import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
-import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Activities.DialogFragments.AddWordFragment;
+import com.example.savas.ezberteknigi.Activities.DialogFragments.WordDetailFragment;
+import com.example.savas.ezberteknigi.Activities.DialogFragments.WordEditFragment;
 import com.example.savas.ezberteknigi.Adapters.WordAdapter;
 import com.example.savas.ezberteknigi.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
-import java.util.Date;
 import java.util.List;
-
-import static android.content.ContentValues.TAG;
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class WordsFragment extends Fragment {
 
@@ -101,56 +94,106 @@ public class WordsFragment extends Fragment {
         wordAdapter.setOnItemClickListener(new WordAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Word word) {
-                Toast.makeText(getContext(), "if this works, it means overrides the adapter in act.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), 
+                        "if this works, it means overrides the adapter in act.", 
+                        Toast.LENGTH_SHORT)
+                        .show();
             }
 
             @Override
             public void onItemLongClick(Word word) {
-
+                Toast.makeText(getContext(),
+                        "Long click not implemented",
+                        Toast.LENGTH_SHORT)
+                        .show();
             }
         });
 
         wordAdapter.setOnOptionsClickListener(new WordAdapter.OnOptionsClickListener() {
             @Override
             public void onDetailClick(Word word) {
-
+                openWordDetailsDialog(word.getWordId());
             }
 
             @Override
-            public void onArchiveClick(Word word) {
+            public void onArchiveClick(Word word, int position) {
+                word.setArchived(true);
+                wordViewModel.update(word);
+                wordAdapter.notifyItemRemoved(position);
 
+                Snackbar mySnackbar = Snackbar.make(view,
+                        "Kelime arşivlendi", Snackbar.LENGTH_LONG);
+                mySnackbar.setAction("GERİ AL", f -> {
+                    word.setArchived(false);
+                    wordViewModel.update(word);
+                });
+                mySnackbar.show();
             }
 
             @Override
             public void onDeleteClick(Word word) {
-
-            }
-
-            @Override
-            public void onShareClick(Word word) {
-
+                deleteWordWithRollback(word, view);
             }
 
             @Override
             public void onEditClick(Word word) {
+                openWordEditDialog(word);
+            }
 
+            @Override
+            public void onShareClick(Word word) {
+                //TODO: implement word share
             }
         });
 
         btnAddNewWord.setOnClickListener(v -> {
-            AddWordFragment wordDialogFragment = new AddWordFragment();
-            if (WORD_LIST_TYPE == Word.WORD_LEARNING) {
-                wordDialogFragment = AddWordFragment.newInstance(Word.WORD_LEARNING);
-            } else if (WORD_LIST_TYPE == Word.WORD_MASTERED) {
-                wordDialogFragment = AddWordFragment.newInstance(Word.WORD_MASTERED);
-            }
-            wordDialogFragment.show(getFragmentManager(), "Kelime Ekle");
+            openAddNewWordDialog();
         });
 
         ImplementOnSwipedOnWords(view, wordAdapter, recyclerView);
 
         return view;
     }
+
+    private void deleteWordWithRollback(Word word, View view) {
+        wordViewModel.delete(word);
+
+        Snackbar snackbar = Snackbar.make(view,
+                "Kelime silindi", Snackbar.LENGTH_LONG);
+        snackbar.setAction("GERİ AL", f-> wordViewModel.insert(word));
+        snackbar.show();
+    }
+
+    private void openWordDetailsDialog(int wordId) {
+        WordDetailFragment wordDetailFragment = WordDetailFragment.newInstance(wordId);
+        wordDetailFragment.show(getFragmentManager(), "Kelime Detaylarını Gör");
+    }
+
+    private void openAddNewWordDialog() {
+        AddWordFragment wordDialogFragment = new AddWordFragment();
+        if (WORD_LIST_TYPE == Word.WORD_LEARNING) {
+            wordDialogFragment = AddWordFragment.newInstance(Word.WORD_LEARNING);
+        } else if (WORD_LIST_TYPE == Word.WORD_MASTERED) {
+            wordDialogFragment = AddWordFragment.newInstance(Word.WORD_MASTERED);
+        }
+        wordDialogFragment.show(getFragmentManager(), "Kelime Ekle");
+    }
+
+    private void openWordEditDialog(Word word) {
+        if (word.getReadingTextId() != Word.READING_TEXT_ID_DEFAULT) {
+
+            FragmentManager fm = getFragmentManager();
+            WordEditFragment fragment = WordEditFragment.newInstance(word);
+
+            fragment.setTargetFragment(WordsFragment.this, 1);
+            fragment.show(getFragmentManager(), "Kelimeyi düzenle");
+
+        } else
+            Toast.makeText(getContext(),
+                    "Bu kelime metinden alındığı için değiştirilemez",
+                    Toast.LENGTH_SHORT).show();
+    }
+
 
     private void ImplementOnSwipedOnWords(View view,
                                           WordAdapter wordAdapter,

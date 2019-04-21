@@ -26,7 +26,7 @@ public interface WordDao extends BaseDao {
     @Query("DELETE FROM word_table")
     void deleteAllWords();
 
-    @Query("SELECT * FROM word_table")
+    @Query("SELECT * FROM word_table WHERE is_archived = 0")
     LiveData<List<Word>> getAllWords();
 
     @Query("SELECT * FROM word_table")
@@ -38,7 +38,7 @@ public interface WordDao extends BaseDao {
     @Query("SELECT * FROM word_table WHERE word = :word")
     Word getWordByWord (String word);
 
-    @Query("SELECT * FROM word_table WHERE word_state = :wordState")
+    @Query("SELECT * FROM word_table WHERE word_state = :wordState AND is_archived = 0")
     LiveData<List<Word>> getWordsByWordState(int wordState);
 
     @Query("SELECT EXISTS(SELECT 1 FROM word_table WHERE word = :word)")
