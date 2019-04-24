@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kelime Öğren</string>
+    <string name="app_name">LangFella</string>
     <string name="readings">Reading Texts</string>
     <string name="words">Words</string>
     <string name="action_settings">Settings</string>

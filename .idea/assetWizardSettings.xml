@@ -51,6 +51,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -62,6 +63,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -97,12 +99,11 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="f0d36a" />
-                                      <entry key="backgroundLayerName" value="ic_launcher_K_background" />
-                                      <entry key="foregroundAssetType" value="TEXT" />
-                                      <entry key="foregroundLayerName" value="ic_launcher_K" />
-                                      <entry key="outputName" value="ic_launcher_K_legacy" />
-                                      <entry key="previewDensity" value="HIGH" />
+                                      <entry key="backgroundColor" value="000000" />
+                                      <entry key="backgroundLayerName" value="ic_launcher_langfella_lf_bg" />
+                                      <entry key="foregroundImage" value="$USER_HOME$/Downloads/langella_lf.png" />
+                                      <entry key="foregroundLayerName" value="ic_launcher_langfella_lf_fg" />
+                                      <entry key="outputName" value="ic_launcher_langfella_lf" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -124,6 +125,25 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                                <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="cropped" value="true" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/langella_lf.png" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -150,6 +170,11 @@
                                 </PersistentState>
                               </value>
                             </entry>
+                          </map>
+                        </option>
+                        <option name="values">
+                          <map>
+                            <entry key="outputIconType" value="LAUNCHER_LEGACY" />
                           </map>
                         </option>
                       </PersistentState>
