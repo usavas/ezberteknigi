@@ -26,6 +26,9 @@ public interface ReadingDao extends BaseDao {
     @Query("SELECT * FROM reading_table")
     LiveData<List<Reading>> getReadingTexts();
 
+    @Query("SELECT * FROM reading_table")
+    List<Reading> getReadingsAsList();
+
     @Query("SELECT * FROM reading_table WHERE document_type = :docType")
     LiveData<List<Reading>> getReadingTexts(int docType);
 

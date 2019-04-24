@@ -5,31 +5,34 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import com.example.savas.ezberteknigi.DAO.ReadingDao;
+import com.example.savas.ezberteknigi.DAO.WordDao;
 import com.example.savas.ezberteknigi.Models.EzberTeknigiDatabase;
 import com.example.savas.ezberteknigi.Models.Reading;
+import com.example.savas.ezberteknigi.Models.Word;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class ReadingRepository {
     private ReadingDao readingDao;
-    private LiveData<List<Reading>> allReadingTexts;
+    private LiveData<List<Reading>> allReadings;
 
     public ReadingRepository(Application application) {
         EzberTeknigiDatabase database = EzberTeknigiDatabase.getInstance(application);
         readingDao = database.readingTextDao();
-        allReadingTexts = readingDao.getReadingTexts();
+        allReadings = readingDao.getReadingTexts();
     }
 
     public ReadingRepository(Application application, int docType) {
         EzberTeknigiDatabase database = EzberTeknigiDatabase.getInstance(application);
         readingDao = database.readingTextDao();
-        allReadingTexts = readingDao.getReadingTexts(docType);
+        allReadings = readingDao.getReadingTexts(docType);
     }
 
     public ReadingRepository(Application application, int docType, int docType2) {
         EzberTeknigiDatabase database = EzberTeknigiDatabase.getInstance(application);
         readingDao = database.readingTextDao();
-        allReadingTexts = readingDao.getReadingTexts(docType, docType2);
+        allReadings = readingDao.getReadingTexts(docType, docType2);
     }
 
     public void insert(Reading reading) {
@@ -59,8 +62,32 @@ public class ReadingRepository {
         new DeleteAllReadingTextsAsyncTask(readingDao).execute();
     }
 
-    public LiveData<List<Reading>> getAllReadingTexts() {
-        return allReadingTexts;
+    public LiveData<List<Reading>> getAllReadings() {
+        return allReadings;
+    }
+
+    public List<Reading> getAllReadingsAsList() {
+        try {
+            return new GetAllReadingsAsListAsyncTask(readingDao).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static class GetAllReadingsAsListAsyncTask extends AsyncTask<Void, Void, List<Reading>>{
+        private ReadingDao readingDao;
+
+        private GetAllReadingsAsListAsyncTask(ReadingDao readingDao) {
+            this.readingDao = readingDao;
+        }
+
+        @Override
+        protected List<Reading> doInBackground(Void... voids){
+            return readingDao.getReadingsAsList();
+        }
     }
 
     private static class InsertReadingTextAsyncTask extends AsyncTask<Reading, Void, Void> {

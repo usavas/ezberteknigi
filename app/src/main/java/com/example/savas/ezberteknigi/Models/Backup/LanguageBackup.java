@@ -7,7 +7,7 @@ import java.util.List;
 
 
 /*
-* This is */
+* This object contains the readings and words specific to a language*/
 
 public class LanguageBackup {
 

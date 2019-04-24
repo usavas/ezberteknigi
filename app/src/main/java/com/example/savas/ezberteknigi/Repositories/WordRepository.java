@@ -46,9 +46,7 @@ public class WordRepository {
     }
 
     public void update(Word word){
-        Log.wtf("WordRepository.java date of word before update", word.getDateSaved().toString());
         new UpdateWordAsyncTask(wordDao).execute(word);
-        Log.wtf("WordRepository.java date of word after update", word.getDateSaved().toString());
     }
 
     public void delete(Word word){

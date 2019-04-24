@@ -18,7 +18,7 @@ public class ReadingTextViewModel extends AndroidViewModel {
     public ReadingTextViewModel(@NonNull Application application) {
         super(application);
         repository = new ReadingRepository(application);
-        allReadingTexts = repository.getAllReadingTexts();
+        allReadingTexts = repository.getAllReadings();
     }
 
     public void insert(Reading reading){
