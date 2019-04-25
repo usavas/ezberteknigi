@@ -1,7 +1,6 @@
 package com.example.savas.ezberteknigi.Adapters;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -11,17 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.savas.ezberteknigi.Models.Book;
-import com.example.savas.ezberteknigi.Models.BookWrapper;
+import com.example.savas.ezberteknigi.Data.Models.Book;
+import com.example.savas.ezberteknigi.Data.Models.BookWrapper;
 import com.example.savas.ezberteknigi.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

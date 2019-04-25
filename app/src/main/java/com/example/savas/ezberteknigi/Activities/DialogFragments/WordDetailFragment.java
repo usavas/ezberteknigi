@@ -1,7 +1,5 @@
 package com.example.savas.ezberteknigi.Activities.DialogFragments;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,11 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 

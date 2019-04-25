@@ -16,12 +16,12 @@ import com.example.savas.ezberteknigi.Activities.BottomNavFragments.SettingsFrag
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordRevisionFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragmentsContainerFragment;
-import com.example.savas.ezberteknigi.Models.Reading;
-import com.example.savas.ezberteknigi.Models.SimpleArticle;
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.Models.Reading;
+import com.example.savas.ezberteknigi.Data.Models.SimpleArticle;
+import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.ReadingRepository;
-import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.Data.Repositories.ReadingRepository;
+import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

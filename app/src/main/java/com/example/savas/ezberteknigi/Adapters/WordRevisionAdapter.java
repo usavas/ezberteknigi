@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.List;
 public class WordRevisionAdapter extends RecyclerView.Adapter<WordRevisionAdapter.WordHolder> {
 
     /*
-     * global variabels */
+     * global variables */
 
     private List<Word> words = new ArrayList<>();
     private Context context;
@@ -69,7 +69,9 @@ public class WordRevisionAdapter extends RecyclerView.Adapter<WordRevisionAdapte
 
 
     /*
-     * other cutsom helper methods */
+     * other custom helper methods
+     *
+     * */
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setWordsRevision(List<Word> _words) {

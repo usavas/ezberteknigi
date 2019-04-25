@@ -13,9 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 
 public class AddWordFragment extends AppCompatDialogFragment {
     private static String STARTING_ACTIVITY_TO_ADD_WORD =  "STARTING_ACTIVITY_TO_ADD_WORD";

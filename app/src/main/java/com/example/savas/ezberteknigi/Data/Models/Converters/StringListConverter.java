@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi.Models.Converters;
+package com.example.savas.ezberteknigi.Data.Models.Converters;
 
 import android.arch.persistence.room.TypeConverter;
 

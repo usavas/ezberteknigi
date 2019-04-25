@@ -4,8 +4,8 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.savas.ezberteknigi.Models.Word;
-import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.Data.Models.Word;
+import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 
 import java.util.concurrent.ExecutionException;
 

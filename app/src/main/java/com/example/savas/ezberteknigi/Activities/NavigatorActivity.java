@@ -1,20 +1,11 @@
 package com.example.savas.ezberteknigi.Activities;
 
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.savas.ezberteknigi.Models.Word;
-import com.example.savas.ezberteknigi.Repositories.WordRepository;
-import com.example.savas.ezberteknigi.Activities.Services.WordRevisionScheduler;
-
-
-import static android.support.constraint.Constraints.TAG;
+import com.example.savas.ezberteknigi.Data.Models.Word;
+import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 
 public class NavigatorActivity extends AppCompatActivity {
 

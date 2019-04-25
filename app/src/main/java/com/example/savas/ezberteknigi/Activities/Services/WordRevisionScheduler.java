@@ -12,9 +12,9 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.example.savas.ezberteknigi.Activities.NavigatorActivity;
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 
 import java.util.List;
 import java.util.Locale;

@@ -1,14 +1,12 @@
-package com.example.savas.ezberteknigi.Repositories;
+package com.example.savas.ezberteknigi.Data.Repositories;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
-import com.example.savas.ezberteknigi.DAO.ReadingDao;
-import com.example.savas.ezberteknigi.DAO.WordDao;
-import com.example.savas.ezberteknigi.Models.EzberTeknigiDatabase;
-import com.example.savas.ezberteknigi.Models.Reading;
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.DAO.ReadingDao;
+import com.example.savas.ezberteknigi.Data.Models.EzberTeknigiDatabase;
+import com.example.savas.ezberteknigi.Data.Models.Reading;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;

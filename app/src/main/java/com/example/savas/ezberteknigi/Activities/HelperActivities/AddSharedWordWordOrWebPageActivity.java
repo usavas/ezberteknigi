@@ -10,12 +10,12 @@ import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.BLL.Translation.DummyTranslateProvider;
 import com.example.savas.ezberteknigi.BLL.Interfaces.TranslationProvidable;
-import com.example.savas.ezberteknigi.Models.SimpleArticle;
-import com.example.savas.ezberteknigi.Models.Reading;
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.Models.SimpleArticle;
+import com.example.savas.ezberteknigi.Data.Models.Reading;
+import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.ReadingRepository;
-import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.Data.Repositories.ReadingRepository;
+import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.Activities.Services.SaveWebpageIntentService;
 
 public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {

@@ -1,17 +1,15 @@
-package com.example.savas.ezberteknigi.Models;
+package com.example.savas.ezberteknigi.Data.Models;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import com.example.savas.ezberteknigi.AppStarter;
-import com.example.savas.ezberteknigi.DAO.ReadingDao;
-import com.example.savas.ezberteknigi.DAO.WordDao;
+import com.example.savas.ezberteknigi.Data.DAO.ReadingDao;
+import com.example.savas.ezberteknigi.Data.DAO.WordDao;
 import com.example.savas.ezberteknigi.R;
 
 import java.text.ParseException;

@@ -1,10 +1,7 @@
-package com.example.savas.ezberteknigi.Models.Converters;
+package com.example.savas.ezberteknigi.Data.Models.Converters;
 
 import android.arch.persistence.room.TypeConverter;
-import android.util.Log;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.Date;
 
 public class TimeStampConverter {

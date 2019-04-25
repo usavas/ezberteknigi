@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi.DAO;
+package com.example.savas.ezberteknigi.Data.DAO;
 
 import android.arch.persistence.room.Dao;
 

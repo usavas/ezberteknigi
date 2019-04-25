@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi.DAO;
+package com.example.savas.ezberteknigi.Data.DAO;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -7,7 +7,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.Models.Word;
 
 import java.util.List;
 

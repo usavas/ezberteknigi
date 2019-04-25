@@ -1,11 +1,10 @@
-package com.example.savas.ezberteknigi.Models.Converters;
+package com.example.savas.ezberteknigi.Data.Models.Converters;
 
 import android.arch.persistence.room.TypeConverter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
 
 public class ImageConverter {
 

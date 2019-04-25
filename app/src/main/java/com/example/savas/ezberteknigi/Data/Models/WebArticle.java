@@ -1,10 +1,6 @@
-package com.example.savas.ezberteknigi.Models;
+package com.example.savas.ezberteknigi.Data.Models;
 
 import android.arch.persistence.room.ColumnInfo;
-
-import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
-import com.example.savas.ezberteknigi.BLL.WebCrawler.WebContentRetrieverViaJsoup;
-import com.example.savas.ezberteknigi.Models.Converters.StringListConverter;
 
 public class WebArticle extends Article {
 

@@ -7,8 +7,8 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
-import com.example.savas.ezberteknigi.Models.Word;
-import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.Data.Models.Word;
+import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 
 import java.util.List;
 
@@ -18,14 +18,15 @@ public class WordViewModel extends AndroidViewModel {
     private LiveData<List<Word>> allWords;
     private LiveData<List<Word>> allWordsLearning;
     private LiveData<List<Word>> allWordsMastered;
+    private LiveData<List<Word>> revisionWords;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public WordViewModel(@NonNull Application application) {
         super(application);
         repository = new WordRepository(application);
         allWords = repository.getAllWords();
-        allWordsLearning = repository.getAllWordsBasedOnState(Word.WORD_LEARNING);
-        allWordsMastered = repository.getAllWordsBasedOnState(Word.WORD_MASTERED);
+        allWordsLearning = repository.getWordsBasedOnState(Word.WORD_LEARNING);
+        allWordsMastered = repository.getWordsBasedOnState(Word.WORD_MASTERED);
     }
 
     public void insert(Word word){

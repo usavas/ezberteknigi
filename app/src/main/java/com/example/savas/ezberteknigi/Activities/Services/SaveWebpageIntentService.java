@@ -3,15 +3,15 @@ package com.example.savas.ezberteknigi.Activities.Services;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.example.savas.ezberteknigi.Models.WebArticle;
-import com.example.savas.ezberteknigi.Models.Reading;
+import com.example.savas.ezberteknigi.Data.Models.WebArticle;
+import com.example.savas.ezberteknigi.Data.Models.Reading;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
 import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
 import com.example.savas.ezberteknigi.BLL.WebCrawler.WebContentRetrieverViaJsoup;
 
 import java.util.List;
 
-import static com.example.savas.ezberteknigi.Models.Reading.DOCUMENT_TYPE_WEB;
+import static com.example.savas.ezberteknigi.Data.Models.Reading.DOCUMENT_TYPE_WEB;
 
 public class SaveWebpageIntentService extends IntentService {
 

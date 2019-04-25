@@ -5,8 +5,8 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
-import com.example.savas.ezberteknigi.Models.Reading;
-import com.example.savas.ezberteknigi.Repositories.ReadingRepository;
+import com.example.savas.ezberteknigi.Data.Models.Reading;
+import com.example.savas.ezberteknigi.Data.Repositories.ReadingRepository;
 
 import java.util.List;
 

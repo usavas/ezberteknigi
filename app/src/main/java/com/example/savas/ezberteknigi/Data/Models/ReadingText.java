@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi.Models;
+package com.example.savas.ezberteknigi.Data.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Ignore;

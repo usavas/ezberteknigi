@@ -1,7 +1,6 @@
 package com.example.savas.ezberteknigi.Adapters;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresPermission;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.savas.ezberteknigi.Models.Article;
-import com.example.savas.ezberteknigi.Models.Book;
-import com.example.savas.ezberteknigi.Models.BookWrapper;
-import com.example.savas.ezberteknigi.Models.Reading;
+import com.example.savas.ezberteknigi.Data.Models.Book;
+import com.example.savas.ezberteknigi.Data.Models.Reading;
 import com.example.savas.ezberteknigi.R;
 
 import java.util.ArrayList;

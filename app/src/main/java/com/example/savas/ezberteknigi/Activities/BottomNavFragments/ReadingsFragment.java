@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 
 import com.example.savas.ezberteknigi.Activities.ReadingDetailActivity;
 import com.example.savas.ezberteknigi.Adapters.ArticleAdapter;
-import com.example.savas.ezberteknigi.Models.Reading;
+import com.example.savas.ezberteknigi.Data.Models.Reading;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
 

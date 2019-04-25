@@ -1,13 +1,10 @@
 package com.example.savas.ezberteknigi.Activities;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,16 +12,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
-import com.example.savas.ezberteknigi.BLL.Helper.SaveFileHelper;
-import com.example.savas.ezberteknigi.Models.Book;
-import com.example.savas.ezberteknigi.Models.BookWrapper;
-import com.example.savas.ezberteknigi.Models.Converters.ImageConverter;
-import com.example.savas.ezberteknigi.Models.Reading;
+import com.example.savas.ezberteknigi.Data.Models.Book;
+import com.example.savas.ezberteknigi.Data.Models.BookWrapper;
+import com.example.savas.ezberteknigi.Data.Models.Reading;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.ReadingRepository;
-import com.google.android.gms.dynamic.ObjectWrapper;
+import com.example.savas.ezberteknigi.Data.Repositories.ReadingRepository;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -36,7 +29,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

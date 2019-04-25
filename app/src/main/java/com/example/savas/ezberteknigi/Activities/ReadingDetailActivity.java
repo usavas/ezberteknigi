@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
-import android.support.v4.text.HtmlCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -13,9 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,18 +31,20 @@ import com.example.savas.ezberteknigi.BLL.Translation.DummyTranslateProvider;
 import com.example.savas.ezberteknigi.BLL.NLP.ExampleSentenceExtractor;
 import com.example.savas.ezberteknigi.BLL.Interfaces.TranslationProvidable;
 import com.example.savas.ezberteknigi.BLL.WebCrawler.WebContentRetrieverViaJsoup;
-import com.example.savas.ezberteknigi.Models.Article;
-import com.example.savas.ezberteknigi.Models.Book;
-import com.example.savas.ezberteknigi.Models.Reading;
-import com.example.savas.ezberteknigi.Models.WebArticle;
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.Models.Article;
+import com.example.savas.ezberteknigi.Data.Models.Book;
+import com.example.savas.ezberteknigi.Data.Models.Reading;
+import com.example.savas.ezberteknigi.Data.Models.WebArticle;
+import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.ReadingRepository;
-import com.example.savas.ezberteknigi.Repositories.WordRepository;
+import com.example.savas.ezberteknigi.Data.Repositories.ReadingRepository;
+import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
 
 
-import net.nightwhistler.htmlspanner.HtmlSpanner;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -199,28 +198,45 @@ public class ReadingDetailActivity extends AppCompatActivity
             WebContentRetrievable retrievable = new WebContentRetrieverViaJsoup();
             String htmlContent = retrievable.retrieveContent(((WebArticle) article).getSource());
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Spannable spanned = new HtmlSpanner().fromHtml(htmlContent);
+            SpannableStringBuilder builder = new SpannableStringBuilder();
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            String cleanedText = spanned.toString().replace("\n\n\n", "\n\n");
-
-                            Spanned s = new SpannableString(cleanedText);
-
-                            tvContent.setText(s);
-                        }
-                    });
+            Document doc = Jsoup.parse(htmlContent);
+            for (Element e : doc.body().getAllElements()) {
+                if (e.is("h1, h2, h3, h4, h5, h6")){
+                    builder.append(e.text() + "\n\n\n");
                 }
-            }).start();
+                else if (e.is("p")){
+                    builder.append(e.text() + "\n\n");
+                }
+            }
+
+            tvContent.setText(builder);
 
 
-//            Spanned spanned = HtmlCompat.fromHtml(htmlContent, HtmlCompat.FROM_HTML_MODE_COMPACT);
-//            tvContent.setText(spanned2);
+//            SpannableStringBuilder spanned = (SpannableStringBuilder) HtmlCompat.fromHtml(htmlContent, HtmlCompat.FROM_HTML_MODE_LEGACY);
+//            tvContent.setText(spanned);
+
+
+//            while (htmlContent.contains("\\n\\n\\n")){
+//                htmlContent = htmlContent.replace("\\n\\n\\n", "\\n\\n");
+//            }
+//
+//            final String cleanContent = htmlContent;
+
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//
+////                    Spannable spanned = new HtmlSpanner().fromHtml(cleanContent);
+//
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            tvContent.setText(spanned);
+//                        }
+//                    });
+//                }
+//            }).start();
 
         } else {
             tvContent.setText(article.getContent());
@@ -241,6 +257,14 @@ public class ReadingDetailActivity extends AppCompatActivity
                 article.setLeftOffSet(scrollY);
             }
         });
+    }
+
+    private String stripHtmlTags (String htmlContent){
+        return htmlContent.replaceAll("<(.*?)\\>"," ")
+                .replaceAll("<(.*?)\\\n"," ")
+                .replaceFirst("(.*?)\\>", " ")
+                .replaceAll("&nbsp;"," ")
+                .replaceAll("&amp;"," ");
     }
 
     private void prepareLayoutForBook(Reading reading) {

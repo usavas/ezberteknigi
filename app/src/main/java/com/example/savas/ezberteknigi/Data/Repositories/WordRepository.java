@@ -1,41 +1,41 @@
-package com.example.savas.ezberteknigi.Repositories;
+package com.example.savas.ezberteknigi.Data.Repositories;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import com.example.savas.ezberteknigi.DAO.WordDao;
-import com.example.savas.ezberteknigi.Models.EzberTeknigiDatabase;
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.DAO.WordDao;
+import com.example.savas.ezberteknigi.Data.Models.EzberTeknigiDatabase;
+import com.example.savas.ezberteknigi.Data.Models.Word;
 
 
 public class WordRepository {
     private WordDao wordDao;
     private LiveData<List<Word>> allWords;
-    private LiveData<List<Word>> allWordsLearning;
-    private LiveData<List<Word>> allWordsMastered;
+    private LiveData<List<Word>> wordsLearning;
+    private LiveData<List<Word>> wordsMastered;
+    private LiveData<List<Word>> wordsRevision;
 
     public WordRepository(Application application) {
         EzberTeknigiDatabase ezberTeknigiDatabase = EzberTeknigiDatabase.getInstance(application);
         wordDao = ezberTeknigiDatabase.wordDao();
         allWords = wordDao.getAllWords();
-        allWordsLearning = wordDao.getWordsByWordState(Word.WORD_LEARNING);
-        allWordsMastered = wordDao.getWordsByWordState(Word.WORD_MASTERED);
+        wordsLearning = wordDao.getWordsByWordState(Word.WORD_LEARNING);
+        wordsMastered = wordDao.getWordsByWordState(Word.WORD_MASTERED);
     }
 
     public LiveData<List<Word>> getAllWords(){
         return allWords;
     }
 
-    public LiveData<List<Word>> getAllWordsBasedOnState(int wordState){
+    public LiveData<List<Word>> getWordsBasedOnState(int wordState){
         if (wordState == Word.WORD_LEARNING) {
-            return allWordsLearning;
+            return wordsLearning;
         } else if (wordState == Word.WORD_MASTERED){
-            return allWordsMastered;
+            return wordsMastered;
         } else {
             return null;
         }

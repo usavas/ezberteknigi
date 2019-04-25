@@ -1,29 +1,20 @@
 package com.example.savas.ezberteknigi.Activities.DialogFragments;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragment;
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Repositories.WordRepository;
-
-import java.util.Objects;
+import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 
 
 public class WordEditFragment extends DialogFragment {

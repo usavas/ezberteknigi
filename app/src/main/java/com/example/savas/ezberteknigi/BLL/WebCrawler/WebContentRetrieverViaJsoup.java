@@ -1,10 +1,8 @@
 package com.example.savas.ezberteknigi.BLL.WebCrawler;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
-import com.example.savas.ezberteknigi.Models.Converters.StringListConverter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,8 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import static android.support.constraint.Constraints.TAG;
 
 public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
 

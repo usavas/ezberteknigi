@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi.Models;
+package com.example.savas.ezberteknigi.Data.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Ignore;
@@ -6,8 +6,8 @@ import android.arch.persistence.room.TypeConverters;
 import android.graphics.Bitmap;
 
 import com.example.savas.ezberteknigi.BLL.WebCrawler.WebContentRetrieverViaHttpRequest;
-import com.example.savas.ezberteknigi.Models.Converters.ImageConverter;
-import com.example.savas.ezberteknigi.Models.Converters.StringListConverter;
+import com.example.savas.ezberteknigi.Data.Models.Converters.ImageConverter;
+import com.example.savas.ezberteknigi.Data.Models.Converters.StringListConverter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

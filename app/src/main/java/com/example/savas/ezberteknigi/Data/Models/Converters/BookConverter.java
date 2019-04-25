@@ -1,8 +1,8 @@
-package com.example.savas.ezberteknigi.Models.Converters;
+package com.example.savas.ezberteknigi.Data.Models.Converters;
 
 import android.arch.persistence.room.TypeConverter;
 
-import com.example.savas.ezberteknigi.Models.Book;
+import com.example.savas.ezberteknigi.Data.Models.Book;
 import com.google.gson.Gson;
 
 public class BookConverter {

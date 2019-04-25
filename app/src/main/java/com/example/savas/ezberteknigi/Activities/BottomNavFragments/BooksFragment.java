@@ -19,8 +19,7 @@ import com.example.savas.ezberteknigi.Activities.BookSearchActivity;
 import com.example.savas.ezberteknigi.Activities.ReadingDetailActivity;
 import com.example.savas.ezberteknigi.Adapters.BookAdapter;
 import com.example.savas.ezberteknigi.BLL.InternetConnectivity.InternetConnectivitySocket;
-import com.example.savas.ezberteknigi.Models.Converters.ImageConverter;
-import com.example.savas.ezberteknigi.Models.Reading;
+import com.example.savas.ezberteknigi.Data.Models.Reading;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
 

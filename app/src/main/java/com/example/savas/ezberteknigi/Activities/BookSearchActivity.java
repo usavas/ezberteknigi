@@ -20,9 +20,9 @@ import android.widget.ImageView;
 
 import com.example.savas.ezberteknigi.Adapters.BookSearchAdapter;
 import com.example.savas.ezberteknigi.BLL.Helper.EndlessRecyclerViewScrollListener;
-import com.example.savas.ezberteknigi.Models.Book;
-import com.example.savas.ezberteknigi.Models.BookWrapper;
-import com.example.savas.ezberteknigi.Models.Converters.ImageConverter;
+import com.example.savas.ezberteknigi.Data.Models.Book;
+import com.example.savas.ezberteknigi.Data.Models.BookWrapper;
+import com.example.savas.ezberteknigi.Data.Models.Converters.ImageConverter;
 import com.example.savas.ezberteknigi.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

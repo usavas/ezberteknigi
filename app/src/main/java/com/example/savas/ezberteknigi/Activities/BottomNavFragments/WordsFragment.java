@@ -23,7 +23,7 @@ import com.example.savas.ezberteknigi.Activities.DialogFragments.AddWordFragment
 import com.example.savas.ezberteknigi.Activities.DialogFragments.WordDetailFragment;
 import com.example.savas.ezberteknigi.Activities.DialogFragments.WordEditFragment;
 import com.example.savas.ezberteknigi.Adapters.WordAdapter;
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 

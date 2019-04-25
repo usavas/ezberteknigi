@@ -1,7 +1,7 @@
-package com.example.savas.ezberteknigi.Models.Backup;
+package com.example.savas.ezberteknigi.Data.Models.Backup;
 
-import com.example.savas.ezberteknigi.Models.Reading;
-import com.example.savas.ezberteknigi.Models.Word;
+import com.example.savas.ezberteknigi.Data.Models.Reading;
+import com.example.savas.ezberteknigi.Data.Models.Word;
 
 import java.util.List;
 

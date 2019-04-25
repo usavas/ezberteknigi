@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi.Models;
+package com.example.savas.ezberteknigi.Data.Models;
 
 import java.util.ArrayList;
 import java.util.List;

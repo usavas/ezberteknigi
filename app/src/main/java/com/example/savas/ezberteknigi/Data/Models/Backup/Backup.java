@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi.Models.Backup;
+package com.example.savas.ezberteknigi.Data.Models.Backup;
 
 import java.util.Dictionary;
 

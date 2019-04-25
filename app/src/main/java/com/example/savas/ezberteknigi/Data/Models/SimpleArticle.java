@@ -1,8 +1,4 @@
-package com.example.savas.ezberteknigi.Models;
-
-import android.arch.persistence.room.ColumnInfo;
-
-import com.example.savas.ezberteknigi.Models.Converters.StringListConverter;
+package com.example.savas.ezberteknigi.Data.Models;
 
 public class SimpleArticle extends Article {
 
