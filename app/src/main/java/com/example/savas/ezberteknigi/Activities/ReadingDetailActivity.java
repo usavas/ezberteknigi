@@ -13,6 +13,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
@@ -200,15 +202,17 @@ public class ReadingDetailActivity extends AppCompatActivity
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Spanned spanned = new HtmlSpanner().fromHtml(htmlContent);
+                    Spannable spanned = new HtmlSpanner().fromHtml(htmlContent);
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
 
-                            Spanned s2 = spanned.toString().replace("\n\n\n", "\n\n");
+                            String cleanedText = spanned.toString().replace("\n\n\n", "\n\n");
 
-                            tvContent.setText(s2);
+                            Spanned s = new SpannableString(cleanedText);
+
+                            tvContent.setText(s);
                         }
                     });
                 }
