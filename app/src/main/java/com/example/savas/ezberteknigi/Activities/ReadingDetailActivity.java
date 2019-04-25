@@ -42,6 +42,9 @@ import com.example.savas.ezberteknigi.Repositories.ReadingRepository;
 import com.example.savas.ezberteknigi.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
 
+
+import net.nightwhistler.htmlspanner.HtmlSpanner;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -194,8 +197,26 @@ public class ReadingDetailActivity extends AppCompatActivity
             WebContentRetrievable retrievable = new WebContentRetrieverViaJsoup();
             String htmlContent = retrievable.retrieveContent(((WebArticle) article).getSource());
 
-            Spanned spanned = HtmlCompat.fromHtml(htmlContent, HtmlCompat.FROM_HTML_MODE_COMPACT);
-            tvContent.setText(spanned);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Spanned spanned = new HtmlSpanner().fromHtml(htmlContent);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            Spanned s2 = spanned.toString().replace("\n\n\n", "\n\n");
+
+                            tvContent.setText(s2);
+                        }
+                    });
+                }
+            }).start();
+
+
+//            Spanned spanned = HtmlCompat.fromHtml(htmlContent, HtmlCompat.FROM_HTML_MODE_COMPACT);
+//            tvContent.setText(spanned2);
 
         } else {
             tvContent.setText(article.getContent());
