@@ -18,7 +18,6 @@ public class WordViewModel extends AndroidViewModel {
     private LiveData<List<Word>> allWords;
     private LiveData<List<Word>> allWordsLearning;
     private LiveData<List<Word>> allWordsMastered;
-    private LiveData<List<Word>> revisionWords;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public WordViewModel(@NonNull Application application) {

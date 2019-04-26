@@ -13,6 +13,8 @@ import android.os.Build;
 import android.util.Log;
 
 import com.example.savas.ezberteknigi.Activities.Services.WordRevisionScheduler;
+import com.example.savas.ezberteknigi.Data.Models.Word;
+import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
@@ -180,5 +182,18 @@ public class AppStarter extends Application {
         }
     }
 
+    /**
+     * even if there is a single item to revise return true
+     * @return
+     */
+    public static boolean existsWordsToRevise(Application application){
+        for (Word w : new WordRepository(application).getAllWordsAsList()) {
+            if (w.isWordToRevise()){
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 }

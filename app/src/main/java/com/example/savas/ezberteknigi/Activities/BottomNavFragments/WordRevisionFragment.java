@@ -3,6 +3,7 @@ package com.example.savas.ezberteknigi.Activities.BottomNavFragments;
 import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.media.AudioRecord;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import com.example.savas.ezberteknigi.Adapters.WordRevisionAdapter;
 import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
+import com.example.savas.ezberteknigi.ViewModels.WordRevisionViewModel;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
 import java.util.Date;
@@ -34,7 +36,17 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class WordRevisionFragment extends Fragment {
 
-    WordViewModel wordViewModel;
+    WordRevisionViewModel wordRevisionViewModel;
+
+    public interface OnRevisionCompletedListener{
+        void onLastItemClick();
+    }
+
+    public void setOnRevisionCompletedListener(OnRevisionCompletedListener listener){
+        this.listener = listener;
+    }
+
+    private OnRevisionCompletedListener listener;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -54,7 +66,6 @@ public class WordRevisionFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.rv_word_revision);
         makeRecyclerViewSingleItemAtATime(recyclerView);
 
-
         wordRevisionAdapter = new WordRevisionAdapter(getContext());
 
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
@@ -63,14 +74,18 @@ public class WordRevisionFragment extends Fragment {
 
         recyclerView.setAdapter(wordRevisionAdapter);
 
-        wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
-
-        getActivity().setTitle("Tekrar Edilecek Kelimeler");
-        wordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
+        wordRevisionViewModel = ViewModelProviders.of(this).get(WordRevisionViewModel.class);
+        wordRevisionViewModel.getRevisionWords().observe(this, new Observer<List<Word>>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChanged(@Nullable List<Word> words) {
-                wordRevisionAdapter.setWordsRevision(words);
+                if (words.size() > 0){
+                    wordRevisionAdapter.setWordsRevision(words);
+                    getActivity().setTitle("Tekrar Edilecek Kelimeler");
+                } else {
+                    //TODO: if words for revision are empty then push event to WordsMasterFragment to start the containerFragment for all words
+                    if (listener != null) listener.onLastItemClick();
+                }
             }
         });
 
@@ -125,37 +140,41 @@ public class WordRevisionFragment extends Fragment {
                         }
                     });
                     snackbar.show();
+
                 }
             }
         }).attachToRecyclerView(recyclerView);
     }
 
+
     private void updateRevision(Word word) {
         word.revisionCompleted();
-        wordViewModel.update(word);
+        wordRevisionViewModel.update(word);
     }
+
     private void rollBackRevision(Word word, Date prevDateToRollBack) {
         word.setRevisionPeriodCount(word.getRevisionPeriodCount() - 1);
         word.setDateLastRevision(prevDateToRollBack);
-        wordViewModel.update(word);
+        wordRevisionViewModel.update(word);
     }
 
     /**
      * Checks whether there is any notification currently showing up related to a given word and clears the notification with the given word's id
+     *
      * @param word the word which might be shown in the notification
      */
     private void clearWordFromNotificationMenuIfExists(Word word) {
-        try{
+        try {
             NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
             notificationManager.cancel(word.getWordId());
 
             //TODO: if this (group notif) is the last notification, then cancel it, else leave it
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                if (notificationManager.getActiveNotifications().length == 1){
+                if (notificationManager.getActiveNotifications().length == 1) {
                     notificationManager.cancel(-1);
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             Log.d(TAG, "clearWordFromNotificationMenuIfExists: " + e.getMessage());
         }
     }

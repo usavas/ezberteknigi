@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
 
-public class WordsFragmentsContainerFragment extends Fragment
+public class WordsFragmentsPagerFragment extends Fragment
         implements WordsFragment.OnFragmentInteractionListener {
 
     @Nullable
@@ -32,6 +32,7 @@ public class WordsFragmentsContainerFragment extends Fragment
 
         ViewPager mViewPager = getActivity().findViewById(
                 R.id.fragment_word_activity_container);
+
         mViewPager.setAdapter(
                 new SectionsPagerAdapter(getFragmentManager()));
 
@@ -51,7 +52,7 @@ public class WordsFragmentsContainerFragment extends Fragment
 
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

@@ -2,18 +2,23 @@ package com.example.savas.ezberteknigi.ViewModels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 
+import java.util.List;
+
 public class WordRevisionViewModel extends AndroidViewModel {
 
     private WordRepository repository;
+    private LiveData<List<Word>> revisionWords;
 
     public WordRevisionViewModel(@NonNull Application application) {
         super(application);
         repository = new WordRepository(application);
+        revisionWords = repository.getWordsRevision();
     }
 
     public void update(Word word){ repository.update(word); }
@@ -22,41 +27,7 @@ public class WordRevisionViewModel extends AndroidViewModel {
         repository.delete(word);
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    public LiveData<List<Word>> getNextSeriesForRevision(){
-//
-//        List<Word> words = new ArrayList<>();
-//        List<Word> resultWords;
-//
-//        resultWords = words.stream()
-//                .filter(w-> w.getRevisionPeriodCount() == 0 && w.getTimeElapsedInMinutes() >= 1)
-//                .collect(Collectors.toList());
-//        if (resultWords.size() > 0) {
-//            return (LiveData<List<Word>>) resultWords;
-//        }
-//
-//        resultWords = words.stream()
-//                .filter(w-> w.getRevisionPeriodCount() == 1 && w.getTimeElapsedInMinutes() >= 2)
-//                .collect(Collectors.toList());
-//        if (resultWords.size() > 0) {
-//            return (LiveData<List<Word>>) resultWords;
-//        }
-//
-//        resultWords = words.stream()
-//                .filter(w-> w.getRevisionPeriodCount() == 2 && w.getTimeElapsedInMinutes() >= 3)
-//                .collect(Collectors.toList());
-//        if (resultWords.size() > 0) {
-//            return (LiveData<List<Word>>) resultWords;
-//        }
-//
-//        resultWords = words.stream()
-//                .filter(w-> w.getRevisionPeriodCount() == 3 && w.getTimeElapsedInMinutes() >= 4)
-//                .collect(Collectors.toList());
-//        if (resultWords.size() > 0) {
-//            return (LiveData<List<Word>>) resultWords;
-//        }
-//
-//        return null;
-//    }
-
+    public LiveData<List<Word>> getRevisionWords(){
+        return revisionWords;
+    }
 }

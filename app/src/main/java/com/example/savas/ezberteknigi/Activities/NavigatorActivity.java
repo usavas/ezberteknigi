@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.savas.ezberteknigi.AppStarter;
 import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 
@@ -18,19 +19,16 @@ public class NavigatorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        StartMainActivityBasedOnRevision();
+        StartMainActivity(AppStarter.existsWordsToRevise(getApplication()));
     }
 
-    private void StartMainActivityBasedOnRevision() {
+    /**
+     *
+     */
+    private void StartMainActivity(boolean existsWordsToRevise) {
         Intent i = new Intent(this, MainActivity.class);
-        boolean existsRevision = existsWordsToRevise();
-        if (existsRevision) i.putExtra(IS_WORD_FRAGMENT_START, true);
-        else i.putExtra(IS_WORD_FRAGMENT_START, false);
+        i.putExtra(IS_WORD_FRAGMENT_START, existsWordsToRevise);
         startActivity(i);
         finish();
-    }
-
-    private boolean existsWordsToRevise(){
-        return Word.getWordsToRevise(new WordRepository(getApplication()).getAllWordsAsList()).size() > 0;
     }
 }

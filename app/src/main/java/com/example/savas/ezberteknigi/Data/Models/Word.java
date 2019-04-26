@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class Word {
 
     /*
-    * global variables */
+     * global variables */
 
     public final static int WORD_LEARNING = 0;
     public final static int WORD_MASTERED = 1;
@@ -33,7 +33,7 @@ public class Word {
 
 
     /*
-    * fields */
+     * fields */
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "word_id")
@@ -74,7 +74,7 @@ public class Word {
 
 
     /*
-    * constructors */
+     * constructors */
 
     public Word() {
         this.dateSaved = new Date();
@@ -117,6 +117,18 @@ public class Word {
     public void revisionCompleted() {
         this.revisionPeriodCount += 1;
         this.setDateLastRevision(new Date());
+    }
+
+    public boolean isWordToRevise() {
+        if ((this.revisionPeriodCount == 0 && this.getDateDiff(TimeUnit.MINUTES) >= REV_1_MIN_MOCK)
+                || (this.revisionPeriodCount == 1 && this.getTimeElapsedInMinutes() >= REV_2_MIN_MOCK)
+                || (this.revisionPeriodCount == 2 && this.getTimeElapsedInMinutes() >= REV_3_MIN_MOCK)
+                || (this.revisionPeriodCount == 3 && this.getTimeElapsedInMinutes() >= REV_4_MIN_MOCK)
+                || (this.revisionPeriodCount == 4 && this.getTimeElapsedInMinutes() >= REV_5_MIN_MOCK)
+                || (this.revisionPeriodCount == 5 && this.getTimeElapsedInMinutes() >= REV_6_MIN_MOCK)
+                || (this.revisionPeriodCount == 6 && this.getTimeElapsedInMinutes() >= REV_7_MIN_MOCK)
+        ) return true;
+        else return false;
     }
 
     public static List<Word> getWordsToRevise(List<Word> _words) {
@@ -219,7 +231,7 @@ public class Word {
 
 
     /*
-    * getters */
+     * getters */
 
     public int getWordId() {
         return wordId;
@@ -283,7 +295,7 @@ public class Word {
 
 
     /*
-    * setters */
+     * setters */
 
     public void setWordId(int id) {
         this.wordId = id;

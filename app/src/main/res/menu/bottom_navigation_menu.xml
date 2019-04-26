@@ -6,7 +6,7 @@
         android:title="Kelimeler" />
 
     <item
-        android:id="@+id/navigation_revision_words"
+        android:id="@+id/navigation_pager_for_test"
         android:icon="@drawable/ic_nav_revision"
         android:title="Kelime Tekrarı" />
 
