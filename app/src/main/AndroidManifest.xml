@@ -56,12 +56,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".Activities.TranslationActivity"
-            android:label="Alternatif Çeviriler"
-            tools:ignore="InnerclassSeparator" />
-
-
 
         <service
             android:name=".Activities.Services.SaveWebpageIntentService"

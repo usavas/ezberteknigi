@@ -47,22 +47,13 @@ public class BooksFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
 
-//        populateBooksFromFireBase(view);
-
         populateViewModelAndAdapter(view);
 
         adapter.setOnItemClickListener(reading -> {
             Intent intent = new Intent(getContext(), ReadingDetailActivity.class);
-
-//            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
-//                    reading.getBook().getImage(), Objects.requireNonNull(ViewCompat.getTransitionName(imageView)));
             intent.putExtra(ReadingDetailActivity.EXTRA_READING_TEXT_DETAIL_ID, reading.getReadingId());
-//            intent.putExtra(ReadingDetailActivity.EXTRA_BOOK_IMAGE, ImageConverter.toByteArray(reading.getBook().getImage()));
-//            startActivity(intent, options.toBundle());
             startActivity(intent);
         });
-
-
 
         final FloatingActionButton fab = view.findViewById(R.id.add_new_book);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -95,58 +86,4 @@ public class BooksFragment extends Fragment {
             adapter.setReadings(books);
         });
     }
-
-//    private void populateBooksFromFireBase(View view) {
-//        FirebaseDatabase.getInstance().getReference("books").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                List<BookWrapper> bookWrappers = retrieveData(dataSnapshot);
-//                adapter.setBooks(bookWrappers);
-//                adapter.notifyDataSetChanged();
-//
-//                populateBookCovers(bookWrappers, view);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.d(Constraints.TAG, "onCancelled: " + "The read failed: " + databaseError.getCode());
-//            }
-//        });
-//    }
-
-//    private void populateBookCovers(List<BookWrapper> bookWrappers, View view) {
-//        FirebaseStorage storage = FirebaseStorage.getInstance();
-//        for (BookWrapper book : bookWrappers) {
-//            try {
-//                StorageReference storageReference = storage.getReferenceFromUrl("gs://ezberteknigi.appspot.com").child(book.getBook().getImageUrlByName());
-//                final File localFile = File.createTempFile("images", "jpg");
-//                storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                        book.getBook().setImage(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
-//                        adapter.notifyItemChanged(bookWrappers.indexOf(book));
-//
-//                        view.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-//                        view.findViewById(R.id.recycler_view_books).setVisibility(View.VISIBLE);
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//                    }
-//                });
-//            } catch (IOException e) {
-//
-//            }
-//        }
-//    }
-//
-//    private List<BookWrapper> retrieveData(DataSnapshot dataSnapshot) {
-//        List<Book> books = new ArrayList<>();
-//        for (DataSnapshot child : dataSnapshot.getChildren()) {
-//            books.add(child.getValue(Book.class));
-//        }
-//        return BookWrapper.makeBookWrapperList(books);
-//    }
-
-
 }
