@@ -39,7 +39,8 @@ public class BooksFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_books);
         ((SimpleItemAnimator) Objects.requireNonNull(recyclerView.getItemAnimator())).setSupportsChangeAnimations(false);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager
+                = new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false);
 
         recyclerView.setLayoutManager(layoutManager);
 

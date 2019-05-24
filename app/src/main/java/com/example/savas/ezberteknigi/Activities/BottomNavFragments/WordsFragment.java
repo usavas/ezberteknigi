@@ -76,12 +76,7 @@ public class WordsFragment extends Fragment {
 
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
         if (WORD_LIST_TYPE == 0) { //if learning
-            wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, new Observer<List<Word>>() {
-                @Override
-                public void onChanged(@Nullable List<Word> words) {
-                    wordAdapter.setWords(words);
-                }
-            });
+            wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, words -> wordAdapter.setWords(words));
         } else if (WORD_LIST_TYPE == 1) { // if mastered
             wordViewModel.getAllWordsBasedOnState(Word.WORD_MASTERED).observe(this, new Observer<List<Word>>() {
                 @Override

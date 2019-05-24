@@ -16,6 +16,7 @@ import com.example.savas.ezberteknigi.Activities.BottomNavFragments.SettingsFrag
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordRevisionFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragmentsPagerFragment;
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsMainFragment;
 import com.example.savas.ezberteknigi.AppStarter;
 import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -38,7 +39,9 @@ public class MainActivity extends AppCompatActivity
 
 
         startWordsFragmentBasedOnRevision(
-                (getIntent().getBooleanExtra(NavigatorActivity.IS_WORD_FRAGMENT_START, false)));
+                (getIntent().getBooleanExtra(
+                                NavigatorActivity.IS_WORD_FRAGMENT_START,
+                                false)));
 
 //        View view = navigation.findViewById(R.id.navigation_words);
 //        view.performClick();
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     private void startWordsFragmentBasedOnRevision(boolean isRevision) {
         Fragment f = (isRevision)
                 ? new WordRevisionFragment()
-                : new WordsFragmentsPagerFragment();
+                : new WordsMainFragment(); // WordsFragmentPagerFragment
 
         getSupportFragmentManager().beginTransaction().replace(
                 R.id.bottom_navigation_fragment_container,
@@ -68,8 +71,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLastItemClick() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
-                new WordsFragmentsPagerFragment()).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.bottom_navigation_fragment_container,
+                new WordsMainFragment()) //WordsFragmentsPagerFragment()
+                .commit();
     }
 
 
@@ -85,7 +91,9 @@ public class MainActivity extends AppCompatActivity
                 case R.id.navigation_words:
                     selectedFragment = (AppStarter.existsWordsToRevise(getApplication()))
                             ? new WordRevisionFragment()
-                            : new WordsFragmentsPagerFragment();
+                            : new WordsMainFragment();
+
+//                    selectedFragment = new WordsMainFragment();
                     break;
 
                 //TODO: this remains for test purposes

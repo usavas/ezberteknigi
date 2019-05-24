@@ -16,36 +16,69 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Activities.BottomNavFragments.BooksFragment"></activity>
-        <activity
-            android:name=".Activities.BookDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="InnerclassSeparator"></activity>
+
         <activity
             android:name=".Activities.NavigatorActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".Activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator" />
+
         <activity
             android:name=".Activities.BookSearchActivity"
             tools:ignore="InnerclassSeparator" />
 
+        <activity
+            android:name=".Activities.BookDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator" />
+
+        <activity
+            android:name=".Activities.ReadingDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator" />
+
+        <activity
+            android:name=".Activities.HelperActivities.AddSharedWordWordOrWebPageActivity"
+            android:label="Kelime Ekle"
+            tools:ignore="InnerclassSeparator">
+            <intent-filter android:label="Öğreneceklerime Ekle">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Activities.TranslationActivity"
+            android:label="Alternatif Çeviriler"
+            tools:ignore="InnerclassSeparator" />
+
+
+
         <service
             android:name=".Activities.Services.SaveWebpageIntentService"
             android:exported="true"
-            tools:ignore="InnerclassSeparator" />
+            tools:ignore="InnerclassSeparator"
+            android:permission="android.permission.INTERNET" />
+
         <service
             android:name=".Activities.Services.WordRevisedService"
             tools:ignore="InnerclassSeparator" />
+
         <service
             android:name=".Activities.Services.WordAndTextService"
             android:enabled="true"
             android:exported="true"
-            tools:ignore="InnerclassSeparator">
+            tools:ignore="InnerclassSeparator"
+            android:permission="android.permission.INTERNET">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -55,46 +88,16 @@
             </intent-filter>
         </service>
 
-        <activity
-            android:name=".Activities.MainActivity"
-            tools:ignore="InnerclassSeparator">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity
-            android:name=".Activities.ReadingDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="InnerclassSeparator" />
-        <activity
-            android:name=".Activities.HelperActivities.AddSharedWordWordOrWebPageActivity"
-            android:label="Kelime Ekle"
-            tools:ignore="InnerclassSeparator">
-            <intent-filter android:label="Öğreneceklerime Ekle">
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Activities.TranslationActivity"
-            android:label="Alternatif Çeviriler"
-            tools:ignore="InnerclassSeparator" />
-
         <service
             android:name=".Activities.Services.WordRevisionScheduler"
             android:permission="android.permission.BIND_JOB_SERVICE"
             tools:ignore="InnerclassSeparator" />
 
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>
