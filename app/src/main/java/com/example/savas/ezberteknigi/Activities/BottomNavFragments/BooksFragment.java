@@ -33,9 +33,10 @@ public class BooksFragment extends Fragment {
     final BookAdapter adapter = new BookAdapter();
     ReadingTextViewModel readingTextViewModel;
 
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_main_books, container, false);
-        getActivity().setTitle("Kitaplık");
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_books);
         ((SimpleItemAnimator) Objects.requireNonNull(recyclerView.getItemAnimator())).setSupportsChangeAnimations(false);
@@ -92,9 +93,6 @@ public class BooksFragment extends Fragment {
             }
 
             adapter.setReadings(books);
-
-            view.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-            view.findViewById(R.id.recycler_view_books).setVisibility(View.VISIBLE);
         });
     }
 
