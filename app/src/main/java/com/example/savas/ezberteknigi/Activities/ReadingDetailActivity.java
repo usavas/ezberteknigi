@@ -388,10 +388,14 @@ public class ReadingDetailActivity extends AppCompatActivity
 
     @NonNull
     private String getLemmaOfWord(String wordString) {
-        WordLemmatizable lemmatizable = new ApacheOpenNLPHelper();
-        String lemma = lemmatizable.getLemmaOfWord(wordString.trim());
+        try{
+            WordLemmatizable lemmatizable = new ApacheOpenNLPHelper();
+            String lemma = lemmatizable.getLemmaOfWord(wordString.trim());
 
-        return (lemma == null) ? wordString : lemma;
+            return (lemma == null) ? wordString : lemma;
+        } catch (Exception e){
+            return wordString;
+        }
     }
 
     private Word returnWordIfExists(String wordString) {

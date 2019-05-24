@@ -36,7 +36,7 @@
             tools:ignore="InnerclassSeparator" />
 
         <activity
-            android:name=".Activities.BookDetailActivity"
+            android:name=".Activities.BookSearchDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="InnerclassSeparator" />
 

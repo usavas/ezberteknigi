@@ -13,7 +13,7 @@ import com.example.savas.ezberteknigi.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderHolder> {
+public class FolderArticleAdapter extends RecyclerView.Adapter<FolderArticleAdapter.FolderHolder> {
 
     private List<Folder> folders = new ArrayList<>();
 
@@ -21,7 +21,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderHold
     @Override
     public FolderHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_folder, viewGroup, false);
+                .inflate(R.layout.item_article_folder, viewGroup, false);
         return new FolderHolder(itemView);
     }
 

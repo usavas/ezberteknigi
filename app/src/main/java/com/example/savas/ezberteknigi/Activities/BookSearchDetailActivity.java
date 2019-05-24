@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class BookDetailActivity extends AppCompatActivity {
+public class BookSearchDetailActivity extends AppCompatActivity {
 
     Bitmap mImage = null;
     Book mBook = null;
@@ -73,7 +73,7 @@ public class BookDetailActivity extends AppCompatActivity {
                 }
 
                 if (mBook == null){
-                    Toast.makeText(BookDetailActivity.this, "Kitap bulunamadı", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BookSearchDetailActivity.this, "Kitap bulunamadı", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

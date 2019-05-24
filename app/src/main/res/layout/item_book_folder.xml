@@ -5,50 +5,28 @@
     style="@style/Widget.MaterialComponents.CardView"
     android:id="@+id/book_card_view"
     android:layout_marginTop="@dimen/recylcer_view_margin_top"
-    android:layout_marginStart="@dimen/recylcer_view_margin_start"
-    android:layout_marginEnd="@dimen/recylcer_view_margin_end"
+    android:layout_marginStart="4dp"
     android:layout_marginBottom="@dimen/recycler_view_margin_bottom"
     android:elevation="4dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="120dp"
+    android:layout_height="236dp"
     android:transitionName="show_book_detail"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:id="@+id/book_main_item"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
             android:layout_width="match_parent"
+            android:layout_height="160dp"
             android:layout_marginTop="8dp"
-            android:layout_height="250dp"
             android:id="@+id/image_book_detail"
             android:transitionName="show_book_detail"
             android:src="@drawable/ic_nav_book"
             android:scaleType="fitCenter"/>
-
-        <TextView
-            android:id="@+id/tv_book_title"
-            android:layout_below="@+id/image_book_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:text="title"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/tv_book_author"
-            android:layout_below="@+id/tv_book_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
-            android:text="author"
-            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_book_level"
@@ -77,6 +55,29 @@
             android:background="@android:color/holo_blue_dark"
             android:gravity="center"
             android:textColor="#FFFFFF"/>
+
+        <TextView
+            android:id="@+id/tv_book_title"
+            android:layout_below="@+id/image_book_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="title"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_word_count"
+            android:layout_below="@+id/tv_book_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:text="word count"
+            android:textSize="16sp" />
+
+
 
         <!--<LinearLayout-->
             <!--android:id="@+id/book_sub_item"-->

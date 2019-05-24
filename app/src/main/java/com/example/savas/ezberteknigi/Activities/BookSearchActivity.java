@@ -82,7 +82,7 @@ public class BookSearchActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new BookSearchAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BookWrapper book, ImageView imageView) {
-                Intent intent = new Intent(BookSearchActivity.this, BookDetailActivity.class);
+                Intent intent = new Intent(BookSearchActivity.this, BookSearchDetailActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(BookSearchActivity.this, imageView, Objects.requireNonNull(ViewCompat.getTransitionName(imageView)));
                 intent.putExtra(READING_TEXT_ID, book.getBook().getId());
                 intent.putExtra(READING_TEXT_IMAGE, ImageConverter.toByteArray(book.getBook().getImage()));
