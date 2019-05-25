@@ -26,6 +26,7 @@ public class WordViewModel extends AndroidViewModel {
         allWords = repository.getAllWords();
         allWordsLearning = repository.getWordsBasedOnState(Word.WORD_LEARNING);
         allWordsMastered = repository.getWordsBasedOnState(Word.WORD_MASTERED);
+
     }
 
     public void insert(Word word){
@@ -60,6 +61,22 @@ public class WordViewModel extends AndroidViewModel {
         }
         else if (wordState == Word.WORD_MASTERED){
             return allWordsMastered;
+        }
+        else {
+            return  null;
+        }
+    }
+
+    public LiveData<List<Word>> getAllWordsBasedOnStateAndReading(int wordState, int readingId) {
+        if (wordState == Word.WORD_LEARNING){
+            LiveData<List<Word>> allWordsLearningByReading
+                    = repository.getWordsBasedOnStateAndReading(Word.WORD_LEARNING, readingId);
+            return allWordsLearningByReading;
+        }
+        else if (wordState == Word.WORD_MASTERED){
+            LiveData<List<Word>> allWordsMasteredByReading
+                    = repository.getWordsBasedOnStateAndReading(Word.WORD_MASTERED, readingId);
+            return allWordsMasteredByReading;
         }
         else {
             return  null;

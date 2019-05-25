@@ -1,10 +1,11 @@
 package com.example.savas.ezberteknigi.Data.Models;
 
+import java.util.List;
+
 public class Folder {
 
     private String folderName;
     private int wordCount;
-
 
 
     public String getFolderName() {

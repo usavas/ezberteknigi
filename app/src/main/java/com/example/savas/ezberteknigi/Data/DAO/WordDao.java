@@ -40,8 +40,16 @@ public interface WordDao extends BaseDao {
     @Query("SELECT * FROM word_table WHERE word = :word AND is_archived = 0")
     Word getWordByWord(String word);
 
-    @Query("SELECT * FROM word_table WHERE word_state = :wordState AND is_archived = 0")
+    @Query("SELECT * FROM word_table " +
+            "WHERE word_state = :wordState " +
+            "AND is_archived = 0")
     LiveData<List<Word>> getWordsByWordState(int wordState);
+
+    @Query("SELECT * FROM word_table " +
+            "WHERE word_state = :wordState " +
+            "AND reading_text_id = :readingId " +
+            "AND is_archived = 0")
+    LiveData<List<Word>> getWordsByWordStateAndReading(int wordState, int readingId);
 
     /**
      * revision_period_count: how many times this word will be called for revision

@@ -26,34 +26,52 @@ import com.example.savas.ezberteknigi.Adapters.WordAdapter;
 import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
 public class WordsFragment extends Fragment {
 
-    private static final String WORD_LIST_TYPE_PARAM = "param1";
+    private static final String WORD_LIST_TYPE_PARAM = "WORD_LIST_TYPE_PARAM";
+    private static final String KEY_READING_ID = "KEY_READING_ID";
 
-    WordViewModel wordViewModel;
-    private OnFragmentInteractionListener mListener;
 
-    private int WORD_LIST_TYPE;
+    public static int READING_ID = Word.READING_TEXT_ID_DEFAULT;
+
+    private WordViewModel wordViewModel;
 
     public WordsFragment() {
     }
 
     public static WordsFragment newInstance(int wordListType) {
         WordsFragment fragment = new WordsFragment();
+
         Bundle args = new Bundle();
         args.putInt(WORD_LIST_TYPE_PARAM, wordListType);
+        args.putInt(KEY_READING_ID, -1);
         fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    public static WordsFragment newInstance(int wordListType, int readingId) {
+        WordsFragment fragment = new WordsFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(WORD_LIST_TYPE_PARAM, wordListType);
+        args.putInt(KEY_READING_ID, readingId);
+        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            WORD_LIST_TYPE = getArguments().getInt(WORD_LIST_TYPE_PARAM);
+            READING_ID = getArguments().getInt(KEY_READING_ID);
         }
     }
 
@@ -74,23 +92,35 @@ public class WordsFragment extends Fragment {
 
         recyclerView.setAdapter(wordAdapter);
 
+
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
-        if (WORD_LIST_TYPE == 0) { //if learning
-            wordViewModel.getAllWordsBasedOnState(Word.WORD_LEARNING).observe(this, words -> wordAdapter.setWords(words));
-        } else if (WORD_LIST_TYPE == 1) { // if mastered
-            wordViewModel.getAllWordsBasedOnState(Word.WORD_MASTERED).observe(this, new Observer<List<Word>>() {
-                @Override
-                public void onChanged(@Nullable List<Word> words) {
-                    wordAdapter.setWords(words);
-                }
-            });
+        if (READING_ID == Word.READING_TEXT_ID_DEFAULT){
+            if (getArguments().getInt(WORD_LIST_TYPE_PARAM) == 0) { //if learning
+                wordViewModel
+                        .getAllWordsBasedOnState(Word.WORD_LEARNING)
+                        .observe(this, words -> wordAdapter.setWords(words));
+            } else if (getArguments().getInt(WORD_LIST_TYPE_PARAM) == 1) { // if mastered
+                wordViewModel
+                        .getAllWordsBasedOnState(Word.WORD_MASTERED)
+                        .observe(this, words -> wordAdapter.setWords(words));
+            }
+        } else {
+            if (getArguments().getInt(WORD_LIST_TYPE_PARAM) == 0) { //if learning
+                wordViewModel
+                        .getAllWordsBasedOnStateAndReading(Word.WORD_LEARNING, READING_ID)
+                        .observe(this, words -> wordAdapter.setWords(words));
+            } else if (getArguments().getInt(WORD_LIST_TYPE_PARAM) == 1) { // if mastered
+                wordViewModel
+                        .getAllWordsBasedOnStateAndReading(Word.WORD_MASTERED, READING_ID)
+                        .observe(this, words -> wordAdapter.setWords(words));
+            }
         }
 
         wordAdapter.setOnItemClickListener(new WordAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Word word) {
-                Toast.makeText(getContext(), 
-                        "if this works, it means overrides the adapter in act.", 
+                Toast.makeText(getContext(),
+                        "if this works, it means overrides the adapter in act.",
                         Toast.LENGTH_SHORT)
                         .show();
             }
@@ -103,6 +133,7 @@ public class WordsFragment extends Fragment {
                         .show();
             }
         });
+
 
         wordAdapter.setOnOptionsClickListener(new WordAdapter.OnOptionsClickListener() {
             @Override
@@ -155,7 +186,7 @@ public class WordsFragment extends Fragment {
 
         Snackbar snackbar = Snackbar.make(view,
                 "Kelime silindi", Snackbar.LENGTH_LONG);
-        snackbar.setAction("GERİ AL", f-> wordViewModel.insert(word));
+        snackbar.setAction("GERİ AL", f -> wordViewModel.insert(word));
         snackbar.show();
     }
 
@@ -166,9 +197,9 @@ public class WordsFragment extends Fragment {
 
     private void openAddNewWordDialog() {
         AddWordFragment wordDialogFragment = new AddWordFragment();
-        if (WORD_LIST_TYPE == Word.WORD_LEARNING) {
+        if (getArguments().getInt(WORD_LIST_TYPE_PARAM) == Word.WORD_LEARNING) {
             wordDialogFragment = AddWordFragment.newInstance(Word.WORD_LEARNING);
-        } else if (WORD_LIST_TYPE == Word.WORD_MASTERED) {
+        } else if (getArguments().getInt(WORD_LIST_TYPE_PARAM) == Word.WORD_MASTERED) {
             wordDialogFragment = AddWordFragment.newInstance(Word.WORD_MASTERED);
         }
         wordDialogFragment.show(getFragmentManager(), "Kelime Ekle");
@@ -193,7 +224,7 @@ public class WordsFragment extends Fragment {
     private void ImplementOnSwipedOnWords(View view,
                                           WordAdapter wordAdapter,
                                           RecyclerView recyclerView) {
-        if (WORD_LIST_TYPE == Word.WORD_LEARNING) {
+        if (getArguments().getInt(WORD_LIST_TYPE_PARAM) == Word.WORD_LEARNING) {
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                 @Override
                 public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
@@ -220,7 +251,7 @@ public class WordsFragment extends Fragment {
                     }
                 }
             }).attachToRecyclerView(recyclerView);
-        } else if (WORD_LIST_TYPE == Word.WORD_MASTERED) {
+        } else if (getArguments().getInt(WORD_LIST_TYPE_PARAM) == Word.WORD_MASTERED) {
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
                 @Override
                 public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
@@ -250,42 +281,4 @@ public class WordsFragment extends Fragment {
         }
     }
 
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void updateActivityVariables(String title) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(title);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(String title);
-    }
 }

@@ -44,6 +44,11 @@ public class WordRepository {
         }
     }
 
+    public LiveData<List<Word>> getWordsBasedOnStateAndReading(int wordState, int readingId) {
+        return wordDao.getWordsByWordStateAndReading(wordState, readingId);
+    }
+
+
     public LiveData<List<Word>> getWordsRevision() {
         return wordsRevision;
     }

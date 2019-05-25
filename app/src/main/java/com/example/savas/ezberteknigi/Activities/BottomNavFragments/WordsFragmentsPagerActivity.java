@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,43 +15,25 @@ import android.view.ViewGroup;
 import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
 
-public class WordsFragmentsPagerFragment extends Fragment {
+public class WordsFragmentsPagerActivity extends AppCompatActivity {
 
     public static final String KEY_READING_ID = "KEY_READING_ID";
 
     public static int READING_ID = Word.READING_TEXT_ID_DEFAULT;
 
-    public WordsFragmentsPagerFragment() {
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-
-        if (getArguments() != null) {
-            READING_ID = getArguments().getInt(KEY_READING_ID);
-        }
-
-        return inflater.inflate(R.layout.fragment_main_words_fragment_pager,
-                container,
-                false);
-    }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_main_words_fragment_pager);
 
-        ViewPager mViewPager = getActivity().findViewById(
+        ViewPager mViewPager = findViewById(
                 R.id.fragment_word_activity_container);
 
         mViewPager.setAdapter(
-                new SectionsPagerAdapter(getFragmentManager()));
+                new SectionsPagerAdapter(getSupportFragmentManager()));
 
-        TabLayout tabLayout = getActivity().findViewById(
-                R.id.fragment_word_activity_tabs);
+        TabLayout tabLayout = findViewById(R.id.fragment_word_activity_tabs);
         tabLayout.addOnTabSelectedListener(
                 new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 

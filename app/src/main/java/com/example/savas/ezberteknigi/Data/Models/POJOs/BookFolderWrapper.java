@@ -1,6 +1,9 @@
 package com.example.savas.ezberteknigi.Data.Models.POJOs;
 
 import com.example.savas.ezberteknigi.Data.Models.Reading;
+import com.example.savas.ezberteknigi.Data.Models.Word;
+
+import java.util.List;
 
 public class BookFolderWrapper {
     private Reading reading;

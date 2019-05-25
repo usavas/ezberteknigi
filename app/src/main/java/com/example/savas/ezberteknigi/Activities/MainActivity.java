@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ReadingsFrag
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.SettingsFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordRevisionFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragment;
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragmentsPagerActivity;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragmentsPagerFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsMainFragment;
 import com.example.savas.ezberteknigi.AppStarter;
@@ -26,8 +28,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity
-        implements WordsFragment.OnFragmentInteractionListener
-        , WordRevisionFragment.OnRevisionCompletedListener {
+        implements WordRevisionFragment.OnRevisionCompletedListener,
+        WordsMainFragment.OnClickShowAllWords,
+        WordsMainFragment.OnClickShowWordsByBook {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +43,8 @@ public class MainActivity extends AppCompatActivity
 
         startWordsFragmentBasedOnRevision(
                 (getIntent().getBooleanExtra(
-                                NavigatorActivity.IS_WORD_FRAGMENT_START,
-                                false)));
+                        NavigatorActivity.IS_WORD_FRAGMENT_START,
+                        false)));
 
 //        View view = navigation.findViewById(R.id.navigation_words);
 //        view.performClick();
@@ -55,29 +58,48 @@ public class MainActivity extends AppCompatActivity
                 ? new WordRevisionFragment()
                 : new WordsMainFragment(); // WordsFragmentPagerFragment
 
-        getSupportFragmentManager().beginTransaction().replace(
-                R.id.bottom_navigation_fragment_container,
-                f)
-                .commit();
+        startChildFragment(f);
+    }
+
+
+    @Override
+    public void onRevisionComplete() {
+        startChildFragment(new WordsMainFragment());
     }
 
     @Override
-    public void onAttachFragment(Fragment fragment) {
-        if (fragment instanceof WordRevisionFragment) {
-            WordRevisionFragment revisionFragment = (WordRevisionFragment) fragment;
-            revisionFragment.setOnRevisionCompletedListener(this);
-        }
-    }
+    public void onClickShowAllWords() {
 
-    @Override
-    public void onLastItemClick() {
+        returnToMainActivityOnBackPressedActive = true;
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.bottom_navigation_fragment_container,
-                new WordsMainFragment()) //WordsFragmentsPagerFragment()
+                        new WordsFragmentsPagerFragment())
+                .addToBackStack("ALL_WORDS")
                 .commit();
+
+//        Intent i = new Intent(MainActivity.this, WordsFragmentsPagerActivity.class);
+//        startActivity(i);
     }
 
+    @Override
+    public void onClickShowWordsByBook(int bookId) {
+        returnToMainActivityOnBackPressedActive = true;
+
+        WordsFragmentsPagerFragment f = new WordsFragmentsPagerFragment();
+
+        Bundle b = new Bundle();
+        b.putInt(WordsFragmentsPagerFragment.KEY_READING_ID, bookId);
+        f.setArguments(b);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.bottom_navigation_fragment_container,
+                        f)
+                .addToBackStack("ALL_WORDS_BY_BOOK")
+                .commit();
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -92,8 +114,6 @@ public class MainActivity extends AppCompatActivity
                     selectedFragment = (AppStarter.existsWordsToRevise(getApplication()))
                             ? new WordRevisionFragment()
                             : new WordsMainFragment();
-
-//                    selectedFragment = new WordsMainFragment();
                     break;
 
                 //TODO: this remains for test purposes
@@ -112,17 +132,20 @@ public class MainActivity extends AppCompatActivity
                     break;
             }
             if (selectedFragment != null) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.bottom_navigation_fragment_container,
-                        selectedFragment).commit();
+                startChildFragment(selectedFragment);
             }
             return true;
         }
     };
 
-    @Override
-    public void onFragmentInteraction(String title) {
-        setTitle(title);
+    private void startChildFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.bottom_navigation_fragment_container,
+                        fragment)
+                .commit();
     }
+
 
     private boolean doubleBackToExitPressedOnce;
     private Handler mHandler = new Handler();
@@ -142,8 +165,17 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private boolean returnToMainActivityOnBackPressedActive;
+
     @Override
     public void onBackPressed() {
+
+        if (returnToMainActivityOnBackPressedActive) {
+            super.onBackPressed();
+            returnToMainActivityOnBackPressedActive = false;
+            return;
+        }
+
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
             return;

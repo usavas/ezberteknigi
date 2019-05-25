@@ -1,6 +1,5 @@
 package com.example.savas.ezberteknigi.Adapters;
 
-import android.app.Application;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import com.example.savas.ezberteknigi.Data.Models.Book;
 import com.example.savas.ezberteknigi.Data.Models.POJOs.BookFolderWrapper;
 import com.example.savas.ezberteknigi.Data.Models.Reading;
 import com.example.savas.ezberteknigi.Data.Models.Word;
-import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.R;
 
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class FolderBookAdapter
         extends RecyclerView.Adapter<FolderBookAdapter.ReadingTextHolder> {
 
     private List<BookFolderWrapper> bookFolderWrappers = new ArrayList<>();
-    private BookAdapter.OnItemClickListener listener;
+    private OnItemClickListener mListener;
 
     @NonNull
     @Override
@@ -44,7 +42,6 @@ public class FolderBookAdapter
 
         readingTextHolder.bind(folderWrapper);
         readingTextHolder.bindImage(folderWrapper.getReading().getBook());
-
     }
 
     @Override
@@ -73,8 +70,8 @@ public class FolderBookAdapter
                 @Override
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
-                    if (listener != null && pos != RecyclerView.NO_POSITION){
-                        listener.onItemClick(bookFolderWrappers.get(pos).getReading());
+                    if (mListener != null && pos != RecyclerView.NO_POSITION){
+                        mListener.onItemClick(bookFolderWrappers.get(pos).getReading().getReadingId());
                     }
                 }
             });
@@ -96,11 +93,11 @@ public class FolderBookAdapter
     }
 
     public interface OnItemClickListener{
-        void onItemClick(Reading reading);
+        void onItemClick(int readingId);
     }
 
-    public void setOnItemClickListener(BookAdapter.OnItemClickListener listener){
-        this.listener = listener;
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListener = listener;
     }
 
     public Reading getReadingTextAt(int position){

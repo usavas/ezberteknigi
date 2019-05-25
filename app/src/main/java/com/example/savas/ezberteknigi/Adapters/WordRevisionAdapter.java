@@ -75,7 +75,7 @@ public class WordRevisionAdapter extends RecyclerView.Adapter<WordRevisionAdapte
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setWordsRevision(List<Word> _words) {
-        this.words = Word.getWordsToRevise(_words);
+        this.words = _words;
         notifyDataSetChanged();
     }
 

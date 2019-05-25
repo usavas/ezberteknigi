@@ -2,12 +2,12 @@ package com.example.savas.ezberteknigi.Activities.BottomNavFragments;
 
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +23,8 @@ import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,15 +46,62 @@ public class WordsMainFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_words_main, container, false);
 
-        /**
-         * set all recyclerviews to display words related to each
+        /*
+          set all recyclerviews to display words related to each
          */
         setBookFolderAdapter(view);
         setArticleFolderAdapter(view);
         setUserDefinedFolderAdapter(view);
 
+        TextView tvAllWords = view.findViewById(R.id.btn_main_all_words);
+        tvAllWords.setOnClickListener(v -> {
+            if (mListener != null) {
+                mListener.onClickShowAllWords();
+            }
+        });
+
         return view;
     }
+
+
+    OnClickShowAllWords mListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnClickShowAllWords) {
+            mListener = (OnClickShowAllWords) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnClickShowAllWords");
+        }
+
+        if (context instanceof OnClickShowWordsByBook) {
+            mClickListenerByBook = (OnClickShowWordsByBook) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnClickShowWordsByBook");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+        mClickListenerByBook = null;
+    }
+
+    public interface OnClickShowAllWords {
+        void onClickShowAllWords();
+    }
+
+
+    OnClickShowWordsByBook mClickListenerByBook;
+
+    public interface OnClickShowWordsByBook {
+        void onClickShowWordsByBook(int bookId);
+    }
+
 
     private void setBookFolderAdapter(View view) {
         RecyclerView rvBooks = view.findViewById(R.id.rv_main_books);
@@ -91,7 +140,15 @@ public class WordsMainFragment extends Fragment {
                     }
 
                     if (bookFolderWrappers.size() > 0){
+
                         adapter.setBookFolderWrappers(bookFolderWrappers);
+
+                        adapter.setOnItemClickListener(readingId -> {
+                            if (mClickListenerByBook != null){
+                                mClickListenerByBook.onClickShowWordsByBook(readingId);
+                            }
+                        });
+
                     } else {
                         View container = getView().findViewById(R.id.book_container);
                         container.setVisibility(View.GONE);
@@ -162,6 +219,7 @@ public class WordsMainFragment extends Fragment {
         readingViewModel.getAllReadingTexts().observe(this, readingTexts -> {
             for (Reading readingText : readingTexts) {
                 if (readingText.getDocumentType() == Reading.DOCUMENT_TYPE_PLAIN) {
+
                     int wordCount = getWordAddedCountOfReading(readingText);
                     if (wordCount > 0){
                         Folder f = new Folder();
@@ -171,6 +229,7 @@ public class WordsMainFragment extends Fragment {
                     }
                 }
             }
+
             if (folders.size() > 0){
                 fudA.setFolders(folders);
             } else {
@@ -183,11 +242,11 @@ public class WordsMainFragment extends Fragment {
 
     private int getWordAddedCountOfReading(Reading readingText) {
         WordRepository repo = new WordRepository(getActivity().getApplication());
-        List<Word> relatedWords = repo.getAllWordsAsList();
+        List<Word> words = repo.getAllWordsAsList();
         int wordCount = 0;
-        for (Word relatedWord : relatedWords) {
-            if (relatedWord.getReadingTextId() == readingText.getReadingId()) {
-                wordCount++;
+        for (Word word : words) {
+            if (word.getReadingTextId() == readingText.getReadingId()) {
+                ++wordCount;
             }
         }
         return wordCount;

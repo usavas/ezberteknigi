@@ -3,7 +3,9 @@ package com.example.savas.ezberteknigi.Activities.BottomNavFragments;
 import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.media.AudioRecord;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.savas.ezberteknigi.Activities.BlankFragment;
 import com.example.savas.ezberteknigi.Adapters.WordRevisionAdapter;
 import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -37,16 +40,6 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class WordRevisionFragment extends Fragment {
 
     WordRevisionViewModel wordRevisionViewModel;
-
-    public interface OnRevisionCompletedListener{
-        void onLastItemClick();
-    }
-
-    public void setOnRevisionCompletedListener(OnRevisionCompletedListener listener){
-        this.listener = listener;
-    }
-
-    private OnRevisionCompletedListener listener;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -79,12 +72,20 @@ public class WordRevisionFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChanged(@Nullable List<Word> words) {
-                if (words.size() > 0){
-                    wordRevisionAdapter.setWordsRevision(words);
+
+                List<Word> wordsToRevise = Word.getWordsToRevise(words);
+
+                if (wordsToRevise.size() > 0){
+                    wordRevisionAdapter.setWordsRevision(wordsToRevise);
                     getActivity().setTitle("Tekrar Edilecek Kelimeler");
                 } else {
-                    //TODO: if words for revision are empty then push event to WordsMasterFragment to start the containerFragment for all words
-                    if (listener != null) listener.onLastItemClick();
+                    /*
+                      if words for revision are empty
+                      then push event to WordsMasterFragment to start the containerFragment for all words
+                     */
+                    if (mListener != null) {
+                        mListener.onRevisionComplete();
+                    }
                 }
             }
         });
@@ -101,6 +102,33 @@ public class WordRevisionFragment extends Fragment {
         return view;
 
     }
+
+    /**
+     * interface implementation
+     */
+    private OnRevisionCompletedListener mListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnRevisionCompletedListener) {
+            mListener = (OnRevisionCompletedListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnRevisionCompletedListener {
+        void onRevisionComplete();
+    }
+
 
     /**
      * Makes the given recyclerView item to show one item at a time
@@ -168,7 +196,7 @@ public class WordRevisionFragment extends Fragment {
             NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
             notificationManager.cancel(word.getWordId());
 
-            //TODO: if this (group notif) is the last notification, then cancel it, else leave it
+            //TODO: if this is the last notification of notification group, then delete it, else leave it
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                 if (notificationManager.getActiveNotifications().length == 1) {
                     notificationManager.cancel(-1);
