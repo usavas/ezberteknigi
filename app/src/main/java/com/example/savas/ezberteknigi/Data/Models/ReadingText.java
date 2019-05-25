@@ -62,8 +62,8 @@ public abstract class ReadingText {
     }
 
     @Ignore
-    abstract int getWordCount();
+    public abstract int getWordCount();
 
     @Ignore
-    abstract String getContentForPreview();
+    public abstract String getContentForPreview();
 }

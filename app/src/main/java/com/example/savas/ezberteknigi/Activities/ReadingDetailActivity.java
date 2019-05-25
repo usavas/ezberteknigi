@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
@@ -50,7 +51,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class ReadingDetailActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String EXTRA_READING_TEXT_DETAIL_ID = "EXTRA_READING_TEXT_DETAIL_ID";
     public static final String EXTRA_BOOK_IMAGE = "ReadingDetailActivity.EXTRA_BOOK_IMAGE";
@@ -66,7 +67,9 @@ public class ReadingDetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _reading = new ReadingRepository(getApplication())
-                .getReadingTextById(getIntent().getIntExtra(EXTRA_READING_TEXT_DETAIL_ID, 0));
+                .getReadingTextById(getIntent().getIntExtra(
+                        EXTRA_READING_TEXT_DETAIL_ID,
+                        0));
 
         prepareLayoutForReadingTextView(_reading);
 
@@ -78,20 +81,19 @@ public class ReadingDetailActivity extends AppCompatActivity
         setTitle(reading.getWebArticle().getTitle());
 
         WebView wv = findViewById(R.id.web_view_reading_text);
-        wv.loadUrl(reading.getWebArticle().getSource());
+        wv.loadUrl(reading.getWebArticle().getWebUrl());
         wv.getSettings().setJavaScriptEnabled(true);
 
         wv.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 new Handler().postDelayed(() -> {
-                    wv.evaluateJavascript("(function(){return window.getSelection().toString()})()",
-                            new ValueCallback<String>() {
-                                @Override
-                                public void onReceiveValue(String selected) {
-                                    String selectedText = selected.substring(1, selected.length() - 1).trim();
+                    wv.evaluateJavascript(
+                            "(function(){return window.getSelection().toString()})()",
+                            selected -> {
+                                String selectedText = selected.substring(1, selected.length() - 1).trim();
 
-                                    if (selectedText.trim() != "") {
+                                if (selectedText.trim() != "") {
 //
 //                                        List<String> selectedSentences = ExampleSentenceExtractor
 //                                                .getContainerSentences(reading.getChapters(), selectedText);
@@ -103,24 +105,23 @@ public class ReadingDetailActivity extends AppCompatActivity
 //
 //                                        showWordDialog(selectedText, singleSentence);
 
-                                        wv.evaluateJavascript("(function(){return document.body.textContent})()",
-                                                new ValueCallback<String>() {
-                                                    @Override
-                                                    public void onReceiveValue(String text) {
-                                                        if (text.trim() != "") {
-                                                            List<String> selectedSentences = new ExampleSentenceExtractor()
-                                                                    .getContainerSentences(text, selectedText);
+                                    wv.evaluateJavascript("(function(){return document.body.textContent})()",
+                                            new ValueCallback<String>() {
+                                                @Override
+                                                public void onReceiveValue(String text) {
+                                                    if (text.trim() != "") {
+                                                        List<String> selectedSentences = new ExampleSentenceExtractor()
+                                                                .getContainerSentences(text, selectedText);
 
-                                                            String singleSentence = "";
-                                                            if (selectedSentences.size() > 0) {
-                                                                singleSentence = selectedSentences.get(0);
-                                                            }
-
-                                                            showWordDialog(selectedText, singleSentence, reading.getReadingId());
+                                                        String singleSentence = "";
+                                                        if (selectedSentences.size() > 0) {
+                                                            singleSentence = selectedSentences.get(0);
                                                         }
+
+                                                        showWordDialog(selectedText, singleSentence, reading.getReadingId());
                                                     }
-                                                });
-                                    }
+                                                }
+                                            });
                                 }
                             });
                 }, 800);
@@ -131,13 +132,14 @@ public class ReadingDetailActivity extends AppCompatActivity
     }
 
     private void prepareLayoutForReadingTextView(Reading reading) {
-        //TODO: (maybe) if the content is HTML then -> tvContent.setText(Html.fromHtml(reading.getChapters()));
-        if (reading.getDocumentType() == Reading.DOCUMENT_TYPE_WEB){
-            if (WebContentRetrievable.isValidUrl(_reading.getWebArticle().getSource())) {
+        //TODO: (maybe) if the content is HTML then
+        // -> tvContent.setText(Html.fromHtml(reading.getChapters()));
+
+        if (reading.getDocumentType() == Reading.DOCUMENT_TYPE_WEB) {
+            if (URLUtil.isValidUrl(_reading.getWebArticle().getWebUrl())) {
                 prepareLayoutForPlainText(_reading);
             }
-        }
-        else if (reading.getDocumentType() == Reading.DOCUMENT_TYPE_PLAIN) {
+        } else if (reading.getDocumentType() == Reading.DOCUMENT_TYPE_PLAIN) {
             prepareLayoutForPlainText(reading);
         } else if (reading.getDocumentType() == Reading.DOCUMENT_TYPE_BOOK) {
             prepareLayoutForBook(reading);
@@ -169,56 +171,7 @@ public class ReadingDetailActivity extends AppCompatActivity
         setTitle(article.getTitle());
 
         tvContent = findViewById(R.id.text_view_reading_text_detail_content);
-
-        if (article instanceof WebArticle){
-            //TODO: from html
-
-            WebContentRetrievable retrievable = new WebContentRetrieverViaJsoup();
-            String htmlContent = retrievable.retrieveContent(((WebArticle) article).getSource());
-
-            SpannableStringBuilder builder = new SpannableStringBuilder();
-
-            Document doc = Jsoup.parse(htmlContent);
-            for (Element e : doc.body().getAllElements()) {
-                if (e.is("h1, h2, h3, h4, h5, h6")){
-                    builder.append(e.text() + "\n\n\n");
-                }
-                else if (e.is("p")){
-                    builder.append(e.text() + "\n\n");
-                }
-            }
-
-            tvContent.setText(builder);
-
-
-//            SpannableStringBuilder spanned = (SpannableStringBuilder) HtmlCompat.fromHtml(htmlContent, HtmlCompat.FROM_HTML_MODE_LEGACY);
-//            tvContent.setText(spanned);
-
-
-//            while (htmlContent.contains("\\n\\n\\n")){
-//                htmlContent = htmlContent.replace("\\n\\n\\n", "\\n\\n");
-//            }
-//
-//            final String cleanContent = htmlContent;
-
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//
-////                    Spannable spanned = new HtmlSpanner().fromHtml(cleanContent);
-//
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            tvContent.setText(spanned);
-//                        }
-//                    });
-//                }
-//            }).start();
-
-        } else {
-            tvContent.setText(article.getContent());
-        }
+        tvContent.setText(article.getContent());
 
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.rt_collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitleEnabled(true);
@@ -237,12 +190,12 @@ public class ReadingDetailActivity extends AppCompatActivity
         });
     }
 
-    private String stripHtmlTags (String htmlContent){
-        return htmlContent.replaceAll("<(.*?)\\>"," ")
-                .replaceAll("<(.*?)\\\n"," ")
+    private String stripHtmlTags(String htmlContent) {
+        return htmlContent.replaceAll("<(.*?)\\>", " ")
+                .replaceAll("<(.*?)\\\n", " ")
                 .replaceFirst("(.*?)\\>", " ")
-                .replaceAll("&nbsp;"," ")
-                .replaceAll("&amp;"," ");
+                .replaceAll("&nbsp;", " ")
+                .replaceAll("&amp;", " ");
     }
 
     private void prepareLayoutForBook(Reading reading) {
@@ -252,7 +205,7 @@ public class ReadingDetailActivity extends AppCompatActivity
         _navView.setNavigationItemSelectedListener(this);
         nestedScrollView = findViewById(R.id.nested_scroll_view);
         _book = reading.getBook();
-        ((ImageView)findViewById(R.id.rt_detail_book_image)).setImageBitmap(_book.getImage());
+        ((ImageView) findViewById(R.id.rt_detail_book_image)).setImageBitmap(_book.getImage());
 
         setNavigationDrawerForBook();
         scrollToPosition(nestedScrollView, reading.getBook().getLeftOffSet());
@@ -289,7 +242,7 @@ public class ReadingDetailActivity extends AppCompatActivity
         int clickedChapterNr = Integer.parseInt(title.split(" ")[1]);
         Log.d("XXXX", "onNavigationItemSelected: clicked chapter nr: " + clickedChapterNr);
 
-        if (clickedChapterNr == _book.getLeftChapter()){
+        if (clickedChapterNr == _book.getLeftChapter()) {
             closeNavDrawer();
             return false;
         }
@@ -366,12 +319,12 @@ public class ReadingDetailActivity extends AppCompatActivity
 
     @NonNull
     private String getLemmaOfWord(String wordString) {
-        try{
+        try {
             WordLemmatizable lemmatizable = new ApacheOpenNLPHelper();
             String lemma = lemmatizable.getLemmaOfWord(wordString.trim());
 
             return (lemma == null) ? wordString : lemma;
-        } catch (Exception e){
+        } catch (Exception e) {
             return wordString;
         }
     }

@@ -4,27 +4,27 @@ import android.arch.persistence.room.ColumnInfo;
 
 public class WebArticle extends Article {
 
-    @ColumnInfo(name = "source")
-    private String source;
+    @ColumnInfo(name = "webUrl")
+    private String webUrl;
 
-    public WebArticle(String title, String content, String source){
+    public WebArticle(String title, String content, String webUrl){
         this.title = title;
-        this.source = source;
         this.content = content;
+        this.webUrl = webUrl;
     }
 
-    public String getSource() {
-        return source;
+    public String getWebUrl() {
+        return webUrl;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setWebUrl(String webUrl) {
+        this.webUrl = webUrl;
     }
 
 //    @Override
 //    public String getContent(){
 //        WebContentRetrievable retrievable = new WebContentRetrieverViaJsoup();
-//        return retrievable.retrieveContent(this.getSource());
+//        return retrievable.retrieveContent(this.getWebUrl());
 //    }
 
     @Override

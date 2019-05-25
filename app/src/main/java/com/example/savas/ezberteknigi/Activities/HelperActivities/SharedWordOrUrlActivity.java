@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,7 +19,7 @@ import com.example.savas.ezberteknigi.Data.Repositories.ReadingRepository;
 import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.Activities.Services.SaveWebpageIntentService;
 
-public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
+public class SharedWordOrUrlActivity extends AppCompatActivity {
 
     public static final String EXTRA_WORD_TO_GET_TRANSLATION = "com.example.savas.ezberteknigi.EXTRA_WORD_TO_GET_TRANSLATION";
 
@@ -43,7 +44,7 @@ public class AddSharedWordWordOrWebPageActivity extends AppCompatActivity {
                 String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
                 int selectedTextWordCount = sharedText.split(" ").length;
 
-                if (sharedText.startsWith("http")){
+                if (URLUtil.isValidUrl(sharedText)){
 
                     Intent intentService = new Intent();
                     intentService.setClass(this, SaveWebpageIntentService.class);

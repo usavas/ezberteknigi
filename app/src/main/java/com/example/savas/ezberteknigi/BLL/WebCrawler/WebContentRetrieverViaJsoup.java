@@ -1,11 +1,13 @@
 package com.example.savas.ezberteknigi.BLL.WebCrawler;
 
 import android.os.AsyncTask;
+import android.text.SpannableStringBuilder;
 
 import com.example.savas.ezberteknigi.BLL.Interfaces.WebContentRetrievable;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 
@@ -86,6 +88,18 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
     }
 
     private static String getBody(Document document){
-        return document.body().html();
+
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        Document doc = Jsoup.parse(document.body().html());
+        for (Element e : doc.body().getAllElements()) {
+            if (e.is("h1, h2, h3, h4, h5, h6")) {
+                builder.append(e.text()).append("\n\n\n");
+            } else if (e.is("p")) {
+                builder.append(e.text()).append("\n\n");
+            }
+        }
+
+        return builder.toString();
     }
 }

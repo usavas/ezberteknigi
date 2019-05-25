@@ -33,8 +33,15 @@ public class ArticlesFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_main_articles, container, false);
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
+        final View view = inflater.inflate(
+                R.layout.fragment_main_articles,
+                container,
+                false);
+
         final ArticleAdapter articleAdapter = new ArticleAdapter();
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_reading_text);
@@ -48,6 +55,8 @@ public class ArticlesFragment extends Fragment {
         readingViewModel.getAllReadingTexts().observe(this, readingTexts -> {
 
             List<Reading> articles = new ArrayList<>();
+
+            if (readingTexts == null) return;
 
             for (Reading readingText : readingTexts) {
                 if(readingText.getDocumentType() == Reading.DOCUMENT_TYPE_PLAIN
@@ -63,7 +72,9 @@ public class ArticlesFragment extends Fragment {
             @Override
             public void onItemClick(Reading reading) {
                     Intent intent = new Intent(getActivity(), ReadingDetailActivity.class);
-                    intent.putExtra(ReadingDetailActivity.EXTRA_READING_TEXT_DETAIL_ID, reading.getReadingId());
+                    intent.putExtra(
+                            ReadingDetailActivity.EXTRA_READING_TEXT_DETAIL_ID,
+                            reading.getReadingId());
                     startActivity(intent);
             }
 

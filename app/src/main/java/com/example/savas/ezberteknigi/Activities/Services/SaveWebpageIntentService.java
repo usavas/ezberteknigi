@@ -31,10 +31,10 @@ public class SaveWebpageIntentService extends IntentService {
 
         WebContentRetrievable retriever = new WebContentRetrieverViaJsoup();
         List<String> titleAndContent = retriever.retrieveTitleAndContent(url);
-        saveHttpContent(url, titleAndContent.get(0), titleAndContent.get(1));
+        saveHttpContent(titleAndContent.get(0), titleAndContent.get(1), url);
     }
 
-    private void saveHttpContent(String httpAddress, String title, String httpContent){
+    private void saveHttpContent(String title, String httpContent, String httpAddress){
         ReadingTextViewModel vm = new ReadingTextViewModel(getApplication());
 
         Reading r = new Reading();

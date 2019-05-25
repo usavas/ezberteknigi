@@ -56,10 +56,10 @@
             tools:ignore="InnerclassSeparator" />
 
         <activity
-            android:name=".Activities.HelperActivities.AddSharedWordWordOrWebPageActivity"
+            android:name=".Activities.HelperActivities.SharedWordOrUrlActivity"
             android:label="Kelime Ekle"
             tools:ignore="InnerclassSeparator">
-            <intent-filter android:label="Öğreneceklerime Ekle">
+            <intent-filter android:label="Ekle">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />

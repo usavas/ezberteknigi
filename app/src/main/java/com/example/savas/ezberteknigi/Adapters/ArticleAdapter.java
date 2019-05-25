@@ -53,7 +53,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ReadingT
         private ImageView imageView;
 
         private ViewFlipper viewFlipper;
-        private View articleConteiner;
+        private View articleContainer;
         private View optionsContainer;
 
         private ImageButton btnDelete;
@@ -68,7 +68,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ReadingT
             content = itemView.findViewById(R.id.tvItemContent);
 
             viewFlipper = itemView.findViewById(R.id.view_flipper_reading_options);
-            articleConteiner = itemView.findViewById(R.id.article_container);
+            articleContainer = itemView.findViewById(R.id.article_container);
             optionsContainer = itemView.findViewById(R.id.options_container);
 
             btnDelete = itemView.findViewById(R.id.delete_reading);
@@ -86,14 +86,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ReadingT
                     : reading.getWebArticle();
 
             header.setText(article.getTitle());
-            content.setText(article.getContent());
+            content.setText(
+                    article.getContentForPreview().replace("\n\n", "\n"));
 
             view.setOnClickListener(v -> {
                 if (viewFlipper.getDisplayedChild()
-                        == viewFlipper.indexOfChild(articleConteiner)){
+                        == viewFlipper.indexOfChild(articleContainer)){
                     if (listener != null) listener.onItemClick(reading);
                 } else {
-                    viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(articleConteiner));
+                    viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(articleContainer));
                 }
             });
 
