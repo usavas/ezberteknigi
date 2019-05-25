@@ -103,10 +103,10 @@ public class WordsMainFragment extends Fragment {
                             int wordCount = getWordAddedCountOfReading(readingText);
 
                             if (wordCount > 0){
-                                ReadingFolder bfw = new ReadingFolder();
-                                bfw.setWordCount(wordCount);
-                                bfw.setReading(readingText);
-                                readingFolders.add(bfw);
+                                ReadingFolder f = new ReadingFolder();
+                                f.setWordCount(wordCount);
+                                f.setReading(readingText);
+                                readingFolders.add(f);
                             }
                         }
                     }
@@ -144,14 +144,17 @@ public class WordsMainFragment extends Fragment {
     }
     private void populateArticleAdapter(FolderArticleAdapter adapter) {
 
-        List<ReadingFolder> folders = new ArrayList<>();
-
         ReadingTextViewModel readingViewModel = ViewModelProviders.of(this).get(ReadingTextViewModel.class);
         readingViewModel.getAllReadingTexts().observe(this, readingTexts -> {
+
+            List<ReadingFolder> folders = new ArrayList<>();
+
             for (Reading readingText : readingTexts) {
                 //TODO make method for getting only the web article type readings
                 if (readingText.getDocumentType() == Reading.DOCUMENT_TYPE_WEB) {
+
                     int wordCount = getWordAddedCountOfReading(readingText);
+
                     if (wordCount > 0){
                         ReadingFolder f = new ReadingFolder();
                         f.setReading(readingText);
@@ -160,6 +163,7 @@ public class WordsMainFragment extends Fragment {
                     }
                 }
             }
+
             if (folders.size() > 0){
 
                 adapter.setFolders(folders);
