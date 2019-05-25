@@ -104,16 +104,6 @@ public class WordRevisionFragment extends Fragment {
      */
     private OnRevisionCompletedListener mListener;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnRevisionCompletedListener) {
-            mListener = (OnRevisionCompletedListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
     @Override
     public void onDetach() {

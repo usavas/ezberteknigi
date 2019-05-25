@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Adapters.WordRevisionAdapter;
 import com.example.savas.ezberteknigi.Data.Models.Word;
@@ -67,6 +68,9 @@ public class WordRevisionActivity extends AppCompatActivity {
                     wordRevisionAdapter.setWordsRevision(wordsToRevise);
                     setTitle("Tekrar Edilecek Kelimeler");
                 } else {
+                    Toast.makeText(WordRevisionActivity.this,
+                            "Bütün kelimeler tekrar edildi!",
+                            Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }

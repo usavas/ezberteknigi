@@ -60,9 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.navigation_words:
-                    selectedFragment = (AppStarter.existsWordsToRevise(getApplication()))
-                            ? new WordRevisionFragment()
-                            : new WordsMainFragment();
+                    selectedFragment = new WordsMainFragment();
                     break;
 
                 //TODO: this remains for test purposes
