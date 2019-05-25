@@ -32,9 +32,6 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class WordsMainFragment extends Fragment {
 
 
@@ -56,7 +53,8 @@ public class WordsMainFragment extends Fragment {
 
         TextView tvReviseWords = view.findViewById(R.id.button_revise_words);
         tvReviseWords.setOnClickListener(v -> {
-
+            Intent i = new Intent(getActivity(), WordRevisionActivity.class);
+            startActivity(i);
         });
 
         TextView tvAllWords = view.findViewById(R.id.button_main_all_words);

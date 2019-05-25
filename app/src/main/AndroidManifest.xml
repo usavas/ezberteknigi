@@ -37,6 +37,11 @@
             tools:ignore="InnerclassSeparator" />
 
         <activity
+            android:name=".Activities.BottomNavFragments.WordRevisionActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator" />
+
+        <activity
             android:name=".Activities.BookSearchActivity"
             tools:ignore="InnerclassSeparator" />
 

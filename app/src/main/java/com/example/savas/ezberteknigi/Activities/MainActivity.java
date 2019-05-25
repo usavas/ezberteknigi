@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.BooksFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ArticlesFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.SettingsFragment;
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordRevisionActivity;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordRevisionFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragmentsPagerFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsMainFragment;
@@ -22,8 +24,9 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity
-        implements WordRevisionFragment.OnRevisionCompletedListener {
+import org.apache.tools.ant.Main;
+
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,31 +36,18 @@ public class MainActivity extends AppCompatActivity
         BottomNavigationView navigation = findViewById(R.id.bottom_navigation_view);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        // default child fragment
+        startChildFragment(new WordsMainFragment());
 
-        startWordsFragmentBasedOnRevision(
-                (getIntent().getBooleanExtra(
-                        NavigatorActivity.IS_WORD_FRAGMENT_START,
-                        false)));
-
-//        View view = navigation.findViewById(R.id.navigation_words);
-//        view.performClick();
+        if (getIntent().getBooleanExtra(
+                NavigatorActivity.IS_WORD_FRAGMENT_START,
+                false)){
+            Intent i = new Intent(MainActivity.this, WordRevisionActivity.class);
+            startActivity(i);
+        }
 
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
         findViewById(R.id.bottom_navigation_fragment_container).setVisibility(View.VISIBLE);
-    }
-
-    private void startWordsFragmentBasedOnRevision(boolean isRevision) {
-        Fragment f = (isRevision)
-                ? new WordRevisionFragment()
-                : new WordsMainFragment();
-
-        startChildFragment(f);
-    }
-
-
-    @Override
-    public void onRevisionComplete() {
-        startChildFragment(new WordsMainFragment());
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
