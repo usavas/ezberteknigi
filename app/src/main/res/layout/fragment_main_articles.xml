@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Activities.BottomNavFragments.ReadingsFragment">
+    tools:context=".Activities.BottomNavFragments.ArticlesFragment">
 
 
     <android.support.design.widget.AppBarLayout
@@ -35,7 +35,7 @@
             android:layout_height="match_parent"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            tools:listitem="@layout/item_rt_pict" />
+            tools:listitem="@layout/item_r_webarticle" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/add_new_book"

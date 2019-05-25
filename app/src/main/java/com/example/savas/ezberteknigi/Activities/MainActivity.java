@@ -1,6 +1,5 @@
 package com.example.savas.ezberteknigi.Activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -12,25 +11,19 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.BooksFragment;
-import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ReadingsFragment;
+import com.example.savas.ezberteknigi.Activities.BottomNavFragments.ArticlesFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.SettingsFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordRevisionFragment;
-import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragment;
-import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragmentsPagerActivity;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsFragmentsPagerFragment;
 import com.example.savas.ezberteknigi.Activities.BottomNavFragments.WordsMainFragment;
 import com.example.savas.ezberteknigi.AppStarter;
-import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
-import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity
-        implements WordRevisionFragment.OnRevisionCompletedListener,
-        WordsMainFragment.OnClickShowAllWords,
-        WordsMainFragment.OnClickShowWordsByBook {
+        implements WordRevisionFragment.OnRevisionCompletedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +49,7 @@ public class MainActivity extends AppCompatActivity
     private void startWordsFragmentBasedOnRevision(boolean isRevision) {
         Fragment f = (isRevision)
                 ? new WordRevisionFragment()
-                : new WordsMainFragment(); // WordsFragmentPagerFragment
+                : new WordsMainFragment();
 
         startChildFragment(f);
     }
@@ -65,40 +58,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRevisionComplete() {
         startChildFragment(new WordsMainFragment());
-    }
-
-    @Override
-    public void onClickShowAllWords() {
-
-        returnToMainActivityOnBackPressedActive = true;
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.bottom_navigation_fragment_container,
-                        new WordsFragmentsPagerFragment())
-                .addToBackStack("ALL_WORDS")
-                .commit();
-
-//        Intent i = new Intent(MainActivity.this, WordsFragmentsPagerActivity.class);
-//        startActivity(i);
-    }
-
-    @Override
-    public void onClickShowWordsByBook(int bookId) {
-        returnToMainActivityOnBackPressedActive = true;
-
-        WordsFragmentsPagerFragment f = new WordsFragmentsPagerFragment();
-
-        Bundle b = new Bundle();
-        b.putInt(WordsFragmentsPagerFragment.KEY_READING_ID, bookId);
-        f.setArguments(b);
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.bottom_navigation_fragment_container,
-                        f)
-                .addToBackStack("ALL_WORDS_BY_BOOK")
-                .commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -122,7 +81,7 @@ public class MainActivity extends AppCompatActivity
                     break;
 
                 case R.id.navigation_articles:
-                    selectedFragment = new ReadingsFragment();
+                    selectedFragment = new ArticlesFragment();
                     break;
                 case R.id.navigation_books:
                     selectedFragment = new BooksFragment();

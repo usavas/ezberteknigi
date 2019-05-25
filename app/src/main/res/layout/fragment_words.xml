@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.BottomNavFragments.WordsFragment"
+    tools:context=".Activities.WordsFragment"
     android:orientation="horizontal">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_word"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_word_2" />
+        tools:listitem="@layout/item_word" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_word_learning"

@@ -30,7 +30,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ReadingT
     @Override
     public ReadingTextHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_rt_pict, viewGroup, false);
+                .inflate(R.layout.item_r_webarticle, viewGroup, false);
         return new ReadingTextHolder(itemView);
     }
 

@@ -21,7 +21,7 @@ public class FolderUserDefinedAdapter extends RecyclerView.Adapter<FolderUserDef
     @Override
     public FolderHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_article_folder, viewGroup, false);
+                .inflate(R.layout.item_folder_article, viewGroup, false);
         return new FolderHolder(itemView);
     }
 

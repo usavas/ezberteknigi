@@ -158,30 +158,8 @@ public class ReadingDetailActivity extends AppCompatActivity
         });
     }
 
-//    private void prepareLayoutForWebText(Reading reading){
-//        setContentView(R.layout.activity_rt_detail);
-//
-//        Article article = (reading.getDocumentType() == Reading.DOCUMENT_TYPE_WEB) ? reading.getWebArticle() : reading.getSimpleArticle();
-//
-//        setTitle(article.getTitle());
-//
-//        tvContent = findViewById(R.id.text_view_reading_text_detail_content);
-//        tvContent.setText(article.getContent());
-//
-//        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.rt_collapsing_toolbar_layout);
-//        collapsingToolbarLayout.setTitleEnabled(true);
-//        collapsingToolbarLayout.setTitle(article.getTitle());
-//        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
-//        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
-//
-//        NestedScrollView scrollView = findViewById(R.id.scroll_view);
-//        scrollToPosition(scrollView, article.getLeftOffSet());
-//
-//
-//    }
-
     private void prepareLayoutForPlainText(Reading reading) {
-        setContentView(R.layout.activity_rt_detail);
+        setContentView(R.layout.activity_content_plaintext);
 
         Article article =
                 (reading.getDocumentType() == Reading.DOCUMENT_TYPE_WEB)
@@ -268,7 +246,7 @@ public class ReadingDetailActivity extends AppCompatActivity
     }
 
     private void prepareLayoutForBook(Reading reading) {
-        setContentView(R.layout.activity_rt_detail_2);
+        setContentView(R.layout.activity_content_reading);
         tvContent = findViewById(R.id.text_view_reading_text_detail_content);
         NavigationView _navView = findViewById(R.id.nav_view);
         _navView.setNavigationItemSelectedListener(this);

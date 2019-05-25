@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi.Activities.BottomNavFragments;
+package com.example.savas.ezberteknigi.Activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,9 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
@@ -18,8 +15,6 @@ import com.example.savas.ezberteknigi.R;
 public class WordsFragmentsPagerActivity extends AppCompatActivity {
 
     public static final String KEY_READING_ID = "KEY_READING_ID";
-
-    public static int READING_ID = Word.READING_TEXT_ID_DEFAULT;
 
 
     @Override
@@ -51,7 +46,9 @@ public class WordsFragmentsPagerActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
 
-            if (READING_ID == Word.READING_TEXT_ID_DEFAULT) {
+            int readingId = getIntent().getIntExtra(KEY_READING_ID, Word.READING_TEXT_ID_DEFAULT);
+
+            if (readingId == Word.READING_TEXT_ID_DEFAULT) {
                 if (position == 0) {
                     return WordsFragment.newInstance(Word.WORD_LEARNING);
                 } else if (position == 1) {
@@ -59,9 +56,9 @@ public class WordsFragmentsPagerActivity extends AppCompatActivity {
                 }
             } else {
                 if (position == 0) {
-                    return WordsFragment.newInstance(Word.WORD_LEARNING, READING_ID);
+                    return WordsFragment.newInstance(Word.WORD_LEARNING, readingId);
                 } else if (position == 1) {
-                    return WordsFragment.newInstance(Word.WORD_MASTERED, READING_ID);
+                    return WordsFragment.newInstance(Word.WORD_MASTERED, readingId);
                 }
             }
 

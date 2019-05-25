@@ -1,11 +1,8 @@
-package com.example.savas.ezberteknigi.Activities.BottomNavFragments;
+package com.example.savas.ezberteknigi.Activities;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -26,10 +23,6 @@ import com.example.savas.ezberteknigi.Adapters.WordAdapter;
 import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.List;
 
 public class WordsFragment extends Fragment {
 

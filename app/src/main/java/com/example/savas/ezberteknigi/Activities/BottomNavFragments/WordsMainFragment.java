@@ -3,6 +3,7 @@ package com.example.savas.ezberteknigi.Activities.BottomNavFragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.savas.ezberteknigi.Activities.MainActivity;
+import com.example.savas.ezberteknigi.Activities.WordsFragmentsPagerActivity;
 import com.example.savas.ezberteknigi.Adapters.FolderArticleAdapter;
 import com.example.savas.ezberteknigi.Adapters.FolderBookAdapter;
 import com.example.savas.ezberteknigi.Adapters.FolderUserDefinedAdapter;
@@ -23,8 +26,8 @@ import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,60 +49,34 @@ public class WordsMainFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_words_main, container, false);
 
-        /*
-          set all recyclerviews to display words related to each
-         */
         setBookFolderAdapter(view);
         setArticleFolderAdapter(view);
         setUserDefinedFolderAdapter(view);
 
-        TextView tvAllWords = view.findViewById(R.id.btn_main_all_words);
+
+        TextView tvReviseWords = view.findViewById(R.id.button_revise_words);
+        tvReviseWords.setOnClickListener(v -> {
+
+        });
+
+        TextView tvAllWords = view.findViewById(R.id.button_main_all_words);
         tvAllWords.setOnClickListener(v -> {
-            if (mListener != null) {
-                mListener.onClickShowAllWords();
-            }
+            Intent i = new Intent(getActivity(), WordsFragmentsPagerActivity.class);
+            startActivity(i);
         });
 
         return view;
     }
 
 
-    OnClickShowAllWords mListener;
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnClickShowAllWords) {
-            mListener = (OnClickShowAllWords) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnClickShowAllWords");
-        }
-
-        if (context instanceof OnClickShowWordsByBook) {
-            mClickListenerByBook = (OnClickShowWordsByBook) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnClickShowWordsByBook");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-        mClickListenerByBook = null;
-    }
-
-    public interface OnClickShowAllWords {
-        void onClickShowAllWords();
-    }
-
-
-    OnClickShowWordsByBook mClickListenerByBook;
-
-    public interface OnClickShowWordsByBook {
-        void onClickShowWordsByBook(int bookId);
     }
 
 
@@ -144,9 +121,14 @@ public class WordsMainFragment extends Fragment {
                         adapter.setBookFolderWrappers(bookFolderWrappers);
 
                         adapter.setOnItemClickListener(readingId -> {
-                            if (mClickListenerByBook != null){
-                                mClickListenerByBook.onClickShowWordsByBook(readingId);
-                            }
+
+                            Intent i = new Intent(getActivity(), WordsFragmentsPagerActivity.class);
+                            i.putExtra(WordsFragmentsPagerActivity.KEY_READING_ID, readingId);
+                            startActivity(i);
+
+//                            if (mClickListenerByBook != null){
+//                                mClickListenerByBook.onClickShowWordsByBook(readingId);
+//                            }
                         });
 
                     } else {

@@ -4,8 +4,6 @@ import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.media.AudioRecord;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,12 +22,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.savas.ezberteknigi.Activities.BlankFragment;
 import com.example.savas.ezberteknigi.Adapters.WordRevisionAdapter;
 import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.WordRevisionViewModel;
-import com.example.savas.ezberteknigi.ViewModels.WordViewModel;
 
 import java.util.Date;
 import java.util.List;

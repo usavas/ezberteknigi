@@ -27,14 +27,14 @@ import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
 
-public class ReadingsFragment extends Fragment {
+public class ArticlesFragment extends Fragment {
 
     ReadingTextViewModel readingViewModel;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_main_readings, container, false);
+        final View view = inflater.inflate(R.layout.fragment_main_articles, container, false);
         final ArticleAdapter articleAdapter = new ArticleAdapter();
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_reading_text);

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.example.savas.ezberteknigi.Data.Models.Book;
 import com.example.savas.ezberteknigi.Data.Models.POJOs.BookFolderWrapper;
 import com.example.savas.ezberteknigi.Data.Models.Reading;
-import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.R;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class FolderBookAdapter
     @Override
     public ReadingTextHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_book_folder, viewGroup, false);
+                .inflate(R.layout.item_folder_book, viewGroup, false);
         return new ReadingTextHolder(itemView);
     }
 
