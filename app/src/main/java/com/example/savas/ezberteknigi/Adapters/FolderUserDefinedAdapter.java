@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.savas.ezberteknigi.Data.Models.Folder;
+import com.example.savas.ezberteknigi.Data.Models.POJOs.Folder;
 import com.example.savas.ezberteknigi.R;
 
 import java.util.ArrayList;

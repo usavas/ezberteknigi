@@ -7,7 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.savas.ezberteknigi.Data.Models.Folder;
+import com.example.savas.ezberteknigi.Data.Models.POJOs.Folder;
+import com.example.savas.ezberteknigi.Data.Models.POJOs.ReadingFolder;
 import com.example.savas.ezberteknigi.R;
 
 import java.util.ArrayList;
@@ -15,7 +16,8 @@ import java.util.List;
 
 public class FolderArticleAdapter extends RecyclerView.Adapter<FolderArticleAdapter.FolderHolder> {
 
-    private List<Folder> folders = new ArrayList<>();
+    private List<ReadingFolder> folders = new ArrayList<>();
+    private OnItemClickListener mListener;
 
     @NonNull
     @Override
@@ -27,7 +29,7 @@ public class FolderArticleAdapter extends RecyclerView.Adapter<FolderArticleAdap
 
     @Override
     public void onBindViewHolder(@NonNull FolderHolder folderHolder, int i) {
-        Folder currentFolder = folders.get(i);
+        ReadingFolder currentFolder = folders.get(i);
         folderHolder.bind(currentFolder);
     }
 
@@ -47,16 +49,30 @@ public class FolderArticleAdapter extends RecyclerView.Adapter<FolderArticleAdap
             tvFolderName = itemView.findViewById(R.id.tv_folder_name);
             tvWordCount = itemView.findViewById(R.id.tv_word_count);
 
+            itemView.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+                if(mListener != null && pos != RecyclerView.NO_POSITION){
+                    mListener.onItemClick(folders.get(pos).getReading().getReadingId());
+                }
+            });
         }
 
-        private void bind(Folder f) {
-            tvFolderName.setText(f.getFolderName());
+        private void bind(ReadingFolder f) {
+            tvFolderName.setText(f.getReading().getWebArticle().getTitle());
             tvWordCount.setText(String.valueOf(f.getWordCount()) + " terim");
         }
     }
 
-    public void setFolders(List<Folder> folders){
+    public void setFolders(List<ReadingFolder> folders){
         this.folders = folders;
         notifyDataSetChanged();
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(int readingId);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListener = listener;
     }
 }

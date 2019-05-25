@@ -1,4 +1,4 @@
-package com.example.savas.ezberteknigi.Data.Models;
+package com.example.savas.ezberteknigi.Data.Models.POJOs;
 
 import java.util.List;
 

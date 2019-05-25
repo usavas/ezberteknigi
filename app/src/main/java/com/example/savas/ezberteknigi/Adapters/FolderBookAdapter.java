@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.savas.ezberteknigi.Data.Models.Book;
-import com.example.savas.ezberteknigi.Data.Models.POJOs.BookFolderWrapper;
+import com.example.savas.ezberteknigi.Data.Models.POJOs.ReadingFolder;
 import com.example.savas.ezberteknigi.Data.Models.Reading;
 import com.example.savas.ezberteknigi.R;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class FolderBookAdapter
         extends RecyclerView.Adapter<FolderBookAdapter.ReadingTextHolder> {
 
-    private List<BookFolderWrapper> bookFolderWrappers = new ArrayList<>();
+    private List<ReadingFolder> readingFolders = new ArrayList<>();
     private OnItemClickListener mListener;
 
     @NonNull
@@ -32,7 +32,7 @@ public class FolderBookAdapter
 
     @Override
     public void onBindViewHolder(@NonNull FolderBookAdapter.ReadingTextHolder readingTextHolder, int i) {
-        BookFolderWrapper folderWrapper = bookFolderWrappers.get(i);
+        ReadingFolder folderWrapper = readingFolders.get(i);
 
         if (folderWrapper.getReading().getDocumentType()
                 != Reading.DOCUMENT_TYPE_BOOK){
@@ -45,7 +45,7 @@ public class FolderBookAdapter
 
     @Override
     public int getItemCount() {
-        return bookFolderWrappers.size();
+        return readingFolders.size();
     }
 
 
@@ -70,13 +70,13 @@ public class FolderBookAdapter
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
                     if (mListener != null && pos != RecyclerView.NO_POSITION){
-                        mListener.onItemClick(bookFolderWrappers.get(pos).getReading().getReadingId());
+                        mListener.onItemClick(readingFolders.get(pos).getReading().getReadingId());
                     }
                 }
             });
         }
 
-        private void bind(BookFolderWrapper bfw ) {
+        private void bind(ReadingFolder bfw ) {
             Book book = bfw.getReading().getBook();
             tvTitle.setText(book.getTitle());
             tvLevel.setText(book.getLevel());
@@ -100,11 +100,11 @@ public class FolderBookAdapter
     }
 
     public Reading getReadingTextAt(int position){
-        return bookFolderWrappers.get(position).getReading();
+        return readingFolders.get(position).getReading();
     }
 
-    public void setBookFolderWrappers(List<BookFolderWrapper> bookFolderWrappers){
-        this.bookFolderWrappers = bookFolderWrappers;
+    public void setReadingFolders(List<ReadingFolder> readingFolders){
+        this.readingFolders = readingFolders;
         notifyDataSetChanged();
     }
 }

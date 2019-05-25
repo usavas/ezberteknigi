@@ -14,20 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.savas.ezberteknigi.Activities.MainActivity;
 import com.example.savas.ezberteknigi.Activities.WordsFragmentsPagerActivity;
 import com.example.savas.ezberteknigi.Adapters.FolderArticleAdapter;
 import com.example.savas.ezberteknigi.Adapters.FolderBookAdapter;
 import com.example.savas.ezberteknigi.Adapters.FolderUserDefinedAdapter;
-import com.example.savas.ezberteknigi.Data.Models.Folder;
-import com.example.savas.ezberteknigi.Data.Models.POJOs.BookFolderWrapper;
+import com.example.savas.ezberteknigi.Data.Models.POJOs.Folder;
+import com.example.savas.ezberteknigi.Data.Models.POJOs.ReadingFolder;
 import com.example.savas.ezberteknigi.Data.Models.Reading;
 import com.example.savas.ezberteknigi.Data.Models.Word;
 import com.example.savas.ezberteknigi.Data.Repositories.WordRepository;
 import com.example.savas.ezberteknigi.R;
 import com.example.savas.ezberteknigi.ViewModels.ReadingTextViewModel;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +46,6 @@ public class WordsMainFragment extends Fragment {
         setBookFolderAdapter(view);
         setArticleFolderAdapter(view);
         setUserDefinedFolderAdapter(view);
-
 
         TextView tvReviseWords = view.findViewById(R.id.button_revise_words);
         tvReviseWords.setOnClickListener(v -> {
@@ -98,35 +94,31 @@ public class WordsMainFragment extends Fragment {
         readingTextViewModel.getAllReadingTexts()
                 .observe(this, readingTexts -> {
 
-                    List<BookFolderWrapper> bookFolderWrappers = new ArrayList<>();
+                    List<ReadingFolder> readingFolders = new ArrayList<>();
 
                     for (Reading readingText : readingTexts) {
+                        //TODO make method for getting only the book type readings
                         if (readingText.getDocumentType() == Reading.DOCUMENT_TYPE_BOOK) {
 
                             int wordCount = getWordAddedCountOfReading(readingText);
 
                             if (wordCount > 0){
-                                BookFolderWrapper bfw = new BookFolderWrapper();
+                                ReadingFolder bfw = new ReadingFolder();
                                 bfw.setWordCount(wordCount);
                                 bfw.setReading(readingText);
-                                bookFolderWrappers.add(bfw);
+                                readingFolders.add(bfw);
                             }
                         }
                     }
 
-                    if (bookFolderWrappers.size() > 0){
+                    if (readingFolders.size() > 0){
 
-                        adapter.setBookFolderWrappers(bookFolderWrappers);
+                        adapter.setReadingFolders(readingFolders);
 
                         adapter.setOnItemClickListener(readingId -> {
-
                             Intent i = new Intent(getActivity(), WordsFragmentsPagerActivity.class);
                             i.putExtra(WordsFragmentsPagerActivity.KEY_READING_ID, readingId);
                             startActivity(i);
-
-//                            if (mClickListenerByBook != null){
-//                                mClickListenerByBook.onClickShowWordsByBook(readingId);
-//                            }
                         });
 
                     } else {
@@ -150,25 +142,34 @@ public class WordsMainFragment extends Fragment {
 
         populateArticleAdapter(folderArticleAdapter);
     }
-    private void populateArticleAdapter(FolderArticleAdapter faa) {
+    private void populateArticleAdapter(FolderArticleAdapter adapter) {
 
-        List<Folder> folders = new ArrayList<>();
+        List<ReadingFolder> folders = new ArrayList<>();
 
         ReadingTextViewModel readingViewModel = ViewModelProviders.of(this).get(ReadingTextViewModel.class);
         readingViewModel.getAllReadingTexts().observe(this, readingTexts -> {
             for (Reading readingText : readingTexts) {
+                //TODO make method for getting only the web article type readings
                 if (readingText.getDocumentType() == Reading.DOCUMENT_TYPE_WEB) {
                     int wordCount = getWordAddedCountOfReading(readingText);
                     if (wordCount > 0){
-                        Folder f = new Folder();
-                        f.setFolderName(readingText.getWebArticle().getTitle());
+                        ReadingFolder f = new ReadingFolder();
+                        f.setReading(readingText);
                         f.setWordCount(wordCount);
                         folders.add(f);
                     }
                 }
             }
             if (folders.size() > 0){
-                faa.setFolders(folders);
+
+                adapter.setFolders(folders);
+
+                adapter.setOnItemClickListener(readingId -> {
+                    Intent i = new Intent(getActivity(), WordsFragmentsPagerActivity.class);
+                    i.putExtra(WordsFragmentsPagerActivity.KEY_READING_ID, readingId);
+                    startActivity(i);
+                });
+
             } else {
                 View container = getView().findViewById(R.id.article_container);
                 container.setVisibility(View.GONE);
