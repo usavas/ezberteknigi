@@ -14,6 +14,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.Activities.DialogFragments.AddWordFragment;
@@ -85,7 +86,19 @@ public class WordsFragment extends Fragment {
 
         recyclerView.setAdapter(wordAdapter);
 
+        fillRecyclerViewItems(wordAdapter, view);
 
+        btnAddNewWord.setOnClickListener(v -> {
+            openAddNewWordDialog();
+        });
+
+        ImplementOnSwipedOnWords(view, wordAdapter, recyclerView);
+
+        return view;
+    }
+
+
+    private void fillRecyclerViewItems(WordAdapter wordAdapter, View view) {
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
         if (READING_ID == Word.READING_TEXT_ID_DEFAULT){
             if (getArguments().getInt(WORD_LIST_TYPE_PARAM) == 0) { //if learning
@@ -138,7 +151,6 @@ public class WordsFragment extends Fragment {
             public void onArchiveClick(Word word, int position) {
                 word.setArchived(true);
                 wordViewModel.update(word);
-                wordAdapter.notifyItemRemoved(position);
 
                 Snackbar mySnackbar = Snackbar.make(view,
                         "Kelime arşivlendi", Snackbar.LENGTH_LONG);
@@ -150,8 +162,8 @@ public class WordsFragment extends Fragment {
             }
 
             @Override
-            public void onDeleteClick(Word word) {
-                deleteWordWithRollback(word, view);
+            public void onDeleteClick(Word word, int position) {
+                deleteWordWithRollback(word, view, wordAdapter, position);
             }
 
             @Override
@@ -164,18 +176,11 @@ public class WordsFragment extends Fragment {
                 //TODO: implement word share
             }
         });
-
-        btnAddNewWord.setOnClickListener(v -> {
-            openAddNewWordDialog();
-        });
-
-        ImplementOnSwipedOnWords(view, wordAdapter, recyclerView);
-
-        return view;
     }
 
-    private void deleteWordWithRollback(Word word, View view) {
+    private void deleteWordWithRollback(Word word, View view, WordAdapter adapter, int position) {
         wordViewModel.delete(word);
+
 
         Snackbar snackbar = Snackbar.make(view,
                 "Kelime silindi", Snackbar.LENGTH_LONG);

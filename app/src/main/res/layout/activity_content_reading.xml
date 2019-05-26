@@ -9,7 +9,7 @@
     android:theme="@style/AppTheme.NoActionBar"
     tools:openDrawer="start">
 
-    <include layout="@layout/layout_article_content"
+    <include layout="@layout/layout_content_article"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

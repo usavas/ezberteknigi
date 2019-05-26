@@ -1,5 +1,6 @@
 package com.example.savas.ezberteknigi.BLL.WebCrawler;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.text.SpannableStringBuilder;
 
@@ -34,7 +35,7 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
         protected String doInBackground(String... params) {
 
             try {
-                return getBody(Jsoup.connect(params[0]).get());
+                return getHtmlAsPlainText(Jsoup.connect(params[0]).get());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -70,8 +71,9 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
                 List<String> titleAndContent = new ArrayList<>();
 
                 titleAndContent.add(doc.title());
+
                 //TODO: further html manipulation might be needed
-                titleAndContent.add(getBody(doc));
+                titleAndContent.add(getHtmlAsPlainText(doc));
 
                 return titleAndContent;
             } catch (IOException e) {
@@ -86,8 +88,7 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
             super.onPostExecute(s);
         }
     }
-
-    private static String getBody(Document document){
+    private static String getHtmlAsPlainText(Document document){
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
@@ -102,4 +103,31 @@ public class WebContentRetrieverViaJsoup implements WebContentRetrievable {
 
         return builder.toString();
     }
+
+    //TODO consume this method directly in the UI
+    // because this operation might take some time
+    public static class RetrievePrimaryImageIfExists
+            extends AsyncTask<String, String, Bitmap[]> {
+        protected Bitmap[] doInBackground(String... params) {
+
+            try {
+                Document doc = Jsoup.connect(params[0]).get();
+
+                for (Element e : doc.body().getAllElements()) {
+                    if (e.is("img")) {
+                        //TODO turn image into bitmap
+                        Bitmap[] image = new Bitmap[]{};
+
+                        return image;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+
+
 }

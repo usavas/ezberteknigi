@@ -51,7 +51,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 
         void onArchiveClick(Word word, int position);
 
-        void onDeleteClick(Word word);
+        void onDeleteClick(Word word, int position);
 
         void onShareClick(Word word);
 
@@ -94,7 +94,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
 
 
     /*
-     * other cutsom helper methods */
+     * other custom helper methods */
 
     public void setWords(List<Word> words) {
         this.words = words;
@@ -148,54 +148,22 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
             flipperItemTranslation = itemView.findViewById(R.id.flip_to_translation);
             flipperItemOptions = itemView.findViewById(R.id.flip_to_options);
 
+            flipper.setDisplayedChild(
+                    flipper.indexOfChild(flipperItemWord));
+
             itemView.setOnLongClickListener(v -> {
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
                     listener.onItemLongClick(words.get(getAdapterPosition()));
                 }
                 return true;
             });
-
-//            btnDetail.setOnClickListener(v -> {
-//                if (optionsClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-//                    optionsClickListener.onDetailClick(words.get(getAdapterPosition()));
-//
-//                }
-//            });
-//
-//            btnEdit.setOnClickListener(v -> {
-//                if (optionsClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-//                    optionsClickListener.onEditClick(words.get(getAdapterPosition()));
-//
-//                }
-//            });
-//
-//            btnShare.setOnClickListener(v -> {
-//                if (optionsClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-//                    optionsClickListener.onShareClick(words.get(getAdapterPosition()));
-//
-//                }
-//            });
-//
-//            btnDelete.setOnClickListener(v -> {
-//                if (optionsClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-//                    optionsClickListener.onDeleteClick(words.get(getAdapterPosition()));
-//
-//                }
-//            });
-//
-//            btnArchive.setOnClickListener(v -> {
-//                if (optionsClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-//                    optionsClickListener.onArchiveClick(words.get(getAdapterPosition()));
-//
-//                }
-//            });
         }
 
         private void bind(Word word, View view) {
             tvWord.setText(word.getWord());
             tvTranslation.setText(word.getTranslation());
 
-            if (word.getExampleSentence() != null && !word.getExampleSentence().equals("")){
+            if (word.getExampleSentence() != null && !word.getExampleSentence().equals("")) {
                 tvExampleSentence.setText(word.getExampleSentence());
             } else {
                 tvExampleSentence.setVisibility(View.GONE);
@@ -232,29 +200,27 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
                 return true;
             });
 
-
-            flipper.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus) {
-                        Toast.makeText(context, "focused", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, "not focused", Toast.LENGTH_SHORT).show();
-                        v.setVisibility(View.GONE);
-                        flipper.setDisplayedChild(
-                                flipper.indexOfChild(flipperItemWord));
-                    }
+            // does not work!!!
+            view.setOnFocusChangeListener((v, hasFocus) -> {
+                if (hasFocus) {
+                    Toast.makeText(context, "focused", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "not focused", Toast.LENGTH_SHORT).show();
+                    v.setVisibility(View.GONE);
+                    flipper.setDisplayedChild(
+                            flipper.indexOfChild(flipperItemWord));
                 }
             });
+
 
             for (ImageButton imageButton
                     : new ImageButton[]{btnDelete, btnDetail, btnShare, btnArchive, btnEdit}) {
                 imageButton.setOnClickListener(v -> {
                     if (optionsClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
 
-                        if (imageButton.equals(btnDelete))
-                            optionsClickListener.onDeleteClick(word);
-                        else if (imageButton.equals(btnDetail))
+                        if (imageButton.equals(btnDelete)) {
+                            optionsClickListener.onDeleteClick(word, getAdapterPosition());
+                        } else if (imageButton.equals(btnDetail))
                             optionsClickListener.onDetailClick(word);
                         else if (imageButton.equals(btnShare))
                             optionsClickListener.onShareClick(word);
@@ -267,8 +233,9 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordHolder> {
                     }
                 });
             }
-
         }
     }
+
+//    public interface
 
 }

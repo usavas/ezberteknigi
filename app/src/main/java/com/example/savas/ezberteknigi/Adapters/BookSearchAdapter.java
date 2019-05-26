@@ -30,7 +30,7 @@ public class BookSearchAdapter extends Adapter<BookSearchAdapter.SearchBookHolde
     @Override
     public BookSearchAdapter.SearchBookHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View bookView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_book, viewGroup, false);
+                .inflate(R.layout.item_r_book, viewGroup, false);
         return new SearchBookHolder(bookView);
     }
 

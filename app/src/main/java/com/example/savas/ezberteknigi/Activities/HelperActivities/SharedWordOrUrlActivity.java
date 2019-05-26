@@ -7,6 +7,7 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.savas.ezberteknigi.BLL.Translation.DummyTranslateProvider;
@@ -58,18 +59,43 @@ public class SharedWordOrUrlActivity extends AppCompatActivity {
                 } else if( selectedTextWordCount == 1 || selectedTextWordCount == 2){
                     prepareLayoutForAddWord(sharedText);
                 } else if(selectedTextWordCount >= 40){
-                    addAsPlainReadingText(sharedText);
+                    prepareLayoutForAddPlainText(sharedText);
+                } else {
+                    Toast.makeText(
+                            this,
+                            "Metinsel değeri eklemek için 40 veya daha fazla kelimeyi içeren bir metin seçin",
+                            Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
         }
     }
 
-    private void addAsPlainReadingText(String sharedText) {
+    private void prepareLayoutForAddPlainText(String sharedText){
+        setContentView(R.layout.activity_add_word_or_url_plaintext);
+        setTitle("Metin ekle");
+
+        TextView tvContent = findViewById(R.id.tv_plaintext_content);
+        tvContent.setText("İçerik:\n\n" + sharedText);
+
+        Button btnAddPlainText = findViewById(R.id.button_add_plaintext);
+        btnAddPlainText.setOnClickListener(v-> {
+
+            EditText editTitle =  findViewById(R.id.edit_title_plaintext);
+
+            String title = (!editTitle.getText().toString().equals(""))
+                    ? editTitle.getText().toString()
+                    : "Başlıksız";
+
+            addAsPlainReadingText(sharedText, title);
+        });
+    }
+    private void addAsPlainReadingText(String sharedText, String title) {
         ReadingRepository repo = new ReadingRepository(getApplication(), Reading.DOCUMENT_TYPE_PLAIN);
 
         Reading r = new Reading();
         r.setDocumentType(Reading.DOCUMENT_TYPE_PLAIN);
-        r.setSimpleArticle(new SimpleArticle(sharedText));
+        r.setSimpleArticle(new SimpleArticle(sharedText, title));
 
         repo.insert(r);
         finish();

@@ -24,7 +24,7 @@ public class BookAdapter
     @Override
     public ReadingTextHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_book, viewGroup, false);
+                .inflate(R.layout.item_r_book, viewGroup, false);
         return new ReadingTextHolder(itemView);
     }
 
